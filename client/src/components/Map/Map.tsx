@@ -1,15 +1,16 @@
-import React, { FC, useCallback, useState } from 'react'
+import React, {FC, useState} from 'react';
 import {
   GoogleMap,
   LoadScript,
-  DirectionsService,
   DirectionsRenderer,
   Autocomplete,
-} from '@react-google-maps/api'
-import { usePlacesWidget } from 'react-google-autocomplete'
-import { Button } from 'react-bootstrap'
+} from '@react-google-maps/api';
+import {usePlacesWidget} from 'react-google-autocomplete';
+import {Button} from 'react-bootstrap';
 // import { Loader, LoaderOptions } from '@googlemaps/js-api-loader'
-const apiKey = 'AIzaSyBmvdkcqvY-aunh7iZBuV9xkz9f0XWOhoc'
+
+const apiKey = 'AIzaSyBmvdkcqvY-aunh7iZBuV9xkz9f0XWOhoc';
+
 // declare var google: any;
 
 // async function loadMap() {
@@ -31,27 +32,29 @@ export const Map: FC = () => {
   const containerStyle = {
     width: '100%',
     height: '400px',
-  }
-
-  const { ref } = usePlacesWidget<HTMLInputElement>({
+  };
+  // eslint-disable-next-line no-unused-vars
+  const {ref} = usePlacesWidget<HTMLInputElement>({
     apiKey: apiKey,
     onPlaceSelected: (place) => console.log('from ', place),
-  })
+  });
 
   const center = {
     lat: 48.3098624,
     lng: 26.0079615,
-  }
-
-  const [from, setFrom] = useState('')
-  const [to, setTo] = useState('')
-  const [autocomplete, setAutocomplete] = useState(null)
-
+  };
+  // eslint-disable-next-line no-unused-vars
+  const [from, setFrom] = useState('');
+  // eslint-disable-next-line no-unused-vars
+  const [to, setTo] = useState('');
+  const [autocomplete, setAutocomplete] = useState(null);
+  // eslint-disable-next-line no-unused-vars
   const request = {
     origin: from,
     destination: to,
     travelMode: 'DRIVING',
-  }
+  };
+
   // const { isLoaded } = useJsApiLoader({
   //   id: 'google-map-script',
   //   googleMapsApiKey: apiKey,
@@ -69,25 +72,26 @@ export const Map: FC = () => {
   //   setMap(null)
   // }, [])
 
+  // eslint-disable-next-line no-unused-vars
   const directionsServiceCallback = (result: any, status: any) => {
-    console.log(result, 'result')
-    console.log(status, 'status')
-  }
+    console.log(result, 'result');
+    console.log(status, 'status');
+  };
 
   const onLoad = (autocompleteValue: any) => {
-    console.log('autocomplete: ', autocompleteValue)
+    console.log('autocomplete: ', autocompleteValue);
 
-    setAutocomplete(autocompleteValue)
-  }
+    setAutocomplete(autocompleteValue);
+  };
 
   const onPlaceChanged = () => {
     if (autocomplete !== null) {
       // console.log(autocomplete!.getPlace!())
-      console.log(autocomplete)
+      console.log(autocomplete);
     } else {
-      console.log('Autocomplete is not loaded yet!')
+      console.log('Autocomplete is not loaded yet!');
     }
-  }
+  };
 
   return (
     <>
@@ -153,5 +157,5 @@ export const Map: FC = () => {
         </GoogleMap>
       </LoadScript>
     </>
-  )
-}
+  );
+};
