@@ -10161,6 +10161,11 @@
     "indent-string" "^4.0.0"
     "strip-indent" "^3.0.0"
 
+"redux-devtools-extension@^2.13.9":
+  "integrity" "sha512-cNJ8Q/EtjhQaZ71c8I9+BPySIBVEKssbPpskBfsXqb8HJ002A3KRVHfeRzwRo6mGPqsm7XuHTqNSNeS1Khig0A=="
+  "resolved" "https://registry.npmjs.org/redux-devtools-extension/-/redux-devtools-extension-2.13.9.tgz"
+  "version" "2.13.9"
+
 "redux-saga@^1.1.3":
   "integrity" "sha512-RkSn/z0mwaSa5/xH/hQLo8gNf4tlvT18qXDNvedihLcfzh+jMchDgaariQoehCpgRltEm4zHKJyINEz6aqswTw=="
   "resolved" "https://registry.npmjs.org/redux-saga/-/redux-saga-1.1.3.tgz"
@@ -10168,7 +10173,7 @@
   dependencies:
     "@redux-saga/core" "^1.1.3"
 
-"redux@^4.0.0", "redux@^4.0.4", "redux@^4.1.0":
+"redux@^3.1.0 || ^4.0.0", "redux@^4.0.0", "redux@^4.0.4", "redux@^4.1.0":
   "integrity" "sha512-uI2dQN43zqLWCt6B/BMGRMY6db7TTY4qeHHfGeKb3EOhmOKjU3KdWvNLJyqaHRksv/ErdNH7cFZWg9jXtewy4g=="
   "resolved" "https://registry.npmjs.org/redux/-/redux-4.1.0.tgz"
   "version" "4.1.0"
@@ -10353,6 +10358,11 @@
   "integrity" "sha1-kl0mAdOaxIXgkc8NpcbmlNw9yv8="
   "resolved" "https://registry.yarnpkg.com/requires-port/-/requires-port-1.0.0.tgz"
   "version" "1.0.0"
+
+"reselect@^4.0.0":
+  "integrity" "sha512-qUgANli03jjAyGlnbYVAV5vvnOmJnODyABz51RdBN7M4WaVu8mecZWgyQNkG8Yqe3KRGRt0l4K4B3XVEULC4CA=="
+  "resolved" "https://registry.npmjs.org/reselect/-/reselect-4.0.0.tgz"
+  "version" "4.0.0"
 
 "resolve-cwd@^2.0.0":
   "integrity" "sha1-AKn3OHVW4nA46uIyyqNypqWbZlo="
