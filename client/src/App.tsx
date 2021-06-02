@@ -1,17 +1,16 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
-import {Map} from './components/Map/Map';
-import {Login} from './components/Login/Login';
+import {BrowserRouter} from 'react-router-dom';
+import AppRouter from './components/AppRouter';
 /**
  * @return {Object}
  */
 function App() {
   return (
-    <div className="App">
-      <Map></Map>
-      <Login />
-    </div>
+    <BrowserRouter>
+      <AppRouter />
+    </BrowserRouter>
   );
 }
 
