@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { Button } from 'react-bootstrap';
 import { NavLink } from 'react-router-dom';
 import { Form, Field } from 'react-final-form';
-import { REGISTRATION_ROUTE } from '../../utils/consts';
+import { REGISTRATION_ROUTE } from '../../constants/routerConstants';
 
 export const Login: FC = () => {
   return (

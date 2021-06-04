@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import { publicRouters } from '../routes';
-import { LOGIN_ROUTE } from '../utils/consts';
+import { LOGIN_ROUTE } from '../constants/routerConstants';
 
 const AppRouter: FC = () => {
   return (

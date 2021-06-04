@@ -1,7 +1,8 @@
 import {Login} from './components/Login/Login';
-import {LOGIN_ROUTE, REGISTRATION_ROUTE} from './utils/consts';
+import {LOGIN_ROUTE, REGISTRATION_ROUTE} from './constants/routerConstants';
 import {Registration} from './components/Login/Registration';
 import {RouteProps} from 'react-router-dom';
+
 
 // export const authRouters = [
 //     {
@@ -10,6 +11,7 @@ import {RouteProps} from 'react-router-dom';
 //     },
 
 // ]
+
 
 export const publicRouters: RouteProps[] = [
   {
