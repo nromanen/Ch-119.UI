@@ -9,7 +9,7 @@
     "dev": "ts-node src/app.ts",
     "start": "nodemon"
   },
-  "author": "Vasyl Sava",
+  "author": "",
   "license": "ISC",
   "devDependencies": {
     "@types/cors": "^2.8.10",
