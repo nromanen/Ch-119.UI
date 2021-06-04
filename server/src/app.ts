@@ -8,6 +8,8 @@ import { API_PATH } from './constants/api';
 import { PRODUCTION } from './constants/env';
 import { JSON_LIMIT, JSON_TYPE } from './constants/json';
 
+import sequelize from './db/sequelize/models/index';
+
 dotenv.config();
 
 const app = express();
@@ -40,11 +42,21 @@ if (process.env.NODE_ENV !== PRODUCTION) {
   );
 }
 
-app.listen(PORT, () => {
-  logger.log(
-    'info',
-    `⚡️[server]: Server is running at http://localhost:${PORT}`,
-  );
-});
+const start = async () => {
+  try {
+    await sequelize.authenticate();
+    await sequelize.sync();
+    app.listen(PORT, () => {
+      logger.log(
+        'info',
+        `⚡️[server]: Server is running at http://localhost:${PORT}`,
+      );
+    });
+  } catch (error) {
+    logger.log(error);
+  }
+};
+
+start();
 
 export default app;

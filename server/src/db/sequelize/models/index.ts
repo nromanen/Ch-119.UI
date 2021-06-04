@@ -5,11 +5,12 @@ const env = process.env.NODE_ENV || DEVELOPMENT;
 const config = require('../config/config')[env];
 
 const sequelize = new Sequelize(
-  config.development.database,
-  config.development.username,
-  config.development.password,
+  config.database,
+  config.username,
+  config.password,
   {
-    ...config,
+    dialect: config.dialect,
+    host: config.host,
     logQueryParameters: true,
   },
 );
