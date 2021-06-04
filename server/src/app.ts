@@ -3,7 +3,13 @@ import * as cors from 'cors';
 import * as winston from 'winston';
 import * as dotenv from 'dotenv';
 import routes from './routes/index';
-import * as appConstants from './constants/app';
+import {
+  JSON_LIMIT,
+  JSON_TYPE,
+  API_PATH,
+  PRODUCTION,
+  PORT,
+} from './constants/app';
 
 dotenv.config();
 
@@ -12,12 +18,12 @@ const app = express();
 app.use(cors());
 app.use(
   express.json({
-    limit: appConstants.JSON_LIMIT,
-    type: appConstants.JSON_TYPE,
+    limit: JSON_LIMIT,
+    type: JSON_TYPE,
   }),
 );
 app.use(express.urlencoded({ extended: true }));
-app.use(appConstants.API_PATH, routes);
+app.use(API_PATH, routes);
 
 export const logger = winston.createLogger({
   level: 'info',
@@ -29,7 +35,7 @@ export const logger = winston.createLogger({
   ],
 });
 
-if (process.env.NODE_ENV !== appConstants.PRODUCTION) {
+if (process.env.NODE_ENV !== PRODUCTION) {
   logger.add(
     new winston.transports.Console({
       format: winston.format.simple(),
@@ -37,10 +43,10 @@ if (process.env.NODE_ENV !== appConstants.PRODUCTION) {
   );
 }
 
-app.listen(appConstants.PORT, () => {
+app.listen(PORT, () => {
   logger.log(
     'info',
-    `⚡️[server]: Server is running at http://localhost:${appConstants.PORT}`,
+    `⚡️[server]: Server is running at http://localhost:${PORT}`,
   );
 });
 

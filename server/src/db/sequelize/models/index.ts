@@ -1,7 +1,7 @@
 import { Sequelize } from 'sequelize';
-import * as appConstants from '../../../constants/app';
+import { DEVELOPMENT } from '../../../constants/app';
 
-const env = process.env.NODE_ENV || appConstants.DEVELOPMENT;
+const env = process.env.NODE_ENV || DEVELOPMENT;
 const config = require('../config/config')[env];
 
 const sequelize = new Sequelize(
