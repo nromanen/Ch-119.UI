@@ -1,17 +1,17 @@
 import * as express from 'express';
 import { Request, Response } from 'express';
-import { SC_OK } from '../constants/app';
+import { STATUS_OK } from '../constants/api';
 
 const router = express.Router();
 
-const response = (res: Response, code: number, data: any) => {
-  res.status(code).send({
+const response = (res: Response, status: number, data: any) => {
+  res.status(status).send({
     ...data,
   });
 };
 
 router.get('/', (req: Request, res: Response) => {
-  response(res, SC_OK, { message: 'Server is running!' });
+  response(res, STATUS_OK, { message: 'Server is running!' });
 });
 
 export default router;

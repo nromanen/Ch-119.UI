@@ -3,13 +3,10 @@ import * as cors from 'cors';
 import * as winston from 'winston';
 import * as dotenv from 'dotenv';
 import routes from './routes/index';
-import {
-  JSON_LIMIT,
-  JSON_TYPE,
-  API_PATH,
-  PRODUCTION,
-  PORT,
-} from './constants/app';
+import { PORT } from './constants/app';
+import { API_PATH } from './constants/api';
+import { PRODUCTION } from './constants/env';
+import { JSON_LIMIT, JSON_TYPE } from './constants/json';
 
 dotenv.config();
 
