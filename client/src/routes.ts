@@ -1,4 +1,5 @@
-import {RouteProps} from 'react-router-dom';
+import { RouteProps } from 'react-router-dom';
+import { Comp } from './components/Comp';
 
 // export const authRouters = [
 //     {

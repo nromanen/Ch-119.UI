@@ -1,7 +1,8 @@
+import store from './reduxStore';
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './App.css';
 import { BrowserRouter } from 'react-router-dom';
+import { Provider } from 'react-redux';
 import AppRouter from './pages/AppRouter';
 /**
  * @return {Object}
@@ -9,7 +10,9 @@ import AppRouter from './pages/AppRouter';
 function App() {
   return (
     <BrowserRouter>
-      <AppRouter />
+      <Provider store={store}>
+        <AppRouter />
+      </Provider>
     </BrowserRouter>
   );
 }
