@@ -3,38 +3,33 @@ import * as cors from 'cors';
 import * as winston from 'winston';
 import * as dotenv from 'dotenv';
 import routes from './routes/index';
+import * as appConstants from './constants/app';
 
 dotenv.config();
-
-const PRODUCTION = 'production';
-const PORT: number = Number(process.env.PORT) || 8080;
 
 const app = express();
 
 app.use(cors());
-app.use(express.json({ limit: '100mb', type: 'application/json' }));
+app.use(
+  express.json({
+    limit: appConstants.JSON_LIMIT,
+    type: appConstants.JSON_TYPE,
+  }),
+);
 app.use(express.urlencoded({ extended: true }));
-app.use('/api/v1/', routes);
+app.use(appConstants.API_PATH, routes);
 
 export const logger = winston.createLogger({
   level: 'info',
   format: winston.format.json(),
   defaultMeta: { service: 'user-service' },
   transports: [
-    //
-    // - Write all logs with level `error` and below to `error.log`
-    // - Write all logs with level `info` and below to `combined.log`
-    //
     new winston.transports.File({ filename: 'error.log', level: 'error' }),
     new winston.transports.File({ filename: 'combined.log' }),
   ],
 });
 
-//
-// If we're not in production then log to the `console` with the format:
-// `${info.level}: ${info.message} JSON.stringify({ ...rest }) `
-//
-if (process.env.NODE_ENV !== PRODUCTION) {
+if (process.env.NODE_ENV !== appConstants.PRODUCTION) {
   logger.add(
     new winston.transports.Console({
       format: winston.format.simple(),
@@ -42,10 +37,10 @@ if (process.env.NODE_ENV !== PRODUCTION) {
   );
 }
 
-app.listen(PORT, () => {
+app.listen(appConstants.PORT, () => {
   logger.log(
     'info',
-    `⚡️[server]: Server is running at http://localhost:${PORT}`,
+    `⚡️[server]: Server is running at http://localhost:${appConstants.PORT}`,
   );
 });
 
