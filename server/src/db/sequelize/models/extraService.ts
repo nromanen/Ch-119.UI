@@ -1,4 +1,5 @@
 import { Model } from 'sequelize';
+import { extraService } from '../../../constants/modelsNames';
 
 export default (sequelize: any, DataTypes: any) => {
   class ExtraService extends Model {
@@ -26,7 +27,7 @@ export default (sequelize: any, DataTypes: any) => {
     },
     {
       sequelize,
-      modelName: 'ExtraService',
+      modelName: extraService,
     },
   );
   return ExtraService;

@@ -1,4 +1,5 @@
 import { Model } from 'sequelize';
+import { order } from '../../../constants/modelsNames';
 
 export default (sequelize: any, DataTypes: any) => {
   class Order extends Model {
@@ -21,18 +22,18 @@ export default (sequelize: any, DataTypes: any) => {
       customer_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
-        references: {
-          model: 'user',
-          key: 'id',
-        },
+        // references: {
+        //   model: 'user',
+        //   key: 'id',
+        // },
       },
       driver_id: {
         type: DataTypes.INTEGER,
         allowNull: true,
-        references: {
-          model: 'driver',
-          key: 'id',
-        },
+        // references: {
+        //   model: 'driver',
+        //   key: 'id',
+        // },
       },
       to: {
         type: DataTypes.STRING,
@@ -58,14 +59,16 @@ export default (sequelize: any, DataTypes: any) => {
         type: DataTypes.STRING,
         allowNull: true,
       },
-      payment_type: {
+      paymentType: {
         type: DataTypes.STRING,
         allowNull: true,
       },
     },
     {
       sequelize,
-      modelName: 'Order',
+      modelName: order,
+      underscored: true,
+      timestamps: true,
     },
   );
   return Order;

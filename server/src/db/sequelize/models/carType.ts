@@ -1,4 +1,5 @@
 import { Model } from 'sequelize';
+import { carType } from '../../../constants/modelsNames';
 
 export default (sequelize: any, DataTypes: any) => {
   class CarType extends Model {
@@ -26,7 +27,7 @@ export default (sequelize: any, DataTypes: any) => {
     },
     {
       sequelize,
-      modelName: 'CarType',
+      modelName: carType,
     },
   );
   return CarType;
