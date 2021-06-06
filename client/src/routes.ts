@@ -1,5 +1,4 @@
-import { RouteProps } from 'react-router-dom';
-import { Comp } from './components/Comp';
+import { Order } from './pages/Order/Order';
 
 // export const authRouters = [
 //     {
@@ -9,4 +8,4 @@ import { Comp } from './components/Comp';
 
 // ]
 
-export const publicRouters: RouteProps[] = [];
+export const publicRouters = [{ path: '/', component: Order }];

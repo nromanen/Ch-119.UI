@@ -16,6 +16,9 @@
   "rules": {
     "object-curly-spacing": "off",
     "linebreak-style": 0,
-    "isolatedModules": 0
+    "isolatedModules": 0,
+    "indent": "off",
+    "require-jsdoc": "off",
+    "max-len": "off"
   }
 }

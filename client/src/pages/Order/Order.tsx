@@ -1,90 +1,91 @@
-import { useCallback, useState } from 'react'
-import { Map } from './Map'
-import { OrderForm } from './OrderForm'
+import { useState } from 'react';
+import { Map2 } from './Map2';
+import { OrderForm } from './OrderForm';
 
 export const Order = () => {
-  const [directions, setDirections] = useState<google.maps.DirectionsRequest>()
-  const [from, setFrom] = useState('')
-  const [to, setTo] = useState('')
-  const [map, setMap] = useState<google.maps.Map>()
+  // const [directions, setDirections] = useState<google.maps.DirectionsRequest>();
+  const [from, setFrom] = useState('');
+  const [to, setTo] = useState('');
+  // const [map, setMap] = useState<google.maps.Map>();
 
   const [fromAutocomplete, setFromAutocomplete] = useState({
     getPlace: () => {},
-  })
-  const [toAutocomplete, setToAutocomplete] = useState({ getPlace: () => {} })
+  });
+  const [toAutocomplete, setToAutocomplete] = useState({ getPlace: () => {} });
 
   const onFromAutocompleteLoad = (autocomplete: any): void => {
-    console.log('autocomplete: ', autocomplete)
+    console.log('autocomplete: ', autocomplete);
 
-    setFromAutocomplete(autocomplete)
-  }
+    setFromAutocomplete(autocomplete);
+  };
   const onToAutocompleteLoad = (autocomplete: any): void => {
-    console.log('autocomplete: ', autocomplete)
+    console.log('autocomplete: ', autocomplete);
 
-    setToAutocomplete(autocomplete)
-  }
+    setToAutocomplete(autocomplete);
+  };
 
   const onFromChanged = (): void => {
     if (fromAutocomplete !== null) {
-      const geometry: any = fromAutocomplete.getPlace()
-      console.log(geometry, 'from geometry')
+      const geometry: any = fromAutocomplete.getPlace();
+      console.log(geometry, 'from geometry');
 
-      setFrom(geometry.formatted_address)
+      setFrom(geometry.formatted_address);
     } else {
-      console.log('Autocomplete is not loaded yet!')
+      console.log('Autocomplete is not loaded yet!');
     }
-  }
+  };
   const onToChanged = (): void => {
     if (toAutocomplete !== null) {
-      const geometry: any = toAutocomplete.getPlace()
+      const geometry: any = toAutocomplete.getPlace();
 
-      setTo(geometry.formatted_address)
+      setTo(geometry.formatted_address);
     } else {
-      console.log('Autocomplete is not loaded yet!')
+      console.log('Autocomplete is not loaded yet!');
     }
-  }
+  };
 
-  const createPath = (): void => {
-    const options: google.maps.DirectionsRequest = {
-      origin: from,
-      destination: to,
-      travelMode: google.maps.TravelMode.DRIVING,
-      unitSystem: google.maps.UnitSystem.METRIC,
-    }
-    console.log(options, 'options')
+  // const createPath = (): void => {
+  //   const options: google.maps.DirectionsRequest = {
+  //     origin: from,
+  //     destination: to,
+  //     travelMode: google.maps.TravelMode.DRIVING,
+  //     unitSystem: google.maps.UnitSystem.METRIC,
+  //   };
+  //   console.log(options, 'options');
 
-    setDirections(options)
-  }
+  //   setDirections(options);
+  // };
 
-  const onMapLoaded = useCallback((map: google.maps.Map) => {
-    setMap(map)
-  }, [])
+  // const onMapLoaded = useCallback((map: google.maps.Map) => {
+  //   setMap(map);
+  // }, []);
 
-  const mapProrps = {
-    directions,
-    setDirections,
-    onMapLoaded,
-    map,
-    setFrom,
-    setTo,
-  }
+  // const mapProrps = {
+  //   directions,
+  //   setDirections,
+  //   onMapLoaded,
+  //   map,
+  //   setFrom,
+  //   setTo,
+  // };
   const OrderFormProrps = {
     from,
     setFrom,
     to,
     setTo,
-    map,
+    // map,
     onFromAutocompleteLoad,
     onToAutocompleteLoad,
     onFromChanged,
     onToChanged,
-    createPath,
-  }
+    // createPath,
+  };
 
   return (
     <>
-      <Map {...mapProrps} />
+      {/* <Map {...mapProrps} /> */}
+      <Map2></Map2>
       <OrderForm {...OrderFormProrps} />
     </>
-  )
-}
+  );
+};

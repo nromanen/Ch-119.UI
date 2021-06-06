@@ -1,16 +1,22 @@
-import React, { FC, useCallback, useState } from 'react'
+import React, { FC, useCallback, useState } from 'react';
 import {
   GoogleMap,
   DirectionsService,
   DirectionsRenderer,
   useJsApiLoader,
   Marker,
-} from '@react-google-maps/api'
-import { Badge, ListGroup } from 'react-bootstrap'
-const googleMapsApiKey = 'AIzaSyBmvdkcqvY-aunh7iZBuV9xkz9f0XWOhoc'
+} from '@react-google-maps/api';
+import { Badge, ListGroup } from 'react-bootstrap';
 
-type l = ['places']
-const libraries: l = ['places']
+declare const process: {
+  env: {
+    MAP_API_KEY: string;
+  };
+};
+const googleMapsApiKey = process.env.MAP_API_KEY;
+
+type l = ['places'];
+const libraries: l = ['places'];
 
 // const extraServices = [
 //   {
@@ -45,12 +51,12 @@ const libraries: l = ['places']
 // }
 
 interface MapProps {
-  directions?: google.maps.DirectionsRequest
-  onMapLoaded: (map: google.maps.Map) => void
-  map?: google.maps.Map
-  setFrom: (v: string) => void
-  setTo: (v: string) => void
-  setDirections: (v: google.maps.DirectionsRequest) => void
+  directions?: any;
+  onMapLoaded: (map: google.maps.Map) => void;
+  map?: google.maps.Map;
+  setFrom: (v: string) => void;
+  setTo: (v: string) => void;
+  setDirections: (v: google.maps.DirectionsRequest) => void;
 }
 
 export const Map: FC<MapProps> = ({
@@ -60,75 +66,75 @@ export const Map: FC<MapProps> = ({
   setTo,
   setDirections,
 }) => {
-  console.log('render map')
+  console.log('render map');
 
   const containerStyle = {
     width: '100%',
     height: '50vh',
-  }
+  };
 
   const center = {
     lat: 48.3098624,
     lng: 26.0079615,
-  }
+  };
   const options = {
     center,
     zoom: 12,
-  }
+  };
 
   const { isLoaded, loadError } = useJsApiLoader({
     googleMapsApiKey, // ,
     libraries: libraries,
     // ...otherOptions
-  })
+  });
 
   const [directionsResult, setDirectionsResult] =
-    useState<google.maps.DirectionsResult>()
-  const [markers, setMarkers] = useState<any>([])
+    useState<google.maps.DirectionsResult>();
+  const [markers, setMarkers] = useState<any>([]);
 
   const directionsServiceCallback = useCallback(
     (
       result: google.maps.DirectionsResult,
-      status: google.maps.DirectionsStatus
+      status: google.maps.DirectionsStatus,
     ) => {
-      console.log('result', result)
+      console.log('result', result);
 
-      console.log('status', status)
-      if (status !== google.maps.DirectionsStatus.OK) {
-        return
+      console.log('status', status);
+      if (status !== window.google.maps.DirectionsStatus.OK) {
+        return;
       }
       //
-      setDirectionsResult(result)
+      setDirectionsResult(result);
     },
-    []
-  )
+    [],
+  );
 
   const onLoad = React.useCallback(function onLoad(mapInstance) {
     // do something with map Instance
-    console.log('mapInstance', mapInstance)
-    onMapLoaded(mapInstance)
-  }, [])
+    console.log('mapInstance', mapInstance);
+    onMapLoaded(mapInstance);
+  }, []);
 
   const mapClickHandler = (e: any) => {
-    console.log(e)
-    console.log(e.latLng)
-    const lat = e.latLng.lat()
-    const lng = e.latLng.lng()
-    console.log(lat)
-    console.log(lng)
+    console.log(e);
+    console.log(e.latLng);
+    const lat = e.latLng.lat();
+    const lng = e.latLng.lng();
+    console.log(lat);
+    console.log(lng);
     // setMarkers((markers: any) => [...markers, { lat, lng }])
-  }
+  };
 
   function onDirectionsChanged() {
     // @ts-ignore
-    const that: any = this
-    const origin = that.directions.routes[0].legs[0].start_address
-    const destination = that.directions.routes[0].legs[0].end_address
+    const that: any = this;
+    const origin = that.directions.routes[0].legs[0].start_address;
+    const destination = that.directions.routes[0].legs[0].end_address;
     // setFrom(origin)
     // setTo(destination)
-    console.log(origin)
-    console.log(destination)
-    console.log(directionsResult, 'directionsResult')
+    console.log(origin);
+    console.log(destination);
+    console.log(directionsResult, 'directionsResult');
 
     // const geocoder = new google.maps.Geocoder()
   }
@@ -137,7 +143,7 @@ export const Map: FC<MapProps> = ({
     // wrapping to a function is useful in case you want to access `window.google`
     // to eg. setup options or create latLng object, it won't be available otherwise
     // feel free to render directly if you don't need that
-    console.log('render map')
+    console.log('render map');
 
     return (
       <>
@@ -193,12 +199,12 @@ export const Map: FC<MapProps> = ({
           </div>
         )}
       </>
-    )
-  }
+    );
+  };
 
   if (loadError) {
-    return <div>Map cannot be loaded right now, sorry.</div>
+    return <div>Map cannot be loaded right now, sorry.</div>;
   }
 
-  return isLoaded ? renderMap() : <div>Loading...</div>
-}
+  return isLoaded ? renderMap() : <div>Loading...</div>;
+};
