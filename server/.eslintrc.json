@@ -17,7 +17,11 @@
   },
   "plugins": ["@typescript-eslint"],
   "rules": {
+    "global-require": "off",
+    "no-dynamic-require": 0,
     "linebreak-style": 0,
+    "implicit-arrow-linebreak": "off",
+    "import/no-dynamic-require": "off",
     "import/prefer-default-export": "off",
     "import/extensions": [
       "error",

@@ -1,6 +1,4 @@
 import { Model } from 'sequelize';
-import { order } from '../../../constants/modelsNames';
-import user from './user';
 
 export default (sequelize: any, DataTypes: any) => {
   class Order extends Model {
@@ -31,6 +29,10 @@ export default (sequelize: any, DataTypes: any) => {
       driver_id: {
         type: DataTypes.INTEGER,
         allowNull: true,
+        references: {
+          model: 'driver',
+          key: 'id',
+        },
       },
       to: {
         type: DataTypes.STRING,
@@ -63,8 +65,7 @@ export default (sequelize: any, DataTypes: any) => {
     },
     {
       sequelize,
-      modelName: order,
-      timestamps: true,
+      modelName: 'Order',
     },
   );
   return Order;

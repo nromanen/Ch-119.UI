@@ -1,5 +1,4 @@
 import { Model } from 'sequelize';
-import { city } from '../../../constants/modelsNames';
 
 export default (sequelize: any, DataTypes: any) => {
   class City extends Model {
@@ -22,11 +21,12 @@ export default (sequelize: any, DataTypes: any) => {
       name: {
         type: DataTypes.STRING,
         allowNull: false,
+        unique: true,
       },
     },
     {
       sequelize,
-      modelName: city,
+      modelName: 'City',
     },
   );
   return City;

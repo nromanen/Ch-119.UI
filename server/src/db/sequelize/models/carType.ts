@@ -1,5 +1,4 @@
 import { Model } from 'sequelize';
-import { carType } from '../../../constants/modelsNames';
 
 export default (sequelize: any, DataTypes: any) => {
   class CarType extends Model {
@@ -22,12 +21,12 @@ export default (sequelize: any, DataTypes: any) => {
       name: {
         type: DataTypes.STRING,
         allowNull: false,
+        unique: true,
       },
     },
     {
       sequelize,
-      modelName: carType,
-      underscored: true,
+      modelName: 'CarType',
     },
   );
   return CarType;

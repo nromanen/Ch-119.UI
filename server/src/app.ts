@@ -7,7 +7,6 @@ import { PORT } from './constants/app';
 import { API_PATH } from './constants/api';
 import { PRODUCTION } from './constants/env';
 import { JSON_LIMIT, JSON_TYPE } from './constants/json';
-
 import sequelize from './db/sequelize/models/index';
 
 dotenv.config();
@@ -45,7 +44,13 @@ if (process.env.NODE_ENV !== PRODUCTION) {
 const start = async () => {
   try {
     await sequelize.authenticate();
-    await sequelize.sync();
+    console.log('Sequielize connected');
+    const res = await sequelize.sync({
+      alter: true,
+    });
+
+    console.log('created tables', res.models);
+
     app.listen(PORT, () => {
       logger.log(
         'info',

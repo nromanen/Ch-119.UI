@@ -1,5 +1,4 @@
 import { Model } from 'sequelize';
-import { creditCard } from '../../../constants/modelsNames';
 
 export default (sequelize: any, DataTypes: any) => {
   class CreditCard extends Model {
@@ -27,10 +26,15 @@ export default (sequelize: any, DataTypes: any) => {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
+      number: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: true,
+      },
     },
     {
       sequelize,
-      modelName: creditCard,
+      modelName: 'CreditCard',
     },
   );
   return CreditCard;
