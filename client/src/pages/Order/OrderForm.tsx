@@ -1,7 +1,15 @@
 import { FC } from 'react';
-import { Accordion, Card, Badge, Form, Button } from 'react-bootstrap';
-// import { Autocomplete } from '@react-google-maps/api';
-import { Jumbotron } from 'react-bootstrap';
+import { Autocomplete } from '@react-google-maps/api';
+
+import {
+  Accordion,
+  Card,
+  Badge,
+  Form,
+  Button,
+  Jumbotron,
+} from 'react-bootstrap';
+
 interface OrderFormProps {
   createPath?: () => void;
   onFromAutocompleteLoad: (autocomplete: any) => void;
@@ -10,7 +18,7 @@ interface OrderFormProps {
   onToChanged: () => void;
   setTo: (v: string) => void;
   setFrom: (v: string) => void;
-  // map?: google.maps.Map;
+  map?: google.maps.Map;
   from: string;
   to: string;
 }
@@ -21,7 +29,7 @@ export const OrderForm: FC<OrderFormProps> = ({
   onFromChanged,
   onToAutocompleteLoad,
   onToChanged,
-  // map,
+  map,
   from,
   to,
   setFrom,
@@ -35,7 +43,7 @@ export const OrderForm: FC<OrderFormProps> = ({
             From:
           </Form.Label>
           <div className="col-xs-4">
-            {/* {map && (
+            {map && (
               <Autocomplete
                 onLoad={onFromAutocompleteLoad}
                 onPlaceChanged={onFromChanged}
@@ -50,7 +58,7 @@ export const OrderForm: FC<OrderFormProps> = ({
                   placeholder="Origin"
                 />
               </Autocomplete>
-            )} */}
+            )}
           </div>
         </Form.Group>
         <Form.Group>
@@ -58,7 +66,7 @@ export const OrderForm: FC<OrderFormProps> = ({
             To:
           </Form.Label>
           <div className="col-xs-4">
-            {/* {map && (
+            {map && (
               <Autocomplete
                 onLoad={onToAutocompleteLoad}
                 onPlaceChanged={onToChanged}
@@ -73,7 +81,7 @@ export const OrderForm: FC<OrderFormProps> = ({
                   placeholder="Destination"
                 />
               </Autocomplete>
-            )} */}
+            )}
           </div>
         </Form.Group>
         <Form.Group>

@@ -1,10 +1,9 @@
-import { DirectionsRequest } from 'google.maps';
 import { useState, useCallback } from 'react';
-// import { Map2 } from './Map2';
+import { Map } from './Map';
 import { OrderForm } from './OrderForm';
 
 export const Order = () => {
-  const [directions, setDirections] = useState<DirectionsRequest>();
+  const [directions, setDirections] = useState<google.maps.DirectionsRequest>();
   const [from, setFrom] = useState('');
   const [to, setTo] = useState('');
   const [map, setMap] = useState<google.maps.Map>();
@@ -85,7 +84,6 @@ export const Order = () => {
   return (
     <>
       <Map {...mapProrps} />
-      {/* <Map2></Map2> */}
       <OrderForm {...OrderFormProrps} />
     </>
   );

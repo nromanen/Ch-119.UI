@@ -6,15 +6,19 @@ import {
   useJsApiLoader,
   Marker,
 } from '@react-google-maps/api';
-import { Badge, ListGroup } from 'react-bootstrap';
+// import { Badge, ListGroup } from 'react-bootstrap';
 
 declare const process: {
   env: {
     MAP_API_KEY: string;
+    PORT: string;
   };
 };
 
-const googleMapsApiKey = process.env.MAP_API_KEY;
+const googleMapsApiKey = 'AIzaSyBmvdkcqvY-aunh7iZBuV9xkz9f0XWOhoc';
+const mapApiKey = process.env.MAP_API_KEY;
+console.log('process.env', process.env.PORT);
+console.log('mapApiKey', mapApiKey);
 
 type l = ['places'];
 const libraries: l = ['places'];
@@ -31,33 +35,33 @@ const libraries: l = ['places'];
 //   },
 // ]
 
-const value = {
-  initial: 50,
-  carTypeCoef: 1.1,
-  services: [10, 15, 20],
-  distanceCoef: 10,
-  distance: 1.7,
-  discount: 10,
-};
-const calculatePrice = (prices: any) => {
-  const servicesPrice = prices.services.reduce(
-    (acc: number, val: number) => acc + val,
-  );
-  return Math.ceil(
-    prices.initial +
-      prices.distance * prices.distanceCoef * prices.carTypeCoef +
-      servicesPrice -
-      prices.discount,
-  );
-};
+// const value = {
+//   initial: 50,
+//   carTypeCoef: 1.1,
+//   services: [10, 15, 20],
+//   distanceCoef: 10,
+//   distance: 1.7,
+//   discount: 10,
+// };
+// const calculatePrice = (prices: any) => {
+//   const servicesPrice = prices.services.reduce(
+//     (acc: number, val: number) => acc + val,
+//   );
+//   return Math.ceil(
+//     prices.initial +
+//       prices.distance * prices.distanceCoef * prices.carTypeCoef +
+//       servicesPrice -
+//       prices.discount,
+//   );
+// };
 
 interface MapProps {
   directions?: any;
-  onMapLoaded: (map: Map) => void;
-  map?: Map;
+  onMapLoaded: (map: google.maps.Map) => void;
+  map?: google.maps.Map;
   setFrom: (v: string) => void;
   setTo: (v: string) => void;
-  setDirections: (v: DirectionsRequest) => void;
+  setDirections: (v: google.maps.DirectionsRequest) => void;
 }
 
 export const Map: FC<MapProps> = ({
@@ -175,7 +179,7 @@ export const Map: FC<MapProps> = ({
             ))}
         </GoogleMap>
 
-        {directionsResult && (
+        {/* {directionsResult && (
           <div className="jumbotron">
             <div className="container-fluid">
               <ListGroup>
@@ -198,7 +202,7 @@ export const Map: FC<MapProps> = ({
               </ListGroup>
             </div>
           </div>
-        )}
+        )} */}
       </>
     );
   };
