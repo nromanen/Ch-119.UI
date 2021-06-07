@@ -24,10 +24,15 @@ export default (sequelize: any, DataTypes: any) => {
         allowNull: false,
         unique: true,
       },
+      basePrice: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+      },
     },
     {
       sequelize,
       modelName: city,
+      underscored: true,
     },
   );
   return City;

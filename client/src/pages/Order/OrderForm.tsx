@@ -2,7 +2,6 @@ import { FC } from 'react';
 import { Accordion, Card, Badge, Form, Button } from 'react-bootstrap';
 // import { Autocomplete } from '@react-google-maps/api';
 import { Jumbotron } from 'react-bootstrap';
-
 interface OrderFormProps {
   createPath?: () => void;
   onFromAutocompleteLoad: (autocomplete: any) => void;
@@ -108,6 +107,8 @@ export const OrderForm: FC<OrderFormProps> = ({
                     aria-label="option 1"
                     type="checkbox"
                     label="English speaking"
+                    data-db-id="1"
+                    value="English speaking"
                   />
                   <Form.Check
                     id="option-2"

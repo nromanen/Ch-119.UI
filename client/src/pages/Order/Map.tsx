@@ -13,6 +13,7 @@ declare const process: {
     MAP_API_KEY: string;
   };
 };
+
 const googleMapsApiKey = process.env.MAP_API_KEY;
 
 type l = ['places'];
@@ -30,33 +31,33 @@ const libraries: l = ['places'];
 //   },
 // ]
 
-// const value = {
-//   initial: 50,
-//   carTypeCoef: 1.1,
-//   services: [10, 15, 20],
-//   distanceCoef: 10,
-//   distance: 1.7,
-//   discount: 10,
-// }
-// const calculatePrice = (prices: any) => {
-//   const servicesPrice = prices.services.reduce(
-//     (acc: number, val: number) => acc + val
-//   )
-//   return Math.ceil(
-//     prices.initial +
-//       prices.distance * prices.distanceCoef * prices.carTypeCoef +
-//       servicesPrice -
-//       prices.discount
-//   )
-// }
+const value = {
+  initial: 50,
+  carTypeCoef: 1.1,
+  services: [10, 15, 20],
+  distanceCoef: 10,
+  distance: 1.7,
+  discount: 10,
+};
+const calculatePrice = (prices: any) => {
+  const servicesPrice = prices.services.reduce(
+    (acc: number, val: number) => acc + val,
+  );
+  return Math.ceil(
+    prices.initial +
+      prices.distance * prices.distanceCoef * prices.carTypeCoef +
+      servicesPrice -
+      prices.discount,
+  );
+};
 
 interface MapProps {
   directions?: any;
-  onMapLoaded: (map: google.maps.Map) => void;
-  map?: google.maps.Map;
+  onMapLoaded: (map: Map) => void;
+  map?: Map;
   setFrom: (v: string) => void;
   setTo: (v: string) => void;
-  setDirections: (v: google.maps.DirectionsRequest) => void;
+  setDirections: (v: DirectionsRequest) => void;
 }
 
 export const Map: FC<MapProps> = ({

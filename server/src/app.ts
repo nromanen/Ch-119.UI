@@ -45,9 +45,9 @@ const start = async () => {
   try {
     await sequelize.authenticate();
     // Create tables if not exist
-    // const res = await sequelize.sync({
-    //   alter: true,
-    // });
+    await sequelize.sync({
+      alter: true,
+    });
 
     app.listen(PORT, () => {
       logger.log(

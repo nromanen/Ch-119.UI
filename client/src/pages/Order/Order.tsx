@@ -1,12 +1,13 @@
-import { useState } from 'react';
-import { Map2 } from './Map2';
+import { DirectionsRequest } from 'google.maps';
+import { useState, useCallback } from 'react';
+// import { Map2 } from './Map2';
 import { OrderForm } from './OrderForm';
 
 export const Order = () => {
-  // const [directions, setDirections] = useState<google.maps.DirectionsRequest>();
+  const [directions, setDirections] = useState<DirectionsRequest>();
   const [from, setFrom] = useState('');
   const [to, setTo] = useState('');
-  // const [map, setMap] = useState<google.maps.Map>();
+  const [map, setMap] = useState<google.maps.Map>();
 
   const [fromAutocomplete, setFromAutocomplete] = useState({
     getPlace: () => {},
@@ -44,47 +45,47 @@ export const Order = () => {
     }
   };
 
-  // const createPath = (): void => {
-  //   const options: google.maps.DirectionsRequest = {
-  //     origin: from,
-  //     destination: to,
-  //     travelMode: google.maps.TravelMode.DRIVING,
-  //     unitSystem: google.maps.UnitSystem.METRIC,
-  //   };
-  //   console.log(options, 'options');
+  const createPath = (): void => {
+    const options: google.maps.DirectionsRequest = {
+      origin: from,
+      destination: to,
+      travelMode: google.maps.TravelMode.DRIVING,
+      unitSystem: google.maps.UnitSystem.METRIC,
+    };
+    console.log(options, 'options');
 
-  //   setDirections(options);
-  // };
+    setDirections(options);
+  };
 
-  // const onMapLoaded = useCallback((map: google.maps.Map) => {
-  //   setMap(map);
-  // }, []);
+  const onMapLoaded = useCallback((map: google.maps.Map) => {
+    setMap(map);
+  }, []);
 
-  // const mapProrps = {
-  //   directions,
-  //   setDirections,
-  //   onMapLoaded,
-  //   map,
-  //   setFrom,
-  //   setTo,
-  // };
+  const mapProrps = {
+    directions,
+    setDirections,
+    onMapLoaded,
+    map,
+    setFrom,
+    setTo,
+  };
   const OrderFormProrps = {
     from,
     setFrom,
     to,
     setTo,
-    // map,
+    map,
     onFromAutocompleteLoad,
     onToAutocompleteLoad,
     onFromChanged,
     onToChanged,
-    // createPath,
+    createPath,
   };
 
   return (
     <>
-      {/* <Map {...mapProrps} /> */}
-      <Map2></Map2>
+      <Map {...mapProrps} />
+      {/* <Map2></Map2> */}
       <OrderForm {...OrderFormProrps} />
     </>
   );

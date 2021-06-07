@@ -53,14 +53,14 @@ export default (sequelize: any, DataTypes: any) => {
       },
       status: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
       },
       extra_services: {
         type: DataTypes.STRING,
         allowNull: true,
       },
-      paymentType: {
-        type: DataTypes.STRING,
+      isCard: {
+        type: DataTypes.BOOLEAN,
         allowNull: true,
       },
     },

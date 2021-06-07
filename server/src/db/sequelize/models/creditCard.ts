@@ -36,6 +36,7 @@ export default (sequelize: any, DataTypes: any) => {
     {
       sequelize,
       modelName: creditCard,
+      underscored: true,
     },
   );
   return CreditCard;

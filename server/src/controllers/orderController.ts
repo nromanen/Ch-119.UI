@@ -18,6 +18,7 @@ export default class OrderController {
   };
 
   get = async (req: Request, res: Response): Promise<any> => {
+    // const {query} = req;
     try {
       const data = await sequelize.models[order].findAll();
       res.status(STATUS_OK).send({ data, status: STATUS_OK });

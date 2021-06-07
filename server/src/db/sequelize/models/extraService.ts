@@ -28,6 +28,7 @@ export default (sequelize: any, DataTypes: any) => {
     {
       sequelize,
       modelName: extraService,
+      underscored: true,
     },
   );
   return ExtraService;
