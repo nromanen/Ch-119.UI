@@ -24,6 +24,7 @@
     "no-invalid-this": "warn"
   },
   "globals": {
-    "google": "readonly"
+    "google": "readonly",
+    "process": "readonly"
   }
 }

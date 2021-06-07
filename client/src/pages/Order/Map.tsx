@@ -10,15 +10,11 @@ import {
 
 declare const process: {
   env: {
-    MAP_API_KEY: string;
-    PORT: string;
+    REACT_APP_MAP_API_KEY: string;
   };
 };
 
-const googleMapsApiKey = 'AIzaSyBmvdkcqvY-aunh7iZBuV9xkz9f0XWOhoc';
-const mapApiKey = process.env.MAP_API_KEY;
-console.log('process.env', process.env.PORT);
-console.log('mapApiKey', mapApiKey);
+const googleMapsApiKey = process.env.REACT_APP_MAP_API_KEY;
 
 type l = ['places'];
 const libraries: l = ['places'];
