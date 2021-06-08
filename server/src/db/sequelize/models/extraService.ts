@@ -1,5 +1,9 @@
 import { Model } from 'sequelize';
-import { extraService } from '../../../constants/modelsNames';
+import {
+  CITY,
+  CITY_SERVICES,
+  EXTRA_SERVICE,
+} from '../../../constants/modelsNames';
 
 export default (sequelize: any, DataTypes: any) => {
   class ExtraService extends Model {
@@ -8,8 +12,11 @@ export default (sequelize: any, DataTypes: any) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    static associate() {
+    static associate(models: any) {
       // define association here
+      ExtraService.belongsToMany(models[CITY], {
+        through: CITY_SERVICES,
+      });
     }
   }
   ExtraService.init(
@@ -27,7 +34,7 @@ export default (sequelize: any, DataTypes: any) => {
     },
     {
       sequelize,
-      modelName: extraService,
+      modelName: EXTRA_SERVICE,
       underscored: true,
     },
   );

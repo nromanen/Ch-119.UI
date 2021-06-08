@@ -44,10 +44,12 @@ if (process.env.NODE_ENV !== PRODUCTION) {
 const start = async () => {
   try {
     await sequelize.authenticate();
-    // Create tables if not exist
-    await sequelize.sync({
-      alter: true,
-    });
+    // Create tables if not exist asd
+    const options = {
+      // force: true,
+      // alter: true
+    };
+    await sequelize.sync(options);
 
     app.listen(PORT, () => {
       logger.log(

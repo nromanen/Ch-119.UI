@@ -4,8 +4,8 @@ const cities = [
   },
 ].map((type) => {
   const newType = { ...type };
-  newType.createdAt = new Date();
-  newType.updatedAt = new Date();
+  newType.created_at = new Date();
+  newType.updated_at = new Date();
   return newType;
 });
 
@@ -20,7 +20,7 @@ module.exports = {
      *   isBetaMember: false
      * }], {});
     */
-    await queryInterface.bulkInsert('Cities', cities, {});
+    await queryInterface.bulkInsert('cities', cities, {});
   },
 
   down: async (queryInterface, Sequelize) => {
@@ -30,5 +30,5 @@ module.exports = {
      * Example:
      * await queryInterface.bulkDelete('People', null, {});
      */
-  }
+  },
 };

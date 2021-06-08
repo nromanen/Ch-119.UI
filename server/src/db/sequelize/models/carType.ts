@@ -1,5 +1,5 @@
 import { Model } from 'sequelize';
-import { carType } from '../../../constants/modelsNames';
+import { CAR_TYPE, CITY, CITY_CAR_TYPES } from '../../../constants/modelsNames';
 
 export default (sequelize: any, DataTypes: any) => {
   class CarType extends Model {
@@ -8,8 +8,12 @@ export default (sequelize: any, DataTypes: any) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    static associate() {
+    static associate(models: any) {
       // define association here
+      // CarType.hasMany(models[CITY]);
+      CarType.belongsToMany(models[CITY], {
+        through: CITY_CAR_TYPES,
+      });
     }
   }
   CarType.init(
@@ -27,7 +31,7 @@ export default (sequelize: any, DataTypes: any) => {
     },
     {
       sequelize,
-      modelName: carType,
+      modelName: CAR_TYPE,
       underscored: true,
     },
   );

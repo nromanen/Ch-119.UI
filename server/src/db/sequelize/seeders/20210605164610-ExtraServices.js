@@ -13,8 +13,8 @@ const extraServices = [
   },
 ].map((type) => {
   const newType = { ...type };
-  newType.createdAt = new Date();
-  newType.updatedAt = new Date();
+  newType.created_at = new Date();
+  newType.updated_at = new Date();
   return newType;
 });
 module.exports = {
@@ -29,7 +29,7 @@ module.exports = {
      * }], {});
     */
 
-    await queryInterface.bulkInsert('ExtraServices', extraServices, {});
+    await queryInterface.bulkInsert('extra_services', extraServices, {});
   },
 
   down: async (queryInterface, Sequelize) => {

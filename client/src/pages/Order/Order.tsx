@@ -1,17 +1,26 @@
 import { useState, useCallback } from 'react';
+import { useTypedSelector } from '../../hooks/useTypedSelector';
 import { Map } from './Map';
 import { OrderForm } from './OrderForm';
+import { useActions } from './../../hooks/useActions';
 
 export const Order = () => {
   const [directions, setDirections] = useState<google.maps.DirectionsRequest>();
-  const [from, setFrom] = useState('');
-  const [to, setTo] = useState('');
   const [map, setMap] = useState<google.maps.Map>();
 
   const [fromAutocomplete, setFromAutocomplete] = useState({
     getPlace: () => {},
   });
   const [toAutocomplete, setToAutocomplete] = useState({ getPlace: () => {} });
+
+  const { from, to } = useTypedSelector((state) => state.order);
+  const { changeValue } = useActions();
+  const setFrom = (value: string) => {
+    changeValue('from', value);
+  };
+  const setTo = (value: string) => {
+    changeValue('to', value);
+  };
 
   const onFromAutocompleteLoad = (autocomplete: any): void => {
     console.log('autocomplete: ', autocomplete);

@@ -16,12 +16,11 @@ const carTypes = [
   },
 ].map((type) => {
   const newType = { ...type };
-  newType.createdAt = new Date();
-  newType.updatedAt = new Date();
+  newType.created_at = new Date();
+  newType.updated_at = new Date();
   return newType;
 });
 
-console.log(carTypes);
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     /**
@@ -30,7 +29,7 @@ module.exports = {
      * Example:
      *
      */
-    await queryInterface.bulkInsert('CarTypes', carTypes, {});
+    await queryInterface.bulkInsert('car_types', carTypes, {});
   },
 
   down: async (queryInterface, Sequelize) => {

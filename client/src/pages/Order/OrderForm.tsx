@@ -1,6 +1,5 @@
-import { FC } from 'react';
+import { FC, SyntheticEvent, useRef } from 'react';
 import { Autocomplete } from '@react-google-maps/api';
-
 import {
   Accordion,
   Card,
@@ -9,6 +8,9 @@ import {
   Button,
   Jumbotron,
 } from 'react-bootstrap';
+import { useActions } from '../../hooks/useActions';
+import { useTypedSelector } from '../../hooks/useTypedSelector';
+import axios from 'axios';
 
 interface OrderFormProps {
   createPath?: () => void;
@@ -35,9 +37,42 @@ export const OrderForm: FC<OrderFormProps> = ({
   setFrom,
   setTo,
 }) => {
+  const { changeValue } = useActions();
+  const order = useTypedSelector((state) => state.order);
+  const formRef = useRef<any>(null);
+  console.log(formRef);
+
+  const onExtraServicesChanged = () => {
+    let services: Array<HTMLInputElement> = Array.from(
+      formRef.current?.elements.extraServices!,
+    );
+
+    services = services.filter((el: HTMLInputElement) => el.checked);
+
+    const extraServices = services.map((el: HTMLInputElement) => el.value);
+
+    changeValue('extraServices', extraServices);
+    console.log(services, 'services');
+  };
+
+  const onSubmit = (e: SyntheticEvent) => {
+    e.preventDefault();
+    console.log('submit');
+    axios
+      .post('http://localhost:8080/api/v1/order', {
+        body: {
+          ...order,
+          customer_id: 1,
+        },
+      })
+      .then((res) => {
+        console.log('create order', res);
+      });
+  };
+
   return (
     <Jumbotron>
-      <Form className="form">
+      <Form ref={formRef} className="form" onSubmit={onSubmit}>
         <Form.Group className="form-group">
           <Form.Label className="col-xs-2" htmlFor="from">
             From:
@@ -94,6 +129,8 @@ export const OrderForm: FC<OrderFormProps> = ({
             id="car-type"
             className="form-select form-control col-xs-4"
             aria-label="Car type select"
+            value={order.car_type}
+            onChange={(e) => changeValue('car_type', e.target.value)}
           >
             <option value="Basic">Basic</option>
             <option value="Comfort">Comfort</option>
@@ -116,19 +153,27 @@ export const OrderForm: FC<OrderFormProps> = ({
                     type="checkbox"
                     label="English speaking"
                     data-db-id="1"
+                    name="extraServices"
                     value="English speaking"
+                    onChange={onExtraServicesChanged}
                   />
                   <Form.Check
                     id="option-2"
                     aria-label="option 2"
                     type="checkbox"
                     label="Silent driver"
+                    name="extraServices"
+                    value="Silent driver"
+                    onChange={onExtraServicesChanged}
                   />
                   <Form.Check
                     id="option-3"
                     aria-label="option 3"
                     type="checkbox"
+                    name="extraServices"
                     label="Baby chair"
+                    value="Baby chair"
+                    onChange={onExtraServicesChanged}
                   />
                 </Card.Body>
               </Accordion.Collapse>
@@ -140,8 +185,11 @@ export const OrderForm: FC<OrderFormProps> = ({
           $ 15
         </Badge>
         <div className="col-xs-offset-2 col-xs-10">
-          <Button onClick={createPath} variant="info">
+          <Button onClick={createPath} type="button" variant="info">
             Calculate
+          </Button>
+          <Button type="submit" variant="info">
+            Make order
           </Button>
           {/* <button  className="btn btn-lg btn-info">
           Calculate

@@ -1,5 +1,5 @@
 import { Model } from 'sequelize';
-import { order } from '../../../constants/modelsNames';
+import { ORDER } from '../../../constants/modelsNames';
 
 export default (sequelize: any, DataTypes: any) => {
   class Order extends Model {
@@ -66,7 +66,7 @@ export default (sequelize: any, DataTypes: any) => {
     },
     {
       sequelize,
-      modelName: order,
+      modelName: ORDER,
       underscored: true,
       timestamps: true,
     },
