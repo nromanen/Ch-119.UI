@@ -8,20 +8,20 @@ export default (sequelize: any, DataTypes: any) => {
      * The `models/index` file will call this method automatically.
      */
     static associate() {
-      // define association here 
-      
+      // define association here
     }
   }
   User.init(
     {
-      name: DataTypes.STRING,
-      phone: { type: DataTypes.STRING, unique:true},
-      password: DataTypes.STRING,
-      trips_num: DataTypes.INTEGER
+      name: { type: DataTypes.STRING, allowNull: true },
+      phone: { type: DataTypes.STRING, allowNull: false, unique: true },
+      password: { type: DataTypes.STRING, allowNull: false },
+      trips_num: { type: DataTypes.INTEGER, allowNull: true },
     },
     {
       sequelize,
-      modelName: 'User',
+      underscored: true,
+      modelName: 'user',
     },
   );
 

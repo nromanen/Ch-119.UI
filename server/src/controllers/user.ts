@@ -1,54 +1,59 @@
 import { NextFunction, Request, Response } from "express";
 import * as bcrypt from 'bcrypt';
-import * as jwt from 'jsonwebtoken';
+import {generateAccessToken, refreshToken, deleteToken} from '../utils/jwtHelpers';
 import ApiError from "../errors/ApiErrors";
 import sequelize from '../db/sequelize/models/index';
 
-const generateJwt = (id: number, phone: string, name: string) => {
-   return jwt.sign(
-       {id, phone, name }, 
-       process.env.SECRET_KEY, 
-       {expiresIn: '2h'})
-}
-
 export default class UserController {
 
-    registration =  async (req: Request, res: Response):Promise<any> => {
+    registration = async (req: Request, res: Response):Promise<any> => {
             const {name, password, phone} = req.body
 
             if(!phone || !password) {
-                console.log("Incorrect password or phone");                 
-                return console.log(req.body);
+                               
+                return ApiError.badRequest('Incorrect password or phone');  
             }
-            const candidate = await sequelize.models['User'].findOne({where: {phone}})
+            const candidate = await sequelize.models['user'].findOne({where: {phone}})
             if(candidate) {
-                return console.log("User with this phone already exist");
-                
+                return ApiError.badRequest('User with this phone already exist');  
             }
-            const hashPassword = await bcrypt.hash(password, 3)
-            const user = await sequelize.models['User'].create({phone, name, password:hashPassword})
-            const token = generateJwt(user.id, user.phone, user.name )
+            
+            const hashPassword = await bcrypt.hash(password, 5)
+            // функціонал введення правильних цифр від сервісу 
+            const user = await sequelize.models['user'].create({phone, name, password:hashPassword})
+            const token = generateAccessToken(user.id, user.phone, user.name)  // Замість цього буде підтвердження на телефон
             return res.json({token})
     }
 
-    login =  async (req: Request, res: Response, next: NextFunction):Promise<any> =>  {
+    login = async (req: Request, res: Response, next: NextFunction):Promise<any> => {
         const {phone, password} = req.body
-        const user = await sequelize.models['User'].findOne({where:{phone}})
+        const user = await sequelize.models['user'].findOne({where:{phone}})
         if (!user) {
-            return next(ApiError.internal('User with this phone not found'))
+            return next(ApiError.badRequest('User with this phone not found'))
         }
 
         let comparePassword = bcrypt.compareSync(password, user.password)
         if(!comparePassword) {
-            return next(ApiError.internal('Incorrect password'))
+            return next(ApiError.badRequest('Incorrect password'))
         }
-        const token = generateJwt(user.id, user.phone, user.name)
+        const token = generateAccessToken(user.id, user.phone, user.name)
+        const newToken = refreshToken(user.id, user.phone, user.name)
+        return res.json({token, newToken})
+    }
+
+    check = async (req: Request, res: Response, next: NextFunction):Promise<any> => {
+        const token = generateAccessToken((req as any).user.id, (req as any).user.phone, (req as any).user.name)
         return res.json({token})
     }
 
-    check =  async (req: Request, res: Response, next: NextFunction):Promise<any> => {
-        const token = generateJwt((req as any).user.id, (req as any).user.phone, (req as any).user.name)
-        return res.json({token})
+    refresh = async (req: Request, res: Response, next: NextFunction):Promise<any> => {
+        const accessToken = generateAccessToken((req as any).user.id, (req as any).user.phone, (req as any).user.name)
+        return res.json({accessToken: accessToken})
+    }
+
+    delete = async (req: Request, res: Response, next: NextFunction):Promise<any> => {
+        deleteToken(req.body)
+        res.sendStatus(204)
     }
 
 }
