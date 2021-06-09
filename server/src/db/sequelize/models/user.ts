@@ -14,12 +14,15 @@ export default (sequelize: any, DataTypes: any) => {
   User.init(
     {
       name: DataTypes.STRING,
-      phone: DataTypes.STRING,
+      phone: {
+        type: DataTypes.STRING,
+        unique: true,
+      },
       password: DataTypes.STRING,
     },
     {
       sequelize,
-      modelName: 'User',
+      modelName: 'user',
     },
   );
   return User;

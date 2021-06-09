@@ -7,6 +7,7 @@ import { PORT } from './constants/app';
 import { API_PATH } from './constants/api';
 import { PRODUCTION } from './constants/env';
 import { JSON_LIMIT, JSON_TYPE } from './constants/json';
+import sequelize from './db/sequelize/models/index';
 
 dotenv.config();
 
@@ -40,11 +41,13 @@ if (process.env.NODE_ENV !== PRODUCTION) {
   );
 }
 
-app.listen(PORT, () => {
-  logger.log(
-    'info',
-    `⚡️[server]: Server is running at http://localhost:${PORT}`,
-  );
+sequelize.sync({ alter: true }).then(() => {
+  app.listen(PORT, () => {
+    logger.log(
+      'info',
+      `⚡️[server]: Server is running at http://localhost:${PORT}`,
+    );
+  });
 });
 
 export default app;
