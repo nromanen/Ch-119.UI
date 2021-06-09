@@ -1,12 +1,14 @@
-import React, { FC, useCallback, useState } from 'react';
+import React, { FC, useCallback, useEffect, useState } from 'react';
 import {
   GoogleMap,
   DirectionsService,
   DirectionsRenderer,
   useJsApiLoader,
   Marker,
+  InfoWindow,
 } from '@react-google-maps/api';
 // import { Badge, ListGroup } from 'react-bootstrap';
+import { CurrentLocation } from './Order';
 
 declare const process: {
   env: {
@@ -58,6 +60,7 @@ interface MapProps {
   setFrom: (v: string) => void;
   setTo: (v: string) => void;
   setDirections: (v: google.maps.DirectionsRequest) => void;
+  currentLocation?: CurrentLocation;
 }
 
 export const Map: FC<MapProps> = ({
@@ -66,9 +69,8 @@ export const Map: FC<MapProps> = ({
   setFrom,
   setTo,
   setDirections,
+  currentLocation,
 }) => {
-  console.log('render map');
-
   const containerStyle = {
     width: '100%',
     height: '50vh',
@@ -91,7 +93,13 @@ export const Map: FC<MapProps> = ({
 
   const [directionsResult, setDirectionsResult] =
     useState<google.maps.DirectionsResult>();
-  const [markers, setMarkers] = useState<any>([]);
+  const [markers, setMarkers] = useState<Array<any>>([]);
+
+  useEffect(() => {
+    if (currentLocation) {
+      setMarkers((m: any) => [currentLocation]);
+    }
+  }, [currentLocation]);
 
   const directionsServiceCallback = useCallback(
     (
@@ -112,7 +120,6 @@ export const Map: FC<MapProps> = ({
 
   const onLoad = React.useCallback(function onLoad(mapInstance) {
     // do something with map Instance
-    console.log('mapInstance', mapInstance);
     onMapLoaded(mapInstance);
   }, []);
 
@@ -126,25 +133,24 @@ export const Map: FC<MapProps> = ({
     // setMarkers((markers: any) => [...markers, { lat, lng }])
   };
 
-  function onDirectionsChanged() {
+  const onDirectionsChanged = useCallback(function gets() {
     // @ts-ignore
     const that: any = this;
     const origin = that.directions.routes[0].legs[0].start_address;
     const destination = that.directions.routes[0].legs[0].end_address;
-    // setFrom(origin)
-    // setTo(destination)
+    // setFrom(origin);
+    // setTo(destination);
     console.log(origin);
     console.log(destination);
     console.log(directionsResult, 'directionsResult');
 
     // const geocoder = new google.maps.Geocoder()
-  }
+  }, []);
 
   const renderMap = () => {
     // wrapping to a function is useful in case you want to access `window.google`
     // to eg. setup options or create latLng object, it won't be available otherwise
     // feel free to render directly if you don't need that
-    console.log('render map');
 
     return (
       <>
@@ -169,10 +175,18 @@ export const Map: FC<MapProps> = ({
               onDirectionsChanged={onDirectionsChanged}
             />
           )}
-          {markers &&
+          {markers.length &&
             markers.map((marker: any, i: number) => (
-              <Marker key={marker.lat.toString()} position={marker} />
+              <Marker key={`${marker.lat}${marker.lng}`} position={marker} />
             ))}
+
+          {/* {currentLocation && (
+            <InfoWindow position={currentLocation}>
+              <div>
+                <p>Your location</p>
+              </div>
+            </InfoWindow>
+          )} */}
         </GoogleMap>
 
         {/* {directionsResult && (

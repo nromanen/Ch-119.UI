@@ -11,6 +11,7 @@ import {
 import { useActions } from '../../hooks/useActions';
 import { useTypedSelector } from '../../hooks/useTypedSelector';
 import axios from 'axios';
+import { Alert } from 'react-bootstrap';
 
 interface OrderFormProps {
   createPath?: () => void;
@@ -23,6 +24,9 @@ interface OrderFormProps {
   map?: google.maps.Map;
   from: string;
   to: string;
+  carTypes?: [];
+  extraServices?: [];
+  currentCity?: string;
 }
 
 export const OrderForm: FC<OrderFormProps> = ({
@@ -36,11 +40,16 @@ export const OrderForm: FC<OrderFormProps> = ({
   to,
   setFrom,
   setTo,
+  carTypes,
+  extraServices,
+  currentCity,
 }) => {
+  console.log('carTypes', carTypes);
+  console.log('extraServices', extraServices);
+
   const { changeValue } = useActions();
   const order = useTypedSelector((state) => state.order);
   const formRef = useRef<any>(null);
-  console.log(formRef);
 
   const onExtraServicesChanged = () => {
     let services: Array<HTMLInputElement> = Array.from(
@@ -72,6 +81,7 @@ export const OrderForm: FC<OrderFormProps> = ({
 
   return (
     <Jumbotron>
+      <Alert variant="primary">Your current location : {currentCity}</Alert>
       <Form ref={formRef} className="form" onSubmit={onSubmit}>
         <Form.Group className="form-group">
           <Form.Label className="col-xs-2" htmlFor="from">
@@ -125,17 +135,19 @@ export const OrderForm: FC<OrderFormProps> = ({
           </Form.Label>
           <Form.Control
             as="select"
-            defaultValue="Basic"
             id="car-type"
             className="form-select form-control col-xs-4"
             aria-label="Car type select"
             value={order.car_type}
             onChange={(e) => changeValue('car_type', e.target.value)}
           >
-            <option value="Basic">Basic</option>
-            <option value="Comfort">Comfort</option>
-            <option value="Eco">Eco</option>
-            <option value="Xl">Xl</option>
+            {carTypes?.map(({ id, name }) => {
+              return (
+                <option key={id} value={name}>
+                  {name}
+                </option>
+              );
+            })}
           </Form.Control>
         </Form.Group>
 
@@ -147,34 +159,21 @@ export const OrderForm: FC<OrderFormProps> = ({
             <Card>
               <Accordion.Collapse eventKey="0">
                 <Card.Body>
-                  <Form.Check
-                    id="option-1"
-                    aria-label="option 1"
-                    type="checkbox"
-                    label="English speaking"
-                    data-db-id="1"
-                    name="extraServices"
-                    value="English speaking"
-                    onChange={onExtraServicesChanged}
-                  />
-                  <Form.Check
-                    id="option-2"
-                    aria-label="option 2"
-                    type="checkbox"
-                    label="Silent driver"
-                    name="extraServices"
-                    value="Silent driver"
-                    onChange={onExtraServicesChanged}
-                  />
-                  <Form.Check
-                    id="option-3"
-                    aria-label="option 3"
-                    type="checkbox"
-                    name="extraServices"
-                    label="Baby chair"
-                    value="Baby chair"
-                    onChange={onExtraServicesChanged}
-                  />
+                  {extraServices?.map(({ id, name }) => {
+                    return (
+                      <Form.Check
+                        key={id}
+                        id={name}
+                        aria-label={name}
+                        type="checkbox"
+                        label={name}
+                        data-db-id={id}
+                        name="extraServices"
+                        value={name}
+                        onChange={onExtraServicesChanged}
+                      />
+                    );
+                  })}
                 </Card.Body>
               </Accordion.Collapse>
             </Card>

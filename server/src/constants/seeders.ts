@@ -1,4 +1,4 @@
-export default [
+export const carTypes = [
   {
     name: 'basic',
   },
@@ -13,5 +13,16 @@ export default [
   },
   {
     name: 'luxury',
+  },
+];
+export const extraServices = [
+  {
+    name: 'English speaking',
+  },
+  {
+    name: 'Silent driver',
+  },
+  {
+    name: 'Baby chair',
   },
 ];
