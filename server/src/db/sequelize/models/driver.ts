@@ -8,7 +8,7 @@ export default (sequelize: any, DataTypes: any) => {
      * The `models/index` file will call this method automatically.
      */
     static associate() {
-      // define association here 
+      // define association here
       // Driver.hasOne(sequelize.models['User'])
     }
   }
@@ -16,8 +16,8 @@ export default (sequelize: any, DataTypes: any) => {
     {
       car_color: DataTypes.STRING,
       car_model: DataTypes.STRING,
-      car_number: { type: DataTypes.STRING, unique:true},
-      driver_rating:DataTypes.INTEGER,
+      car_number: { type: DataTypes.STRING, unique: true },
+      driver_rating: DataTypes.INTEGER,
       user_id: {
         type: DataTypes.INTEGER,
         allowNull: true,
