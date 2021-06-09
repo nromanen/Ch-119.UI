@@ -15,7 +15,7 @@ export const checkRoleMiddleware = (role: string) => {
       }
 
       const decoded = jwt.verify(token, process.env.SECRET_KEY!);
-      if (decoded.role !== role) {  // Добавить роль в юзера и потом пробывать с этим взаимодействовать
+      if ((decoded as any).role !== role) {  // Добавить роль в юзера и потом пробывать с этим взаимодействовать
         return res.status(403).json({message: "No access"})
       }
 

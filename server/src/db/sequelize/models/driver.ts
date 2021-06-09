@@ -30,7 +30,7 @@ export default (sequelize: any, DataTypes: any) => {
     {
       sequelize,
       underscored: true,
-      modelName: 'driver',
+      modelName: 'drivers',
     },
   );
 

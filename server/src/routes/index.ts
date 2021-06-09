@@ -15,7 +15,7 @@ router.get('/', (req: Request, res: Response) => {
   response(res, STATUS_OK, { message: 'Server is running!' });
 });
 
-router.use('/user', userRouter)
+router.use('/user', userRouter);
 
 
 export default router;

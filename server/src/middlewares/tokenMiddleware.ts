@@ -26,7 +26,7 @@ export const authMiddleware = (req: any, res: Response, next: NextFunction) => {
 
 export const refreshTokenMiddleware = (req: any, res: Response, next: NextFunction) => {
 
-  const refreshToken = req.body.token
+  const {refreshToken } = req.body
   try {
     if (refreshToken == null) {
       return res.status(401).json({ message: 'Not authorized' })

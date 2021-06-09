@@ -16,4 +16,8 @@ export default class ApiError extends Error {
     static forbidden(message: string) {
         return new ApiError('403', message)
     }
+
+    static conflict(message: string) {
+        return new ApiError('409', message)
+    }
 }

@@ -8,7 +8,7 @@ import { API_PATH } from './constants/api';
 import { PRODUCTION } from './constants/env';
 import { JSON_LIMIT, JSON_TYPE } from './constants/json';
 import sequelize from './db/sequelize/models/index';
-import errorHandler from './middlewares/errorHandlingMiddleware'
+import errorHandler from './middlewares/errorHandlingMiddleware';
 
 dotenv.config();
 
@@ -48,11 +48,11 @@ const start = async () => {
   try {
     await sequelize.authenticate();
     console.log('Sequielize connected');
-    const res = await sequelize.sync({
-      alter: true,
-    });
+    // const res = await sequelize.sync({
+    //   alter: true,
+    // });
 
-    console.log('created tables', res.models);
+    // console.log('created tables', res.models);
 
     app.listen(PORT, () => {
       logger.log(

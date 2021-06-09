@@ -3,6 +3,7 @@ import * as path from 'path';
 import { DataTypes } from 'sequelize';
 import { DEVELOPMENT } from '../../../constants/env';
 
+
 const Sequelize = require('sequelize');
 
 const basename = path.basename(__filename);
@@ -51,5 +52,22 @@ Object.keys(db).forEach((modelName) => {
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
+
+db.user = sequelize.models['users'];
+db.role = sequelize.models['roles'];
+
+db.role.belongsToMany(db.user, {
+  through: "user_roles",
+  foreignKey: "roleId",
+  otherKey: "userId"
+});
+
+db.user.belongsToMany(db.role, {
+  through: "user_roles",
+  foreignKey: "userId",
+  otherKey: "roleId"
+});
+
+export const ROLES = ["user", "driver", "admin"];
 
 export default sequelize;

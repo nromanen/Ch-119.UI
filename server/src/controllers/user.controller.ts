@@ -9,25 +9,24 @@ export default class UserController {
     registration = async (req: Request, res: Response):Promise<any> => {
             const {name, password, phone} = req.body
 
-            if(!phone || !password) {
-                               
+            if(!phone || !password) {              
                 return ApiError.badRequest('Incorrect password or phone');  
             }
-            const candidate = await sequelize.models['user'].findOne({where: {phone}})
+            const candidate = await sequelize.models['users'].findOne({where: {phone}})
             if(candidate) {
-                return ApiError.badRequest('User with this phone already exist');  
+                return ApiError.conflict('User with this phone already exist');  
             }
             
             const hashPassword = await bcrypt.hash(password, 5)
             // функціонал введення правильних цифр від сервісу 
-            const user = await sequelize.models['user'].create({phone, name, password:hashPassword})
+            const user = await sequelize.models['users'].create({phone, name, password:hashPassword})
             const token = generateAccessToken(user.id, user.phone, user.name)  // Замість цього буде підтвердження на телефон
             return res.json({token})
     }
 
     login = async (req: Request, res: Response, next: NextFunction):Promise<any> => {
         const {phone, password} = req.body
-        const user = await sequelize.models['user'].findOne({where:{phone}})
+        const user = await sequelize.models['users'].findOne({where:{phone}})
         if (!user) {
             return next(ApiError.badRequest('User with this phone not found'))
         }
