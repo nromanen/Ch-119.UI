@@ -6,8 +6,12 @@ import { LOGIN_ROUTE } from '../constants/routerConstants';
 const AppRouter: FC = () => {
   return (
     <Switch>
-      {publicRouters.map((route:RouteProps) => (
-        <Route key={route.path} path={route.path} component={route.component}/>
+      {publicRouters.map((route: RouteProps) => (
+        <Route
+          key={route.path?.toString()}
+          path={route.path}
+          component={route.component}
+        />
       ))}
       <Redirect to={LOGIN_ROUTE} />
     </Switch>
@@ -15,5 +19,3 @@ const AppRouter: FC = () => {
 };
 
 export default AppRouter;
-
-

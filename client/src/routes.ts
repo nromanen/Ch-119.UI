@@ -1,5 +1,7 @@
 import { RouteProps } from 'react-router-dom';
-import { Comp } from './components/Comp';
+import { FEEDBACK_ROUTE } from './constants/routerConstants';
+import Feedback from './pages/feedback/Feedback';
+// import { Comp } from './components/Comp';
 
 // export const authRouters = [
 //     {
@@ -9,4 +11,10 @@ import { Comp } from './components/Comp';
 
 // ]
 
-export const publicRouters: RouteProps[] = [];
+export const publicRouters: RouteProps[] = [
+  {
+    path: FEEDBACK_ROUTE,
+    component: Feedback,
+    exact: true,
+  },
+];
