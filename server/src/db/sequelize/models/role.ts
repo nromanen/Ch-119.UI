@@ -13,8 +13,8 @@ export default (sequelize: any, DataTypes: any) => {
   }
   Role.init(
     {
-      id: { type: DataTypes.INTEGER, primaryKey: true }, 
-      name: { type: DataTypes.STRING, allowNull: true }
+      id: { type: DataTypes.INTEGER, primaryKey: true },
+      name: { type: DataTypes.STRING, allowNull: true },
     },
     {
       sequelize,
@@ -23,20 +23,20 @@ export default (sequelize: any, DataTypes: any) => {
     },
   );
 
-//   Role.create({
-//     id: 1,
-//     name: "user"
-//   });
- 
-//   Role.create({
-//     id: 2,
-//     name: "driver"
-//   });
- 
-//   Role.create({
-//     id: 3,
-//     name: "admin"
-//   });
+  //   Role.create({
+  //     id: 1,
+  //     name: "user"
+  //   });
+
+  //   Role.create({
+  //     id: 2,
+  //     name: "driver"
+  //   });
+
+  //   Role.create({
+  //     id: 3,
+  //     name: "admin"
+  //   });
 
   return Role;
 };

@@ -10,6 +10,7 @@ export default (sequelize: any, DataTypes: any) => {
      */
     static associate() {
       // define association here
+      CreditCard.belongsTo(sequelize.models.users);
     }
   }
   CreditCard.init(
