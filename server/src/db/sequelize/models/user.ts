@@ -13,14 +13,17 @@ export default (sequelize: any, DataTypes: any) => {
   }
   User.init(
     {
-      name: DataTypes.STRING,
-      phone: DataTypes.STRING,
-      password: DataTypes.STRING,
+      name: { type: DataTypes.STRING, allowNull: true },
+      phone: { type: DataTypes.STRING, allowNull: false, unique: true },
+      password: { type: DataTypes.STRING, allowNull: false },
+      trips_num: { type: DataTypes.INTEGER, allowNull: true },
     },
     {
       sequelize,
-      modelName: 'User',
+      underscored: true,
+      modelName: 'users',
     },
   );
+
   return User;
 };

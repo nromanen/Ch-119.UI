@@ -24,7 +24,7 @@ create table orders (
 	driver_id INT NOT NULL,
 	FOREIGN KEY (driver_id) REFERENCES drivers (id),
 	created_at DATE NOT NULL,
-  	date_of_ride DATE,
+  date_of_ride DATE,
 	last_update DATE,
 	to VARCHAR(150) NOT NULL,
 	additional_places ARRAYTEXT,
@@ -33,30 +33,30 @@ create table orders (
 	car_type VARCHAR(7) NOT NULL,
 	status VARCHAR(10) NOT NULL,
 	extra_services text,
-  	payment_type text
+  payment_type text
 );
 
 create table feedbacks (
 	id BIGSERIAL NOT NULL PRIMARY KEY,
  	text TEXT,
-  	rating DECIMAL,
-  	created_by user_id,
-  	about_who user_id,
+	rating DECIMAL,
+	created_by user_id,
+	about_who user_id,
 	created_at DATE NOT NULL
 );
 
 create table credit_cards (
 	id BIGSERIAL NOT NULL PRIMARY KEY,
   	number BIGINT,
-  	date_of_expiration DATE NOT NULL,
-  	client_id DECIMAL
+	date_of_expiration DATE NOT NULL,
+	client_id DECIMAL
 );
 
 create table favourite_places (
 	id BIGSERIAL NOT NULL PRIMARY KEY,
-  	title TEXT,
-  	location TEXT,
-  	client_id DECIMAL
+	title TEXT,
+	location TEXT,
+	client_id DECIMAL
 );
 
 create table roles (

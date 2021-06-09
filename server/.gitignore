@@ -2,7 +2,8 @@
 *.log
 
 # Dependency directories
-node_modules/
+/node_modules
+package-lock.json
+.env
 
 # dotenv environment variables file
-.env
