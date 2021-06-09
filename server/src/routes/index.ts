@@ -1,7 +1,7 @@
 import * as express from 'express';
 import { Request, Response } from 'express';
 import { STATUS_OK } from '../constants/api';
-import userRouter from './user';
+// import userRouter from './user';
 
 const router = express.Router();
 
@@ -15,7 +15,6 @@ router.get('/', (req: Request, res: Response) => {
   response(res, STATUS_OK, { message: 'Server is running!' });
 });
 
-router.use('/user', userRouter);
-
+// router.use('/user', userRouter);
 
 export default router;
