@@ -1,17 +1,17 @@
 import {RouteProps} from 'react-router-dom';
-import OrderList from './components/driver/orderList';
-import OrderDeltails from './components/driver/orderDetails';
-import { ORDER_LIST_ROUTE } from './constants/routerConstants';
-import { ORDER_DETAILS_ROUTE } from './constants/routerConstants';
+import OrderActive from './components/driver/orderActive';
+import OrderAccepted from './components/driver/orderAccepted';
+import { ORDER_ACTIVE_ROUTE } from './constants/routerConstants';
+import { ORDER_ACCEPTED_ROUTE } from './constants/routerConstants';
 
 export const authRouters: RouteProps[] = [
   {
-    path: ORDER_LIST_ROUTE,
-    component: OrderList,
+    path: ORDER_ACTIVE_ROUTE,
+    component: OrderActive,
   },
   {
-    path: ORDER_DETAILS_ROUTE,
-    component: OrderDeltails,
+    path: ORDER_ACCEPTED_ROUTE,
+    component: OrderAccepted,
   },
 ];
 
