@@ -1,54 +1,62 @@
 import sequelize from "../db/sequelize/models/index";
 import * as jwt from "jsonwebtoken";
 import * as bcrypt from 'bcrypt';
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
+import ApiError from "../errors/ApiErrors";
+import {generateAccessToken, refreshToken, deleteToken} from '../utils/jwtHelpers';
 
 const User = sequelize.models['users'];
 const Role = sequelize.models['roles'];
 const Op = sequelize.Sequelize.Op;
 
 
-export const signup = (req: Request, res: Response) => {
+export const signup = async (req: Request, res: Response, next: NextFunction) => {
   // Save User to Database
+  const {password, phone} = req.body;
+
+  if(!phone || !password) {              
+      return ApiError.badRequest('Incorrect password or phone');  
+  }
+
+  const candidate = await sequelize.models['users'].findOne({where: {phone}})
+      if(candidate) {
+          return ApiError.conflict('User with this phone already exist');  
+      }
+// функціонал введення правильних цифр від сервісу 
   User.create({
     phone: req.body.phone,
     name: req.body.name,
-    password: bcrypt.hashSync(req.body.password, 8)
+    password: bcrypt.hashSync(req.body.password, 5)
   })
     .then((user: any )=> {
-      if (req.body.roles) {
+        const roles = req.body.roles ? req.body.roles : ["user"]
+
         Role.findAll({
           where: {
             name: {
-              [Op.or]: req.body.roles
+              [Op.or]: roles
             }
           }
         }).then((roles: any) => {
           user.setRoles(roles).then(() => {
-            res.send({ message: "User was registered successfully!" });
+            res.status(201);
           });
         });
-      } else {
-        // user role = 1
-        user.setRoles([1]).then(() => {
-          res.send({ message: "User was registered successfully!" });
-        });
-      }
-    })
+      })
     .catch((err: Error) => {
       res.status(500).send({ message: err.message });
     });
 };
 
-export const signin = (req: Request, res: Response) => {
-  User.findOne({
+export const signin = async (req: Request, res: Response, next: NextFunction) => {
+  await User.findOne({
     where: {
       phone: req.body.phone
     }
   })
     .then((user: any) => {
       if (!user) {
-        return res.status(404).send({ message: "User Not found." });
+        return next(ApiError.badRequest('Invalid Data!'))
       }
 
       const passwordIsValid = bcrypt.compareSync(
@@ -58,26 +66,23 @@ export const signin = (req: Request, res: Response) => {
 
       if (!passwordIsValid) {
         return res.status(401).send({
-          accessToken: null,
-          message: "Invalid Password!"
+          message: "Invalid Data!"
         });
       }
-
-      const token = jwt.sign({ id: user.id }, process.env.ACCESS_TOKEN_SECRET_KEY, {
-        expiresIn: 86400 // 24 hours
-      });
 
       const authorities: Array<string> = [];
       user.getRoles().then((roles: any) => {
         for (let i = 0; i < roles.length; i++) {
           authorities.push("ROLE_" + roles[i].name.toUpperCase());
         }
+        const refToken = refreshToken(user.id, user.name, user.phone, authorities)
         res.status(200).send({
           id: user.id,
           name: user.name,
           phone: user.phone,
           roles: authorities,
-          accessToken: token
+          accessToken: generateAccessToken(user.id, user.name, user.phone, authorities),
+          refreshToken: refToken
         });
       });
     })
@@ -85,3 +90,21 @@ export const signin = (req: Request, res: Response) => {
       res.status(500).send({ message: err.message });
     });
 };
+
+export const refresh = async (req: Request, res: Response, next: NextFunction):Promise<any> => {
+  const {refreshToken} = req.body;
+  
+  const userInfo = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET_KEY!)
+
+  return res.json({accessToken: generateAccessToken((userInfo as any).id,(userInfo as any).name, (userInfo as any).phone, (userInfo as any).roles)})
+}
+
+export const check = async (req: Request, res: Response, next: NextFunction):Promise<any> => {
+  const accessToken = generateAccessToken((req as any).id, (req as any).phone, (req as any).name, (req as any).roles)
+  return res.json({accessToken})
+}
+
+export const delToken = async (req: Request, res: Response, next: NextFunction):Promise<any> => {
+  deleteToken(req.body)
+  res.sendStatus(204)
+}

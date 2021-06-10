@@ -8,7 +8,22 @@ export default (sequelize: any, DataTypes: any) => {
      * The `models/index` file will call this method automatically.
      */
     static associate() {
-      // define association here
+      
+      const db: any = {};
+      db.user = sequelize.models['users'];
+      db.role = sequelize.models['roles'];
+
+      db.role.belongsToMany(db.user, {
+        through: "user_roles",
+        foreignKey: "roleId",
+        otherKey: "userId"
+      });
+
+      db.user.belongsToMany(db.role, {
+        through: "user_roles",
+        foreignKey: "userId",
+        otherKey: "roleId"
+      });
     }
   }
   User.init(
@@ -22,7 +37,7 @@ export default (sequelize: any, DataTypes: any) => {
       sequelize,
       underscored: true,
       modelName: 'users',
-    },
+    }
   );
 
   return User;

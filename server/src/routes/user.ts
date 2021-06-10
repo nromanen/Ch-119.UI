@@ -1,15 +1,15 @@
 import * as express from 'express';
-import userController from '../controllers/user.controller';
-import { authMiddleware, refreshTokenMiddleware } from '../middlewares/tokenMiddleware'
+import { refreshTokenMiddleware } from '../middlewares/tokenMiddleware';
+import { signup, signin, refresh, delToken, check } from '../controllers/auth.controller';
+import { checkRoleMiddleware } from '../middlewares/checkRoleMiddleware';
+import verifySignUp from '../middlewares/verifySignUp';
 
 const router = express.Router();
 
-const controller = new userController();
-
-router.post('/registration', controller.registration);
-router.post('/login', controller.login);
-router.get('/auth', authMiddleware, controller.check);
-router.post('/token', refreshTokenMiddleware, controller.refresh);
-router.delete('/logout', controller.delete);
+router.post('/registration', verifySignUp.checkDuplicatePhone, verifySignUp.checkRolesExisted, signup);
+router.post('/login', signin);
+router.get('/auth',  checkRoleMiddleware('user'), check);
+router.post('/token', refreshTokenMiddleware, refresh);
+router.delete('/logout', delToken);
 
 export default router;

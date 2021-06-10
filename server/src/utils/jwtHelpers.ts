@@ -1,8 +1,8 @@
 import * as jwt from 'jsonwebtoken';
 
-export const generateAccessToken = (id: number, phone: string, name: string) => {
+export const generateAccessToken = (id: number, phone: string, name: string, roles: string[]) => {
     const accessToken = jwt.sign(
-       {id, phone, name}, 
+       {id, phone, name, roles}, 
        process.env.ACCESS_TOKEN_SECRET_KEY, 
        {expiresIn: '10min'})
   
@@ -11,11 +11,11 @@ export const generateAccessToken = (id: number, phone: string, name: string) => 
   
 export let refreshTokens: Array<string> = [];
 
-export const refreshToken = (id: number, phone: string, name: string) => {
+export const refreshToken = (id: number, phone: string, name: string, roles: string[]) => {
     const refreshToken = jwt.sign(
-       {id, phone, name}, 
-       process.env.REFRESH_TOKEN_SECRET_KEY
-       )
+       {id, phone, name, roles}, 
+       process.env.REFRESH_TOKEN_SECRET_KEY,
+       {expiresIn: '10min'})
        refreshTokens.push(refreshToken)
        return refreshToken
 }

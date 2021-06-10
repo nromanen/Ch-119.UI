@@ -1,8 +1,11 @@
-import { Response, NextFunction } from 'express';
+import { Request, Response, NextFunction } from 'express';
 import * as jwt from 'jsonwebtoken';
+import sequelize from '../db/sequelize/models/index';
+
+const User = sequelize.models['users'];
 
 export const checkRoleMiddleware = (role: string) => {
-  return (req: any, res: Response, next: NextFunction) => {
+return (req: Request, res: Response, next: NextFunction) => {
     if (req.method === 'OPTIONS') {
       next();
     }
@@ -14,15 +17,23 @@ export const checkRoleMiddleware = (role: string) => {
         return res.status(401).json({ message: 'Not authorized' });
       }
 
-      const decoded = jwt.verify(token, process.env.SECRET_KEY!);
-      if ((decoded as any).role !== role) {  // Добавить роль в юзера и потом пробывать с этим взаимодействовать
-        return res.status(403).json({message: "No access"})
-      }
+      const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET_KEY!);
 
-      req.user = decoded;
-      next();
+      User.findByPk((decoded as any).id).then((user: any) => {
+        user.getRoles().then((roles: any) => {
+            if (roles[0].name === role) {         
+             next(); 
+             return;
+            }
+          res.status(403).send({
+            message: `Require driver role!`
+          });
+          return;
+        }); 
+      });
     } catch (error) {
       res.status(403).json({ message: 'Not authorized' });
     }
   };
-};
+}
+

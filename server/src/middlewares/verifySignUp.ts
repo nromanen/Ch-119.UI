@@ -1,4 +1,4 @@
-import { ROLES } from '../db/sequelize/models/index';
+import { ROLES } from '../db/sequelize/models/role';
 import sequelize from '../db/sequelize/models/index';
 import { NextFunction, Request, Response } from 'express';
 
@@ -8,12 +8,12 @@ const checkDuplicatePhone = (req: Request, res: Response, next: NextFunction) =>
   // Phone
   User.findOne({
     where: {
-      username: req.body.phone
+      phone: req.body.phone
     }
   }).then((user: any) => {
     if (user) {
       res.status(400).send({
-        message: "Failed! Username is already in use!"
+        message: "Failed! Phone is already in use!"
       });
       return;
     }

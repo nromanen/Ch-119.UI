@@ -48,11 +48,11 @@ const start = async () => {
   try {
     await sequelize.authenticate();
     console.log('Sequielize connected');
-    // const res = await sequelize.sync({
-    //   alter: true,
-    // });
+    const res = await sequelize.sync({
+      // alter: true,
+    });
 
-    // console.log('created tables', res.models);
+    console.log('created tables', res.models);
 
     app.listen(PORT, () => {
       logger.log(
