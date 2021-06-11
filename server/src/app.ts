@@ -69,7 +69,7 @@ const start = async () => {
     // End Possibly not right
 
     app.listen(PORT, () => {
-      console.log(`⚡️[server]: Server is running at http://localhost:${PORT}`);
+      // console.log(`⚡️[server]: Server is running at http://localhost:${PORT}`);
       logger.log(
         'info',
         `⚡️[server]: Server is running at http://localhost:${PORT}`,

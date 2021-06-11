@@ -12,6 +12,8 @@ import { useActions } from '../../hooks/useActions';
 import { useTypedSelector } from '../../hooks/useTypedSelector';
 import axios from 'axios';
 import { Alert } from 'react-bootstrap';
+import { ButtonToolbar } from 'react-bootstrap';
+import { ButtonGroup } from 'react-bootstrap';
 
 interface OrderFormProps {
   createPath?: () => void;
@@ -21,7 +23,6 @@ interface OrderFormProps {
   onToChanged: () => void;
   setTo: (v: string) => void;
   setFrom: (v: string) => void;
-  map?: google.maps.Map;
   from: string;
   to: string;
   carTypes?: [];
@@ -35,7 +36,6 @@ export const OrderForm: FC<OrderFormProps> = ({
   onFromChanged,
   onToAutocompleteLoad,
   onToChanged,
-  map,
   from,
   to,
   setFrom,
@@ -88,7 +88,7 @@ export const OrderForm: FC<OrderFormProps> = ({
             From:
           </Form.Label>
           <div className="col-xs-4">
-            {map && (
+            {window?.google && (
               <Autocomplete
                 onLoad={onFromAutocompleteLoad}
                 onPlaceChanged={onFromChanged}
@@ -111,7 +111,7 @@ export const OrderForm: FC<OrderFormProps> = ({
             To:
           </Form.Label>
           <div className="col-xs-4">
-            {map && (
+            {window?.google && (
               <Autocomplete
                 onLoad={onToAutocompleteLoad}
                 onPlaceChanged={onToChanged}
@@ -184,12 +184,22 @@ export const OrderForm: FC<OrderFormProps> = ({
           $ 15
         </Badge>
         <div className="col-xs-offset-2 col-xs-10">
-          <Button onClick={createPath} type="button" variant="info">
-            Calculate
-          </Button>
-          <Button type="submit" variant="info">
-            Make order
-          </Button>
+          <ButtonToolbar>
+            <ButtonGroup>
+              <Button
+                className="mr-2"
+                onClick={createPath}
+                type="button"
+                variant="info"
+              >
+                Calculate
+              </Button>
+              <Button type="submit" variant="info">
+                Make order
+              </Button>
+            </ButtonGroup>
+          </ButtonToolbar>
+
           {/* <button  className="btn btn-lg btn-info">
           Calculate
         </button> */}
