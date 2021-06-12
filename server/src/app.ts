@@ -48,24 +48,29 @@ const start = async () => {
     await sequelize.authenticate();
     // Create tables if not exist asd
     const options = {
-      // force: true,
+      force: true,
       // alter: true,
     };
-    // await sequelize.sync(options);
+    sequelize.sync(options).then(() => {
+      sequelize.models[CITY].create(
+        {
+          name: 'Чернівці',
+          basePrice: 41,
+          basePriceForKm: 10,
+          car_types: carTypes.slice(0, 4),
+          extra_services: extraServices,
+        },
+        {
+          include: [
+            sequelize.models[CAR_TYPE],
+            sequelize.models[EXTRA_SERVICE],
+          ],
+        },
+      );
+    });
 
     // Possibly not right
-    // await sequelize.models[CITY].create(
-    //   {
-    //     name: 'Чернівці',
-    //     basePrice: 40,
-    //     basePriceForKm: 10,
-    //     car_types: carTypes.slice(0, 4),
-    //     extra_services: extraServices,
-    //   },
-    //   {
-    //     include: [sequelize.models[CAR_TYPE], sequelize.models[EXTRA_SERVICE]],
-    //   },
-    // );
+
     // End Possibly not right
 
     app.listen(PORT, () => {

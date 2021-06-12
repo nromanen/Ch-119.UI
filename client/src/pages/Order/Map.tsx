@@ -134,7 +134,8 @@ export const Map: FC<MapProps> = ({
         params: {
           key: process.env.REACT_APP_MAP_API_KEY,
           latlng: `${lat},${lng}`,
-          language: 'uk',
+          // en or uk
+          language: 'en',
         },
       },
     );
@@ -142,7 +143,7 @@ export const Map: FC<MapProps> = ({
     console.log(res.data, 'response');
     console.log(region, 'region');
 
-    // setDirections(options);
+    setDirections(options);
 
     console.log(lat);
     console.log(lng);

@@ -18,8 +18,10 @@ export default (sequelize: any, DataTypes: any) => {
      */
     static associate(models: any) {
       // City.hasMany(models[CAR_TYPE]);
+      console.log('MODELS ___', models);
+
       City.belongsToMany(models[CAR_TYPE], {
-        through: CITY_CAR_TYPES,
+        through: models[CITY_CAR_TYPES],
       });
       City.belongsToMany(models[EXTRA_SERVICE], {
         through: CITY_SERVICES,
@@ -65,7 +67,7 @@ export default (sequelize: any, DataTypes: any) => {
       sequelize,
       modelName: CITY,
       underscored: true,
-      hooks: {},
+      // hooks: {},
     },
   );
 
