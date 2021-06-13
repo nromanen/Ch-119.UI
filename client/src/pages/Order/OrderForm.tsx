@@ -1,4 +1,4 @@
-import { FC, SyntheticEvent, useRef, useEffect } from 'react';
+import { FC, SyntheticEvent, useRef, useEffect, SFC } from 'react';
 import axios from 'axios';
 import { Autocomplete } from '@react-google-maps/api';
 import {
@@ -11,12 +11,26 @@ import {
   Alert,
   ButtonToolbar,
   ButtonGroup,
+  OverlayTrigger,
+  Tooltip,
 } from 'react-bootstrap';
 import { useOrderActions } from '../../hooks/useActions';
 import { useTypedSelector } from '../../hooks/useTypedSelector';
 import { CarTypesI, ExtraServicesI } from './mapService';
 
-// import './Order.scss';
+import { ReactComponent as BabyChair } from './icons/babyChair.svg';
+import { ReactComponent as En } from './icons/en.svg';
+import { ReactComponent as Silent } from './icons/silent.svg';
+
+interface IconsI {
+  [index: string]: any;
+}
+
+const extraServicesIcons: IconsI = {
+  'English speaking': En,
+  'Silent driver': Silent,
+  'Baby chair': BabyChair,
+};
 
 interface OrderFormProps {
   createPath?: () => void;
@@ -106,6 +120,7 @@ export const OrderForm: FC<OrderFormProps> = ({
       .post('http://localhost:8080/api/v1/order', {
         body: {
           ...order,
+          // get User.id from redux
           customer_id: 1,
         },
       })
@@ -193,20 +208,46 @@ export const OrderForm: FC<OrderFormProps> = ({
             </Accordion.Toggle>
             <Card>
               <Accordion.Collapse eventKey="0">
-                <Card.Body>
+                <Card.Body className="extra-service">
                   {extraServices?.map(({ id, name }) => {
+                    const Icon: any = extraServicesIcons[name];
+                    const isActive = order.extraServices.includes(name);
+                    const iconClass = ['order__service-icon'];
+                    if (isActive) {
+                      iconClass.push('active');
+                    }
+
                     return (
-                      <Form.Check
-                        key={id}
-                        id={name}
-                        aria-label={name}
-                        type="checkbox"
-                        label={name}
-                        data-db-id={id}
-                        name="extraServices"
-                        value={name}
-                        onChange={onExtraServicesChanged}
-                      />
+                      <>
+                        <OverlayTrigger
+                          key={id}
+                          placement="top"
+                          overlay={
+                            <Tooltip id={`tooltip-top`}>
+                              <strong>{name}</strong>.
+                            </Tooltip>
+                          }
+                        >
+                          <Form.Label
+                            className="col-xs-2 extra-service__label"
+                            htmlFor={name}
+                          >
+                            {/* {name} */}
+                            <Form.Check
+                              hidden
+                              id={name}
+                              aria-label={name}
+                              type="checkbox"
+                              // label={name}
+                              data-db-id={id}
+                              name="extraServices"
+                              value={name}
+                              onChange={onExtraServicesChanged}
+                            />
+                            <Icon className={iconClass.join(' ')} />
+                          </Form.Label>
+                        </OverlayTrigger>
+                      </>
                     );
                   })}
                 </Card.Body>

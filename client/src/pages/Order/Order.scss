@@ -11,4 +11,22 @@
     max-width: 600px;
     margin: auto;
   }
+
+  &__service-icon {
+    width: 100%;
+    height: auto;
+
+    filter: grayscale(1);
+
+    &.active {
+      filter: none;
+    }
+  }
+  .extra-service {
+    display: flex;
+    justify-content: space-around;
+    &__label {
+      width: 45px;
+    }
+  }
 }

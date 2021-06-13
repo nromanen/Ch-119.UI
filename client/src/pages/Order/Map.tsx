@@ -116,7 +116,7 @@ export const Map: FC<MapProps> = ({
     console.log(res.data, 'response');
     console.log(region, 'region');
 
-    setDirections(options);
+    // setDirections(options);
 
     // console.log(lat);
     // console.log(lng);
@@ -155,6 +155,7 @@ export const Map: FC<MapProps> = ({
     () => ({
       directions: directionsResult,
       draggable: true,
+      preserveViewport: true, // do not zoom on render
     }),
     [directionsResult],
   );
