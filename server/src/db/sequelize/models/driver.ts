@@ -9,7 +9,7 @@ export default (sequelize: any, DataTypes: any) => {
      */
     static associate() {
       // define association here 
-      // Driver.hasOne(sequelize.models['User'])
+      // sequelize.models['users'].belongsTo(Driver)
     }
   }
   Driver.init(

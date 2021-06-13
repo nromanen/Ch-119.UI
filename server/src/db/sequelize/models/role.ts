@@ -23,22 +23,22 @@ export default (sequelize: any, DataTypes: any) => {
     },
   );
 
-//   Role.create({
-//     id: 1,
-//     name: "user"
-//   });
+  // Role.create({
+  //   id: 1,
+  //   name: "USER"
+  // });
  
-//   Role.create({
-//     id: 2,
-//     name: "driver"
-//   });
+  // Role.create({
+  //   id: 2,
+  //   name: "DRIVER"
+  // });
  
-//   Role.create({
-//     id: 3,
-//     name: "admin"
-//   });
+  // Role.create({
+  //   id: 3,
+  //   name: "ADMIN"
+  // });
 
   return Role
 };
 
-export const ROLES = ["user", "driver", "admin"];
+export const ROLES = ["USER", "DRIVER", "ADMIN"];

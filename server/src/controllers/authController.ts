@@ -3,7 +3,8 @@ import * as jwt from "jsonwebtoken";
 import * as bcrypt from 'bcrypt';
 import { NextFunction, Request, Response } from "express";
 import ApiError from "../errors/ApiErrors";
-import {generateAccessToken, refreshToken, deleteToken} from '../utils/jwtHelpers';
+import { MobizonResponse, sendSMS } from '../services/notification'
+import { generateAccessToken, generateRefreshToken, deleteToken } from '../utils/jwtHelpers';
 
 const User = sequelize.models['users'];
 const Role = sequelize.models['roles'];
@@ -29,7 +30,7 @@ export const signup = async (req: Request, res: Response, next: NextFunction) =>
     password: bcrypt.hashSync(req.body.password, 5)
   })
     .then((user: any )=> {
-        const roles = req.body.roles ? req.body.roles : ["user"]
+        const roles = req.body.roles ? req.body.roles : ["USER"]
 
         Role.findAll({
           where: {
@@ -39,12 +40,12 @@ export const signup = async (req: Request, res: Response, next: NextFunction) =>
           }
         }).then((roles: any) => {
           user.setRoles(roles).then(() => {
-            res.status(201);
+            res.status(201).send({message: "User successfully create!"});
           });
         });
       })
     .catch((err: Error) => {
-      res.status(500).send({ message: err.message });
+      return ApiError.forbidden('Server error')
     });
 };
 
@@ -65,29 +66,27 @@ export const signin = async (req: Request, res: Response, next: NextFunction) =>
       );
 
       if (!passwordIsValid) {
-        return res.status(401).send({
-          message: "Invalid Data!"
-        });
+        return ApiError.unathorized('Invalid Data!')
       }
 
       const authorities: Array<string> = [];
       user.getRoles().then((roles: any) => {
         for (let i = 0; i < roles.length; i++) {
-          authorities.push("ROLE_" + roles[i].name.toUpperCase());
+          authorities.push(roles[i].name);
         }
-        const refToken = refreshToken(user.id, user.name, user.phone, authorities)
+        const refreshToken = generateRefreshToken(user.id, user.name, authorities)
         res.status(200).send({
           id: user.id,
           name: user.name,
           phone: user.phone,
           roles: authorities,
-          accessToken: generateAccessToken(user.id, user.name, user.phone, authorities),
-          refreshToken: refToken
+          accessToken: generateAccessToken(user.id, user.name, authorities),
+          refreshToken: refreshToken
         });
       });
     })
     .catch((err: Error) => {
-      res.status(500).send({ message: err.message });
+      return ApiError.forbidden('Server error')
     });
 };
 
@@ -96,12 +95,21 @@ export const refresh = async (req: Request, res: Response, next: NextFunction):P
   
   const userInfo = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET_KEY!)
 
-  return res.json({accessToken: generateAccessToken((userInfo as any).id,(userInfo as any).name, (userInfo as any).phone, (userInfo as any).roles)})
+  return res.json({
+    accessToken: generateAccessToken((userInfo as any).id,(userInfo as any).name, (userInfo as any).roles),
+    refreshToken: generateRefreshToken((userInfo as any).id,(userInfo as any).name, (userInfo as any).roles)
+  })
 }
 
 export const check = async (req: Request, res: Response, next: NextFunction):Promise<any> => {
-  const accessToken = generateAccessToken((req as any).id, (req as any).phone, (req as any).name, (req as any).roles)
-  return res.json({accessToken})
+  const token: string = req.headers.authorization!.split(' ')[1];
+
+  const userInfo = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET_KEY!)
+
+  const accessToken = generateAccessToken((userInfo as any).id, (userInfo as any).name, (userInfo as any).roles)
+  const refreshToken = generateRefreshToken((userInfo as any).id,(userInfo as any).name, (userInfo as any).roles)
+
+  return res.json({accessToken, refreshToken})
 }
 
 export const delToken = async (req: Request, res: Response, next: NextFunction):Promise<any> => {

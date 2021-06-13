@@ -18,9 +18,12 @@ return (req: Request, res: Response, next: NextFunction) => {
       }
 
       const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET_KEY!);
+      console.log(decoded);
+      
 
       User.findByPk((decoded as any).id).then((user: any) => {
         user.getRoles().then((roles: any) => {
+          
             if (roles[0].name === role) {         
              next(); 
              return;
