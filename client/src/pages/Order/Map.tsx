@@ -6,10 +6,12 @@ import {
   useJsApiLoader,
   Marker,
 } from '@react-google-maps/api';
+import { Libraries } from '@react-google-maps/api/dist/utils/make-load-script-url';
+import axios from 'axios';
 import { Badge, ListGroup } from 'react-bootstrap';
 import { CurrentLocation } from './Order';
-import axios from 'axios';
-import { useOrderActions } from '../../hooks/useOrderActions';
+import { useOrderActions } from '../../hooks/useActions';
+import { useTypedSelector } from './../../hooks/useTypedSelector';
 
 declare const process: {
   env: {
@@ -19,33 +21,7 @@ declare const process: {
 
 const googleMapsApiKey = process.env.REACT_APP_MAP_API_KEY;
 
-type l = ['places'];
-const libraries: l = ['places'];
-
-const value = {
-  initial: 50,
-  carTypeCoef: 1.1,
-  services: [10, 15, 20],
-  distanceCoef: 10,
-  distance: 1.7,
-  discount: 10,
-};
-const calculatePrice = (prices: any) => {
-  const servicesPrice = prices.services.reduce(
-    (acc: number, val: number) => acc + val,
-  );
-  return Math.ceil(
-    prices.initial +
-      prices.distance * prices.distanceCoef * prices.carTypeCoef +
-      servicesPrice -
-      prices.discount,
-  );
-};
-
-interface GoogleAPIState {
-  isLoaded: boolean;
-  loadError: Error | undefined;
-}
+const libraries: Libraries = ['places'];
 
 interface MapProps {
   directions?: any;
@@ -89,6 +65,8 @@ export const Map: FC<MapProps> = ({
 
   const [markers, setMarkers] = useState<Array<any>>([]);
   const [renderer, setRenderer] = useState<any>();
+  const { distance } = useTypedSelector(({ order }) => order);
+  const { changeValue } = useOrderActions();
 
   useEffect(() => {
     if (currentLocation) {
@@ -150,6 +128,11 @@ export const Map: FC<MapProps> = ({
       if (renderer) {
         const origin = renderer.directions.routes[0].legs[0].start_address;
         const destination = renderer.directions.routes[0].legs[0].end_address;
+        const directionRoutes = renderer?.directions.routes[0].legs[0];
+        const distance = directionRoutes.distance;
+
+        console.log(distance, 'distance');
+        changeValue('distance', distance);
         setFrom(origin);
         setTo(destination);
       }
@@ -217,18 +200,14 @@ export const Map: FC<MapProps> = ({
           )} */}
         </GoogleMap>
 
-        {directionsResult && (
+        {/* {directionsResult && (
           <div className="jumbotron">
             <div className="container-fluid">
               <ListGroup>
                 <ListGroup.Item>
                   Distance:
-                  <Badge variant="primary">
-                    {renderer?.directions.routes[0].legs[0].distance.text}
-                  </Badge>
-                  <span>
-                    ({renderer?.directions.routes[0].legs[0].distance.value}m)
-                  </span>
+                  <Badge variant="primary">{distance.text}</Badge>
+                  <span>({distance.value}m)</span>
                 </ListGroup.Item>
                 <ListGroup.Item>
                   Duration:
@@ -240,7 +219,7 @@ export const Map: FC<MapProps> = ({
               </ListGroup>
             </div>
           </div>
-        )}
+        )} */}
       </>
     );
   };

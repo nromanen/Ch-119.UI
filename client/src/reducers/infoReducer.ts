@@ -1,5 +1,5 @@
-import { InfoAction, InfoActionTypes, InfoState } from '../types/infoTypes';
-import { CityInfoI, CarTypesI } from './../pages/Order/mapService';
+import { InfoAction, InfoActionTypes } from '../types/infoTypes';
+import { CityInfoI } from './../pages/Order/mapService';
 
 export const initialState: CityInfoI = {
   basePrice: 41,

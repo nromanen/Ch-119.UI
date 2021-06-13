@@ -5,12 +5,7 @@ import { setInfoCreator } from '../actions/infoActions';
 import { AxiosResponse } from 'axios';
 
 function* fetchCityInfoWorker(): Generator<StrictEffect, void, any> {
-  console.log('fetch city worker');
-
   const data = (yield call(fetchCityInfo)) as AxiosResponse<CityInfoI>;
-  console.log('info in saga', data);
-  // transform data
-
   yield put(setInfoCreator(data.data));
 }
 

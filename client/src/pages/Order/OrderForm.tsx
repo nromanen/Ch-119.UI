@@ -1,4 +1,5 @@
-import { FC, SyntheticEvent, useRef } from 'react';
+import { FC, SyntheticEvent, useRef, useEffect } from 'react';
+import axios from 'axios';
 import { Autocomplete } from '@react-google-maps/api';
 import {
   Accordion,
@@ -7,13 +8,15 @@ import {
   Form,
   Button,
   Jumbotron,
+  Alert,
+  ButtonToolbar,
+  ButtonGroup,
 } from 'react-bootstrap';
-import { useOrderActions } from '../../hooks/useOrderActions';
+import { useOrderActions } from '../../hooks/useActions';
 import { useTypedSelector } from '../../hooks/useTypedSelector';
-import axios from 'axios';
-import { Alert } from 'react-bootstrap';
-import { ButtonToolbar } from 'react-bootstrap';
-import { ButtonGroup } from 'react-bootstrap';
+import { CarTypesI, ExtraServicesI } from './mapService';
+
+// import './Order.scss';
 
 interface OrderFormProps {
   createPath?: () => void;
@@ -25,8 +28,8 @@ interface OrderFormProps {
   setFrom: (v: string) => void;
   from: string;
   to: string;
-  carTypes?: [];
-  extraServices?: [];
+  carTypes?: CarTypesI[];
+  extraServices?: ExtraServicesI[];
   currentCity?: string;
 }
 
@@ -45,8 +48,45 @@ export const OrderForm: FC<OrderFormProps> = ({
   currentCity,
 }) => {
   const { changeValue } = useOrderActions();
+  const info = useTypedSelector((state) => state.info);
   const order = useTypedSelector((state) => state.order);
   const formRef = useRef<any>(null);
+
+  const calculatePrice = (prices: any) => {
+    const servicesPrice = prices.services.reduce(
+      (acc: number, val: number) => acc + val,
+      0,
+    );
+    return Math.ceil(
+      prices.initial +
+        prices.distance * prices.distanceCoef * prices.carTypeCoef +
+        servicesPrice -
+        prices.discount,
+    );
+  };
+
+  useEffect(() => {
+    const carTypeCoef = info.car_types.find(
+      (carType) => carType.name === order.car_type,
+    )?.city_car_type.coef;
+
+    const servicePrices = order.extraServices.map((service) => {
+      return info.extra_services.find((s) => s.name === service)?.city_service
+        .price;
+    });
+
+    const value = {
+      initial: info.basePrice,
+      distanceCoef: info.basePriceForKm,
+      carTypeCoef: carTypeCoef,
+      services: servicePrices,
+      distance: order.distance.value ? order.distance.value / 1000 : 0,
+      discount: 0,
+    };
+
+    const price = calculatePrice(value);
+    price && changeValue('price', price);
+  }, [info, order.car_type, order.distance, order.extraServices]);
 
   const onExtraServicesChanged = () => {
     let services: Array<HTMLInputElement> = Array.from(
@@ -75,9 +115,9 @@ export const OrderForm: FC<OrderFormProps> = ({
   };
 
   return (
-    <Jumbotron>
-      <Alert variant="primary">Your current location : {currentCity}</Alert>
-      <Form ref={formRef} className="form" onSubmit={onSubmit}>
+    <Jumbotron className="order">
+      <Form ref={formRef} className="order__form" onSubmit={onSubmit}>
+        <Alert variant="primary">Your current location : {currentCity}</Alert>
         <Form.Group className="form-group">
           <Form.Label className="col-xs-2" htmlFor="from">
             From:
@@ -175,9 +215,11 @@ export const OrderForm: FC<OrderFormProps> = ({
           </Accordion>
         </Form.Group>
 
-        <Badge as="p" variant="primary">
-          $ 15
-        </Badge>
+        {order.distance.value && (
+          <Badge as="p" className="order__price" variant="primary">
+            &#x20b4; {order.price}
+          </Badge>
+        )}
         <div className="col-xs-offset-2 col-xs-10">
           <ButtonToolbar>
             <ButtonGroup>

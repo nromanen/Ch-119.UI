@@ -1,0 +1,14 @@
+.order {
+  &.jumbotron {
+    margin-bottom: 0;
+  }
+  &__wrap {
+  }
+  &__price {
+    font-size: 1.3em !important;
+  }
+  &__form {
+    max-width: 600px;
+    margin: auto;
+  }
+}

@@ -49,8 +49,6 @@ export interface CityInfoI {
 }
 
 export const fetchCityInfo = (name = 'Чернівці') => {
-  console.log('fetch city');
-
   return axios.get<CityInfoI>(`${process.env.REACT_APP_HOST}info`, {
     params: {
       name,

@@ -7,8 +7,12 @@ export const initialState: OrderState = {
   car_type: 'basic',
   extraServices: [],
   paymentType: 'cash',
-  price: '11',
+  price: 0,
   status: 'active',
+  distance: {
+    text: '',
+    value: null,
+  },
 };
 
 export const orderReducer = (

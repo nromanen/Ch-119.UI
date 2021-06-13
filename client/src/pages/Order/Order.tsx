@@ -1,12 +1,11 @@
 import { useState, useCallback, useEffect } from 'react';
+import axios from 'axios';
 import { useTypedSelector } from '../../hooks/useTypedSelector';
 import { Map } from './Map';
 import { OrderForm } from './OrderForm';
-import { useOrderActions } from '../../hooks/useOrderActions';
-import axios from 'axios';
-import { fetchCityInfo } from './mapService';
-import { useDispatch } from 'react-redux';
-import { getInfoCreator } from '../../actions/infoActions';
+import { useInfoActions, useOrderActions } from '../../hooks/useActions';
+
+import './Order.scss';
 
 export interface CurrentLocation {
   lat: number;
@@ -26,16 +25,12 @@ export const Order = () => {
 
   const [currentLocation, setCurrentLocation] = useState<CurrentLocation>();
   const [currentCity, setCurrentCity] = useState<string>();
-  const [info, setInfo] = useState<any>({
-    car_types: [],
-    extra_services: [],
-  });
+  const { car_types, extra_services } = useTypedSelector((state) => state.info);
 
-  const dispatch = useDispatch();
-
+  const { getInfoCreator } = useInfoActions();
   useEffect(() => {
     getCurrentLocation();
-    dispatch(getInfoCreator('Чернівці'));
+    getInfoCreator('Чернівці');
     // getCityInfo().then((res) => {
     //   setInfo(res);
     // });
@@ -126,8 +121,8 @@ export const Order = () => {
     onFromChanged,
     onToChanged,
     createPath,
-    carTypes: info.car_types,
-    extraServices: info.extra_services,
+    carTypes: car_types,
+    extraServices: extra_services,
     currentCity,
   };
 
