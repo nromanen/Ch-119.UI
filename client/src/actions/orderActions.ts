@@ -1,5 +1,5 @@
 import { ChangeValueAction, OrderActionTypes } from '../types/orderTypes';
-import { OrderState } from './../types/orderTypes';
+import { OrderState } from '../types/orderTypes';
 
 export const changeValue = (
   prop: keyof OrderState,

@@ -8,7 +8,7 @@ import {
   Button,
   Jumbotron,
 } from 'react-bootstrap';
-import { useActions } from '../../hooks/useActions';
+import { useOrderActions } from '../../hooks/useOrderActions';
 import { useTypedSelector } from '../../hooks/useTypedSelector';
 import axios from 'axios';
 import { Alert } from 'react-bootstrap';
@@ -44,10 +44,7 @@ export const OrderForm: FC<OrderFormProps> = ({
   extraServices,
   currentCity,
 }) => {
-  console.log('carTypes', carTypes);
-  console.log('extraServices', extraServices);
-
-  const { changeValue } = useActions();
+  const { changeValue } = useOrderActions();
   const order = useTypedSelector((state) => state.order);
   const formRef = useRef<any>(null);
 
@@ -61,12 +58,10 @@ export const OrderForm: FC<OrderFormProps> = ({
     const extraServices = services.map((el: HTMLInputElement) => el.value);
 
     changeValue('extraServices', extraServices);
-    console.log(services, 'services');
   };
 
   const onSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
-    console.log('submit');
     axios
       .post('http://localhost:8080/api/v1/order', {
         body: {

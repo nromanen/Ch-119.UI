@@ -2,9 +2,11 @@ import { useState, useCallback, useEffect } from 'react';
 import { useTypedSelector } from '../../hooks/useTypedSelector';
 import { Map } from './Map';
 import { OrderForm } from './OrderForm';
-import { useActions } from './../../hooks/useActions';
+import { useOrderActions } from '../../hooks/useOrderActions';
 import axios from 'axios';
-import { getCityInfo } from './mapService';
+import { fetchCityInfo } from './mapService';
+import { useDispatch } from 'react-redux';
+import { getInfoCreator } from '../../actions/infoActions';
 
 export interface CurrentLocation {
   lat: number;
@@ -12,8 +14,6 @@ export interface CurrentLocation {
 }
 
 export const Order = () => {
-  console.log('render Order');
-
   const [directions, setDirections] = useState<google.maps.DirectionsRequest>();
 
   const [fromAutocomplete, setFromAutocomplete] = useState({
@@ -22,7 +22,7 @@ export const Order = () => {
   const [toAutocomplete, setToAutocomplete] = useState({ getPlace: () => {} });
 
   const { from, to } = useTypedSelector((state) => state.order);
-  const { changeValue } = useActions();
+  const { changeValue } = useOrderActions();
 
   const [currentLocation, setCurrentLocation] = useState<CurrentLocation>();
   const [currentCity, setCurrentCity] = useState<string>();
@@ -31,11 +31,14 @@ export const Order = () => {
     extra_services: [],
   });
 
+  const dispatch = useDispatch();
+
   useEffect(() => {
     getCurrentLocation();
-    getCityInfo().then((res) => {
-      setInfo(res);
-    });
+    dispatch(getInfoCreator('Чернівці'));
+    // getCityInfo().then((res) => {
+    //   setInfo(res);
+    // });
   }, []);
 
   const getCurrentLocation = () => {
@@ -60,7 +63,6 @@ export const Order = () => {
         },
       },
     );
-    console.log(res.data, 'response From GOOGLE API');
     const region = res.data.plus_code.compound_code.split(', ')[1];
     setCurrentCity(region);
   };
@@ -82,8 +84,6 @@ export const Order = () => {
   const onFromChanged = (): void => {
     if (fromAutocomplete !== null) {
       const geometry: any = fromAutocomplete.getPlace();
-      console.log(geometry, 'from geometry');
-
       setFrom(geometry.formatted_address);
     } else {
       console.log('Autocomplete is not loaded yet!');
@@ -106,8 +106,6 @@ export const Order = () => {
       travelMode: google.maps.TravelMode.DRIVING,
       unitSystem: google.maps.UnitSystem.METRIC,
     };
-    console.log(options, 'options');
-
     setDirections(options);
   }, []);
 
