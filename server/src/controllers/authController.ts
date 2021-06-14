@@ -40,7 +40,9 @@ export const signup = async (req: Request, res: Response, next: NextFunction) =>
           }
         }).then((roles: any) => {
           user.setRoles(roles).then(() => {
-            res.status(201).send({message: "User successfully create!"});
+            const token = generateAccessToken(user.id, user.name, roles.name)
+            const refreshToken = generateRefreshToken(user.id, user.name, roles.name)
+            return res.json({token, refreshToken})
           });
         });
       })

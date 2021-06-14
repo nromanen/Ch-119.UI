@@ -3,6 +3,8 @@ import { Button } from 'react-bootstrap';
 import { NavLink } from 'react-router-dom';
 import { Form, Field } from 'react-final-form';
 import { REGISTRATION_ROUTE } from '../../constants/routerConstants';
+import { required } from '../../utils/formValidators';
+import { login } from '../../http/userApi';
 
 export const Login: FC = () => {
   return (
@@ -10,46 +12,74 @@ export const Login: FC = () => {
       <div className='container-fluid'>
         <h1>Login Form</h1>
         <Form
-          onSubmit={(formObj) => {
-            console.log(formObj);
+          onSubmit={async (formObj) => {
+            const response = await login(formObj.phone, formObj.password);
+            console.log(response);
+          }}
+          // decorators={[focusOnError]}
+          subscription={{
+            submitting: true,
           }}
         >
-          {({ handleSubmit }) => (
+          {({ handleSubmit, submitting }) => (
             <form onSubmit={handleSubmit} className='form-horizontal'>
               <div className='form-group'>
-                <label className='col-xs-2' htmlFor='phone'>
-                  Phone number:
-                </label>
-                <div className='col-xs-4'>
-                  <Field name='phone'>
-                    {({ input, meta }) => (
-                      <input
-                        type='phone'
-                        id='phone'
-                        placeholder='+380501233314'
-                        {...input}
-                      />
-                    )}
-                  </Field>
-                </div>
+                <Field
+                  name='phone'
+                  placeholder='+380501233314'
+                  validate={required}
+                  subscription={{
+                    value: true,
+                    active: true,
+                    error: true,
+                    touched: true,
+                  }}
+                >
+                  {({ input, meta, placeholder }) => (
+                    <div>
+                      <label className='col-xs-2'>Phone number:</label>
+                      <div className='col-xs-4'>
+                        <input {...input} placeholder={placeholder} />
+                        {meta.error && meta.touched && (
+                          <span>{meta.error}</span>
+                        )}
+                      </div>
+                    </div>
+                  )}
+                </Field>
               </div>
               <div className='form-group'>
-                <label className='col-xs-2' htmlFor='password'>
-                  Password:
-                </label>
-                <div className='col-xs-4'>
-                  <Field name='password'>
-                    {({ input }) => (
-                      <input type='password' id='password' {...input} />
-                    )}
-                  </Field>
-                </div>
+                <Field
+                  name='password'
+                  type='password'
+                  validate={required}
+                  subscription={{
+                    value: true,
+                    active: true,
+                    error: true,
+                    touched: true,
+                  }}
+                >
+                  {({ input, meta }) => (
+                    <div>
+                      <label className='col-xs-2'>Password:</label>
+                      <div className='col-xs-4'>
+                        <input {...input} />
+                        {meta.error && meta.touched && (
+                          <span>{meta.error}</span>
+                        )}
+                      </div>
+                    </div>
+                  )}
+                </Field>
               </div>
 
               <div className='container-fluid'>
                 <div className='row'>
                   <div className='col-xs-offset-2 col-xs-10'>
-                    <Button type='submit'>Login</Button>
+                    <Button type='submit' disabled={submitting}>
+                      Login
+                    </Button>
                   </div>
                   <div className='col-xs-offset-2 col-xs-10 ml-5'>
                     <NavLink to={REGISTRATION_ROUTE}>Register</NavLink>

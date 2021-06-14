@@ -1,6 +1,10 @@
 import { combineReducers, createStore, applyMiddleware } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
-import { userReducer, initialState as UserState } from './reducers/userReducer';
+import {
+  userReducer,
+  authReducer,
+  initialState as UserState,
+} from './reducers/userReducer';
 
 const initialState = {
   user: UserState,
@@ -8,6 +12,7 @@ const initialState = {
 
 const redusers = combineReducers({
   user: userReducer,
+  auth: authReducer,
 });
 
 const store = createStore(

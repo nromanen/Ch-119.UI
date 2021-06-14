@@ -7,7 +7,7 @@ const AppRouter: FC = () => {
   return (
     <Switch>
       {publicRouters.map(({ path, component }, index) => (
-        <Route path={path} component={component} exact />
+        <Route key={path?.toString()} path={path} component={component} exact />
       ))}
       <Redirect to={LOGIN_ROUTE} />
     </Switch>
