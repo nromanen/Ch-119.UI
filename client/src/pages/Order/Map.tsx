@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useState } from 'react';
+import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import {
   GoogleMap,
   DirectionsService,
@@ -6,7 +6,12 @@ import {
   useJsApiLoader,
   Marker,
 } from '@react-google-maps/api';
-// import { Badge, ListGroup } from 'react-bootstrap';
+import { Libraries } from '@react-google-maps/api/dist/utils/make-load-script-url';
+import axios from 'axios';
+import { Badge, ListGroup } from 'react-bootstrap';
+import { CurrentLocation } from './Order';
+import { useOrderActions } from '../../hooks/useActions';
+import { useTypedSelector } from './../../hooks/useTypedSelector';
 
 declare const process: {
   env: {
@@ -16,141 +21,155 @@ declare const process: {
 
 const googleMapsApiKey = process.env.REACT_APP_MAP_API_KEY;
 
-type l = ['places'];
-const libraries: l = ['places'];
-
-// const extraServices = [
-//   {
-//     name: 'English speaking',
-//   },
-//   {
-//     name: 'Silent driver',
-//   },
-//   {
-//     name: 'Baby chair',
-//   },
-// ]
-
-// const value = {
-//   initial: 50,
-//   carTypeCoef: 1.1,
-//   services: [10, 15, 20],
-//   distanceCoef: 10,
-//   distance: 1.7,
-//   discount: 10,
-// };
-// const calculatePrice = (prices: any) => {
-//   const servicesPrice = prices.services.reduce(
-//     (acc: number, val: number) => acc + val,
-//   );
-//   return Math.ceil(
-//     prices.initial +
-//       prices.distance * prices.distanceCoef * prices.carTypeCoef +
-//       servicesPrice -
-//       prices.discount,
-//   );
-// };
+const libraries: Libraries = ['places'];
 
 interface MapProps {
   directions?: any;
-  onMapLoaded: (map: google.maps.Map) => void;
-  map?: google.maps.Map;
   setFrom: (v: string) => void;
   setTo: (v: string) => void;
   setDirections: (v: google.maps.DirectionsRequest) => void;
+  currentLocation?: CurrentLocation;
 }
+const containerStyle = {
+  width: '100%',
+  height: '50vh',
+};
+
+const center = {
+  lat: 48.3098624,
+  lng: 26.0079615,
+};
 
 export const Map: FC<MapProps> = ({
+  currentLocation,
   directions,
-  onMapLoaded,
+  setDirections,
   setFrom,
   setTo,
-  setDirections,
 }) => {
-  console.log('render map');
-
-  const containerStyle = {
-    width: '100%',
-    height: '50vh',
-  };
-
-  const center = {
-    lat: 48.3098624,
-    lng: 26.0079615,
-  };
-  const options = {
-    center,
-    zoom: 12,
-  };
+  const options = useMemo(
+    () => ({
+      center: currentLocation || center,
+      zoom: 12,
+    }),
+    [],
+  );
 
   const { isLoaded, loadError } = useJsApiLoader({
-    googleMapsApiKey, // ,
+    googleMapsApiKey,
     libraries: libraries,
-    // ...otherOptions
   });
 
   const [directionsResult, setDirectionsResult] =
     useState<google.maps.DirectionsResult>();
-  const [markers, setMarkers] = useState<any>([]);
+
+  const [markers, setMarkers] = useState<Array<any>>([]);
+  const [renderer, setRenderer] = useState<any>();
+  const { distance } = useTypedSelector(({ order }) => order);
+  const { changeValue } = useOrderActions();
+
+  useEffect(() => {
+    if (currentLocation) {
+      setMarkers((m: any) => [currentLocation]);
+    }
+  }, [currentLocation]);
 
   const directionsServiceCallback = useCallback(
     (
       result: google.maps.DirectionsResult,
       status: google.maps.DirectionsStatus,
     ) => {
-      console.log('result', result);
-
-      console.log('status', status);
-      if (status !== window.google.maps.DirectionsStatus.OK) {
-        return;
+      if (status === window.google.maps.DirectionsStatus.OK) {
+        setDirectionsResult(result);
       }
-      //
-      setDirectionsResult(result);
     },
     [],
   );
 
-  const onLoad = React.useCallback(function onLoad(mapInstance) {
-    // do something with map Instance
-    console.log('mapInstance', mapInstance);
-    onMapLoaded(mapInstance);
-  }, []);
+  // const onLoad = React.useCallback(function onLoad(mapInstance) {
+  //   // do something with map Instance
+  //   console.log(mapInstance);
+  // }, []);
 
-  const mapClickHandler = (e: any) => {
-    console.log(e);
-    console.log(e.latLng);
+  const mapClickHandler = React.useCallback(async (e: any) => {
     const lat = e.latLng.lat();
     const lng = e.latLng.lng();
-    console.log(lat);
-    console.log(lng);
-    // setMarkers((markers: any) => [...markers, { lat, lng }])
-  };
 
-  function onDirectionsChanged() {
-    // @ts-ignore
-    const that: any = this;
-    const origin = that.directions.routes[0].legs[0].start_address;
-    const destination = that.directions.routes[0].legs[0].end_address;
-    // setFrom(origin)
-    // setTo(destination)
-    console.log(origin);
-    console.log(destination);
-    console.log(directionsResult, 'directionsResult');
+    const options: google.maps.DirectionsRequest = {
+      origin: { lat, lng },
+      destination: { lat, lng },
+      travelMode: google.maps.TravelMode.DRIVING,
+      unitSystem: google.maps.UnitSystem.METRIC,
+    };
+    const res = await axios.get(
+      `https://maps.googleapis.com/maps/api/geocode/json`,
+      {
+        params: {
+          key: process.env.REACT_APP_MAP_API_KEY,
+          latlng: `${lat},${lng}`,
+          // en or uk
+          language: 'en',
+        },
+      },
+    );
+    const region = res.data.plus_code.compound_code.split(', ')[1];
+    console.log(res.data, 'response');
+    console.log(region, 'region');
 
-    // const geocoder = new google.maps.Geocoder()
-  }
+    // setDirections(options);
+
+    // console.log(lat);
+    // console.log(lng);
+  }, []);
+
+  const onDirectionsChanged = useCallback(
+    function gets() {
+      // @ts-ignore
+      if (renderer) {
+        const origin = renderer.directions.routes[0].legs[0].start_address;
+        const destination = renderer.directions.routes[0].legs[0].end_address;
+        const directionRoutes = renderer?.directions.routes[0].legs[0];
+        const distance = directionRoutes.distance;
+
+        console.log(distance, 'distance');
+        changeValue('distance', distance);
+        setFrom(origin);
+        setTo(destination);
+      }
+      // console.log(origin);
+      // console.log(destination);
+    },
+    [renderer, directionsResult],
+  );
+
+  const directionsServiceLoaded = useCallback((dirService: any) => {
+    // console.log('dirService', dirService);
+  }, []);
+
+  const onDirectionsRendererLoaded = useCallback((dirRenderer: any) => {
+    // console.log('dirRenderer', dirRenderer);
+    setRenderer(dirRenderer);
+  }, []);
+
+  const renderOptions = useMemo(
+    () => ({
+      directions: directionsResult,
+      draggable: true,
+      preserveViewport: true, // do not zoom on render
+    }),
+    [directionsResult],
+  );
 
   const renderMap = () => {
     // wrapping to a function is useful in case you want to access `window.google`
     // to eg. setup options or create latLng object, it won't be available otherwise
     // feel free to render directly if you don't need that
-    console.log('render map');
 
     return (
       <>
         <GoogleMap
           options={options}
-          onLoad={onLoad}
+          // onLoad={onLoad}
           mapContainerStyle={containerStyle}
           onClick={mapClickHandler}
         >
@@ -158,21 +177,28 @@ export const Map: FC<MapProps> = ({
             <DirectionsService
               callback={directionsServiceCallback}
               options={directions}
+              onLoad={directionsServiceLoaded}
             />
           )}
           {directionsResult && (
             <DirectionsRenderer
-              options={{
-                directions: directionsResult,
-                draggable: true,
-              }}
+              onLoad={onDirectionsRendererLoaded}
+              options={renderOptions}
               onDirectionsChanged={onDirectionsChanged}
             />
           )}
-          {markers &&
+          {markers.length &&
             markers.map((marker: any, i: number) => (
-              <Marker key={marker.lat.toString()} position={marker} />
+              <Marker key={`${marker.lat}${marker.lng}`} position={marker} />
             ))}
+
+          {/* {currentLocation && (
+            <InfoWindow position={currentLocation}>
+              <div>
+                <p>Your location</p>
+              </div>
+            </InfoWindow>
+          )} */}
         </GoogleMap>
 
         {/* {directionsResult && (
@@ -181,19 +207,15 @@ export const Map: FC<MapProps> = ({
               <ListGroup>
                 <ListGroup.Item>
                   Distance:
-                  <Badge variant="primary">
-                    {directionsResult.routes[0].legs[0].distance.text}
-                  </Badge>
-                  <span>
-                    ({directionsResult.routes[0].legs[0].distance.value}m)
-                  </span>
+                  <Badge variant="primary">{distance.text}</Badge>
+                  <span>({distance.value}m)</span>
                 </ListGroup.Item>
                 <ListGroup.Item>
                   Duration:
                   <Badge variant="primary">
-                    {directionsResult.routes[0].legs[0].duration.text}
+                    {renderer?.directions.routes[0].legs[0].duration.text}
                   </Badge>
-                  ({directionsResult.routes[0].legs[0].duration.value}s)
+                  ({renderer?.directions.routes[0].legs[0].duration.value}s)
                 </ListGroup.Item>
               </ListGroup>
             </div>

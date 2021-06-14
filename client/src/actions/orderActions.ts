@@ -1,9 +1,13 @@
-import { ChangeValueAction, OrderActionTypes } from '../types/orderTypes';
-import { OrderState } from './../types/orderTypes';
+import {
+  ChangeValueAction,
+  OrderActionTypes,
+  OrderValues,
+} from '../types/orderTypes';
+import { OrderState } from '../types/orderTypes';
 
 export const changeValue = (
   prop: keyof OrderState,
-  value: string | string[],
+  value: OrderValues,
 ): ChangeValueAction => {
   return {
     type: OrderActionTypes.CHANGE_VALUE,

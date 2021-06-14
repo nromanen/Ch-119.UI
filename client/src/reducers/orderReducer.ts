@@ -3,12 +3,16 @@ import { OrderState } from './../types/orderTypes';
 
 export const initialState: OrderState = {
   from: 'Головна 265',
-  to: 'Ватутіна 1',
-  car_type: 'Basic',
+  to: 'Ватутіна 1, Чернівці',
+  car_type: 'basic',
   extraServices: [],
   paymentType: 'cash',
-  price: '11',
+  price: 0,
   status: 'active',
+  distance: {
+    text: '',
+    value: null,
+  },
 };
 
 export const orderReducer = (

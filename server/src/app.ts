@@ -41,6 +41,7 @@ if (process.env.NODE_ENV !== PRODUCTION) {
     }),
   );
 }
+
 app.use(errorHandler);
 
 sequelize.sync().then(() => {

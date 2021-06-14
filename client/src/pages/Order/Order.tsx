@@ -1,12 +1,19 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
+import axios from 'axios';
 import { useTypedSelector } from '../../hooks/useTypedSelector';
 import { Map } from './Map';
 import { OrderForm } from './OrderForm';
-import { useActions } from './../../hooks/useActions';
+import { useInfoActions, useOrderActions } from '../../hooks/useActions';
+
+import './Order.scss';
+
+export interface CurrentLocation {
+  lat: number;
+  lng: number;
+}
 
 export const Order = () => {
   const [directions, setDirections] = useState<google.maps.DirectionsRequest>();
-  const [map, setMap] = useState<google.maps.Map>();
 
   const [fromAutocomplete, setFromAutocomplete] = useState({
     getPlace: () => {},
@@ -14,30 +21,64 @@ export const Order = () => {
   const [toAutocomplete, setToAutocomplete] = useState({ getPlace: () => {} });
 
   const { from, to } = useTypedSelector((state) => state.order);
-  const { changeValue } = useActions();
-  const setFrom = (value: string) => {
+  const { changeValue } = useOrderActions();
+
+  const [currentLocation, setCurrentLocation] = useState<CurrentLocation>();
+  const [currentCity, setCurrentCity] = useState<string>();
+  const { car_types, extra_services } = useTypedSelector((state) => state.info);
+
+  const { getInfoCreator } = useInfoActions();
+  useEffect(() => {
+    getCurrentLocation();
+    getInfoCreator('Чернівці');
+    // getCityInfo().then((res) => {
+    //   setInfo(res);
+    // });
+  }, []);
+
+  const getCurrentLocation = () => {
+    navigator.geolocation.getCurrentPosition((pos) => {
+      const loc = {
+        lat: pos.coords.latitude,
+        lng: pos.coords.longitude,
+      };
+      getCityByLocation(loc);
+      setCurrentLocation(loc);
+    });
+  };
+
+  const getCityByLocation = async (l: CurrentLocation) => {
+    const res = await axios.get(
+      `https://maps.googleapis.com/maps/api/geocode/json`,
+      {
+        params: {
+          key: process.env.REACT_APP_MAP_API_KEY,
+          latlng: `${l.lat},${l.lng}`,
+          language: 'uk',
+        },
+      },
+    );
+    const region = res.data.plus_code.compound_code.split(', ')[1];
+    setCurrentCity(region);
+  };
+
+  const setFrom = useCallback((value: string) => {
     changeValue('from', value);
-  };
-  const setTo = (value: string) => {
+  }, []);
+  const setTo = useCallback((value: string) => {
     changeValue('to', value);
-  };
+  }, []);
 
   const onFromAutocompleteLoad = (autocomplete: any): void => {
-    console.log('autocomplete: ', autocomplete);
-
     setFromAutocomplete(autocomplete);
   };
   const onToAutocompleteLoad = (autocomplete: any): void => {
-    console.log('autocomplete: ', autocomplete);
-
     setToAutocomplete(autocomplete);
   };
 
   const onFromChanged = (): void => {
     if (fromAutocomplete !== null) {
       const geometry: any = fromAutocomplete.getPlace();
-      console.log(geometry, 'from geometry');
-
       setFrom(geometry.formatted_address);
     } else {
       console.log('Autocomplete is not loaded yet!');
@@ -53,41 +94,36 @@ export const Order = () => {
     }
   };
 
-  const createPath = (): void => {
+  const createPath = useCallback((): void => {
     const options: google.maps.DirectionsRequest = {
       origin: from,
       destination: to,
       travelMode: google.maps.TravelMode.DRIVING,
       unitSystem: google.maps.UnitSystem.METRIC,
     };
-    console.log(options, 'options');
-
     setDirections(options);
-  };
-
-  const onMapLoaded = useCallback((map: google.maps.Map) => {
-    setMap(map);
   }, []);
 
   const mapProrps = {
     directions,
     setDirections,
-    onMapLoaded,
-    map,
     setFrom,
     setTo,
+    currentLocation,
   };
   const OrderFormProrps = {
     from,
     setFrom,
     to,
     setTo,
-    map,
     onFromAutocompleteLoad,
     onToAutocompleteLoad,
     onFromChanged,
     onToChanged,
     createPath,
+    carTypes: car_types,
+    extraServices: extra_services,
+    currentCity,
   };
 
   return (
