@@ -2,7 +2,11 @@ import { combineReducers, createStore, applyMiddleware } from 'redux';
 import createSagaMiddleware from 'redux-saga';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { userReducer, initialState as UserState } from './reducers/userReducer';
-import { infoReducer, initialState as InfoState } from './reducers/infoReducer';
+import {
+  cityInfoReducer,
+  initialState as InfoState,
+} from './reducers/cityInfoReducer';
+import { mapReducer, initialState as MapState } from './reducers/mapReducer';
 import {
   orderReducer,
   initialState as OrderState,
@@ -14,13 +18,15 @@ const sagaMiddleware = createSagaMiddleware();
 const initialState = {
   user: UserState,
   order: OrderState,
-  info: InfoState,
+  cityInfo: InfoState,
+  map: MapState,
 };
 
 const redusers = combineReducers({
   user: userReducer,
   order: orderReducer,
-  info: infoReducer,
+  cityInfo: cityInfoReducer,
+  map: mapReducer,
 });
 
 const store = createStore(

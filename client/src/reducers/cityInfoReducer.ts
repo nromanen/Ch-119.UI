@@ -1,5 +1,5 @@
-import { InfoAction, InfoActionTypes } from '../types/infoTypes';
-import { CityInfoI } from './../pages/Order/mapService';
+import { InfoAction, InfoActionTypes } from '../types/cityInfoTypes';
+import { CityInfoI } from '../pages/Order/mapService';
 
 export const initialState: CityInfoI = {
   basePrice: 41,
@@ -10,7 +10,7 @@ export const initialState: CityInfoI = {
   id: 1,
 };
 
-export const infoReducer = (
+export const cityInfoReducer = (
   state = initialState,
   action: InfoAction,
 ): CityInfoI => {

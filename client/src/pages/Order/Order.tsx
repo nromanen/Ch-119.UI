@@ -6,6 +6,7 @@ import { OrderForm } from './OrderForm';
 import { useInfoActions, useOrderActions } from '../../hooks/useActions';
 
 import './Order.scss';
+import { useMapActions } from './../../hooks/useActions';
 
 export interface CurrentLocation {
   lat: number;
@@ -21,22 +22,27 @@ export const Order = () => {
   const [toAutocomplete, setToAutocomplete] = useState({ getPlace: () => {} });
 
   const { from, to } = useTypedSelector((state) => state.order);
-  const { changeValue } = useOrderActions();
+  const { changeOrderValue } = useOrderActions();
 
   const [currentLocation, setCurrentLocation] = useState<CurrentLocation>();
   const [currentCity, setCurrentCity] = useState<string>();
-  const { car_types, extra_services } = useTypedSelector((state) => state.info);
+  const { car_types, extra_services } = useTypedSelector(
+    (state) => state.cityInfo,
+  );
 
-  const { getInfoCreator } = useInfoActions();
+  const { getCurrentLocation } = useMapActions();
+
+  const { getCityInfoCreator } = useInfoActions();
   useEffect(() => {
     getCurrentLocation();
-    getInfoCreator('Чернівці');
+    // getCurrentLocationF();
+    // getCityInfoCreator('Чернівці');
     // getCityInfo().then((res) => {
     //   setInfo(res);
     // });
   }, []);
 
-  const getCurrentLocation = () => {
+  const getCurrentLocationF = () => {
     navigator.geolocation.getCurrentPosition((pos) => {
       const loc = {
         lat: pos.coords.latitude,
@@ -63,10 +69,10 @@ export const Order = () => {
   };
 
   const setFrom = useCallback((value: string) => {
-    changeValue('from', value);
+    changeOrderValue('from', value);
   }, []);
   const setTo = useCallback((value: string) => {
-    changeValue('to', value);
+    changeOrderValue('to', value);
   }, []);
 
   const onFromAutocompleteLoad = (autocomplete: any): void => {

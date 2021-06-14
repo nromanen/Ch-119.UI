@@ -4,6 +4,7 @@ import {
   DirectionsService,
   DirectionsRenderer,
   useJsApiLoader,
+  useLoadScript,
   Marker,
 } from '@react-google-maps/api';
 import { Libraries } from '@react-google-maps/api/dist/utils/make-load-script-url';
@@ -66,7 +67,7 @@ export const Map: FC<MapProps> = ({
   const [markers, setMarkers] = useState<Array<any>>([]);
   const [renderer, setRenderer] = useState<any>();
   const { distance } = useTypedSelector(({ order }) => order);
-  const { changeValue } = useOrderActions();
+  const { changeOrderValue } = useOrderActions();
 
   useEffect(() => {
     if (currentLocation) {
@@ -132,7 +133,7 @@ export const Map: FC<MapProps> = ({
         const distance = directionRoutes.distance;
 
         console.log(distance, 'distance');
-        changeValue('distance', distance);
+        changeOrderValue('distance', distance);
         setFrom(origin);
         setTo(destination);
       }

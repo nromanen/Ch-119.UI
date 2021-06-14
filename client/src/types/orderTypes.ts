@@ -14,7 +14,9 @@ export interface OrderState {
   distance: DistanceI;
 }
 
-export type OrderValues = string | string[] | number;
+type ValueOf<T> = T[keyof T];
+
+export type OrderValues = ValueOf<OrderState>;
 
 export interface ChangeValueAction {
   type: OrderActionTypes.CHANGE_VALUE;

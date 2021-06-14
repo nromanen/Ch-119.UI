@@ -1,4 +1,4 @@
-import { FC, SyntheticEvent, useRef, useEffect, SFC } from 'react';
+import { FC, SyntheticEvent, useRef, useEffect } from 'react';
 import axios from 'axios';
 import { Autocomplete } from '@react-google-maps/api';
 import {
@@ -61,8 +61,8 @@ export const OrderForm: FC<OrderFormProps> = ({
   extraServices,
   currentCity,
 }) => {
-  const { changeValue } = useOrderActions();
-  const info = useTypedSelector((state) => state.info);
+  const { changeOrderValue } = useOrderActions();
+  const info = useTypedSelector((state) => state.cityInfo);
   const order = useTypedSelector((state) => state.order);
   const formRef = useRef<any>(null);
 
@@ -99,7 +99,7 @@ export const OrderForm: FC<OrderFormProps> = ({
     };
 
     const price = calculatePrice(value);
-    price && changeValue('price', price);
+    price && changeOrderValue('price', price);
   }, [info, order.car_type, order.distance, order.extraServices]);
 
   const onExtraServicesChanged = () => {
@@ -111,7 +111,7 @@ export const OrderForm: FC<OrderFormProps> = ({
 
     const extraServices = services.map((el: HTMLInputElement) => el.value);
 
-    changeValue('extraServices', extraServices);
+    changeOrderValue('extraServices', extraServices);
   };
 
   const onSubmit = (e: SyntheticEvent) => {
@@ -189,7 +189,7 @@ export const OrderForm: FC<OrderFormProps> = ({
             className="form-select form-control col-xs-4"
             aria-label="Car type select"
             value={order.car_type}
-            onChange={(e) => changeValue('car_type', e.target.value)}
+            onChange={(e) => changeOrderValue('car_type', e.target.value)}
           >
             {carTypes?.map(({ id, name }) => {
               return (
@@ -218,36 +218,34 @@ export const OrderForm: FC<OrderFormProps> = ({
                     }
 
                     return (
-                      <>
-                        <OverlayTrigger
-                          key={id}
-                          placement="top"
-                          overlay={
-                            <Tooltip id={`tooltip-top`}>
-                              <strong>{name}</strong>.
-                            </Tooltip>
-                          }
+                      <OverlayTrigger
+                        key={id}
+                        placement="top"
+                        overlay={
+                          <Tooltip id={`tooltip-top`}>
+                            <strong>{name}</strong>.
+                          </Tooltip>
+                        }
+                      >
+                        <Form.Label
+                          className="col-xs-2 extra-service__label"
+                          htmlFor={name}
                         >
-                          <Form.Label
-                            className="col-xs-2 extra-service__label"
-                            htmlFor={name}
-                          >
-                            {/* {name} */}
-                            <Form.Check
-                              hidden
-                              id={name}
-                              aria-label={name}
-                              type="checkbox"
-                              // label={name}
-                              data-db-id={id}
-                              name="extraServices"
-                              value={name}
-                              onChange={onExtraServicesChanged}
-                            />
-                            <Icon className={iconClass.join(' ')} />
-                          </Form.Label>
-                        </OverlayTrigger>
-                      </>
+                          {/* {name} */}
+                          <Form.Check
+                            hidden
+                            id={name}
+                            aria-label={name}
+                            type="checkbox"
+                            // label={name}
+                            data-db-id={id}
+                            name="extraServices"
+                            value={name}
+                            onChange={onExtraServicesChanged}
+                          />
+                          <Icon className={iconClass.join(' ')} />
+                        </Form.Label>
+                      </OverlayTrigger>
                     );
                   })}
                 </Card.Body>

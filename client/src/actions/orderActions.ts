@@ -1,11 +1,11 @@
 import {
+  OrderState,
   ChangeValueAction,
   OrderActionTypes,
   OrderValues,
 } from '../types/orderTypes';
-import { OrderState } from '../types/orderTypes';
 
-export const changeValue = (
+export const changeOrderValue = (
   prop: keyof OrderState,
   value: OrderValues,
 ): ChangeValueAction => {
