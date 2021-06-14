@@ -9,7 +9,7 @@ export default (sequelize: any, DataTypes: any) => {
      */
     static associate() {
       // define association here
-      // Driver.hasOne(sequelize.models['User'])
+      Driver.belongsTo(sequelize.models.users);
     }
   }
   Driver.init(
@@ -18,14 +18,6 @@ export default (sequelize: any, DataTypes: any) => {
       car_model: DataTypes.STRING,
       car_number: { type: DataTypes.STRING, unique: true },
       driver_rating: DataTypes.INTEGER,
-      user_id: {
-        type: DataTypes.INTEGER,
-        allowNull: true,
-        references: {
-          model: 'users',
-          key: 'id',
-        },
-      },
     },
     {
       sequelize,

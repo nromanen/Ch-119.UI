@@ -24,7 +24,7 @@ export default (sequelize: any, DataTypes: any) => {
         type: DataTypes.STRING(1000),
       },
       rating: {
-        type: DataTypes.DECIMAL(10, 1),
+        type: DataTypes.INTEGER,
       },
       author_id: {
         type: DataTypes.INTEGER,
