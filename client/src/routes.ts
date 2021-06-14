@@ -4,16 +4,22 @@ import { Registration } from './components/Login/Registration';
 import { RouteProps } from 'react-router-dom';
 import { FEEDBACK_ROUTE } from './constants/routerConstants';
 import Feedback from './pages/feedback/Feedback';
-// import { Comp } from './components/Comp';
 import { Order } from './pages/Order/Order';
+import OrderActive from './components/driver/orderActive';
+import OrderAccepted from './components/driver/orderAccepted';
+import { ORDER_ACTIVE_ROUTE } from './constants/routerConstants';
+import { ORDER_ACCEPTED_ROUTE } from './constants/routerConstants';
 
-// export const authRouters = [
-//     {
-//         path: ORDER_ROUTE,
-//         Component: Order
-//     },
-
-// ]
+export const authRouters: RouteProps[] = [
+  {
+    path: ORDER_ACTIVE_ROUTE,
+    component: OrderActive,
+  },
+  {
+    path: ORDER_ACCEPTED_ROUTE,
+    component: OrderAccepted,
+  },
+];
 
 export const publicRouters: RouteProps[] = [
   {
