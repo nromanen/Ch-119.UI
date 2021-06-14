@@ -8,11 +8,12 @@ const AppRouter: FC = () => {
     <Switch>
       {publicRouters.map(({ path, component }) => (
         <Route key={path?.toString()} path={path} component={component} exact />
-      ))},
+      ))}
+      ,
       {authRouters.map(({ path, component }, index) => (
-        <Route
-          key={path?.toString()} path={path} component={component} exact />
-      ))},
+        <Route key={path?.toString()} path={path} component={component} exact />
+      ))}
+      ,
       <Redirect to={LOGIN_ROUTE} />
     </Switch>
   );

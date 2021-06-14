@@ -43,7 +43,7 @@ if (process.env.NODE_ENV !== PRODUCTION) {
 }
 app.use(errorHandler);
 
-sequelize.sync({ force: true }).then(() => {
+sequelize.sync().then(() => {
   app.listen(PORT, () => {
     logger.log(
       'info',

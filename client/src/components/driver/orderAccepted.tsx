@@ -1,11 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
+import Feedback from '../../pages/feedback/Feedback';
 
 /**
  * @return {Object}
  */
 const OrderAccepted = () => {
+  const [show, setShow] = useState(false);
+
+  const handleShow = () => setShow(true);
+
   const [order, setOrders] = useState<any[]>([]);
   useEffect(() => {
     fetchOrders();
@@ -13,9 +18,7 @@ const OrderAccepted = () => {
   }, []);
 
   const fetchOrders = async () => {
-    const data = await fetch(
-        'https://fakestoreapi.com/products',
-    );
+    const data = await fetch('https://fakestoreapi.com/products');
 
     const item = await data.json();
     console.log(data);
@@ -24,8 +27,8 @@ const OrderAccepted = () => {
   };
 
   return (
-    <div style={{background: '#D3D3D3', padding: '15px'}}>
-      <div style={{background: '#ffff', padding: '15px', margin: '15px'}}>
+    <div style={{ background: '#D3D3D3', padding: '15px' }}>
+      <div style={{ background: '#ffff', padding: '15px', margin: '15px' }}>
         <h3>Order is accepted.</h3>
         <p>Name: {order[2]?.title}</p>
         <p>From:</p>
@@ -34,7 +37,9 @@ const OrderAccepted = () => {
         <p>Phone:</p>
         <p>Extra services:</p>
         <Link to={'#'}>
-          <Button variant="success">Finish</Button>
+          <Button variant="success" onClick={handleShow}>
+            Finish
+          </Button>
         </Link>
         <Link to={'#'}>
           <Button variant="danger">Cancel</Button>
@@ -43,6 +48,7 @@ const OrderAccepted = () => {
           <Button variant="warning">Waiting</Button>
         </Link>
       </div>
+      <Feedback isShown={show}></Feedback>
     </div>
   );
 };
