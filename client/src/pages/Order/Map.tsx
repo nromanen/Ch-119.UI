@@ -26,7 +26,7 @@ interface MapProps {
     result: google.maps.DirectionsResult,
     status: google.maps.DirectionsStatus,
   ) => void;
-  // onMapLoaded: (mapInstance: google.maps.Map) => void;
+  onMapLoaded: (mapInstance: google.maps.Map) => void;
   mapOptions: google.maps.MapOptions;
   directions: google.maps.DirectionsRequest | null;
   mapContainerStyle: any;
@@ -38,7 +38,7 @@ export const Map: FC<MapProps> = ({
   onDirectionsChanged,
   mapClickHandler,
   directionsServiceCallback,
-  // onMapLoaded,
+  onMapLoaded,
   mapOptions,
   directions,
   mapContainerStyle,
@@ -47,6 +47,8 @@ export const Map: FC<MapProps> = ({
     googleMapsApiKey,
     libraries: libraries,
   });
+
+  // TODO save renderer here
 
   const directionsServiceLoaded = useCallback((dirService: any) => {
     // console.log('dirService', dirService);
@@ -61,7 +63,7 @@ export const Map: FC<MapProps> = ({
       <>
         <GoogleMap
           options={mapOptions}
-          // onLoad={onMapLoaded}
+          onLoad={onMapLoaded}
           mapContainerStyle={mapContainerStyle}
           onClick={mapClickHandler}
         >

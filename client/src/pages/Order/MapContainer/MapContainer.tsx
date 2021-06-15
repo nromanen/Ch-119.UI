@@ -41,7 +41,8 @@ export const MapContainer = () => {
 
   const onMapLoaded = React.useCallback(function onLoad(mapInstance) {
     // do something with map Instance
-    changeMapValue('map', mapInstance);
+
+    // changeMapValue('map', mapInstance);
     changeMapValue('isMapLoaded', true);
   }, []);
 
@@ -62,9 +63,10 @@ export const MapContainer = () => {
   const onDirectionsChanged = useCallback(
     function gets() {
       if (renderer) {
-        const origin = renderer.directions.routes[0].legs[0].start_address;
-        const destination = renderer.directions.routes[0].legs[0].end_address;
-        const directionRoutes = renderer?.directions.routes[0].legs[0];
+        const directions = renderer.getDirections();
+        const origin = directions.routes[0].legs[0].start_address;
+        const destination = directions.routes[0].legs[0].end_address;
+        const directionRoutes = directions.routes[0].legs[0];
         const distance = directionRoutes.distance;
 
         console.log(distance, 'distance');
@@ -78,6 +80,9 @@ export const MapContainer = () => {
 
   const onDirectionsRendererLoaded = useCallback((dirRenderer: any) => {
     // console.log('dirRenderer', dirRenderer);
+
+    console.log('on renderer loaded');
+
     changeMapValue('renderer', dirRenderer);
   }, []);
 
@@ -96,7 +101,7 @@ export const MapContainer = () => {
     onDirectionsChanged,
     mapClickHandler,
     directionsServiceCallback,
-    // onMapLoaded,
+    onMapLoaded,
     mapOptions,
     directions,
     mapContainerStyle,

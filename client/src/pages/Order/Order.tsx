@@ -1,22 +1,18 @@
 import { useState, useCallback, useEffect } from 'react';
 import axios from 'axios';
-import { useTypedSelector } from '../../hooks/useTypedSelector';
-import { Map } from './Map';
-import { OrderForm } from './OrderForm';
-import { useInfoActions, useOrderActions } from '../../hooks/useActions';
 
-import './Order.scss';
+import { useTypedSelector } from '../../hooks/useTypedSelector';
+import { useInfoActions, useOrderActions } from '../../hooks/useActions';
 import { useMapActions } from './../../hooks/useActions';
+
+import { OrderForm } from './OrderForm';
 import { MapContainer } from './MapContainer/MapContainer';
 
-export interface CurrentLocation {
-  lat: number;
-  lng: number;
-}
+import { CurrentLocation } from './../../types/mapTypes';
+
+import './Order.scss';
 
 export const Order = () => {
-  const [directions, setDirections] = useState<google.maps.DirectionsRequest>();
-
   const [fromAutocomplete, setFromAutocomplete] = useState({
     getPlace: () => {},
   });
@@ -24,8 +20,8 @@ export const Order = () => {
 
   const { from, to } = useTypedSelector((state) => state.order);
   const { changeOrderValue } = useOrderActions();
+  const { changeMapValue } = useMapActions();
 
-  const [currentLocation, setCurrentLocation] = useState<CurrentLocation>();
   const [currentCity, setCurrentCity] = useState<string>();
   const { car_types, extra_services } = useTypedSelector(
     (state) => state.cityInfo,
@@ -33,7 +29,6 @@ export const Order = () => {
 
   const { getCurrentLocation } = useMapActions();
 
-  const { getCityInfoCreator } = useInfoActions();
   useEffect(() => {
     getCurrentLocation();
     // getCurrentLocationF();
@@ -42,32 +37,6 @@ export const Order = () => {
     //   setInfo(res);
     // });
   }, []);
-
-  const getCurrentLocationF = () => {
-    navigator.geolocation.getCurrentPosition((pos) => {
-      const loc = {
-        lat: pos.coords.latitude,
-        lng: pos.coords.longitude,
-      };
-      getCityByLocation(loc);
-      setCurrentLocation(loc);
-    });
-  };
-
-  const getCityByLocation = async (l: CurrentLocation) => {
-    const res = await axios.get(
-      `https://maps.googleapis.com/maps/api/geocode/json`,
-      {
-        params: {
-          key: process.env.REACT_APP_MAP_API_KEY,
-          latlng: `${l.lat},${l.lng}`,
-          language: 'uk',
-        },
-      },
-    );
-    const region = res.data.plus_code.compound_code.split(', ')[1];
-    setCurrentCity(region);
-  };
 
   const setFrom = useCallback((value: string) => {
     changeOrderValue('from', value);
@@ -108,16 +77,10 @@ export const Order = () => {
       travelMode: google.maps.TravelMode.DRIVING,
       unitSystem: google.maps.UnitSystem.METRIC,
     };
-    setDirections(options);
+    changeMapValue('directions', options);
+    // setDirections(options);
   }, []);
 
-  const mapProrps = {
-    directions,
-    setDirections,
-    setFrom,
-    setTo,
-    currentLocation,
-  };
   const OrderFormProrps = {
     from,
     setFrom,
@@ -130,7 +93,7 @@ export const Order = () => {
     createPath,
     carTypes: car_types,
     extraServices: extra_services,
-    currentCity,
+    // currentCity,
   };
 
   return (

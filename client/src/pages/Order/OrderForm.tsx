@@ -44,7 +44,7 @@ interface OrderFormProps {
   to: string;
   carTypes?: CarTypesI[];
   extraServices?: ExtraServicesI[];
-  currentCity?: string;
+  // currentCity?: string;
 }
 
 export const OrderForm: FC<OrderFormProps> = ({
@@ -59,12 +59,14 @@ export const OrderForm: FC<OrderFormProps> = ({
   setTo,
   carTypes,
   extraServices,
-  currentCity,
+  // currentCity,
 }) => {
   const { changeOrderValue } = useOrderActions();
   const info = useTypedSelector((state) => state.cityInfo);
   const order = useTypedSelector((state) => state.order);
   const formRef = useRef<any>(null);
+
+  const { name: currentCity } = useTypedSelector((state) => state.cityInfo);
 
   const calculatePrice = (prices: any) => {
     const servicesPrice = prices.services.reduce(
