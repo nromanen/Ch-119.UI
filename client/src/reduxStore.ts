@@ -4,6 +4,11 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 import { userReducer, initialState as UserState } from './reducers/userReducer';
 import { infoReducer, initialState as InfoState } from './reducers/infoReducer';
 import {
+  feedbackReducer,
+  initialState as FeedbackState,
+} from './reducers/feedbackReducer';
+
+import {
   orderReducer,
   initialState as OrderState,
 } from './reducers/orderReducer';
@@ -15,12 +20,14 @@ const initialState = {
   user: UserState,
   order: OrderState,
   info: InfoState,
+  feedback: FeedbackState,
 };
 
 const redusers = combineReducers({
   user: userReducer,
   order: orderReducer,
   info: infoReducer,
+  feedback: feedbackReducer,
 });
 
 const store = createStore(

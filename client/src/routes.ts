@@ -8,6 +8,7 @@ import OrderActive from './components/driver/orderActive';
 import OrderAccepted from './components/driver/orderAccepted';
 import { ORDER_ACTIVE_ROUTE } from './constants/routerConstants';
 import { ORDER_ACCEPTED_ROUTE } from './constants/routerConstants';
+import { Order } from './pages/Order/Order';
 
 export const authRouters: RouteProps[] = [
   {
@@ -36,4 +37,5 @@ export const publicRouters: RouteProps[] = [
     component: Registration,
     exact: true,
   },
+  { path: '/', component: Order },
 ];

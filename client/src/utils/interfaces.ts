@@ -4,3 +4,7 @@ export interface RegisterData {
   password: string;
   rpassword: string;
 }
+
+export interface ParamTypes {
+  orderId: string;
+}

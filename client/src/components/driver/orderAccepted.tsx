@@ -1,15 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import Feedback from '../../pages/feedback/Feedback';
+import { useFeedbackActions } from '../../hooks/useActions';
 
 /**
  * @return {Object}
  */
 const OrderAccepted = () => {
-  const [show, setShow] = useState(false);
-
-  const handleShow = () => setShow(true);
+  const { showModal } = useFeedbackActions();
 
   const [order, setOrders] = useState<any[]>([]);
   useEffect(() => {
@@ -37,7 +36,7 @@ const OrderAccepted = () => {
         <p>Phone:</p>
         <p>Extra services:</p>
         <Link to={'#'}>
-          <Button variant="success" onClick={handleShow}>
+          <Button variant="success" onClick={showModal}>
             Finish
           </Button>
         </Link>
@@ -48,7 +47,7 @@ const OrderAccepted = () => {
           <Button variant="warning">Waiting</Button>
         </Link>
       </div>
-      <Feedback isShown={show}></Feedback>
+      <Feedback></Feedback>
     </div>
   );
 };

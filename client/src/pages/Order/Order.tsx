@@ -54,7 +54,7 @@ export const Order = () => {
         params: {
           key: process.env.REACT_APP_MAP_API_KEY,
           latlng: `${l.lat},${l.lng}`,
-          language: 'uk',
+          language: 'en',
         },
       },
     );

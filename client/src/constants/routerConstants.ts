@@ -1,4 +1,4 @@
-export const LOGIN_ROUTE = '/';
+export const LOGIN_ROUTE = '/login';
 export const REGISTRATION_ROUTE = '/registration';
 export const ORDER_ROUTE = '/order';
 export const FEEDBACK_ROUTE = '/:orderId/feedback';

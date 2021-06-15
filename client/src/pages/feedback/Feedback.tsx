@@ -1,26 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import StarRatingComponent from 'react-star-rating-component';
 import { Form, Field } from 'react-final-form';
 import { createFeedback } from '../../services/apiFeedbackService';
 import { useParams } from 'react-router-dom';
 import { Button, Modal } from 'react-bootstrap';
+import { useTypedSelector } from '../../hooks/useTypedSelector';
+import { useFeedbackActions } from '../../hooks/useActions';
+import { ParamTypes } from '../../utils/interfaces';
+import './Feedback.scss';
 
-export type FeedbackProps = {
-  isShown: boolean;
-};
-
-export const Feedback: React.FC<FeedbackProps> = ({ isShown }) => {
-  const [show, setShow] = useState(false);
-
-  useEffect(() => {
-    setShow(isShown);
-  }, [isShown]);
-
-  const handleClose = () => setShow(false);
-
-  interface ParamTypes {
-    orderId: string;
-  }
+export const Feedback: React.FC = () => {
+  const isShown = useTypedSelector((state) => state.feedback.isShown);
+  const { hideModal } = useFeedbackActions();
 
   const { orderId } = useParams<ParamTypes>();
 
@@ -39,71 +30,79 @@ export const Feedback: React.FC<FeedbackProps> = ({ isShown }) => {
   const required = (value: any) => (value ? undefined : 'Required');
 
   const maxValue = (max: any) => (value: any) =>
-    !value || value?.length <= max ? undefined : `Should be less than ${max}`;
+    !value || value?.length <= max ? undefined : `Max length is ${max} symbols`;
 
   return (
-    <Modal show={show} onHide={handleClose}>
+    <Modal
+      show={isShown}
+      onHide={hideModal}
+      className="d-flex justify-content-center"
+    >
       <Modal.Header closeButton>
         <Modal.Title>Feedback</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <div>
-          <Form
-            onSubmit={onSubmit}
-            render={({ handleSubmit, invalid }) => (
-              <div>
-                <form onSubmit={handleSubmit}>
-                  <Field name="stars" validate={required}>
-                    {({ input, meta }) => (
-                      <div>
-                        <label>How would you rate your experience?</label>
+        <Form
+          onSubmit={onSubmit}
+          render={({ handleSubmit, invalid }) => (
+            <div>
+              <form onSubmit={handleSubmit}>
+                <Field name="stars" validate={required}>
+                  {({ input, meta }) => (
+                    <div>
+                      <label className="star_label">
+                        How would you rate your experience?
+                      </label>
+                      <div className="d-flex justify-content-center stars">
                         <StarRatingComponent
                           name="rate1"
                           starCount={5}
                           value={Number(input.value)}
                           onStarClick={input.onChange}
                         />
-                        {meta.error && meta.touched && (
-                          <span>{meta.error}</span>
+                      </div>
+                      {meta.error && meta.touched && <span>{meta.error}</span>}
+                    </div>
+                  )}
+                </Field>
+                <Field name="feedbackText" validate={maxValue(1000)}>
+                  {({ input, meta }) => (
+                    <div>
+                      <label>Do you have any additional comment?</label>
+                      <textarea
+                        {...input}
+                        rows={5}
+                        placeholder="Please, enter your comment here"
+                        className="form-control"
+                      />
+                      <div className="maxlength_warning">
+                        {meta.error && (
+                          <div className="alert alert-warning">
+                            {meta.error && <span>{meta.error}</span>}
+                          </div>
                         )}
                       </div>
-                    )}
-                  </Field>
-                  <Field name="feedbackText" validate={maxValue(1000)}>
-                    {({ input, meta }) => (
-                      <div>
-                        <label>Do you have any additional comment?</label>
-                        <textarea
-                          {...input}
-                          rows={5}
-                          placeholder="Please, enter your comment here"
-                        />
-                        {meta.error && meta.touched && (
-                          <span>{meta.error}</span>
-                        )}
-                      </div>
-                    )}
-                  </Field>
-                  <div className="buttons">
-                    <Modal.Footer>
-                      <Button variant="secondary" onClick={handleClose}>
-                        Close
-                      </Button>
-                      <Button
-                        variant="primary"
-                        type="submit"
-                        disabled={invalid}
-                        onClick={handleClose}
-                      >
-                        Send
-                      </Button>
-                    </Modal.Footer>
-                  </div>
-                </form>
-              </div>
-            )}
-          />
-        </div>
+                    </div>
+                  )}
+                </Field>
+                <div className="d-flex justify-content-end buttons">
+                  <Button variant="secondary" onClick={hideModal}>
+                    Close
+                  </Button>
+                  <Button
+                    variant="primary"
+                    type="submit"
+                    className="submit_btn"
+                    disabled={invalid}
+                    onClick={hideModal}
+                  >
+                    Send
+                  </Button>
+                </div>
+              </form>
+            </div>
+          )}
+        />
       </Modal.Body>
     </Modal>
   );
