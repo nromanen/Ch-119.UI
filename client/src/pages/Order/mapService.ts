@@ -48,7 +48,9 @@ export interface CityInfoI {
   extra_services: ExtraServicesI[];
 }
 
-export const fetchCityInfo = (name = 'Чернівці') => {
+export const fetchCityInfo = (name: string) => () => {
+  console.log('fetch city = ', name);
+
   return axios.get<CityInfoI>(`${process.env.REACT_APP_HOST}info`, {
     params: {
       name,

@@ -1,12 +1,19 @@
-import { call, put, StrictEffect, takeEvery } from 'redux-saga/effects';
+import { call, put, select, StrictEffect, takeEvery } from 'redux-saga/effects';
 import { InfoActionTypes } from '../types/cityInfoTypes';
 import { fetchCityInfo, CityInfoI } from './../pages/Order/mapService';
 import { setCityInfoCreator } from '../actions/cityInfoActions';
 import { AxiosResponse } from 'axios';
 import { useTypedSelector } from './../hooks/useTypedSelector';
 
+export const getCityNameFromState = (state: any) => state.cityInfo;
+
 function* fetchCityInfoWorker(): Generator<StrictEffect, void, any> {
-  const data = (yield call(fetchCityInfo)) as AxiosResponse<CityInfoI>;
+  const cityInfoState = yield select(getCityNameFromState);
+  console.log('cityInfoState', cityInfoState);
+
+  const data = (yield call(
+    fetchCityInfo(cityInfoState.name),
+  )) as AxiosResponse<CityInfoI>;
   yield put(setCityInfoCreator(data.data));
 }
 

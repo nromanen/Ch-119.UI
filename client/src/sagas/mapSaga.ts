@@ -5,6 +5,10 @@ import { setCityInfoCreator } from '../actions/cityInfoActions';
 import axios, { AxiosResponse } from 'axios';
 import { changeMapValue } from '../actions/mapActions';
 import { getCityInfoCreator } from '../actions/cityInfoActions';
+import { changeOrderValue } from './../actions/orderActions';
+import { changeCityInfoValueCreator } from './../actions/cityInfoActions';
+
+export const getCityNameFromState = (state: any) => state.cityInfo;
 
 const getCityName = (l: any) => () => {
   return axios.get(`https://maps.googleapis.com/maps/api/geocode/json`, {
@@ -31,6 +35,7 @@ function* getCurrentLocation(): Generator<StrictEffect, void, any> {
   yield put(changeMapValue('currentLoacation', currentLocation));
   const res = yield call(getCityName(currentLocation));
   const name = res.data.plus_code.compound_code.split(', ')[1].split(' ')[0];
+  yield put(changeCityInfoValueCreator('name', name));
   yield put(getCityInfoCreator(name));
   console.log('cityName', name);
 }

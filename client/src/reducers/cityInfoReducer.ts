@@ -17,6 +17,9 @@ export const cityInfoReducer = (
   switch (action.type) {
     case InfoActionTypes.SET_INFO:
       return { ...action.payload };
+
+    case InfoActionTypes.CHANGE_VALUE:
+      return { ...state, [action.payload.prop]: action.payload.value };
     default:
       return state;
   }

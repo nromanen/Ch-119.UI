@@ -26,6 +26,6 @@ export interface ChangeValueAction {
   };
 }
 export enum OrderActionTypes {
-  CHANGE_VALUE = 'CHANGE_VALUE',
+  CHANGE_VALUE = 'CHANGE_ORDER_VALUE',
 }
 export type OrderAction = ChangeValueAction;
