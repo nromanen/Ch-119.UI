@@ -1,15 +1,105 @@
-import React from 'react';
-import { Map } from './../Map';
+import React, { useCallback, useMemo } from 'react';
+import { Map } from '../Map';
 import { useTypedSelector } from './../../../hooks/useTypedSelector';
+import { useMapActions, useOrderActions } from './../../../hooks/useActions';
+
+const mapContainerStyle = {
+  width: '100%',
+  height: '50vh',
+};
+
+const center = {
+  lat: 48.3098624,
+  lng: 26.0079615,
+};
 
 export const MapContainer = () => {
-  const { directions } = useTypedSelector((state) => state.map);
-  const mapProrps = {
-    // directions,
-    // center,
+  const { directions, renderer, directionsResult, currentLocation } =
+    useTypedSelector((state) => state.map);
+  const { changeMapValue } = useMapActions();
+  const { changeOrderValue } = useOrderActions();
+
+  const mapOptions = useMemo(
+    () => ({
+      center: currentLocation || center,
+      zoom: 12,
+    }),
+    [],
+  );
+
+  const directionsServiceCallback = useCallback(
+    (
+      result: google.maps.DirectionsResult,
+      status: google.maps.DirectionsStatus,
+    ) => {
+      if (status === window.google.maps.DirectionsStatus.OK) {
+        changeMapValue('directionsResult', result);
+      }
+    },
+    [],
+  );
+
+  const onMapLoaded = React.useCallback(function onLoad(mapInstance) {
+    // do something with map Instance
+    changeMapValue('map', mapInstance);
+    changeMapValue('isMapLoaded', true);
+  }, []);
+
+  const mapClickHandler = React.useCallback(async (e: any) => {
+    const lat = e.latLng.lat();
+    const lng = e.latLng.lng();
+
+    const options: google.maps.DirectionsRequest = {
+      origin: { lat, lng },
+      destination: { lat, lng },
+      travelMode: google.maps.TravelMode.DRIVING,
+      unitSystem: google.maps.UnitSystem.METRIC,
+    };
+
+    changeMapValue('directions', options);
+  }, []);
+
+  const onDirectionsChanged = useCallback(
+    function gets() {
+      if (renderer) {
+        const origin = renderer.directions.routes[0].legs[0].start_address;
+        const destination = renderer.directions.routes[0].legs[0].end_address;
+        const directionRoutes = renderer?.directions.routes[0].legs[0];
+        const distance = directionRoutes.distance;
+
+        console.log(distance, 'distance');
+        changeOrderValue('distance', distance);
+        changeOrderValue('from', origin);
+        changeOrderValue('to', destination);
+      }
+    },
+    [renderer, directionsResult],
+  );
+
+  const onDirectionsRendererLoaded = useCallback((dirRenderer: any) => {
+    // console.log('dirRenderer', dirRenderer);
+    changeMapValue('renderer', dirRenderer);
+  }, []);
+
+  const renderOptions = useMemo(
+    () => ({
+      directions: directionsResult,
+      draggable: true, // can drag A and B markers
+      preserveViewport: true, // do not zoom on render
+    }),
+    [directionsResult],
+  );
+
+  const mapProps = {
+    renderOptions,
+    onDirectionsRendererLoaded,
+    onDirectionsChanged,
+    mapClickHandler,
+    directionsServiceCallback,
     // onMapLoaded,
-    // onDirectionsChanged,
-    // onDirectionsRendererLoaded,
+    mapOptions,
+    directions,
+    mapContainerStyle,
   };
-  // return <Map></Map>;
+  return <Map {...mapProps}></Map>;
 };

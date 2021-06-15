@@ -32,7 +32,7 @@ function* getCurrentLocation(): Generator<StrictEffect, void, any> {
     });
 
   const currentLocation = yield call(getCurrentLocationPromise);
-  yield put(changeMapValue('currentLoacation', currentLocation));
+  yield put(changeMapValue('currentLocation', currentLocation));
   const res = yield call(getCityName(currentLocation));
   const name = res.data.plus_code.compound_code.split(', ')[1].split(' ')[0];
   yield put(changeCityInfoValueCreator('name', name));

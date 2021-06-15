@@ -7,7 +7,7 @@ export const initialState: MapState = {
   directions: null,
   directionsResult: null,
   isMapLoaded: false,
-  currentLoacation: null,
+  currentLocation: null,
 };
 
 export const mapReducer = (

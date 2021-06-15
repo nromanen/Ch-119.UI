@@ -7,6 +7,7 @@ import { useInfoActions, useOrderActions } from '../../hooks/useActions';
 
 import './Order.scss';
 import { useMapActions } from './../../hooks/useActions';
+import { MapContainer } from './MapContainer/MapContainer';
 
 export interface CurrentLocation {
   lat: number;
@@ -134,7 +135,7 @@ export const Order = () => {
 
   return (
     <>
-      <Map {...mapProrps} />
+      <MapContainer />
       <OrderForm {...OrderFormProrps} />
     </>
   );

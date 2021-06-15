@@ -5,11 +5,12 @@ export interface CurrentLocation {
 
 export interface MapState {
   map: google.maps.Map | null;
-  renderer: google.maps.DirectionsRenderer | null;
+  renderer: any;
+  // renderer: google.maps.DirectionsRenderer;
   directions: google.maps.DirectionsRequest | null;
   directionsResult: google.maps.DirectionsResult | null;
   isMapLoaded: boolean;
-  currentLoacation: CurrentLocation | null;
+  currentLocation: CurrentLocation | null;
 }
 
 type ValueOf<T> = T[keyof T];
