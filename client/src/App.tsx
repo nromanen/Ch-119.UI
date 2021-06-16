@@ -2,6 +2,7 @@ import store from './reduxStore';
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import AppRouter from './pages/AppRouter';
+import './App.scss';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 /**

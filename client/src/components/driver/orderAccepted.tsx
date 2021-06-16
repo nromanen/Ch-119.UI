@@ -1,47 +1,73 @@
 import React, { useState, useEffect } from 'react';
 import {Link} from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
+import axios from 'axios';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMapMarkerAlt, faArrowAltCircleRight, faHryvnia, faInfoCircle, faPhone} from '@fortawesome/free-solid-svg-icons';
+import { Container, Row, Col } from 'reactstrap';
 
 /**
  * @return {Object}
  */
-const OrderAccepted = () => {
-  const [order, setOrders] = useState<any[]>([]);
+const OrderAccepted = ({match}: any) => {
+  console.log(match);
+  const [order, setOrder]: any = useState<any[]>([]);
+  // const accepted = useSelector(state => state.orderList.accepted)
   useEffect(() => {
     fetchOrders();
-    console.log(order);
   }, []);
 
   const fetchOrders = async () => {
-    const data = await fetch(
-        'https://fakestoreapi.com/products',
-    );
+    const data = await axios.get(`${process.env.REACT_APP_HOST}order/${match.params.id}`);
 
-    const item = await data.json();
     console.log(data);
-    console.log(item);
-    setOrders(item);
+    setOrder(data.data.data);
   };
 
   return (
-    <div style={{background: '#D3D3D3', padding: '15px'}}>
-      <div style={{background: '#ffff', padding: '15px', margin: '15px'}}>
-        <h3>Order is accepted.</h3>
-        <p>Name: {order[2]?.title}</p>
-        <p>From:</p>
-        <p>To:</p>
-        <p>Price:</p>
-        <p>Phone:</p>
-        <p>Extra services:</p>
+    <div className="jumbotron">
+      <div>
+      <h2 className="text-center">Order is accepted.</h2>
+      <div className="box">
+        <Container>
+          <Row>
+            <Col>
+            <p><FontAwesomeIcon icon={faMapMarkerAlt} /> {order.from}</p>
+            </Col>
+          </Row>
+          <Row>
+            <Col>
+            <p><FontAwesomeIcon icon={faArrowAltCircleRight} /> {order.to}</p>
+            </Col>
+          </Row>
+          <Row>
+            <Col>
+            <p><strong><FontAwesomeIcon icon={faHryvnia} /> {order.price}</strong></p>
+            </Col>
+          </Row>
+          <Row>
+            <Col>
+            <p><FontAwesomeIcon icon={faPhone} /></p>
+            </Col>
+          </Row>
+          <Row>
+            <Col>
+            <p>Extra services: {order.extra_services}</p>
+            </Col>
+          </Row>
+          <div className="btn-space">
         <Link to={'#'}>
-          <Button variant="success">Finish</Button>
+          <Button variant="success">Start</Button>
         </Link>
         <Link to={'#'}>
           <Button variant="danger">Cancel</Button>
         </Link>
-        <Link to={'#'}>
+        {/* <Link to={'#'}>
           <Button variant="warning">Waiting</Button>
-        </Link>
+        </Link> */}
+        </div>
+        </Container>
+      </div>
       </div>
     </div>
   );

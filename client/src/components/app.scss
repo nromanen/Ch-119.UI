@@ -1,0 +1,32 @@
+.text-center {
+    text-align: center;
+}
+
+.box {
+    background-color: #ffff;
+    margin: 20px 0 20px 0;
+    padding: 20px 0 20px 0;
+    font-size: 14px;
+}
+
+.btn-space {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+#card {
+    margin-top: 3px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: #fff;
+    background-clip: border-box;
+    border: none;
+    border-radius: .25rem;
+}
+
+.extra-service {
+    background-color: 	#FFFF00;
+}
