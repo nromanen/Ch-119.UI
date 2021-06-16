@@ -25,12 +25,15 @@ export default (sequelize: any, DataTypes: any) => {
       },
       rating: {
         type: DataTypes.INTEGER,
+        allowNull: false,
       },
       author_id: {
         type: DataTypes.INTEGER,
+        allowNull: false,
       },
       subject_id: {
         type: DataTypes.INTEGER,
+        allowNull: false,
       },
     },
     {
