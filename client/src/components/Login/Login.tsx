@@ -4,19 +4,16 @@ import { NavLink } from 'react-router-dom';
 import { Form, Field } from 'react-final-form';
 import { REGISTRATION_ROUTE } from '../../constants/routerConstants';
 import { required } from '../../utils/formValidators';
-import { login } from '../../http/userApi';
 
-export const Login: FC = () => {
+export const Login: FC = (props: any) => {
   return (
     <div className='jumbotron'>
       <div className='container-fluid'>
         <h1>Login Form</h1>
         <Form
           onSubmit={async (formObj) => {
-            const response = await login(formObj.phone, formObj.password);
-            console.log(response);
+            props.loginUser(formObj);
           }}
-          // decorators={[focusOnError]}
           subscription={{
             submitting: true,
           }}

@@ -1,24 +1,25 @@
 import { combineReducers, createStore, applyMiddleware } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
-import {
-  userReducer,
-  authReducer,
-  initialState as UserState,
-} from './reducers/userReducer';
+import { authReducer, initialState as AuthState } from './reducers/authReducer';
+import createSagaMiddleware from 'redux-saga';
+import { rootWatcher } from './sagas/index';
 
 const initialState = {
-  user: UserState,
+  auth: AuthState,
 };
 
+const sagaMiddleware = createSagaMiddleware();
+
 const redusers = combineReducers({
-  user: userReducer,
   auth: authReducer,
 });
 
 const store = createStore(
     redusers,
     initialState,
-    composeWithDevTools(applyMiddleware()),
+    composeWithDevTools(applyMiddleware(sagaMiddleware)),
 );
+
+sagaMiddleware.run(rootWatcher);
 
 export default store;

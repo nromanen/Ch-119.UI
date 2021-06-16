@@ -17,6 +17,7 @@ export default (sequelize: any, DataTypes: any) => {
       phone: { type: DataTypes.STRING, allowNull: false, unique: true },
       password: { type: DataTypes.STRING, allowNull: false },
       trips_num: { type: DataTypes.INTEGER, allowNull: true },
+      verification_code: {type: DataTypes.STRING, allowNull: false}
     },
     {
       sequelize,

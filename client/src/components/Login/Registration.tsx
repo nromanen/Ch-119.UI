@@ -2,21 +2,15 @@ import React, { FC } from 'react';
 import { Button } from 'react-bootstrap';
 import { Form, Field, FormSpy } from 'react-final-form';
 import { required } from '../../utils/formValidators';
-import { registration } from '../../http/userApi';
 
-export const Registration: FC = () => {
+export const Registration = (props: any) => {
   return (
     <div className='jumbotron'>
       <div className='container-fluid'>
         <h1>Registration</h1>
         <Form
-          onSubmit={async (formObj) => {
-            const response = await registration(
-                formObj.name,
-                formObj.phone,
-                formObj.password,
-            );
-            console.log(response);
+          onSubmit={(formObj) => {
+            props.registrateUser(formObj);
           }}
           validate={(values) => {
             const errors: any = {};
