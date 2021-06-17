@@ -6,7 +6,7 @@ axios.defaults.headers = { 'Content-Type': 'application/json' };
 export const createFeedback = async (body: any) => {
   try {
     const res = await axios.post(`/feedback`, body);
-    return await res.data;
+    return res.data;
   } catch (e) {
     console.log(e);
   }

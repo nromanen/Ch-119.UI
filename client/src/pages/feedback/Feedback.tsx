@@ -1,21 +1,24 @@
 import React from 'react';
 import StarRatingComponent from 'react-star-rating-component';
 import { Form, Field } from 'react-final-form';
-import { createFeedback } from '../../services/apiFeedbackService';
 import { useParams } from 'react-router-dom';
 import { Button, Modal } from 'react-bootstrap';
 import { useTypedSelector } from '../../hooks/useTypedSelector';
-import { useFeedbackActions } from '../../hooks/useActions';
+import {
+  useFeedbackActions,
+  useFeedbackFormActions,
+} from '../../hooks/useActions';
 import { ParamTypes } from '../../utils/interfaces';
 import './Feedback.scss';
+import { required, maxValue } from '../../utils/validators';
 
 export const Feedback: React.FC = () => {
   const isShown = useTypedSelector((state) => state.feedback.isShown);
   const { hideModal } = useFeedbackActions();
-
+  const { createFeedback } = useFeedbackFormActions();
   const { orderId } = useParams<ParamTypes>();
 
-  const onSubmit = async (values: any) => {
+  const onSubmit = (values: any) => {
     const feedback = {
       text: values.feedbackText,
       rating: values.stars,
@@ -23,14 +26,8 @@ export const Feedback: React.FC = () => {
       subject_id: 31,
       orderId: Number(orderId),
     };
-    console.log(feedback);
-    return await createFeedback(feedback);
+    return createFeedback(feedback);
   };
-
-  const required = (value: any) => (value ? undefined : 'Required');
-
-  const maxValue = (max: any) => (value: any) =>
-    !value || value?.length <= max ? undefined : `Max length is ${max} symbols`;
 
   return (
     <Modal
