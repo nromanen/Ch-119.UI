@@ -3,7 +3,6 @@ import { InfoActionTypes } from '../types/cityInfoTypes';
 import { fetchCityInfo, CityInfoI } from './../pages/Order/mapService';
 import { setCityInfoCreator } from '../actions/cityInfoActions';
 import { AxiosResponse } from 'axios';
-import { useTypedSelector } from './../hooks/useTypedSelector';
 
 export const getCityNameFromState = (state: any) => state.cityInfo;
 
@@ -14,6 +13,9 @@ function* fetchCityInfoWorker(): Generator<StrictEffect, void, any> {
   const data = (yield call(
     fetchCityInfo(cityInfoState.name),
   )) as AxiosResponse<CityInfoI>;
+
+  console.log(data, 'data');
+
   yield put(setCityInfoCreator(data.data));
 }
 

@@ -5,7 +5,7 @@ export interface CurrentLocation {
 
 export interface MapState {
   map: google.maps.Map | null;
-  renderer: any;
+  // renderer: any;
   // renderer: google.maps.DirectionsRenderer;
   directions: google.maps.DirectionsRequest | null;
   directionsResult: google.maps.DirectionsResult | null;

@@ -1,14 +1,11 @@
 import { useState, useCallback, useEffect } from 'react';
-import axios from 'axios';
 
 import { useTypedSelector } from '../../hooks/useTypedSelector';
-import { useInfoActions, useOrderActions } from '../../hooks/useActions';
+import { useOrderActions } from '../../hooks/useActions';
 import { useMapActions } from './../../hooks/useActions';
 
 import { OrderForm } from './OrderForm';
 import { MapContainer } from './MapContainer/MapContainer';
-
-import { CurrentLocation } from './../../types/mapTypes';
 
 import './Order.scss';
 
@@ -22,7 +19,6 @@ export const Order = () => {
   const { changeOrderValue } = useOrderActions();
   const { changeMapValue } = useMapActions();
 
-  const [currentCity, setCurrentCity] = useState<string>();
   const { car_types, extra_services } = useTypedSelector(
     (state) => state.cityInfo,
   );

@@ -16,7 +16,7 @@ import {
 } from 'react-bootstrap';
 import { useOrderActions } from '../../hooks/useActions';
 import { useTypedSelector } from '../../hooks/useTypedSelector';
-import { CarTypesI, ExtraServicesI } from './mapService';
+import { CarTypesI, ExtraServicesI, OrderDTO } from './mapService';
 
 import { ReactComponent as BabyChair } from './icons/babyChair.svg';
 import { ReactComponent as En } from './icons/en.svg';
@@ -69,8 +69,10 @@ export const OrderForm: FC<OrderFormProps> = ({
   const { name: currentCity } = useTypedSelector((state) => state.cityInfo);
 
   const calculatePrice = (prices: any) => {
+    console.log('prices,', prices);
+
     const servicesPrice = prices.services.reduce(
-      (acc: number, val: number) => acc + val,
+      (acc: number, val: number) => acc + +val,
       0,
     );
     return Math.ceil(
@@ -86,8 +88,8 @@ export const OrderForm: FC<OrderFormProps> = ({
       (carType) => carType.name === order.car_type,
     )?.city_car_type.coef;
 
-    const servicePrices = order.extraServices.map((service) => {
-      return info.extra_services.find((s) => s.name === service)?.city_service
+    const servicePrices = order.extraServices.map((serviceId) => {
+      return info.extra_services.find((s) => s.id === serviceId)?.city_service
         .price;
     });
 
@@ -96,11 +98,13 @@ export const OrderForm: FC<OrderFormProps> = ({
       distanceCoef: info.basePriceForKm,
       carTypeCoef: carTypeCoef,
       services: servicePrices,
-      distance: order.distance.value ? order.distance.value / 1000 : 0,
+      distance: order.distance!.value ? order.distance!.value / 1000 : 0,
       discount: 0,
     };
 
     const price = calculatePrice(value);
+    console.log('price', price);
+
     price && changeOrderValue('price', price);
   }, [info, order.car_type, order.distance, order.extraServices]);
 
@@ -111,20 +115,24 @@ export const OrderForm: FC<OrderFormProps> = ({
 
     services = services.filter((el: HTMLInputElement) => el.checked);
 
-    const extraServices = services.map((el: HTMLInputElement) => el.value);
+    const extraServices = services.map((el: HTMLInputElement) => {
+      console.dir(el.dataset.dbId, 'element');
+      return Number(el.dataset.dbId);
+    });
 
     changeOrderValue('extraServices', extraServices);
   };
 
   const onSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
+
+    const orderDTO = new OrderDTO(order);
+    // get user id from user store
+    console.log(orderDTO, 'orderDTO');
+
     axios
       .post('http://localhost:8080/api/v1/order', {
-        body: {
-          ...order,
-          // get User.id from redux
-          customer_id: 1,
-        },
+        body: orderDTO,
       })
       .then((res) => {
         console.log('create order', res);
@@ -213,7 +221,7 @@ export const OrderForm: FC<OrderFormProps> = ({
                 <Card.Body className="extra-service">
                   {extraServices?.map(({ id, name }) => {
                     const Icon: any = extraServicesIcons[name];
-                    const isActive = order.extraServices.includes(name);
+                    const isActive = order.extraServices.includes(id);
                     const iconClass = ['order__service-icon'];
                     if (isActive) {
                       iconClass.push('active');
@@ -256,7 +264,7 @@ export const OrderForm: FC<OrderFormProps> = ({
           </Accordion>
         </Form.Group>
 
-        {order.distance.value && (
+        {order.price && (
           <Badge as="p" className="order__price" variant="primary">
             &#x20b4; {order.price}
           </Badge>

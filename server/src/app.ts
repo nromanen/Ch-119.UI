@@ -53,9 +53,10 @@ const start = async () => {
     };
     await sequelize.sync(options);
     // Possibly not right
+    // Uncomment if you don't have city table
     // await sequelize.models[CITY].create(
     //   {
-    //     name: 'Чернівці',
+    //     name: 'Chernivtsi',
     //     basePrice: 41,
     //     basePriceForKm: 10,
     //     car_types: carTypes.slice(0, 4),

@@ -11,7 +11,7 @@ export const initialState: OrderState = {
   status: 'active',
   distance: {
     text: '',
-    value: null,
+    value: 0,
   },
 };
 

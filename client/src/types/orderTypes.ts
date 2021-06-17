@@ -1,8 +1,3 @@
-export interface DistanceI {
-  text: string;
-  value: number | null;
-}
-
 export interface OrderState {
   from: string;
   to: string;
@@ -11,7 +6,7 @@ export interface OrderState {
   paymentType: string;
   price: number;
   status: string;
-  distance: DistanceI;
+  distance: google.maps.Distance | undefined;
 }
 
 type ValueOf<T> = T[keyof T];

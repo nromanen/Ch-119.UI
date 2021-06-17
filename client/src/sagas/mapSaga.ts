@@ -1,11 +1,9 @@
+import axios from 'axios';
 import { call, put, StrictEffect, takeEvery } from 'redux-saga/effects';
+
 import { MapActionTypes } from '../types/mapTypes';
-import { fetchCityInfo, CityInfoI } from './../pages/Order/mapService';
-import { setCityInfoCreator } from '../actions/cityInfoActions';
-import axios, { AxiosResponse } from 'axios';
 import { changeMapValue } from '../actions/mapActions';
 import { getCityInfoCreator } from '../actions/cityInfoActions';
-import { changeOrderValue } from './../actions/orderActions';
 import { changeCityInfoValueCreator } from './../actions/cityInfoActions';
 
 export const getCityNameFromState = (state: any) => state.cityInfo;

@@ -1,4 +1,4 @@
-import axios, { AxiosResponse } from 'axios';
+import axios from 'axios';
 
 declare const process: {
   env: {
@@ -49,8 +49,6 @@ export interface CityInfoI {
 }
 
 export const fetchCityInfo = (name: string) => () => {
-  console.log('fetch city = ', name);
-
   return axios.get<CityInfoI>(`${process.env.REACT_APP_HOST}info`, {
     params: {
       name,
@@ -62,3 +60,24 @@ export const fetchCityInfo = (name: string) => () => {
   //   return res.data.data;
   // }
 };
+
+export class OrderDTO {
+  car_type: string;
+  customer_id: number;
+  extra_services: number[];
+  from: string;
+  is_card: boolean;
+  price: string;
+  status: string;
+  to: string;
+  constructor(order: any) {
+    this.car_type = order.car_type;
+    this.customer_id = order.customer_id || 1;
+    this.extra_services = order.extraServices;
+    this.from = order.from;
+    this.is_card = order.paymentType !== 'cash';
+    this.price = order.price;
+    this.status = order.status;
+    this.to = order.to;
+  }
+}

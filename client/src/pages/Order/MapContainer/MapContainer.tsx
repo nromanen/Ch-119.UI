@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { Map } from '../Map';
 import { useTypedSelector } from './../../../hooks/useTypedSelector';
 import { useMapActions, useOrderActions } from './../../../hooks/useActions';
@@ -14,10 +14,14 @@ const center = {
 };
 
 export const MapContainer = () => {
-  const { directions, renderer, directionsResult, currentLocation } =
-    useTypedSelector((state) => state.map);
+  const { directions, directionsResult, currentLocation } = useTypedSelector(
+    (state) => state.map,
+  );
   const { changeMapValue } = useMapActions();
   const { changeOrderValue } = useOrderActions();
+
+  const [renderer, setrenderer] = useState<google.maps.DirectionsRenderer>();
+  // console.log('renderer', renderer);
 
   const mapOptions = useMemo(
     () => ({
@@ -63,11 +67,13 @@ export const MapContainer = () => {
   const onDirectionsChanged = useCallback(
     function gets() {
       if (renderer) {
-        const directions = renderer.getDirections();
+        const directions =
+          renderer.getDirections() as google.maps.DirectionsResult;
         const origin = directions.routes[0].legs[0].start_address;
         const destination = directions.routes[0].legs[0].end_address;
         const directionRoutes = directions.routes[0].legs[0];
-        const distance = directionRoutes.distance;
+        const distance: google.maps.Distance =
+          directionRoutes.distance as google.maps.Distance;
 
         console.log(distance, 'distance');
         changeOrderValue('distance', distance);
@@ -79,11 +85,8 @@ export const MapContainer = () => {
   );
 
   const onDirectionsRendererLoaded = useCallback((dirRenderer: any) => {
-    // console.log('dirRenderer', dirRenderer);
-
     console.log('on renderer loaded');
-
-    changeMapValue('renderer', dirRenderer);
+    setrenderer(dirRenderer);
   }, []);
 
   const renderOptions = useMemo(

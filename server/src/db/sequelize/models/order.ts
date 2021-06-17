@@ -22,18 +22,10 @@ export default (sequelize: any, DataTypes: any) => {
       customer_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
-        // references: {
-        //   model: 'user',
-        //   key: 'id',
-        // },
       },
       driver_id: {
         type: DataTypes.INTEGER,
         allowNull: true,
-        // references: {
-        //   model: 'driver',
-        //   key: 'id',
-        // },
       },
       to: {
         type: DataTypes.STRING,
@@ -56,7 +48,7 @@ export default (sequelize: any, DataTypes: any) => {
         allowNull: true,
       },
       extra_services: {
-        type: DataTypes.STRING,
+        type: DataTypes.ARRAY(DataTypes.INTEGER),
         allowNull: true,
       },
       isCard: {

@@ -10,7 +10,8 @@ export default class OrderController {
 
     try {
       const data = await sequelize.models[ORDER].create(body);
-      res.status(STATUS_OK).send({ data, status: STATUS_OK });
+
+      res.status(STATUS_OK).send(data);
     } catch (error) {
       res.send({
         message: error,
