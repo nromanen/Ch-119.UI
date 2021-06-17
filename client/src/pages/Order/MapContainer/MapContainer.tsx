@@ -107,6 +107,7 @@ export const MapContainer = () => {
     onMapLoaded,
     mapOptions,
     directions,
+    directionsResult,
     mapContainerStyle,
   };
   return <Map {...mapProps}></Map>;

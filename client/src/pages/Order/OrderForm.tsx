@@ -1,4 +1,4 @@
-import { FC, SyntheticEvent, useRef, useEffect } from 'react';
+import { FC, SyntheticEvent, useRef, useEffect, FormEvent } from 'react';
 import axios from 'axios';
 import { Autocomplete } from '@react-google-maps/api';
 import {
@@ -18,19 +18,10 @@ import { useOrderActions } from '../../hooks/useActions';
 import { useTypedSelector } from '../../hooks/useTypedSelector';
 import { CarTypesI, ExtraServicesI, OrderDTO } from './mapService';
 
-import { ReactComponent as BabyChair } from './icons/babyChair.svg';
-import { ReactComponent as En } from './icons/en.svg';
-import { ReactComponent as Silent } from './icons/silent.svg';
-
-interface IconsI {
-  [index: string]: any;
-}
-
-const extraServicesIcons: IconsI = {
-  'English speaking': En,
-  'Silent driver': Silent,
-  'Baby chair': BabyChair,
-};
+import { Input } from './../../components/Input';
+import { FormLabel } from './../../components/FormLabel';
+import { CarTypesSelect } from './../../components/CarTypesSelect';
+import { ExtraServicesSelect } from './../../components/ExtraServicesSelect';
 
 interface OrderFormProps {
   createPath?: () => void;
@@ -69,8 +60,6 @@ export const OrderForm: FC<OrderFormProps> = ({
   const { name: currentCity } = useTypedSelector((state) => state.cityInfo);
 
   const calculatePrice = (prices: any) => {
-    console.log('prices,', prices);
-
     const servicesPrice = prices.services.reduce(
       (acc: number, val: number) => acc + +val,
       0,
@@ -103,7 +92,6 @@ export const OrderForm: FC<OrderFormProps> = ({
     };
 
     const price = calculatePrice(value);
-    console.log('price', price);
 
     price && changeOrderValue('price', price);
   }, [info, order.car_type, order.distance, order.extraServices]);
@@ -116,7 +104,6 @@ export const OrderForm: FC<OrderFormProps> = ({
     services = services.filter((el: HTMLInputElement) => el.checked);
 
     const extraServices = services.map((el: HTMLInputElement) => {
-      console.dir(el.dataset.dbId, 'element');
       return Number(el.dataset.dbId);
     });
 
@@ -153,8 +140,10 @@ export const OrderForm: FC<OrderFormProps> = ({
                 onLoad={onFromAutocompleteLoad}
                 onPlaceChanged={onFromChanged}
               >
-                <input
-                  onChange={(e) => setFrom(e.target.value)}
+                <Input
+                  onChange={(e: FormEvent<HTMLInputElement>) => {
+                    changeOrderValue('from', e.currentTarget.value);
+                  }}
                   value={from}
                   className="form-control"
                   type="text"
@@ -176,9 +165,11 @@ export const OrderForm: FC<OrderFormProps> = ({
                 onLoad={onToAutocompleteLoad}
                 onPlaceChanged={onToChanged}
               >
-                <input
+                <Input
                   value={to}
-                  onChange={(e) => setTo(e.target.value)}
+                  onChange={(e) =>
+                    changeOrderValue('to', e.currentTarget.value)
+                  }
                   className="form-control"
                   type="text"
                   name="to"
@@ -190,78 +181,21 @@ export const OrderForm: FC<OrderFormProps> = ({
           </div>
         </Form.Group>
         <Form.Group>
-          <Form.Label className="col-xs-2" htmlFor="car-type">
-            Car type:
-          </Form.Label>
-          <Form.Control
-            as="select"
+          <FormLabel title="Car type:" htmlFor="car-type" />
+          <CarTypesSelect
             id="car-type"
-            className="form-select form-control col-xs-4"
-            aria-label="Car type select"
             value={order.car_type}
-            onChange={(e) => changeOrderValue('car_type', e.target.value)}
-          >
-            {carTypes?.map(({ id, name }) => {
-              return (
-                <option key={id} value={name}>
-                  {name}
-                </option>
-              );
-            })}
-          </Form.Control>
+            onChange={(e: any) => changeOrderValue('car_type', e.target.value)}
+            carTypes={carTypes}
+          />
         </Form.Group>
 
         <Form.Group>
-          <Accordion defaultActiveKey="0">
-            <Accordion.Toggle as={Form.Label} variant="link" eventKey="0">
-              Extra services:
-            </Accordion.Toggle>
-            <Card>
-              <Accordion.Collapse eventKey="0">
-                <Card.Body className="extra-service">
-                  {extraServices?.map(({ id, name }) => {
-                    const Icon: any = extraServicesIcons[name];
-                    const isActive = order.extraServices.includes(id);
-                    const iconClass = ['order__service-icon'];
-                    if (isActive) {
-                      iconClass.push('active');
-                    }
-
-                    return (
-                      <OverlayTrigger
-                        key={id}
-                        placement="top"
-                        overlay={
-                          <Tooltip id={`tooltip-top`}>
-                            <strong>{name}</strong>.
-                          </Tooltip>
-                        }
-                      >
-                        <Form.Label
-                          className="col-xs-2 extra-service__label"
-                          htmlFor={name}
-                        >
-                          {/* {name} */}
-                          <Form.Check
-                            hidden
-                            id={name}
-                            aria-label={name}
-                            type="checkbox"
-                            // label={name}
-                            data-db-id={id}
-                            name="extraServices"
-                            value={name}
-                            onChange={onExtraServicesChanged}
-                          />
-                          <Icon className={iconClass.join(' ')} />
-                        </Form.Label>
-                      </OverlayTrigger>
-                    );
-                  })}
-                </Card.Body>
-              </Accordion.Collapse>
-            </Card>
-          </Accordion>
+          <ExtraServicesSelect
+            avaliableInCityExtraServices={extraServices}
+            activeExtraServices={order.extraServices}
+            onExtraServicesChanged={onExtraServicesChanged}
+          />
         </Form.Group>
 
         {order.price && (

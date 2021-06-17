@@ -30,6 +30,7 @@ interface MapProps {
   mapOptions: google.maps.MapOptions;
   directions: google.maps.DirectionsRequest | null;
   mapContainerStyle: any;
+  directionsResult: any;
 }
 
 export const Map: FC<MapProps> = ({
@@ -41,6 +42,7 @@ export const Map: FC<MapProps> = ({
   onMapLoaded,
   mapOptions,
   directions,
+  directionsResult,
   mapContainerStyle,
 }) => {
   const { isLoaded, loadError } = useJsApiLoader({
@@ -62,62 +64,39 @@ export const Map: FC<MapProps> = ({
     // feel free to render directly if you don't need that
 
     return (
-      <>
-        <GoogleMap
-          options={mapOptions}
-          onLoad={onMapLoaded}
-          mapContainerStyle={mapContainerStyle}
-          onClick={mapClickHandler}
-        >
-          {directions && (
-            <DirectionsService
-              callback={directionsServiceCallback}
-              options={directions}
-              // onLoad={directionsServiceLoaded}
-            />
-          )}
-          {directions && renderOptions && (
-            <DirectionsRenderer
-              onLoad={onDirectionsRendererLoaded}
-              options={renderOptions}
-              onDirectionsChanged={onDirectionsChanged}
-            />
-          )}
-          {/* {markers.length &&
+      <GoogleMap
+        options={mapOptions}
+        onLoad={onMapLoaded}
+        mapContainerStyle={mapContainerStyle}
+        onClick={mapClickHandler}
+      >
+        {directions && (
+          <DirectionsService
+            callback={directionsServiceCallback}
+            options={directions}
+            // onLoad={directionsServiceLoaded}
+          />
+        )}
+        {directionsResult && renderOptions && (
+          <DirectionsRenderer
+            onLoad={onDirectionsRendererLoaded}
+            options={renderOptions}
+            onDirectionsChanged={onDirectionsChanged}
+          />
+        )}
+        {/* {markers.length &&
             markers.map((marker: any, i: number) => (
               <Marker key={`${marker.lat}${marker.lng}`} position={marker} />
             ))} */}
 
-          {/* {currentLocation && (
+        {/* {currentLocation && (
             <InfoWindow position={currentLocation}>
               <div>
                 <p>Your location</p>
               </div>
             </InfoWindow>
           )} */}
-        </GoogleMap>
-
-        {/* {directionsResult && (
-          <div className="jumbotron">
-            <div className="container-fluid">
-              <ListGroup>
-                <ListGroup.Item>
-                  Distance:
-                  <Badge variant="primary">{distance.text}</Badge>
-                  <span>({distance.value}m)</span>
-                </ListGroup.Item>
-                <ListGroup.Item>
-                  Duration:
-                  <Badge variant="primary">
-                    {renderer?.directions.routes[0].legs[0].duration.text}
-                  </Badge>
-                  ({renderer?.directions.routes[0].legs[0].duration.value}s)
-                </ListGroup.Item>
-              </ListGroup>
-            </div>
-          </div>
-        )} */}
-      </>
+      </GoogleMap>
     );
   };
 

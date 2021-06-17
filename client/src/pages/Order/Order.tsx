@@ -15,6 +15,9 @@ export const Order = () => {
   });
   const [toAutocomplete, setToAutocomplete] = useState({ getPlace: () => {} });
 
+  const [fromTouched, setFromTouched] = useState(false);
+  const [toTouched, setToTouched] = useState(false);
+
   const { from, to } = useTypedSelector((state) => state.order);
   const { changeOrderValue } = useOrderActions();
   const { changeMapValue } = useMapActions();
@@ -27,11 +30,6 @@ export const Order = () => {
 
   useEffect(() => {
     getCurrentLocation();
-    // getCurrentLocationF();
-    // getCityInfoCreator('Чернівці');
-    // getCityInfo().then((res) => {
-    //   setInfo(res);
-    // });
   }, []);
 
   const setFrom = useCallback((value: string) => {
@@ -49,18 +47,22 @@ export const Order = () => {
   };
 
   const onFromChanged = (): void => {
-    if (fromAutocomplete !== null) {
+    if (fromAutocomplete) {
       const geometry: any = fromAutocomplete.getPlace();
       setFrom(geometry.formatted_address);
+      setFromTouched(() => true);
+      toTouched && createPath();
     } else {
       console.log('Autocomplete is not loaded yet!');
     }
   };
   const onToChanged = (): void => {
-    if (toAutocomplete !== null) {
+    if (toAutocomplete) {
       const geometry: any = toAutocomplete.getPlace();
 
       setTo(geometry.formatted_address);
+      setToTouched(true);
+      fromTouched && createPath();
     } else {
       console.log('Autocomplete is not loaded yet!');
     }
@@ -74,7 +76,6 @@ export const Order = () => {
       unitSystem: google.maps.UnitSystem.METRIC,
     };
     changeMapValue('directions', options);
-    // setDirections(options);
   }, []);
 
   const OrderFormProrps = {
