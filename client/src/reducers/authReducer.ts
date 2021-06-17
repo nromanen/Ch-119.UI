@@ -1,9 +1,4 @@
-import {
-  AuthActionTypes,
-  IAuthAction,
-  IUser,
-} from '../types/userTypes';
-import { check } from '../http/userApi';
+import { AuthActionTypes, IAuthAction, IUser } from '../types/userTypes';
 
 export const initialState: IUser = {
   name: '',
@@ -11,6 +6,7 @@ export const initialState: IUser = {
   password: '',
   role: [],
   isAuth: false,
+  hasError: false,
 };
 
 export const authReducer = (state = initialState, action: any): IUser => {
@@ -20,6 +16,7 @@ export const authReducer = (state = initialState, action: any): IUser => {
         ...state,
         name: action.payload.name,
         role: action.payload.roles,
+        isAuth: true,
       };
     case AuthActionTypes.LOGIN_USER:
       console.log(action);
@@ -27,7 +24,6 @@ export const authReducer = (state = initialState, action: any): IUser => {
         ...state,
         phone: action.payload.phone,
         password: action.payload.password,
-        isAuth: true,
       };
     case AuthActionTypes.REGISTRATE_USER:
       console.log(action);
@@ -36,7 +32,24 @@ export const authReducer = (state = initialState, action: any): IUser => {
         name: action.payload.name,
         phone: action.payload.phone,
         password: action.payload.password,
-        isAuth: true,
+      };
+    case AuthActionTypes.CHECK_USER_DATA:
+      return {
+        ...state,
+      };
+    case AuthActionTypes.HANDLE_ERROR:
+      return {
+        ...state,
+        hasError: true,
+      };
+    case AuthActionTypes.LOGOUT_USER:
+      return {
+        ...state,
+        name: '',
+        phone: '',
+        password: '',
+        role: [],
+        isAuth: false,
       };
     default:
       return state;
@@ -66,6 +79,14 @@ export const getAuthUserData = () => async (dispatch: any) => {
     dispatch(setAuthUserData({ ...payload }));
   }
 };
+
+export const check = (): IAuthAction => ({
+  type: AuthActionTypes.CHECK_USER_DATA,
+});
+
+export const logout = () => ({
+  type: AuthActionTypes.LOGOUT_USER,
+});
 
 // export const login = (email, password, remeberMe) => async (dispatch) => {
 //   let response = await authAPI.login(email, password, remeberMe);

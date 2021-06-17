@@ -2,6 +2,9 @@ export enum AuthActionTypes {
   LOGIN_USER = 'LOGIN_USER',
   SET_USER_DATA = 'SET_USER_DATA',
   REGISTRATE_USER = 'REGISTRATE_USER',
+  CHECK_USER_DATA = 'CHECK_USER_DATA',
+  LOGOUT_USER = 'LOGOUT_USER',
+  HANDLE_ERROR = 'HANDLE_ERROR',
 }
 
 export interface IAuthState {
@@ -24,4 +27,5 @@ export interface IUser {
   role: string[];
   tripsNum?: number;
   isAuth: boolean;
+  hasError: boolean;
 }

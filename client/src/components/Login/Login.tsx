@@ -1,19 +1,27 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import { Button } from 'react-bootstrap';
 import { NavLink } from 'react-router-dom';
 import { Form, Field } from 'react-final-form';
 import { REGISTRATION_ROUTE } from '../../constants/routerConstants';
 import { required } from '../../utils/formValidators';
 
+
 export const Login: FC = (props: any) => {
+  // if (props.auth.isAuth) {
+  //   useEffect(() => {
+  //     props.history.push('/order');
+  //   });
+  // }
+
   return (
     <div className='jumbotron'>
       <div className='container-fluid'>
         <h1>Login Form</h1>
         <Form
-          onSubmit={async (formObj) => {
+          onSubmit={(formObj) => {
             props.loginUser(formObj);
-          }}
+          }
+          }
           subscription={{
             submitting: true,
           }}

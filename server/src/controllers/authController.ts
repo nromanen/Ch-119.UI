@@ -18,10 +18,7 @@ const Op = sequelize.Sequelize.Op;
 
 export default class authController {
   async registration(req: Request, res: Response, next: NextFunction) {
-    // Save User to Database
     const { password, phone, verification_code } = req.body;
-    console.log('Phone on server ----------------------',phone);
-    
 
     if (!phone || !password) {
       return ApiError.badRequest('Incorrect password or phone');
@@ -51,11 +48,11 @@ export default class authController {
           },
         }).then((roles: any) => {
           user.setRoles(roles).then(() => {
-            const accessToken = generateAccessToken(user.id, user.name, roles.name);
+            const accessToken = generateAccessToken(user.id, user.name, roles[0].name);
             const refreshToken = generateRefreshToken(
               user.id,
               user.name,
-              roles.name,
+              roles[0].name,
             );
             // const noteServiceRes: Promise<MobizonResponse> = sendSMS(
             //   phone,
@@ -74,12 +71,12 @@ export default class authController {
           });
         });
       })
-      .catch((err: Error) => {
+      .catch(() => {
         return ApiError.forbidden('Server error');
       });
   }
 
-  async login(req: Request, res: Response, next: NextFunction) {
+  async login(req: Request, res: Response) {
     await User.findOne({
       where: {
         phone: req.body.phone,
@@ -87,7 +84,7 @@ export default class authController {
     })
       .then((user: any) => {
         if (!user) {
-          return next(ApiError.badRequest('Invalid Data!'));
+          return (ApiError.badRequest('Invalid Data!'));
         }
 
         const passwordIsValid = bcrypt.compareSync(
@@ -125,7 +122,7 @@ export default class authController {
       });
   }
 
-  async refresh(req: Request, res: Response, next: NextFunction): Promise<any> {
+  async refresh(req: Request, res: Response): Promise<any> {
     const { refreshToken } = req.body;
 
     const userInfo = jwt.verify(
@@ -173,7 +170,6 @@ export default class authController {
   async delToken(
     req: Request,
     res: Response,
-    next: NextFunction,
   ): Promise<any> {
     const {refreshToken} = req.cookies;
     deleteToken(req.body, refreshToken);
