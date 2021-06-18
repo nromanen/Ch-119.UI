@@ -1,12 +1,32 @@
-import { RouteProps } from 'react-router-dom';
-import { Comp } from './components/Comp';
+import LoginContainer from './components/Login/LoginContainer';
+import {
+  LOGIN_ROUTE,
+  REGISTRATION_ROUTE,
+  ORDER_ROUTE,
+  PROFILE_ROUTE,
+} from './constants/routerConstants';
+import RegistrationContainer from './components/Login/RegistrationContainer';
+import Order from './pages/Order/Order';
+import ProfileContainer from './pages/Profile/ProfileContainer';
 
-// export const authRouters = [
-//     {
-//         path: ORDER_ROUTE,
-//         Component: Order
-//     },
+export const authRouters = [
+  {
+    path: ORDER_ROUTE,
+    component: Order,
+  },
+  {
+    path: PROFILE_ROUTE,
+    component: ProfileContainer,
+  },
+];
 
-// ]
-
-export const publicRouters: RouteProps[] = [];
+export const publicRouters = [
+  {
+    path: LOGIN_ROUTE,
+    component: LoginContainer,
+  },
+  {
+    path: REGISTRATION_ROUTE,
+    component: RegistrationContainer,
+  },
+];

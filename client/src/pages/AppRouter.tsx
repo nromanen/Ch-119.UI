@@ -1,13 +1,20 @@
 import React, { FC } from 'react';
-import { Switch, Route, Redirect, RouteProps } from 'react-router-dom';
-import { publicRouters } from '../routes';
+import { Switch, Route, Redirect } from 'react-router-dom';
+import { publicRouters, authRouters } from '../routes';
 import { LOGIN_ROUTE } from '../constants/routerConstants';
+import { useTypedSelector } from '../hooks/useTypedSelector';
 
-const AppRouter: FC = () => {
+const AppRouter: FC = (props: any) => {
+  const { isAuth } = useTypedSelector((state) => state.auth);
+
   return (
     <Switch>
-      {publicRouters.map((route:RouteProps) => (
-        <Route key={route.path} path={route.path} component={route.component}/>
+      { isAuth && authRouters.map(({ path, component }) => (
+        <Route key={path?.toString()} path={path} component={component} exact />
+      ))}
+
+      {publicRouters.map(({ path, component }) => (
+        <Route key={path?.toString()} path={path} component={component} exact />
       ))}
       <Redirect to={LOGIN_ROUTE} />
     </Switch>
@@ -15,5 +22,3 @@ const AppRouter: FC = () => {
 };
 
 export default AppRouter;
-
-
