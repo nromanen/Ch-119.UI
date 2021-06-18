@@ -10,25 +10,27 @@ import {
   deleteToken,
   // saveToken
 } from '../utils/jwtHelpers';
-// import { generateVerifyCode } from '../services/verification';
+import { generateVerifyCode } from '../services/verification';
 
+// TODO CONSTANTS FOR MODELS
 const User = sequelize.models['users'];
 const Role = sequelize.models['roles'];
 const Op = sequelize.Sequelize.Op;
 
 export default class authController {
-  async registration(req: Request, res: Response, next: NextFunction) {
+  async registration (req: Request, res: Response, next: NextFunction) {
     const { password, phone, verification_code } = req.body;
 
     if (!phone || !password) {
-      return ApiError.badRequest('Incorrect password or phone');
+      return next(ApiError.badRequest('Incorrect password or phone'));
+     
     }
 
     const candidate = await sequelize.models['users'].findOne({
       where: { phone },
     });
     if (candidate) {
-      return ApiError.conflict('User with this phone already exist');
+      return next(ApiError.conflict('User with this phone already exist'));
     }
     // функціонал введення правильних цифр від сервісу
     // const verifyCode = generateVerifyCode()
@@ -36,9 +38,9 @@ export default class authController {
       phone: req.body.phone,
       name: req.body.name,
       password: bcrypt.hashSync(req.body.password, 5),
-      verification_code: 'null'
+      verification_code: generateVerifyCode()
     })
-      .then((user: any) => {
+      .then((user: any) => {    
         const roles = req.body.roles ? req.body.roles : ['USER'];
         Role.findAll({
           where: {
@@ -48,15 +50,19 @@ export default class authController {
           },
         }).then((roles: any) => {
           user.setRoles(roles).then(() => {
-            const accessToken = generateAccessToken(user.id, user.name, roles[0].name);
+            const authorities: Array<string> = [];
+            for (let i = 0; i < roles.length; i++) {
+              authorities.push(roles[i].name);
+            }
+            const accessToken = generateAccessToken(user.id, user.name, authorities);
             const refreshToken = generateRefreshToken(
               user.id,
               user.name,
-              roles[0].name,
+              authorities
             );
             // const noteServiceRes: Promise<MobizonResponse> = sendSMS(
             //   phone,
-            //   `Softtaxi: your verify code ${verifyCode}`
+            //   `Go Taxi: your verify code ${verifyCode}`
             // )
             // if ( verifyCode !== verification_code) {
             //   return res.status(401).json({
@@ -67,16 +73,17 @@ export default class authController {
             // } else {
             res.cookie('refreshToken', refreshToken, {maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true})
             // saveToken(user.id, refreshToken)
-            return res.json({ accessToken, refreshToken });
+            return res.json({ accessToken, refreshToken});
           });
         });
       })
       .catch(() => {
-        return ApiError.forbidden('Server error');
+        return next(ApiError.forbidden('Server error'));
       });
   }
 
-  async login(req: Request, res: Response) {
+  async login (req: Request, res: Response, next: NextFunction) {
+    
     await User.findOne({
       where: {
         phone: req.body.phone,
@@ -84,7 +91,7 @@ export default class authController {
     })
       .then((user: any) => {
         if (!user) {
-          return (ApiError.badRequest('Invalid Data!'));
+          return next(ApiError.badRequest('Invalid Data!'));
         }
 
         const passwordIsValid = bcrypt.compareSync(
@@ -93,7 +100,7 @@ export default class authController {
         );
 
         if (!passwordIsValid) {
-          return ApiError.unathorized('Invalid Data!');
+          return next(ApiError.unathorized('Invalid Data!'));
         }
 
         const authorities: Array<string> = [];
@@ -118,19 +125,19 @@ export default class authController {
         });
       })
       .catch((err: Error) => {
-        return ApiError.forbidden('Server error');
+        return next(ApiError.forbidden('Server error'));
       });
   }
 
-  async refresh(req: Request, res: Response): Promise<any> {
-    const { refreshToken } = req.body;
-
+  async refresh (req: Request, res: Response, next: NextFunction): Promise<any> {
+    const { refreshToken } = req.cookies;
+    
     const userInfo = jwt.verify(
       refreshToken,
       process.env.REFRESH_TOKEN_SECRET_KEY!,
     );
       if (!refreshToken) {
-        return ApiError.forbidden('Not authorized');
+        return next(ApiError.forbidden('Not authorized'));
       }
 
     res.cookie('refreshToken', refreshToken, {maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true});
@@ -167,7 +174,7 @@ export default class authController {
     return res.json({ accessToken, refreshToken });
   }
 
-  async delToken(
+  async delToken (
     req: Request,
     res: Response,
   ): Promise<any> {
@@ -176,4 +183,20 @@ export default class authController {
     res.clearCookie('refreshToken');
     res.sendStatus(204);
   }
+
+  async getUsers (
+    req: Request,
+    res: Response,
+    next: NextFunction
+    ): Promise<any> {
+    const users = await User.findAll() 
+    .then ((userslist: any) => {
+      if (!userslist) {
+        return next(ApiError.forbidden('Not authorized'));
+      }
+      return res.json(userslist)
+    })
+  }
 }
+
+

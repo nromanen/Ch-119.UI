@@ -19,14 +19,12 @@ export const authReducer = (state = initialState, action: any): IUser => {
         isAuth: true,
       };
     case AuthActionTypes.LOGIN_USER:
-      console.log(action);
       return {
         ...state,
         phone: action.payload.phone,
         password: action.payload.password,
       };
     case AuthActionTypes.REGISTRATE_USER:
-      console.log(action);
       return {
         ...state,
         name: action.payload.name,
@@ -98,12 +96,5 @@ export const logout = () => ({
 //         ? response.data.messages[0]
 //         : 'Some error';
 //     dispatch(stopSubmit('login', { _error: message }));
-//   }
-// };
-
-// export const logout = () => async (dispatch) => {
-//   let response = await authAPI.logout();
-//   if (response.data.resultCode === 0) {
-//     dispatch(getAuthUserData(null, null, null, false));
 //   }
 // };

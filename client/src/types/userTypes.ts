@@ -5,6 +5,7 @@ export enum AuthActionTypes {
   CHECK_USER_DATA = 'CHECK_USER_DATA',
   LOGOUT_USER = 'LOGOUT_USER',
   HANDLE_ERROR = 'HANDLE_ERROR',
+  NOT_AUTHORIZED = 'NOT_AUTHORIZED',
 }
 
 export interface IAuthState {

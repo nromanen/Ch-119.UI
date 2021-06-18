@@ -11,7 +11,8 @@ const controller = new authController()
 router.post('/registration', verifySignUp.checkDuplicatePhone, verifySignUp.checkRolesExisted, controller.registration);
 router.post('/login', controller.login);
 router.get('/auth',  checkRoleMiddleware('USER'), authMiddleware, controller.check);
-router.post('/token', refreshTokenMiddleware, controller.refresh);
+router.get('/token', refreshTokenMiddleware, controller.refresh);
 router.delete('/logout', controller.delToken);
+router.get('/users', authMiddleware, controller.getUsers);
 
 export default router;

@@ -5,7 +5,6 @@ import {
   ORDER_ROUTE,
   PROFILE_ROUTE,
 } from './constants/routerConstants';
-import { RouteProps } from 'react-router-dom';
 import RegistrationContainer from './components/Login/RegistrationContainer';
 import Order from './pages/Order/Order';
 import ProfileContainer from './pages/Profile/ProfileContainer';
@@ -21,7 +20,7 @@ export const authRouters = [
   },
 ];
 
-export const publicRouters: RouteProps[] = [
+export const publicRouters = [
   {
     path: LOGIN_ROUTE,
     component: LoginContainer,

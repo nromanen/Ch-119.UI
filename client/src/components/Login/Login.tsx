@@ -7,12 +7,6 @@ import { required } from '../../utils/formValidators';
 
 
 export const Login: FC = (props: any) => {
-  // if (props.auth.isAuth) {
-  //   useEffect(() => {
-  //     props.history.push('/order');
-  //   });
-  // }
-
   return (
     <div className='jumbotron'>
       <div className='container-fluid'>

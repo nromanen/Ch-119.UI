@@ -1,6 +1,5 @@
 import * as jwt from 'jsonwebtoken';
 import sequelize from '../db/sequelize/models/index';
-// import redisClient from '../redisConnect';
 import ApiError from '../errors/ApiErrors';
 const Token = sequelize.models['tokens'];
 
@@ -21,21 +20,12 @@ export const generateRefreshToken = (id: number, name: string, roles: string[]) 
        {id, name, roles}, 
        process.env.REFRESH_TOKEN_SECRET_KEY,
        {expiresIn: process.env.REFRESH_TOKEN_TIME})
-    //    redisClient.get(id.toString(), (err, data) => {
-    //     if (err) ApiError.forbidden('Not authorized')
-
-    //     redisClient.set(id.toString(), JSON.stringify(refreshToken))
-    //    })
        refreshTokens.push(refreshToken)
        return refreshToken
 
 }
 
 export const deleteToken = (body:any, refreshToken: string) => {
-
-    // redisClient.del(body.id.toString());
-
-    // redisClient.set('BL_' + body.id.toString(), body.token)
 
     refreshTokens = refreshTokens.filter(token => token !== body.token)
     // const tokenData = Token.deleteOne({refreshToken})
@@ -44,13 +34,13 @@ export const deleteToken = (body:any, refreshToken: string) => {
 
 
 export const saveToken = (userId: number, refreshToken: string) => {
-    const tokenData = Token.findByPk(userId)
+    const tokenData = Token.findOne( { where: { user_id: userId }})
     if(tokenData) {
         tokenData.refreshToken = refreshToken;
-        console.log(tokenData);
+        console.log('TOKEN DATA',tokenData);
         
         return tokenData.save();
     }
-    const token = Token.create({user: userId, refreshToken})
+    const token = Token.create({user_id: userId, refreshToken})
         return token
 }

@@ -33,21 +33,20 @@ export const login = (phone: string, password: string) => async () => {
       return new Promise((resolve, reject) =>
         resolve(jwtDecode(data.accessToken, data.refreshToken)),
       );
+    } else {
+      console.log('Invalid data', data.message);
     }
-  } catch (e: any) {
-    console.log(e.data.data.message);
+  } catch (e) {
+    console.log('');
   }
 };
-
 
 export const logout = () => async () => {
   try {
     const response = await $host.delete('user/logout');
     localStorage.removeItem('token');
     localStorage.removeItem('refreshToken');
-    return new Promise((resolve, reject) =>
-      resolve(response),
-    );
+    return new Promise((resolve, reject) => resolve(response));
   } catch (e: any) {
     console.log(e.response?.data?.message);
   }
@@ -71,6 +70,7 @@ export const checkAuth = () => async () => {
   try {
     const { data } = await axios.get(
         `${process.env.REACT_APP_SERVER_URL!}/user/token`,
+        {withCredentials: true}
     );
     localStorage.setItem('token', data.accessToken);
     return new Promise((resolve, reject) =>

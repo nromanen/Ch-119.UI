@@ -23,11 +23,15 @@ export const rootReducer = (history: any) =>
     auth: authReducer,
   });
 
+const rootRedicers = rootReducer(history);
+
 const store = createStore(
-    rootReducer(history),
+    rootRedicers,
     initialState,
     composeWithDevTools(applyMiddleware(sagaMiddleware, browserMiddleware)),
 );
+
+export type RootState = ReturnType<typeof rootRedicers>;
 
 sagaMiddleware.run(rootWatcher);
 
