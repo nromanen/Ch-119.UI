@@ -60,11 +60,15 @@ const start = async () => {
     // Create tables if not exist asd
     const options = {
       // force: true,
-      alter: true,
+      // alter: true,
     };
     await sequelize.sync(options);
     // Possibly not right
+
     // Uncomment if you don't have city table
+    // and set optins to alter: true
+    // comment after creating in db and disable alter (comment it)
+
     // await sequelize.models[CITY].create(
     //   {
     //     name: 'Chernivtsi',

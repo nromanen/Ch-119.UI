@@ -23,6 +23,7 @@ export default (sequelize: any, DataTypes: any) => {
     },
   );
 
+  // Uncomment for creating tables in postgresql
   // Role.create({
   //   id: 1,
   //   name: 'USER',
