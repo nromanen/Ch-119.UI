@@ -49,6 +49,7 @@ export interface CityInfoI {
 }
 
 export const fetchCityInfo = (name: string) => () => {
+  // remove createdDate
   return axios.get<CityInfoI>(`${process.env.REACT_APP_HOST}info`, {
     params: {
       name,
@@ -61,6 +62,7 @@ export const fetchCityInfo = (name: string) => () => {
   // }
 };
 
+// TODO get User from store
 export class OrderDTO {
   car_type: string;
   customer_id: number;

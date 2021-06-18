@@ -1,11 +1,5 @@
 import React, { FC } from 'react';
-import {
-  Accordion,
-  Card,
-  OverlayTrigger,
-  Tooltip,
-  Form,
-} from 'react-bootstrap';
+import { Accordion, Card, Form } from 'react-bootstrap';
 import { ExtraServicesI } from '../pages/Order/mapService';
 import { ExtraServiceItem } from './ExtraServiceItem';
 // Icons

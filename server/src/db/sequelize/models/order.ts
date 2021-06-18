@@ -10,6 +10,11 @@ export default (sequelize: any, DataTypes: any) => {
      */
     static associate() {
       // define association here
+      // create associate with user and driver(id for user and id for driver from driver)
+      // order.hasOne(carType)
+      // carType.belongsTo(Order)
+      // order.hasMany(extraServices)
+      // extraServices.belongsToMany(Order)
     }
   }
   Order.init(
