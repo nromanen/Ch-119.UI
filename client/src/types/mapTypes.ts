@@ -8,7 +8,7 @@ export interface MapState {
   // renderer: any;
   // renderer: google.maps.DirectionsRenderer;
   directions: google.maps.DirectionsRequest | null;
-  directionsResult: google.maps.DirectionsResult | null;
+  directionsResult: google.maps.DirectionsResult | undefined;
   isMapLoaded: boolean;
   currentLocation: CurrentLocation | null;
 }

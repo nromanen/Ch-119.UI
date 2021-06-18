@@ -13,7 +13,11 @@ declare const process: {
   };
 };
 
-const googleMapsApiKey = process.env.REACT_APP_MAP_API_KEY;
+// TODO process.env undefined
+// const googleMapsApiKey = process.env.REACT_APP_MAP_API_KEY;
+const googleMapsApiKey = 'AIzaSyBmvdkcqvY-aunh7iZBuV9xkz9f0XWOhoc';
+
+console.log('googleMapsApiKey', googleMapsApiKey);
 
 const libraries: Libraries = ['places'];
 
@@ -30,7 +34,7 @@ interface MapProps {
   mapOptions: google.maps.MapOptions;
   directions: google.maps.DirectionsRequest | null;
   mapContainerStyle: any;
-  directionsResult: any;
+  directionsResult?: google.maps.DirectionsResult;
 }
 
 export const Map: FC<MapProps> = ({

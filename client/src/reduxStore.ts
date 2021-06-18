@@ -1,7 +1,11 @@
 import { combineReducers, createStore, applyMiddleware } from 'redux';
 import createSagaMiddleware from 'redux-saga';
 import { composeWithDevTools } from 'redux-devtools-extension';
-import { userReducer, initialState as UserState } from './reducers/userReducer';
+import { createBrowserHistory } from 'history';
+import { connectRouter } from 'connected-react-router';
+import { routerMiddleware } from 'react-router-redux';
+
+// import { userReducer, initialState as UserState } from './reducers/userReducer';
 import {
   cityInfoReducer,
   initialState as InfoState,
@@ -11,32 +15,42 @@ import {
   orderReducer,
   initialState as OrderState,
 } from './reducers/orderReducer';
+import { authReducer, initialState as AuthState } from './reducers/authReducer';
 import { rootWatcher } from './sagas/index';
 
 const sagaMiddleware = createSagaMiddleware();
 
 const initialState = {
-  user: UserState,
+  auth: AuthState,
+  // user: UserState,
   order: OrderState,
   cityInfo: InfoState,
   map: MapState,
 };
 
-const redusers = combineReducers({
-  user: userReducer,
-  order: orderReducer,
-  cityInfo: cityInfoReducer,
-  map: mapReducer,
-});
+export const history = createBrowserHistory();
+const browserMiddleware = routerMiddleware(history);
+
+export const rootReducer = (history: any) =>
+  combineReducers({
+    router: connectRouter(history),
+    auth: authReducer,
+    // user: userReducer,
+    order: orderReducer,
+    cityInfo: cityInfoReducer,
+    map: mapReducer,
+  });
+
+const rootReducers = rootReducer(history);
 
 const store = createStore(
-  redusers,
+  rootReducers,
   initialState,
-  composeWithDevTools(applyMiddleware(sagaMiddleware)),
+  composeWithDevTools(applyMiddleware(sagaMiddleware, browserMiddleware)),
 );
 
-sagaMiddleware.run(rootWatcher);
+export type RootState = ReturnType<typeof rootReducers>;
 
-export type RootState = ReturnType<typeof redusers>;
+sagaMiddleware.run(rootWatcher);
 
 export default store;

@@ -48,6 +48,24 @@ Object.keys(db).forEach((modelName) => {
   }
 });
 
+db.user = sequelize.models['users'];
+db.role = sequelize.models['roles'];
+db.token = sequelize.models['tokens'];
+
+db.token.belongsTo(db.user);
+
+db.role.belongsToMany(db.user, {
+  through: 'user_roles',
+  foreignKey: 'roleId',
+  otherKey: 'userId',
+});
+
+db.user.belongsToMany(db.role, {
+  through: 'user_roles',
+  foreignKey: 'userId',
+  otherKey: 'roleId',
+});
+
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 

@@ -5,7 +5,7 @@ export const initialState: MapState = {
   map: null,
   // renderer: null,
   directions: null,
-  directionsResult: null,
+  directionsResult: undefined,
   isMapLoaded: false,
   currentLocation: null,
 };

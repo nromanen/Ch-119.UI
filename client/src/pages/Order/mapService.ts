@@ -3,7 +3,7 @@ import axios from 'axios';
 declare const process: {
   env: {
     REACT_APP_MAP_API_KEY: string;
-    REACT_APP_HOST: string;
+    REACT_APP_SERVER_URL: string;
   };
 };
 
@@ -50,11 +50,17 @@ export interface CityInfoI {
 
 export const fetchCityInfo = (name: string) => () => {
   // remove createdDate
-  return axios.get<CityInfoI>(`${process.env.REACT_APP_HOST}info`, {
-    params: {
-      name,
+  console.log('PROCESS', process.env.REACT_APP_SERVER_URL);
+
+  const response = axios.get<CityInfoI>(
+    `${process.env.REACT_APP_SERVER_URL}info`,
+    {
+      params: {
+        name,
+      },
     },
-  });
+  );
+  return response;
 
   // if (res.statusText === 'OK') {
   //   console.log(res, 'info');

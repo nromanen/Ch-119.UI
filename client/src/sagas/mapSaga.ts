@@ -6,12 +6,25 @@ import { changeMapValue } from '../actions/mapActions';
 import { getCityInfoCreator } from '../actions/cityInfoActions';
 import { changeCityInfoValueCreator } from './../actions/cityInfoActions';
 
+declare const process: {
+  env: {
+    REACT_APP_MAP_API_KEY: string;
+  };
+};
+
+// TODO process.env undefined
+// const googleApiKey = process.env.REACT_APP_MAP_API_KEY;
+const googleApiKey = 'AIzaSyBmvdkcqvY-aunh7iZBuV9xkz9f0XWOhoc';
 export const getCityNameFromState = (state: any) => state.cityInfo;
 
 const getCityName = (l: any) => () => {
+  console.log('key api', process.env.REACT_APP_MAP_API_KEY!);
+  console.log('key api', googleApiKey);
+
   return axios.get(`https://maps.googleapis.com/maps/api/geocode/json`, {
     params: {
-      key: process.env.REACT_APP_MAP_API_KEY,
+      key: googleApiKey,
+      // key: process.env.REACT_APP_MAP_API_KEY,
       latlng: `${l.lat},${l.lng}`,
       language: 'en',
     },
