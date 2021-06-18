@@ -1,7 +1,6 @@
 import { combineReducers, createStore, applyMiddleware } from 'redux';
 import createSagaMiddleware from 'redux-saga';
 import { composeWithDevTools } from 'redux-devtools-extension';
-import { userReducer, initialState as UserState } from './reducers/userReducer';
 import { infoReducer, initialState as InfoState } from './reducers/infoReducer';
 import { authReducer, initialState as AuthState } from './reducers/authReducer';
 import {
@@ -25,16 +24,14 @@ export const history = createBrowserHistory();
 const browserMiddleware = routerMiddleware(history);
 
 const initialState = {
-  user: UserState,
   order: OrderState,
   info: InfoState,
   feedback: FeedbackState,
   auth: AuthState,
 };
 
-const redusers = (history: any) =>
+const reducers = (history: any) =>
   combineReducers({
-    user: userReducer,
     order: orderReducer,
     info: infoReducer,
     feedback: feedbackReducer,
@@ -42,16 +39,16 @@ const redusers = (history: any) =>
     auth: authReducer,
   });
 
-const rootRedicers = redusers(history);
+const rootReducers = reducers(history);
 
 const store = createStore(
-  rootRedicers,
+  rootReducers,
   initialState,
   composeWithDevTools(applyMiddleware(sagaMiddleware, browserMiddleware)),
 );
 
 sagaMiddleware.run(rootWatcher);
 
-export type RootState = ReturnType<typeof rootRedicers>;
+export type RootState = ReturnType<typeof rootReducers>;
 
 export default store;

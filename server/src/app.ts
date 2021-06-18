@@ -10,10 +10,13 @@ import { PRODUCTION } from './constants/env';
 import { JSON_LIMIT, JSON_TYPE } from './constants/json';
 import sequelize from './db/sequelize/models/index';
 import errorHandler from './middlewares/errorHandlingMiddleware';
+import { corsMiddleware } from './middlewares/cors';
 
 dotenv.config();
 
 const app = express();
+
+app.use(corsMiddleware);
 
 app.use(
   cors({
