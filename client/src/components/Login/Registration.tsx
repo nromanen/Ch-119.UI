@@ -1,73 +1,145 @@
 import React, { FC } from 'react';
 import { Button } from 'react-bootstrap';
-import { Form, Field } from 'react-final-form';
+import { Form, Field, FormSpy } from 'react-final-form';
+import { required } from '../../utils/formValidators';
 
-export const Registration: FC = () => {
+export const Registration = (props: any) => {
   return (
     <div className='jumbotron'>
       <div className='container-fluid'>
         <h1>Registration</h1>
         <Form
           onSubmit={(formObj) => {
-            console.log(formObj);
+            props.registrateUser(formObj);
+          }}
+          validate={(values) => {
+            const errors: any = {};
+            if (!values.password) {
+              errors.password = 'Required';
+            }
+            if (!values.confirm) {
+              errors.confirm = 'Required';
+            } else if (values.confirm !== values.password) {
+              errors.confirm = 'Must match';
+            }
+            return errors;
+          }}
+          subscription={{
+            submitting: true,
           }}
         >
-          {({ handleSubmit }) => (
+          {({ handleSubmit, submitting }) => (
             <form onSubmit={handleSubmit} className='form-horizontal'>
               <div className='form-group'>
-                <label className='col-xs-2' htmlFor='name'>
-                  Name:
-                </label>
-                <div className='col-xs-4'>
-                  <Field name='name'>
-                    {({ input }) => <input type='text' id='name' {...input} />}
-                  </Field>
-                </div>
+                <Field
+                  name='name'
+                  placeholder='Your name'
+                  // validate={maxLengthCreator(9)}
+                  subscription={{
+                    value: true,
+                    active: true,
+                    error: true,
+                    touched: true,
+                  }}
+                >
+                  {({ input, meta, placeholder }) => (
+                    <div>
+                      <label className='col-xs-2'>Name:</label>
+                      <div className='col-xs-4'>
+                        <input {...input} placeholder={placeholder} />
+                        {meta.error && meta.touched && (
+                          <span>{meta.error}</span>
+                        )}
+                      </div>
+                    </div>
+                  )}
+                </Field>
               </div>
               <div className='form-group'>
-                <label className='col-xs-2' htmlFor='phone'>
-                  Phone number:
-                </label>
-                <div className='col-xs-4'>
-                  <Field name='phone'>
-                    {({ input }) => (
-                      <input
-                        type='phone'
-                        id='phone'
-                        placeholder='+380501233314'
-                        {...input}
-                      />
-                    )}
-                  </Field>
-                </div>
+                <Field
+                  name='phone'
+                  placeholder='+380501233314'
+                  validate={required}
+                  subscription={{
+                    value: true,
+                    active: true,
+                    error: true,
+                    touched: true,
+                  }}
+                >
+                  {({ input, meta, placeholder }) => (
+                    <div>
+                      <label className='col-xs-2'>Phone number:</label>
+                      <div className='col-xs-4'>
+                        <input {...input} placeholder={placeholder} />
+                        {meta.error && meta.touched && (
+                          <span>{meta.error}</span>
+                        )}
+                      </div>
+                    </div>
+                  )}
+                </Field>
               </div>
               <div className='form-group'>
-                <label className='col-xs-2' htmlFor='password'>
-                  Password:
-                </label>
-                <div className='col-xs-4'>
-                  <Field name='password'>
-                    {({ input }) => (
-                      <input type='password' id='password' {...input} />
-                    )}
-                  </Field>
-                </div>
+                <Field
+                  name='password'
+                  type='password'
+                  validate={required}
+                  subscription={{
+                    value: true,
+                    active: true,
+                    error: true,
+                    touched: true,
+                  }}
+                >
+                  {({ input, meta }) => (
+                    <div>
+                      <label className='col-xs-2'>Password:</label>
+                      <div className='col-xs-4'>
+                        <input {...input} />
+                        {meta.error && meta.touched && (
+                          <span>{meta.error}</span>
+                        )}
+                      </div>
+                    </div>
+                  )}
+                </Field>
               </div>
               <div className='form-group'>
-                <label className='col-xs-2' htmlFor='rpassword'>
-                  Repeat password:
-                </label>
-                <div className='col-xs-4'>
-                  <Field name='rpassword'>
-                    {({ input }) => (
-                      <input type='password' id='rpassword' {...input} />
-                    )}
-                  </Field>
-                </div>
-                <div className='col-xs-offset-2 col-xs-10 ml-5'>
-                  <Button type='submit'>Register</Button>
-                </div>
+                <Field
+                  name='confirm'
+                  type='password'
+                  validate={required}
+                  subscription={{
+                    value: true,
+                    active: true,
+                    error: true,
+                    touched: true,
+                  }}
+                >
+                  {({ input, meta }) => (
+                    <div>
+                      <label className='col-xs-2'>Repeat password:</label>
+                      <div className='col-xs-4'>
+                        <input {...input} />
+                        {meta.error && meta.touched && (
+                          <span>{meta.error}</span>
+                        )}
+                      </div>
+                    </div>
+                  )}
+                </Field>
               </div>
+              <div className='col-xs-offset-2 col-xs-10 ml-5'>
+                <Button type='submit' disabled={submitting}>
+                  Register
+                </Button>
+              </div>
+              <FormSpy subscription={{ values: true }}>
+                {({ values }) => (
+                  <pre>{JSON.stringify(values, undefined, 2)}</pre>
+                )}
+              </FormSpy>
             </form>
           )}
         </Form>

@@ -51,6 +51,9 @@ db.Sequelize = Sequelize;
 
 db.user = sequelize.models.users;
 db.role = sequelize.models.roles;
+db.token = sequelize.models.tokens;
+
+db.token.belongsTo(db.user);
 
 db.role.belongsToMany(db.user, {
   through: 'user_roles',

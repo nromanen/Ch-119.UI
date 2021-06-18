@@ -1,18 +1,31 @@
-// import * as express from 'express';
-// import userController from '../controllers/user.controller';
-// import {
-//   authMiddleware,
-//   refreshTokenMiddleware,
-// } from '../middlewares/tokenMiddleware';
+import * as express from 'express';
+import {
+  authMiddleware,
+  refreshTokenMiddleware,
+} from '../middlewares/tokenMiddleware';
+import AuthController from '../controllers/authController';
+import { checkRoleMiddleware } from '../middlewares/checkRoleMiddleware';
+import verifySignUp from '../middlewares/verifySignUp';
 
-// const router = express.Router();
+const router = express.Router();
 
-// const controller = new userController();
+const controller = new AuthController();
 
-// router.post('/registration', controller.registration);
-// router.post('/login', controller.login);
-// router.get('/auth', authMiddleware, controller.check);
-// router.post('/token', refreshTokenMiddleware, controller.refresh);
-// router.delete('/logout', controller.delete);
+router.post(
+  '/registration',
+  verifySignUp.checkDuplicatePhone,
+  verifySignUp.checkRolesExisted,
+  controller.registration,
+);
+router.post('/login', controller.login);
+router.get(
+  '/auth',
+  checkRoleMiddleware('USER'),
+  authMiddleware,
+  controller.check,
+);
+router.get('/token', refreshTokenMiddleware, controller.refresh);
+router.delete('/logout', controller.delToken);
+router.get('/users', authMiddleware, controller.getUsers);
 
-// export default router;
+export default router;

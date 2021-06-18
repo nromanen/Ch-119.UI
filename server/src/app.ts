@@ -1,5 +1,6 @@
 import * as express from 'express';
 import * as cors from 'cors';
+import * as cookieParser from 'cookie-parser';
 import * as winston from 'winston';
 import * as dotenv from 'dotenv';
 import routes from './routes';
@@ -14,7 +15,13 @@ dotenv.config();
 
 const app = express();
 
-app.use(cors());
+app.use(
+  cors({
+    credentials: true,
+    origin: process.env.CLIENT_URL,
+  }),
+);
+app.use(cookieParser());
 app.use(
   express.json({
     limit: JSON_LIMIT,
