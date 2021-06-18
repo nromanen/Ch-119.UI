@@ -14,6 +14,10 @@ export const authRouters = [
     path: PROFILE_ROUTE,
     component: ProfileContainer,
   },
+  {
+    path: ORDER_ROUTE,
+    component: Order,
+  },
 ];
 
 export const publicRouters = [
@@ -24,9 +28,5 @@ export const publicRouters = [
   {
     path: REGISTRATION_ROUTE,
     component: RegistrationContainer,
-  },
-  {
-    path: ORDER_ROUTE,
-    component: Order,
   },
 ];

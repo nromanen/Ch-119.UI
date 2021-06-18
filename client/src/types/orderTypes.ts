@@ -1,12 +1,17 @@
 export interface OrderState {
   from: string;
   to: string;
-  car_type: string;
+  carType: CarTypeI;
   extraServices: Array<any>;
   paymentType: string;
   price: number;
   status: string;
   distance: google.maps.Distance | undefined;
+}
+
+interface CarTypeI {
+  name: string;
+  id: number;
 }
 
 type ValueOf<T> = T[keyof T];

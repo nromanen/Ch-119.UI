@@ -12,9 +12,8 @@ declare const process: {
   };
 };
 
-// TODO process.env undefined
-// const googleApiKey = process.env.REACT_APP_MAP_API_KEY;
-const googleApiKey = 'AIzaSyBmvdkcqvY-aunh7iZBuV9xkz9f0XWOhoc';
+const googleApiKey = process.env.REACT_APP_MAP_API_KEY;
+
 export const getCityNameFromState = (state: any) => state.cityInfo;
 
 const getCityName = (l: any) => () => {
@@ -24,7 +23,6 @@ const getCityName = (l: any) => () => {
   return axios.get(`https://maps.googleapis.com/maps/api/geocode/json`, {
     params: {
       key: googleApiKey,
-      // key: process.env.REACT_APP_MAP_API_KEY,
       latlng: `${l.lat},${l.lng}`,
       language: 'en',
     },

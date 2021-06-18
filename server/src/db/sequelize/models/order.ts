@@ -1,5 +1,7 @@
 import { Model } from 'sequelize';
-import { ORDER } from '../../../constants/modelsNames';
+
+import { CAR_TYPE, DRIVER, ORDER, USER } from '../../../constants/modelsNames';
+import { USER_IN_ORDER } from '../../../constants/foreignKeys';
 
 export default (sequelize: any, DataTypes: any) => {
   class Order extends Model {
@@ -8,7 +10,14 @@ export default (sequelize: any, DataTypes: any) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    static associate() {
+    static associate(models: any) {
+      Order.belongsTo(models[USER], {
+        foreignKey: {
+          name: USER_IN_ORDER,
+        },
+      });
+      Order.belongsTo(models[DRIVER]);
+      Order.belongsTo(models[CAR_TYPE]);
       // define association here
       // create associate with user and driver(id for user and id for driver from driver)
       // order.hasOne(carType)
@@ -24,14 +33,14 @@ export default (sequelize: any, DataTypes: any) => {
         primaryKey: true,
         autoIncrement: true,
       },
-      customer_id: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-      },
-      driver_id: {
-        type: DataTypes.INTEGER,
-        allowNull: true,
-      },
+      // customer_id: {
+      //   type: DataTypes.INTEGER,
+      //   allowNull: false,
+      // },
+      // driver_id: {
+      //   type: DataTypes.INTEGER,
+      //   allowNull: true,
+      // },
       to: {
         type: DataTypes.STRING,
         allowNull: false,
@@ -44,10 +53,10 @@ export default (sequelize: any, DataTypes: any) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      car_type: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
+      // car_type: {
+      //   type: DataTypes.STRING,
+      //   allowNull: false,
+      // },
       status: {
         type: DataTypes.STRING,
         allowNull: true,

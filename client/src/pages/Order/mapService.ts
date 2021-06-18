@@ -70,7 +70,7 @@ export const fetchCityInfo = (name: string) => () => {
 
 // TODO get User from store
 export class OrderDTO {
-  car_type: string;
+  carTypeId: number;
   customer_id: number;
   extra_services: number[];
   from: string;
@@ -79,7 +79,7 @@ export class OrderDTO {
   status: string;
   to: string;
   constructor(order: any) {
-    this.car_type = order.car_type;
+    this.carTypeId = order.carType.id;
     this.customer_id = order.customer_id || 1;
     this.extra_services = order.extraServices;
     this.from = order.from;

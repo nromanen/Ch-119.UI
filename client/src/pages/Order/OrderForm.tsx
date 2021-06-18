@@ -1,4 +1,12 @@
-import { FC, SyntheticEvent, useRef, useEffect, FormEvent } from 'react';
+import {
+  FC,
+  SyntheticEvent,
+  useRef,
+  useEffect,
+  FormEvent,
+  ChangeEvent,
+  ChangeEventHandler,
+} from 'react';
 import axios from 'axios';
 import { Autocomplete } from '@react-google-maps/api';
 import {
@@ -60,6 +68,8 @@ export const OrderForm: FC<OrderFormProps> = ({
   const { name: currentCity } = useTypedSelector((state) => state.cityInfo);
 
   const calculatePrice = (prices: any) => {
+    console.log('PRICES', prices);
+
     const servicesPrice = prices.services.reduce(
       (acc: number, val: number) => acc + +val,
       0,
@@ -74,7 +84,7 @@ export const OrderForm: FC<OrderFormProps> = ({
 
   useEffect(() => {
     const carTypeCoef = info.car_types.find(
-      (carType) => carType.name === order.car_type,
+      (carType) => carType.id === order.carType.id,
     )?.city_car_type.coef;
 
     const servicePrices = order.extraServices.map((serviceId) => {
@@ -94,7 +104,7 @@ export const OrderForm: FC<OrderFormProps> = ({
     const price = calculatePrice(value);
 
     price && changeOrderValue('price', price);
-  }, [info, order.car_type, order.distance, order.extraServices]);
+  }, [info, order.carType, order.distance, order.extraServices]);
 
   const onExtraServicesChanged = () => {
     let services: Array<HTMLInputElement> = Array.from(
@@ -108,6 +118,14 @@ export const OrderForm: FC<OrderFormProps> = ({
     });
 
     changeOrderValue('extraServices', extraServices);
+  };
+
+  const onCarTypeChange = (e: any) => {
+    const carType = {
+      id: +e.target.selectedOptions[0].dataset.id,
+      name: e.target.value,
+    };
+    changeOrderValue('carType', carType);
   };
 
   const onSubmit = (e: SyntheticEvent) => {
@@ -184,8 +202,8 @@ export const OrderForm: FC<OrderFormProps> = ({
           <FormLabel title="Car type:" htmlFor="car-type" />
           <CarTypesSelect
             id="car-type"
-            value={order.car_type}
-            onChange={(e: any) => changeOrderValue('car_type', e.target.value)}
+            selectedValue={order.carType.name}
+            onChange={onCarTypeChange}
             carTypes={carTypes}
           />
         </Form.Group>

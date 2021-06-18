@@ -13,11 +13,7 @@ declare const process: {
   };
 };
 
-// TODO process.env undefined
-// const googleMapsApiKey = process.env.REACT_APP_MAP_API_KEY;
-const googleMapsApiKey = 'AIzaSyBmvdkcqvY-aunh7iZBuV9xkz9f0XWOhoc';
-
-console.log('googleMapsApiKey', googleMapsApiKey);
+const googleMapsApiKey = process.env.REACT_APP_MAP_API_KEY;
 
 const libraries: Libraries = ['places'];
 

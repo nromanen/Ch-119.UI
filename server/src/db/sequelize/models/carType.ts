@@ -1,5 +1,10 @@
 import { Model } from 'sequelize';
-import { CAR_TYPE, CITY, CITY_CAR_TYPES } from '../../../constants/modelsNames';
+import {
+  ORDER,
+  CAR_TYPE,
+  CITY,
+  CITY_CAR_TYPES,
+} from '../../../constants/modelsNames';
 
 export default (sequelize: any, DataTypes: any) => {
   class CarType extends Model {
@@ -14,6 +19,7 @@ export default (sequelize: any, DataTypes: any) => {
       CarType.belongsToMany(models[CITY], {
         through: models[CITY_CAR_TYPES],
       });
+      CarType.hasMany(models[ORDER]);
     }
   }
   CarType.init(

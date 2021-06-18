@@ -23,21 +23,21 @@ export default (sequelize: any, DataTypes: any) => {
     },
   );
 
-  // Uncomment for creating tables in postgresql
-  // Role.create({
-  //   id: 1,
-  //   name: 'USER',
-  // });
+  // Uncomment for creating tables in postgres
+  Role.create({
+    id: 1,
+    name: 'USER',
+  });
 
-  // Role.create({
-  //   id: 2,
-  //   name: 'DRIVER',
-  // });
+  Role.create({
+    id: 2,
+    name: 'DRIVER',
+  });
 
-  // Role.create({
-  //   id: 3,
-  //   name: 'ADMIN',
-  // });
+  Role.create({
+    id: 3,
+    name: 'ADMIN',
+  });
 
   return Role;
 };

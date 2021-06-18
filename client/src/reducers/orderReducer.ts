@@ -4,7 +4,7 @@ import { OrderState } from './../types/orderTypes';
 export const initialState: OrderState = {
   from: 'Головна 265',
   to: 'Ватутіна 1, Чернівці',
-  car_type: 'basic',
+  carType: { name: 'basic', id: 1 },
   extraServices: [],
   paymentType: 'cash',
   price: 0,
