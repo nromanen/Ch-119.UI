@@ -18,7 +18,6 @@ export default (sequelize: any, DataTypes: any) => {
      */
     static associate(models: any) {
       // City.hasMany(models[CAR_TYPE]);
-      console.log('MODELS ___', models);
 
       City.belongsToMany(models[CAR_TYPE], {
         through: models[CITY_CAR_TYPES],
@@ -39,7 +38,6 @@ export default (sequelize: any, DataTypes: any) => {
       //     include: [sequelize.models.car_type],
       //   },
       // );
-      // console.log('City created');
     }
   }
   City.init(

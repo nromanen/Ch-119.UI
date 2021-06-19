@@ -8,8 +8,6 @@ export const generateAccessToken = (
   name: string,
   roles: string[],
 ) => {
-  console.log({ id, name, roles });
-
   const accessToken = jwt.sign(
     { id, name, roles },
     process.env.ACCESS_TOKEN_SECRET_KEY,
@@ -45,8 +43,6 @@ export const saveToken = (userId: number, refreshToken: string) => {
   const tokenData = Token.findOne({ where: { user_id: userId } });
   if (tokenData) {
     tokenData.refreshToken = refreshToken;
-    console.log('TOKEN DATA', tokenData);
-
     return tokenData.save();
   }
   const token = Token.create({ user_id: userId, refreshToken });

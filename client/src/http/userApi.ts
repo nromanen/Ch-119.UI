@@ -23,7 +23,6 @@ export const registration =
 export const login = (phone: string, password: string) => async () => {
   try {
     const { data } = await $host.post('user/login', { phone, password });
-    console.log(data);
     if (data) {
       localStorage.setItem('token', data.accessToken);
       localStorage.setItem('refreshToken', data.refreshToken);

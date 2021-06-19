@@ -12,7 +12,6 @@ const mapDispatchToProps = (dispatch: any) => {
   return {
     registrateUser: (payload: any) => {
       dispatch(registrate(payload));
-      console.log(payload);
     },
   };
 };

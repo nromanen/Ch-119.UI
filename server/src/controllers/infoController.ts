@@ -6,7 +6,6 @@ import { CAR_TYPE, CITY, EXTRA_SERVICE } from '../constants/modelsNames';
 export default class InfoController {
   get = async (req: Request, res: Response): Promise<any> => {
     const { name } = req.query;
-    console.log(name, 'name');
 
     try {
       const data = await sequelize.models[CITY].findOne({

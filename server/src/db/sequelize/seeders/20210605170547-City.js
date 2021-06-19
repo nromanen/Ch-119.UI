@@ -39,7 +39,6 @@ module.exports = {
      *   isBetaMember: false
      * }], {});
     */
-    console.log('queryInterface', queryInterface);
     await queryInterface.bulkInsert('cities', cities, {
 
     });

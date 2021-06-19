@@ -7,14 +7,13 @@ export const getUserFromState = (state: any) => state.auth;
 
 function* registrateUserWorker(): Generator<StrictEffect, void, any> {
   const userInfoState = yield select(getUserFromState);
-  console.log('userInfoState', userInfoState);
 
   const data = yield call(
-      registration(
-          userInfoState.name,
-          userInfoState.phone,
-          userInfoState.password,
-      ),
+    registration(
+      userInfoState.name,
+      userInfoState.phone,
+      userInfoState.password,
+    ),
   );
   if (data) {
     yield put({ type: AuthActionTypes.SET_USER_DATA, payload: data });
@@ -26,36 +25,30 @@ function* registrateUserWorker(): Generator<StrictEffect, void, any> {
 
 function* loginUserWorker(): Generator<StrictEffect, void, any> {
   const userInfoState = yield select(getUserFromState);
-  console.log('userInfoState', userInfoState);
 
   const data = yield call(login(userInfoState.phone, userInfoState.password));
 
   if (data) {
-    console.log('DATA HERE', data);
     yield put({ type: AuthActionTypes.SET_USER_DATA, payload: data });
-    yield put(push('/order' ));
+    yield put(push('/order'));
   } else {
-    console.log('NO DATA', data);
     yield put({ type: AuthActionTypes.HANDLE_ERROR });
-  }// showAlert(status, 'Error') по статусу кольори модалки
+  } // showAlert(status, 'Error') по статусу кольори модалки
 }
 
 function* checkAuthUser(): Generator<StrictEffect, void, any> {
   const userInfoState = yield select(getUserFromState);
-  console.log('userInfoState', userInfoState);
 
   const data = yield call(checkAuth());
   if (data) {
-    yield put({type: AuthActionTypes.SET_USER_DATA});
+    yield put({ type: AuthActionTypes.SET_USER_DATA });
   } else {
-    console.log('NO DATA', data);
     yield put({ type: AuthActionTypes.HANDLE_ERROR });
-  }// showAlert(status, 'Error') по статусу кольори модалки
+  } // showAlert(status, 'Error') по статусу кольори модалки
 }
 
 function* logoutUserWorker(): Generator<StrictEffect, void, any> {
   const userInfoState = yield select(getUserFromState);
-  console.log('userInfoState', userInfoState);
 
   const data = yield call(logout());
   yield put(push('/login'));

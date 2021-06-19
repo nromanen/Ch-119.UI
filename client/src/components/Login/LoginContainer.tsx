@@ -12,7 +12,6 @@ const mapDispatchToProps = (dispatch: any) => {
   return {
     loginUser: (payload: any) => {
       dispatch(login(payload));
-      console.log(payload);
     },
     checkUser: () => {
       dispatch(check());

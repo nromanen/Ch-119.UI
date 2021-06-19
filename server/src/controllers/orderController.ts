@@ -6,7 +6,6 @@ import { STATUS_BAD_REQUEST, STATUS_OK } from '../constants/api';
 export default class OrderController {
   create = async (req: Request, res: Response): Promise<any> => {
     const { body } = req.body;
-    console.log('body', body);
 
     try {
       const data = await sequelize.models[ORDER].create(body);
