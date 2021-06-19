@@ -57,30 +57,28 @@ if (process.env.NODE_ENV !== PRODUCTION) {
 const start = async () => {
   try {
     await sequelize.authenticate();
-    // Create tables if not exist asd
     const options = {
-      force: true,
+      // force: true,
       // alter: true,
     };
     await sequelize.sync(options);
-    // Possibly not right
-
+    // Create tables if not exist asd
     // Uncomment if you don't have city table
     // and set optins to alter: true
     // comment after creating in db and disable alter (comment it)
 
-    await sequelize.models[CITY].create(
-      {
-        name: 'Chernivtsi',
-        basePrice: 41,
-        basePriceForKm: 10,
-        car_types: carTypes.slice(0, 4),
-        extra_services: extraServices,
-      },
-      {
-        include: [sequelize.models[CAR_TYPE], sequelize.models[EXTRA_SERVICE]],
-      },
-    );
+    // await sequelize.models[CITY].create(
+    //   {
+    //     name: 'Chernivtsi',
+    //     basePrice: 41,
+    //     basePriceForKm: 10,
+    //     car_types: carTypes.slice(0, 4),
+    //     extra_services: extraServices,
+    //   },
+    //   {
+    //     include: [sequelize.models[CAR_TYPE], sequelize.models[EXTRA_SERVICE]],
+    //   },
+    // );
     // End Possibly not right
 
     app.listen(PORT, () => {

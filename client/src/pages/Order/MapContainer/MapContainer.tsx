@@ -21,7 +21,6 @@ export const MapContainer = () => {
   const { changeOrderValue } = useOrderActions();
 
   const [renderer, setrenderer] = useState<google.maps.DirectionsRenderer>();
-  // console.log('renderer', renderer);
 
   const mapOptions = useMemo(
     () => ({
@@ -69,13 +68,13 @@ export const MapContainer = () => {
       if (renderer) {
         const directions =
           renderer.getDirections() as google.maps.DirectionsResult;
+
         const origin = directions.routes[0].legs[0].start_address;
         const destination = directions.routes[0].legs[0].end_address;
         const directionRoutes = directions.routes[0].legs[0];
         const distance: google.maps.Distance =
           directionRoutes.distance as google.maps.Distance;
 
-        console.log(distance, 'distance');
         changeOrderValue('distance', distance);
         changeOrderValue('from', origin);
         changeOrderValue('to', destination);
@@ -85,7 +84,6 @@ export const MapContainer = () => {
   );
 
   const onDirectionsRendererLoaded = useCallback((dirRenderer: any) => {
-    console.log('on renderer loaded');
     setrenderer(dirRenderer);
   }, []);
 

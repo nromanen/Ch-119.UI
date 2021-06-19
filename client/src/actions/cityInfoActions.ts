@@ -2,8 +2,6 @@ import { CityInfoValues, InfoActionTypes } from '../types/cityInfoTypes';
 import { CityInfoI } from '../pages/Order/mapService';
 
 export const getCityInfoCreator = (cityName: string) => {
-  console.log('action get info', cityName);
-
   return {
     type: InfoActionTypes.GET_INFO,
     payload: {

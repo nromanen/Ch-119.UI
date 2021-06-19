@@ -6,6 +6,8 @@
   }
   &__price {
     font-size: 1.3em !important;
+    display: grid !important;
+    place-content: center;
   }
   &__form {
     max-width: 600px;
@@ -28,5 +30,17 @@
     &__label {
       width: 45px;
     }
+  }
+
+  .spinner-border {
+    margin-inline-start: 0.5rem;
+  }
+
+  .accordion .card {
+    border: none;
+  }
+
+  .order__button-toolbar {
+    justify-content: space-around;
   }
 }

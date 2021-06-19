@@ -19,7 +19,12 @@ export const ExtraServicesSelect: FC<ExtraServicesSelectI> = ({
 }) => {
   return avaliableInCityExtraServices ? (
     <Accordion>
-      <Accordion.Toggle as={Form.Label} variant="link" eventKey="0">
+      <Accordion.Toggle
+        as={Form.Label}
+        className="form__label"
+        variant="link"
+        eventKey="0"
+      >
         {title || 'Extra services:'}
       </Accordion.Toggle>
       <Card>

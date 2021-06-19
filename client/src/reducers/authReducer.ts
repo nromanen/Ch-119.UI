@@ -5,8 +5,9 @@ export const initialState: IUser = {
   phone: '',
   password: '',
   role: [],
-  isAuth: false,
+  isAuth: true, // TODO CHANGE THIS
   hasError: false,
+  id: 0,
 };
 
 export const authReducer = (state = initialState, action: any): IUser => {
@@ -17,6 +18,7 @@ export const authReducer = (state = initialState, action: any): IUser => {
         name: action.payload.name,
         role: action.payload.roles,
         isAuth: true,
+        id: action.payload.id,
       };
     case AuthActionTypes.LOGIN_USER:
       return {
@@ -30,6 +32,7 @@ export const authReducer = (state = initialState, action: any): IUser => {
         name: action.payload.name,
         phone: action.payload.phone,
         password: action.payload.password,
+        // id: action.payload.id,
       };
     case AuthActionTypes.CHECK_USER_DATA:
       return {
@@ -48,6 +51,7 @@ export const authReducer = (state = initialState, action: any): IUser => {
         password: '',
         role: [],
         isAuth: false,
+        id: 0,
       };
     default:
       return state;

@@ -1,4 +1,4 @@
-export interface OrderState {
+export interface OrderStateI {
   from: string;
   to: string;
   carType: CarTypeI;
@@ -7,6 +7,8 @@ export interface OrderState {
   price: number;
   status: string;
   distance: google.maps.Distance | undefined;
+  loading: boolean;
+  error: boolean;
 }
 
 interface CarTypeI {
@@ -16,16 +18,35 @@ interface CarTypeI {
 
 type ValueOf<T> = T[keyof T];
 
-export type OrderValues = ValueOf<OrderState>;
+export type OrderValues = ValueOf<OrderStateI>;
 
 export interface ChangeValueAction {
   type: OrderActionTypes.CHANGE_VALUE;
   payload: {
-    prop: keyof OrderState;
+    prop: keyof OrderStateI;
     value: OrderValues;
   };
 }
+
+export interface MakeOrderAction {
+  type: OrderActionTypes.MAKE_ORDER;
+}
+export interface MakeOrderSuccessAction {
+  type: OrderActionTypes.MAKE_ORDER_SUCCESS;
+}
+
+export interface MakeOrderErrorAction {
+  type: OrderActionTypes.MAKE_ORDER_ERROR;
+}
+
 export enum OrderActionTypes {
   CHANGE_VALUE = 'CHANGE_ORDER_VALUE',
+  MAKE_ORDER = 'MAKE_ORDER',
+  MAKE_ORDER_SUCCESS = 'MAKE_ORDER_SUCCESS',
+  MAKE_ORDER_ERROR = 'MAKE_ORDER_ERROR',
 }
-export type OrderAction = ChangeValueAction;
+export type OrderAction =
+  | ChangeValueAction
+  | MakeOrderAction
+  | MakeOrderSuccessAction
+  | MakeOrderErrorAction;

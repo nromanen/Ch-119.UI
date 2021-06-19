@@ -1,6 +1,8 @@
 import React, { FC } from 'react';
 import { Form } from 'react-bootstrap';
 
+import './FormLabel.scss';
+
 interface FormLabelI {
   title?: string | false;
   htmlFor?: string;
@@ -13,7 +15,8 @@ export const FormLabel: FC<FormLabelI> = ({
   htmlFor,
   children,
 }) => {
-  const classes = classNames.concat('col-xs-2').join(' ');
+  const classes = classNames.concat('col-xs-2', 'form__label').join(' ');
+
   return (
     <Form.Label className={classes} htmlFor={htmlFor}>
       {title}

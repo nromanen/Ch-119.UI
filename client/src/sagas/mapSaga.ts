@@ -6,20 +6,11 @@ import { changeMapValue } from '../actions/mapActions';
 import { getCityInfoCreator } from '../actions/cityInfoActions';
 import { changeCityInfoValueCreator } from './../actions/cityInfoActions';
 
-declare const process: {
-  env: {
-    REACT_APP_MAP_API_KEY: string;
-  };
-};
-
 const googleApiKey = process.env.REACT_APP_MAP_API_KEY;
 
 export const getCityNameFromState = (state: any) => state.cityInfo;
 
 const getCityName = (l: any) => () => {
-  console.log('key api', process.env.REACT_APP_MAP_API_KEY!);
-  console.log('key api', googleApiKey);
-
   return axios.get(`https://maps.googleapis.com/maps/api/geocode/json`, {
     params: {
       key: googleApiKey,
@@ -46,13 +37,7 @@ function* getCurrentLocation(): Generator<StrictEffect, void, any> {
   const name = res.data.plus_code.compound_code.split(', ')[1].split(' ')[0];
   yield put(changeCityInfoValueCreator('name', name));
   yield put(getCityInfoCreator(name));
-  console.log('cityName', name);
 }
-
-// function* getCityNameFromLocation(): Generator {
-//   const res = yield call(getCityName);
-
-// }
 
 export function* mapWatcher() {
   yield takeEvery(MapActionTypes.GET_CURRENT_LOCATION, getCurrentLocation);

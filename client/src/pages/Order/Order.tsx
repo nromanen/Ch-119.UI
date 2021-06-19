@@ -62,6 +62,8 @@ export const Order = () => {
 
       setTo(geometry.formatted_address);
       setToTouched(true);
+      console.log(fromTouched, 'from Touched');
+
       fromTouched && createPath();
     } else {
       console.log('Autocomplete is not loaded yet!');

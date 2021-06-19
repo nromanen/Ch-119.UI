@@ -42,10 +42,9 @@ export const ExtraServiceItem: FC<ExtraServiceItemI> = ({
   const Icon: any = extraServicesIcons[name];
   return (
     <OverlayTrigger
-      key={id}
       placement="top"
       overlay={
-        <Tooltip id={`tooltip-top`}>
+        <Tooltip id={`tooltip-top-${id}`}>
           <strong>{name}</strong>.
         </Tooltip>
       }

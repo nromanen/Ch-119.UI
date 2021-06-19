@@ -29,4 +29,5 @@ export interface IUser {
   tripsNum?: number;
   isAuth: boolean;
   hasError: boolean;
+  id: number;
 }

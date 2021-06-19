@@ -50,19 +50,11 @@ export const Map: FC<MapProps> = ({
     libraries: libraries,
   });
 
-  // console.log('directions', directions);
-
-  // TODO save renderer here
-
   // const directionsServiceLoaded = useCallback((dirService: any) => {
   //   // console.log('dirService', dirService);
   // }, []);
 
   const renderMap = () => {
-    // wrapping to a function is useful in case you want to access `window.google`
-    // to eg. setup options or create latLng object, it won't be available otherwise
-    // feel free to render directly if you don't need that
-
     return (
       <GoogleMap
         options={mapOptions}

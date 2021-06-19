@@ -21,15 +21,19 @@ import {
   ButtonGroup,
   OverlayTrigger,
   Tooltip,
+  Spinner,
 } from 'react-bootstrap';
 import { useOrderActions } from '../../hooks/useActions';
 import { useTypedSelector } from '../../hooks/useTypedSelector';
-import { CarTypesI, ExtraServicesI, OrderDTO } from './mapService';
+import { CarTypesI, ExtraServicesI } from './mapService';
 
 import { Input } from './../../components/Input';
 import { FormLabel } from './../../components/FormLabel';
 import { CarTypesSelect } from './../../components/CarTypesSelect';
 import { ExtraServicesSelect } from './../../components/ExtraServicesSelect';
+import { makeOrderAction } from '../../actions/orderActions';
+import { useDispatch } from 'react-redux';
+import { OrderActionTypes } from '../../types/orderTypes';
 
 interface OrderFormProps {
   createPath?: () => void;
@@ -60,16 +64,15 @@ export const OrderForm: FC<OrderFormProps> = ({
   extraServices,
   // currentCity,
 }) => {
-  const { changeOrderValue } = useOrderActions();
+  const { changeOrderValue, makeOrderAction } = useOrderActions();
   const info = useTypedSelector((state) => state.cityInfo);
   const order = useTypedSelector((state) => state.order);
+  const { directions } = useTypedSelector((state) => state.map);
   const formRef = useRef<any>(null);
-
+  const { loading, error } = order;
   const { name: currentCity } = useTypedSelector((state) => state.cityInfo);
 
   const calculatePrice = (prices: any) => {
-    console.log('PRICES', prices);
-
     const servicesPrice = prices.services.reduce(
       (acc: number, val: number) => acc + +val,
       0,
@@ -104,7 +107,7 @@ export const OrderForm: FC<OrderFormProps> = ({
     const price = calculatePrice(value);
 
     price && changeOrderValue('price', price);
-  }, [info, order.carType, order.distance, order.extraServices]);
+  }, [info, order.carType, order.distance, order.extraServices, directions]);
 
   const onExtraServicesChanged = () => {
     let services: Array<HTMLInputElement> = Array.from(
@@ -130,18 +133,7 @@ export const OrderForm: FC<OrderFormProps> = ({
 
   const onSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
-
-    const orderDTO = new OrderDTO(order);
-    // get user id from user store
-    console.log(orderDTO, 'orderDTO');
-
-    axios
-      .post('http://localhost:8080/api/v1/order', {
-        body: orderDTO,
-      })
-      .then((res) => {
-        console.log('create order', res);
-      });
+    makeOrderAction();
   };
 
   return (
@@ -149,9 +141,7 @@ export const OrderForm: FC<OrderFormProps> = ({
       <Form ref={formRef} className="order__form" onSubmit={onSubmit}>
         <Alert variant="primary">Your current location : {currentCity}</Alert>
         <Form.Group className="form-group">
-          <Form.Label className="col-xs-2" htmlFor="from">
-            From:
-          </Form.Label>
+          <FormLabel classNames={['col-xs-2']} htmlFor="from" title="From:" />
           <div className="col-xs-4">
             {window?.google && (
               <Autocomplete
@@ -174,9 +164,11 @@ export const OrderForm: FC<OrderFormProps> = ({
           </div>
         </Form.Group>
         <Form.Group>
-          <Form.Label className="col-xs-2" htmlFor="to">
-            To:
-          </Form.Label>
+          <FormLabel
+            classNames={['col-xs-2']}
+            htmlFor="to"
+            title="To:"
+          ></FormLabel>
           <div className="col-xs-4">
             {window?.google && (
               <Autocomplete
@@ -216,31 +208,27 @@ export const OrderForm: FC<OrderFormProps> = ({
           />
         </Form.Group>
 
-        {order.price && (
-          <Badge as="p" className="order__price" variant="primary">
-            &#x20b4; {order.price}
-          </Badge>
-        )}
         <div className="col-xs-offset-2 col-xs-10">
-          <ButtonToolbar>
-            <ButtonGroup>
-              <Button
-                className="mr-2"
-                onClick={createPath}
-                type="button"
-                variant="info"
-              >
-                Calculate
-              </Button>
-              <Button type="submit" variant="info">
-                Make order
-              </Button>
-            </ButtonGroup>
+          <ButtonToolbar className="order__button-toolbar">
+            {order.price > 0 && (
+              <Badge as="div" className="order__price" variant="primary">
+                &#x20b4; {order.price}
+              </Badge>
+            )}
+            <Button type="submit" variant="info" disabled={loading} size="lg">
+              Make order
+              {loading && (
+                <Spinner
+                  animation="border"
+                  variant="light"
+                  size="sm"
+                  as="span"
+                  role="making order"
+                  aria-hidden="true"
+                />
+              )}
+            </Button>
           </ButtonToolbar>
-
-          {/* <button  className="btn btn-lg btn-info">
-          Calculate
-        </button> */}
         </div>
       </Form>
     </Jumbotron>

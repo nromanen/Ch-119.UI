@@ -49,9 +49,6 @@ export interface CityInfoI {
 }
 
 export const fetchCityInfo = (name: string) => () => {
-  // remove createdDate
-  console.log('PROCESS', process.env.REACT_APP_SERVER_URL);
-
   const response = axios.get<CityInfoI>(
     `${process.env.REACT_APP_SERVER_URL}info`,
     {
@@ -61,31 +58,4 @@ export const fetchCityInfo = (name: string) => () => {
     },
   );
   return response;
-
-  // if (res.statusText === 'OK') {
-  //   console.log(res, 'info');
-  //   return res.data.data;
-  // }
 };
-
-// TODO get User from store
-export class OrderDTO {
-  carTypeId: number;
-  customer_id: number;
-  extra_services: number[];
-  from: string;
-  is_card: boolean;
-  price: string;
-  status: string;
-  to: string;
-  constructor(order: any) {
-    this.carTypeId = order.carType.id;
-    this.customer_id = order.customer_id || 1;
-    this.extra_services = order.extraServices;
-    this.from = order.from;
-    this.is_card = order.paymentType !== 'cash';
-    this.price = order.price;
-    this.status = order.status;
-    this.to = order.to;
-  }
-}

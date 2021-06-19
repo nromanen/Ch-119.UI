@@ -1,7 +1,7 @@
 import { OrderAction, OrderActionTypes } from '../types/orderTypes';
-import { OrderState } from './../types/orderTypes';
+import { OrderStateI } from './../types/orderTypes';
 
-export const initialState: OrderState = {
+export const initialState: OrderStateI = {
   from: 'Головна 265',
   to: 'Ватутіна 1, Чернівці',
   carType: { name: 'basic', id: 1 },
@@ -13,15 +13,23 @@ export const initialState: OrderState = {
     text: '',
     value: 0,
   },
+  loading: false,
+  error: false,
 };
 
 export const orderReducer = (
   state = initialState,
-  { type, payload }: OrderAction,
-): OrderState => {
-  switch (type) {
+  action: OrderAction,
+): OrderStateI => {
+  switch (action.type) {
     case OrderActionTypes.CHANGE_VALUE:
-      return { ...state, [payload.prop]: payload.value };
+      return { ...state, [action.payload.prop]: action.payload.value };
+    case OrderActionTypes.MAKE_ORDER:
+      return { ...state, loading: true, error: false };
+    case OrderActionTypes.MAKE_ORDER_SUCCESS:
+      return { ...state, loading: false, error: false };
+    case OrderActionTypes.MAKE_ORDER_ERROR:
+      return { ...state, loading: false, error: true };
 
     default:
       return state;

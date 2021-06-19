@@ -5,7 +5,6 @@ import { createBrowserHistory } from 'history';
 import { connectRouter } from 'connected-react-router';
 import { routerMiddleware } from 'react-router-redux';
 
-// import { userReducer, initialState as UserState } from './reducers/userReducer';
 import {
   cityInfoReducer,
   initialState as InfoState,
@@ -22,7 +21,6 @@ const sagaMiddleware = createSagaMiddleware();
 
 const initialState = {
   auth: AuthState,
-  // user: UserState,
   order: OrderState,
   cityInfo: InfoState,
   map: MapState,
@@ -35,7 +33,6 @@ export const rootReducer = (history: any) =>
   combineReducers({
     router: connectRouter(history),
     auth: authReducer,
-    // user: userReducer,
     order: orderReducer,
     cityInfo: cityInfoReducer,
     map: mapReducer,
