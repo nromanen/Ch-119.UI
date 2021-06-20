@@ -1,14 +1,20 @@
 import { AuthActionTypes, IAuthAction, IUser } from '../types/userTypes';
 
 export const initialState: IUser = {
-  id: 0,
   name: '',
   phone: '',
   password: '',
   role: [],
-  isAuth: true, // TODO CHANGE THIS
+  isAuth: false,
   hasError: false,
-  id: 0,
+  id: null,
+  isDriver: false,
+  driver_info: {
+    car_color: '',
+    car_model: '',
+    car_number: '',
+    driver_id: null,
+  },
 };
 
 export const authReducer = (state = initialState, action: any): IUser => {
@@ -16,11 +22,24 @@ export const authReducer = (state = initialState, action: any): IUser => {
     case AuthActionTypes.SET_USER_DATA:
       return {
         ...state,
-        id: action.payload.id,
         name: action.payload.name,
         role: action.payload.roles,
         isAuth: true,
         id: action.payload.id,
+      };
+    case AuthActionTypes.SET_DRIVER_DATA:
+      return {
+        ...state,
+        name: action.payload.name,
+        role: [action.payload.roles[0], action.payload.roles[1]],
+        isAuth: true,
+        id: action.payload.id,
+        driver_info: {
+          car_color: action.payload.driver_info.car_color,
+          car_model: action.payload.driver_info.car_model,
+          car_number: action.payload.driver_info.car_number,
+          driver_id: action.payload.driver_info.driver_id,
+        },
       };
     case AuthActionTypes.LOGIN_USER:
       return {
@@ -31,11 +50,9 @@ export const authReducer = (state = initialState, action: any): IUser => {
     case AuthActionTypes.REGISTRATE_USER:
       return {
         ...state,
-        id: action.payload.id,
         name: action.payload.name,
         phone: action.payload.phone,
         password: action.payload.password,
-        // id: action.payload.id,
       };
     case AuthActionTypes.CHECK_USER_DATA:
       return {
@@ -49,13 +66,31 @@ export const authReducer = (state = initialState, action: any): IUser => {
     case AuthActionTypes.LOGOUT_USER:
       return {
         ...state,
-        id: 0,
         name: '',
         phone: '',
         password: '',
         role: [],
         isAuth: false,
         id: 0,
+      };
+    case AuthActionTypes.REGISTRATE_DRIVER:
+      console.log('PAYLOAD IN REDUCER', action.payload);
+      return {
+        ...state,
+        name: action.payload.name,
+        phone: action.payload.phone,
+        password: action.payload.password,
+        driver_info: {
+          car_color: action.payload.car_color,
+          car_model: action.payload.car_model,
+          car_number: action.payload.car_number,
+        },
+        isDriver: true,
+      };
+    case AuthActionTypes.IS_DRIVER:
+      return {
+        ...state,
+        isDriver: action.payload.isDriver,
       };
     default:
       return state;
@@ -64,6 +99,16 @@ export const authReducer = (state = initialState, action: any): IUser => {
 
 export const registrate = (payload: any): IAuthAction => ({
   type: AuthActionTypes.REGISTRATE_USER,
+  payload,
+});
+
+export const registrateDriver = (payload: any): IAuthAction => ({
+  type: AuthActionTypes.REGISTRATE_DRIVER,
+  payload,
+});
+
+export const checkDriver = (payload: any) => ({
+  type: AuthActionTypes.IS_DRIVER,
   payload,
 });
 

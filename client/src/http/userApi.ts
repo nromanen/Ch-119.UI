@@ -20,6 +20,27 @@ export const registration =
     } else return 'Invalid Data';
   };
 
+  export const registrationDriver =
+  (name: string, phone: string, password: string, car_color: string, car_model: string, car_number: string ) => async () => {
+    const { data } = await $host.post('user/registration', {
+      name,
+      phone,
+      password,
+      role: ['USER', 'Driver'],
+      car_color,
+      car_model,
+      car_number,
+    });
+
+    if (data) {
+      localStorage.setItem('token', data.accessToken);
+      localStorage.setItem('refreshToken', data.refreshToken);
+      return new Promise((resolve, reject) =>
+        resolve(jwtDecode(data.accessToken, data.refreshToken)),
+      );
+    } else return 'Invalid Data';
+  };
+
 export const login = (phone: string, password: string) => async () => {
   try {
     const { data } = await $host.post('user/login', { phone, password });

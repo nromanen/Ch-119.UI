@@ -1,5 +1,5 @@
 import { Registration } from './Registration';
-import { registrate } from '../../reducers/authReducer';
+import { registrate, registrateDriver, checkDriver } from '../../reducers/authReducer'; // checkDriver
 import { connect } from 'react-redux';
 
 const mapStateToProps = (state: any) => {
@@ -12,6 +12,12 @@ const mapDispatchToProps = (dispatch: any) => {
   return {
     registrateUser: (payload: any) => {
       dispatch(registrate(payload));
+    },
+    registrateDriver: (payload: any) => {
+      dispatch(registrateDriver(payload));
+    },
+    checkDriverState: (payload: any) => {
+      dispatch(checkDriver(payload));
     },
   };
 };

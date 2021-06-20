@@ -15,22 +15,26 @@ import { generateVerifyCode } from '../services/verification';
 // TODO CONSTANTS FOR MODELS
 const User = sequelize.models['users'];
 const Role = sequelize.models['roles'];
+const Driver = sequelize.models['drivers'];
 const { Op } = sequelize.Sequelize;
 
 export default class AuthController {
   async registration(req: Request, res: Response, next: NextFunction) {
     const { password, phone, verification_code } = req.body;
+    const { car_model, car_color, car_number } = req.body;
 
     if (!phone || !password) {
       return next(ApiError.badRequest('Incorrect password or phone'));
     }
 
-    const candidate = await sequelize.models['users'].findOne({
+    const candidate = await User.findOne({
       where: { phone },
     });
     if (candidate) {
       return next(ApiError.conflict('User with this phone already exist'));
     }
+
+    if (!car_number) {
     // функціонал введення правильних цифр від сервісу
     // const verifyCode = generateVerifyCode()
     User.create({
@@ -86,9 +90,72 @@ export default class AuthController {
       .catch(() => {
         return next(ApiError.forbidden('Server error'));
       });
-  }
+    } else {
+      const driver = await Driver.findOne({
+        where: { car_number },
+      });
+      if (driver) {
+        return next(ApiError.conflict('Driver with this number already exist'));
+      }
+        User.create({
+          phone: req.body.phone,
+          name: req.body.name,
+          password: bcrypt.hashSync(req.body.password, 5),
+          verification_code: generateVerifyCode(),
+        })
+          .then((user: any) => {
+            const roles = req.body.roles ? req.body.roles : ['USER', 'DRIVER'];
+            Role.findAll({
+              where: {
+                name: {
+                  [Op.or]: roles,
+                },
+              },
+            }).then((roles: any) => {
+              user.setRoles(roles).then(() => {
+                const authorities: Array<string> = [];
+                for (let i = 0; i < roles.length; i++) {
+                  authorities.push(roles[i].name);
+                }
+                Driver.create({
+                  user_id: user.id,
+                  car_color: req.body.car_color,
+                  car_model: req.body.car_model,
+                  car_number: req.body.car_number,
+                })  
+                const driver_info = {
+                  car_color,
+                  car_model,
+                  car_number
+                }
 
-  async login(req: Request, res: Response, next: NextFunction) {
+                const accessToken = generateAccessToken(
+                  user.id,
+                  user.name,
+                  authorities,
+                  driver_info,
+                );
+                const refreshToken = generateRefreshToken(
+                  user.id,
+                  user.name,
+                  authorities,
+                  driver_info,
+                );
+                res.cookie('refreshToken', refreshToken, {
+                  maxAge: 30 * 24 * 60 * 60 * 1000,
+                  httpOnly: true,
+                });
+                return res.json({ accessToken, refreshToken });
+              });
+            });
+          })
+          .catch(() => {
+            return next(ApiError.forbidden('Server error'));
+          });
+    };
+  };
+
+  async login (req: Request, res: Response, next: NextFunction) {
     await User.findOne({
       where: {
         phone: req.body.phone,
