@@ -18,7 +18,7 @@ export const ExtraServicesSelect: FC<ExtraServicesSelectI> = ({
   onExtraServicesChanged,
 }) => {
   return avaliableInCityExtraServices ? (
-    <Accordion>
+    <Accordion defaultActiveKey="0">
       <Accordion.Toggle
         as={Form.Label}
         className="form__label"
