@@ -5,7 +5,6 @@ import { LOGIN_ROUTE } from '../constants/routerConstants';
 import { useTypedSelector } from '../hooks/useTypedSelector';
 
 const AppRouter: FC = (props: any) => {
-  // const isAuth = props.store.auth.isAuth;
   const { isAuth } = useTypedSelector((state) => state.auth);
   // const Context = createContext(store);
 
