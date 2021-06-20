@@ -1,5 +1,5 @@
 import { CityInfoValues, InfoActionTypes } from '../types/cityInfoTypes';
-import { CityInfoI } from '../pages/Order/mapService';
+import { CityInfoI } from '../types/cityInfoTypes';
 
 export const getCityInfoCreator = (cityName: string) => {
   return {

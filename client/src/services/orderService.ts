@@ -22,6 +22,28 @@ export class OrderDTO {
   }
 }
 
+export interface PricesI {
+  initial: number;
+  distanceCoef: number;
+  carTypeCoef?: number;
+  services: number[] | undefined;
+  distance: number;
+  discount: number;
+}
+
+export const calculatePrice = (prices: any) => {
+  const servicesPrice = prices.services!.reduce(
+    (acc: number, val: number) => acc + +val,
+    0,
+  );
+  return Math.ceil(
+    prices.initial +
+      prices.distance * prices.distanceCoef * prices.carTypeCoef! +
+      servicesPrice -
+      prices.discount,
+  );
+};
+
 export const makeOrder = (order: OrderStateI, userId: number) => async () => {
   const orderDTO = new OrderDTO(order, userId);
   const url = `${process.env.REACT_APP_SERVER_URL}order`;

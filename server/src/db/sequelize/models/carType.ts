@@ -39,6 +39,7 @@ export default (sequelize: any, DataTypes: any) => {
       sequelize,
       modelName: CAR_TYPE,
       underscored: true,
+      timestamps: false,
     },
   );
   return CarType;

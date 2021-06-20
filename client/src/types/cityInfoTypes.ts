@@ -1,14 +1,46 @@
-export interface InfoState {
+interface CityCarTypeI {
+  coef: number;
+  createdAt?: Date;
+  updatedAt?: Date;
+  carTypeId: number;
+  cityId: number;
+}
+interface CityExtraServiceI {
+  price: number;
+  createdAt?: Date;
+  updatedAt?: Date;
+  carTypeId: number;
+  cityId: number;
+}
+
+export interface CarTypesI {
+  id: number;
+  name: string;
+  createdAt?: Date;
+  updatedAt?: Date;
+  city_car_type: CityCarTypeI;
+}
+export interface ExtraServicesI {
+  id: number;
+  name: string;
+  createdAt?: Date;
+  updatedAt?: Date;
+  city_service: CityExtraServiceI;
+}
+
+export interface CityInfoI {
+  id: number;
+  name: string;
   basePrice: number;
   basePriceForKm: number;
-  car_types: [];
-  extra_services: [];
-  name: string;
-  id: number;
+  createdAt?: Date;
+  updatedAt?: Date;
+  car_types: CarTypesI[];
+  extra_services: ExtraServicesI[];
 }
 
 type ValueOf<T> = T[keyof T];
-export type CityInfoValues = ValueOf<InfoState>;
+export type CityInfoValues = ValueOf<CityInfoI>;
 
 export enum InfoActionTypes {
   GET_INFO = 'GET_INFO',
@@ -19,7 +51,7 @@ export enum InfoActionTypes {
 export interface ChangeMapValue {
   type: InfoActionTypes.CHANGE_VALUE;
   payload: {
-    prop: keyof InfoState;
+    prop: keyof CityInfoI;
     value: CityInfoValues;
   };
 }
@@ -31,7 +63,7 @@ export interface GetInfoAction {
 }
 export interface SetInfoAction {
   type: InfoActionTypes.SET_INFO;
-  payload: InfoState;
+  payload: CityInfoI;
 }
 
 export type InfoAction = GetInfoAction | SetInfoAction | ChangeMapValue;
