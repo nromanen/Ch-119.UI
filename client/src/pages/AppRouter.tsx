@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { createContext, FC, useContext, useEffect } from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import { publicRouters, authRouters } from '../routes';
 import { LOGIN_ROUTE } from '../constants/routerConstants';
@@ -7,6 +7,15 @@ import { useTypedSelector } from '../hooks/useTypedSelector';
 const AppRouter: FC = (props: any) => {
   // const isAuth = props.store.auth.isAuth;
   const { isAuth } = useTypedSelector((state) => state.auth);
+  // const Context = createContext(store);
+
+  // const {store} = useContext(Context);
+
+  // useEffect( () => {
+  //   if (localStorage.getItem('token')) {
+  //     store.checkAuth();
+  //   }
+  // }, []);
 
   return (
     <Switch>

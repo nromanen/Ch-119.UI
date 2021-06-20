@@ -7,9 +7,6 @@ import AppRouter from './pages/AppRouter';
 import { ConnectedRouter} from 'connected-react-router';
 import { history } from './reduxStore';
 
-/**
- * @return {Object}
- */
 function App() {
   return (
     <BrowserRouter>

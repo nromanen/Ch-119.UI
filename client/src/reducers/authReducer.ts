@@ -1,6 +1,7 @@
 import { AuthActionTypes, IAuthAction, IUser } from '../types/userTypes';
 
 export const initialState: IUser = {
+  id: 0,
   name: '',
   phone: '',
   password: '',
@@ -14,6 +15,7 @@ export const authReducer = (state = initialState, action: any): IUser => {
     case AuthActionTypes.SET_USER_DATA:
       return {
         ...state,
+        id: action.payload.id,
         name: action.payload.name,
         role: action.payload.roles,
         isAuth: true,
@@ -27,6 +29,7 @@ export const authReducer = (state = initialState, action: any): IUser => {
     case AuthActionTypes.REGISTRATE_USER:
       return {
         ...state,
+        id: action.payload.id,
         name: action.payload.name,
         phone: action.payload.phone,
         password: action.payload.password,
@@ -43,6 +46,7 @@ export const authReducer = (state = initialState, action: any): IUser => {
     case AuthActionTypes.LOGOUT_USER:
       return {
         ...state,
+        id: 0,
         name: '',
         phone: '',
         password: '',

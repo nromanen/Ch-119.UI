@@ -2,7 +2,12 @@
 *.log
 
 # Dependency directories
-node_modules/
+/node_modules
+/.pnp
+.pnp.js
+package-lock.json
+yarn.lock
+/.vscode
 
 # dotenv environment variables file
 .env

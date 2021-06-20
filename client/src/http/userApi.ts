@@ -70,7 +70,7 @@ export const checkAuth = () => async () => {
   try {
     const { data } = await axios.get(
         `${process.env.REACT_APP_SERVER_URL!}/user/token`,
-        {withCredentials: true}
+        {withCredentials: true},
     );
     localStorage.setItem('token', data.accessToken);
     return new Promise((resolve, reject) =>
