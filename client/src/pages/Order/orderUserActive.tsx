@@ -41,8 +41,10 @@ const OrderUserActive = ({ match }: any) => {
   return (
     <div className="jumbotron">
       <div>
-        <div className="taxi-img animation">
-          <p>driver is on the way</p>
+        <div className="overflow">
+          <div className="taxi-img animation">
+            {/* <p>driver is on the way</p> */}
+          </div>
         </div>
         <div className="box">
           <Container>
