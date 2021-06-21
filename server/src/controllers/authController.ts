@@ -1,6 +1,7 @@
-import { NextFunction, Request, Response } from 'express';
-import * as bcrypt from 'bcrypt';
 import * as jwt from 'jsonwebtoken';
+import * as bcrypt from 'bcrypt';
+import { NextFunction, Request, Response } from 'express';
+import { Op } from 'sequelize';
 import sequelize from '../db/sequelize/models/index';
 import ApiError from '../errors/ApiErrors';
 // import { MobizonResponse, sendSMS } from '../services/notification';
@@ -13,11 +14,9 @@ import {
 import { generateVerifyCode } from '../services/verification';
 
 // TODO CONSTANTS FOR MODELS
-const User = sequelize.models['users'];
-const Role = sequelize.models['roles'];
-const { Op } = sequelize.Sequelize;
-
-export default class AuthController {
+const User = sequelize.models.users;
+const Role = sequelize.models.roles;
+export default class authController {
   async registration(req: Request, res: Response, next: NextFunction) {
     const { password, phone, verification_code } = req.body;
 
@@ -25,7 +24,7 @@ export default class AuthController {
       return next(ApiError.badRequest('Incorrect password or phone'));
     }
 
-    const candidate = await sequelize.models['users'].findOne({
+    const candidate = await sequelize.models.users.findOne({
       where: { phone },
     });
     if (candidate) {
@@ -83,9 +82,7 @@ export default class AuthController {
           });
         });
       })
-      .catch(() => {
-        return next(ApiError.forbidden('Server error'));
-      });
+      .catch(() => next(ApiError.forbidden('Server error')));
   }
 
   async login(req: Request, res: Response, next: NextFunction) {
@@ -128,13 +125,11 @@ export default class AuthController {
             phone: user.phone,
             roles: authorities,
             accessToken: generateAccessToken(user.id, user.name, authorities),
-            refreshToken: refreshToken,
+            refreshToken,
           });
         });
       })
-      .catch((err: Error) => {
-        return next(ApiError.forbidden('Server error'));
-      });
+      .catch((err: Error) => next(ApiError.forbidden('Server error')));
   }
 
   async refresh(req: Request, res: Response, next: NextFunction): Promise<any> {

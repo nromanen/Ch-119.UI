@@ -1,16 +1,7 @@
 import { Model } from 'sequelize';
 
 export default (sequelize: any, DataTypes: any) => {
-  class Role extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
-    static associate() {
-      // define association here
-    }
-  }
+  class Role extends Model {}
   Role.init(
     {
       id: { type: DataTypes.INTEGER, primaryKey: true },

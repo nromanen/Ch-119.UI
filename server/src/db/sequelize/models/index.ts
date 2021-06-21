@@ -1,9 +1,9 @@
+/* eslint-disable global-require */
+/* eslint-disable import/no-dynamic-require */
 import * as fs from 'fs';
 import * as path from 'path';
-import { DataTypes } from 'sequelize';
+import { DataTypes, Sequelize } from 'sequelize';
 import { DEVELOPMENT } from '../../../constants/env';
-
-const Sequelize = require('sequelize');
 
 const basename = path.basename(__filename);
 
@@ -30,8 +30,6 @@ fs.readdirSync(__dirname)
   )
   .forEach((file: any) => {
     try {
-      // eslint-disable-next-line global-require
-
       const model = require(path.join(__dirname, file)).default(
         sequelize,
         DataTypes,
@@ -48,9 +46,12 @@ Object.keys(db).forEach((modelName) => {
   }
 });
 
-db.user = sequelize.models['users'];
-db.role = sequelize.models['roles'];
-db.token = sequelize.models['tokens'];
+db.sequelize = sequelize;
+db.Sequelize = Sequelize;
+
+db.user = sequelize.models.users;
+db.role = sequelize.models.roles;
+db.token = sequelize.models.tokens;
 
 db.token.belongsTo(db.user);
 
@@ -66,7 +67,6 @@ db.user.belongsToMany(db.role, {
   otherKey: 'roleId',
 });
 
-db.sequelize = sequelize;
-db.Sequelize = Sequelize;
+export const ROLES = ['user', 'driver', 'admin'];
 
 export default sequelize;

@@ -5,16 +5,21 @@ import { createBrowserHistory } from 'history';
 import { connectRouter } from 'connected-react-router';
 import { routerMiddleware } from 'react-router-redux';
 
+import { mapReducer, initialState as MapState } from './reducers/mapReducer';
 import {
   cityInfoReducer,
   initialState as InfoState,
 } from './reducers/cityInfoReducer';
-import { mapReducer, initialState as MapState } from './reducers/mapReducer';
+import { authReducer, initialState as AuthState } from './reducers/authReducer';
+import {
+  feedbackReducer,
+  initialState as FeedbackState,
+} from './reducers/feedbackReducer';
+
 import {
   orderReducer,
   initialState as OrderState,
 } from './reducers/orderReducer';
-import { authReducer, initialState as AuthState } from './reducers/authReducer';
 import { rootWatcher } from './sagas/index';
 
 const sagaMiddleware = createSagaMiddleware();
@@ -24,21 +29,24 @@ const initialState = {
   order: OrderState,
   cityInfo: InfoState,
   map: MapState,
+  feedback: FeedbackState,
 };
 
 export const history = createBrowserHistory();
 const browserMiddleware = routerMiddleware(history);
 
-export const rootReducer = (history: any) =>
+const reducers = (history: any) =>
   combineReducers({
+    order: orderReducer,
+    info: cityInfoReducer,
+    feedback: feedbackReducer,
     router: connectRouter(history),
     auth: authReducer,
-    order: orderReducer,
     cityInfo: cityInfoReducer,
     map: mapReducer,
   });
 
-const rootReducers = rootReducer(history);
+const rootReducers = reducers(history);
 
 const store = createStore(
   rootReducers,

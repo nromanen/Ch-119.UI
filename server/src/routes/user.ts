@@ -3,13 +3,13 @@ import {
   authMiddleware,
   refreshTokenMiddleware,
 } from '../middlewares/tokenMiddleware';
-import authController from '../controllers/authController';
+import AuthController from '../controllers/authController';
 import { checkRoleMiddleware } from '../middlewares/checkRoleMiddleware';
 import verifySignUp from '../middlewares/verifySignUp';
 
 const router = express.Router();
 
-const controller = new authController();
+const controller = new AuthController();
 
 router.post(
   '/registration',

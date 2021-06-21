@@ -1,7 +1,8 @@
 import * as jwt from 'jsonwebtoken';
 import sequelize from '../db/sequelize/models/index';
-// import ApiError from '../errors/ApiErrors';
-const Token = sequelize.models['tokens'];
+import ApiError from '../errors/ApiErrors';
+
+const Token = sequelize.models.tokens;
 
 export const generateAccessToken = (
   id: number,
@@ -40,9 +41,11 @@ export const deleteToken = (body: any, refreshToken: string) => {
 };
 
 export const saveToken = (userId: number, refreshToken: string) => {
-  const tokenData = Token.findOne({ where: { user_id: userId } });
+  const tokenData: any = Token.findOne({ where: { user_id: userId } });
   if (tokenData) {
     tokenData.refreshToken = refreshToken;
+    console.log('TOKEN DATA', tokenData);
+
     return tokenData.save();
   }
   const token = Token.create({ user_id: userId, refreshToken });

@@ -21,19 +21,20 @@ export default class OrderController {
 
   get = async (req: Request, res: Response): Promise<any> => {
     let { limit, page } = req.query;
-    const { where } = req.query;
+    // const { where } = req.query;
     // res.json(where);
 
     page = page || '1';
     limit = limit || '5';
+    const newLimit = Number(limit);
 
     const offset = +page * +limit - +limit;
 
     try {
       const data = await sequelize.models[ORDER].findAndCountAll({
-        where,
+        // where,
         offset,
-        limit,
+        limit: newLimit,
       });
       res.status(STATUS_OK).send({ data, status: STATUS_OK });
     } catch (error) {

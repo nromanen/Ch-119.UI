@@ -5,7 +5,8 @@ import { STATUS_OK } from '../constants/api';
 import orderRouter from './orderRouter';
 import infoRouter from './infoRouter';
 import userRouter from './user';
-import { ORDER_ROUTE, INFO_ROUTE } from '../constants/routes';
+import feedbackRouter from './feedbackRouter';
+import { ORDER_ROUTE, INFO_ROUTE, FEEDBACK_ROUTE } from '../constants/routes';
 
 const router = express.Router();
 
@@ -20,6 +21,8 @@ router.get('/', (req: Request, res: Response) => {
 });
 router.use(ORDER_ROUTE, orderRouter);
 router.use(INFO_ROUTE, infoRouter);
+router.use(FEEDBACK_ROUTE, feedbackRouter);
+
 router.use('/user', userRouter);
 
 export default router;
