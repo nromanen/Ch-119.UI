@@ -46,7 +46,6 @@ export const calculatePrice = (prices: any) => {
 
 export const makeOrder = (order: OrderStateI, userId: number) => async () => {
   const orderDTO = new OrderDTO(order, userId);
-
   const url = `${process.env.REACT_APP_SERVER_URL}order`;
   try {
     const response = axios.post(url, {

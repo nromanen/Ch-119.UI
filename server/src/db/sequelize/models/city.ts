@@ -1,5 +1,4 @@
 import { Model } from 'sequelize';
-import { carTypes } from '../../../constants/seeders';
 import {
   CAR_TYPE,
   CITY,
@@ -7,15 +6,9 @@ import {
   EXTRA_SERVICE,
   CITY_SERVICES,
 } from '../../../constants/modelsNames';
-import { extraServices } from '../../../constants/seeders';
 
 export default (sequelize: any, DataTypes: any) => {
   class City extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
     static associate(models: any) {
       City.belongsToMany(models[CAR_TYPE], {
         through: models[CITY_CAR_TYPES],

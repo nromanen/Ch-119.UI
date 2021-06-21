@@ -4,6 +4,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { DataTypes, Sequelize } from 'sequelize';
 import { DEVELOPMENT } from '../../../constants/env';
+import { ORDER } from '../../../constants/modelsNames';
 
 const basename = path.basename(__filename);
 
@@ -45,6 +46,28 @@ Object.keys(db).forEach((modelName) => {
     db[modelName].associate(db);
   }
 });
+
+db.user = sequelize.models['users'];
+db.role = sequelize.models['roles'];
+db.token = sequelize.models['tokens'];
+// db.order = sequelize.models[ORDER];
+
+db.token.belongsTo(db.user);
+
+db.role.belongsToMany(db.user, {
+  through: 'user_roles',
+  foreignKey: 'roleId',
+  otherKey: 'userId',
+});
+
+db.user.belongsToMany(db.role, {
+  through: 'user_roles',
+  foreignKey: 'userId',
+  otherKey: 'roleId',
+});
+
+// db.order.belongsTo(db.user);
+// db.user.hasMany(db.order);
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;

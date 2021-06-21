@@ -1,0 +1,97 @@
+body {
+    background-color: #e9ecef !important;
+}
+
+.jumbotron:last-child {
+    margin-bottom: 0;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.box {
+    background-color: #ffff;
+    margin: 20px 0 20px 0;
+    padding: 10px 0 10px 0;
+    font-size: 14px;
+}
+
+.btn-space {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+#card {
+    margin-top: 3px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: #fff;
+    background-clip: border-box;
+    border: none;
+    border-radius: .25rem;
+}
+
+.extra-service {
+    background-color: #FFFF00;
+}
+
+@keyframes example {
+    0% {
+        left: -15%;
+    }
+
+    100% {
+        left: 150%;
+    }
+}
+
+.animation {
+    position: relative;
+    animation-name: example;
+    animation-duration: 4s;
+    animation-timing-function: cubic-bezier(0.11, 0.71, 0.96, 0.22);
+    animation-delay: 0s;
+    animation-iteration-count: infinite;
+    animation-direction: running;
+
+    & p {
+        position: absolute;
+        top: 18px;
+        left: -150px;
+    }
+}
+
+.taxi-img {
+    position: relative;
+    background-image: url(./components/icons/taxi.png);
+    background-repeat: no-repeat;
+    width: 65px;
+    height: 50px;
+}
+
+.walk-img {
+    position: relative;
+    background-size: contain;
+    background-image: url(./components/icons/walk.png);
+    background-repeat: no-repeat;
+    width: 65px;
+    height: 50px;
+}
+
+.round-button {
+    position: absolute;
+    left: 1px;
+    top: -22px;
+    padding: 0;
+    height: 65px;
+    width: 65px;
+    border-radius: 33px !important;
+}
+
+.padding-0 {
+    padding: 0 !important;
+}

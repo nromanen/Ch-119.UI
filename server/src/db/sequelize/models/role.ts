@@ -1,7 +1,9 @@
 import { Model } from 'sequelize';
 
 export default (sequelize: any, DataTypes: any) => {
-  class Role extends Model {}
+  class Role extends Model {
+    static associate() {}
+  }
   Role.init(
     {
       id: { type: DataTypes.INTEGER, primaryKey: true },

@@ -12,7 +12,7 @@ import {
 import { Input } from '../../../components/Input/Input';
 import { FormLabel } from '../../../components/FormLabel/FormLabel';
 import { CarTypesSelect } from '../../../components/CarTypeSelect/CarTypesSelect';
-import { ExtraServicesSelect } from '../../../components/ExtraServicesSelect';
+import { ExtraServicesSelect } from '../../../components/ExtraServices/ExtraServicesSelect';
 import { Price } from '../../../components/Price/Price';
 import { CarTypesI, ExtraServicesI } from '../../../types/cityInfoTypes';
 

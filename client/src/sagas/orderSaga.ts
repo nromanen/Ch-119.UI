@@ -1,8 +1,8 @@
 import { call, put, select, StrictEffect, takeEvery } from 'redux-saga/effects';
+import { push } from 'react-router-redux';
 
 import { OrderActionTypes } from '../types/orderTypes';
 import { makeOrder } from '../services/orderService';
-import { push } from 'react-router-redux';
 import { ORDER_ACTIVE_ROUTE } from '../constants/routerConstants';
 import {
   changeOrderValue,

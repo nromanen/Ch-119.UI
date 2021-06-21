@@ -7,33 +7,40 @@ import {
   FEEDBACK_ROUTE,
   ORDER_ACTIVE_ROUTE,
   ORDER_ACCEPTED_ROUTE,
+  ORDER_USER_ROUTE,
 } from './constants/routerConstants';
 
 import Feedback from './pages/feedback/Feedback';
-import { Order } from './pages/Order/Order';
 import ProfileContainer from './pages/Profile/ProfileContainer';
+import { Order } from './pages/Order/Order';
 
-import OrderActive from './components/driver/orderActive';
-import OrderAccepted from './components/driver/orderAccepted';
 import LoginContainer from './components/Login/LoginContainer';
 import RegistrationContainer from './components/Login/RegistrationContainer';
 
-export const authRouters: RouteProps[] = [
-  {
-    path: PROFILE_ROUTE,
-    component: ProfileContainer,
-  },
+import OrderDriverActive from './pages/Order/orderDriverActive';
+import OrderDriverAccepted from './pages/Order/orderDriverAccepted';
+import OrderUserActive from './pages/Order/orderUserActive';
+
+export const authRouters = [
   {
     path: ORDER_ROUTE,
     component: Order,
   },
   {
+    path: PROFILE_ROUTE,
+    component: ProfileContainer,
+  },
+  {
     path: ORDER_ACTIVE_ROUTE,
-    component: OrderActive,
+    component: OrderDriverActive,
   },
   {
     path: ORDER_ACCEPTED_ROUTE,
-    component: OrderAccepted,
+    component: OrderDriverAccepted,
+  },
+  {
+    path: ORDER_USER_ROUTE,
+    component: OrderUserActive,
   },
 ];
 
