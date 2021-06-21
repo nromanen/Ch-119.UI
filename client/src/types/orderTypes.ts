@@ -10,6 +10,7 @@ export interface OrderStateI {
   loading: boolean;
   error: boolean;
   id?: number;
+  customerId?: number;
 }
 
 interface CarTypeI {
