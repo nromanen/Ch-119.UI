@@ -4,7 +4,6 @@ import { ConnectedRouter } from 'connected-react-router';
 
 import store, { history } from './reduxStore';
 import AppRouter from './pages/AppRouter';
-import AlertContainer from './components/Alert/AlertContainer';
 
 import './App.scss';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -15,7 +14,6 @@ function App() {
     <BrowserRouter>
       <Provider store={store}>
         <ConnectedRouter history={history}>
-        <AlertContainer />
           <AppRouter />
         </ConnectedRouter>
       </Provider>

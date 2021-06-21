@@ -4,10 +4,12 @@ import { NavLink } from 'react-router-dom';
 import { Form, Field } from 'react-final-form';
 import { REGISTRATION_ROUTE } from '../../constants/routerConstants';
 import { required } from '../../utils/formValidators';
+import AlertContainer from '../Alert/AlertContainer';
 
 export const Login: FC = (props: any) =>
   <div className='jumbotron'>
     <div className='container-fluid'>
+    <AlertContainer />
       <h1>Login</h1>
       <Form
         onSubmit={(formObj) => {
