@@ -25,8 +25,9 @@ function* registrateUserWorker(): Generator<StrictEffect, void, any> {
     if (data) {
       yield put({ type: AuthActionTypes.SET_USER_DATA, payload: data });
       yield put(push('/order'));
+    } else {
+      yield put({ type: AuthActionTypes.HANDLE_ERROR });
     }
-    yield put({ type: AuthActionTypes.HANDLE_ERROR });
   }
 }
 
@@ -47,8 +48,9 @@ function* registrateDriverWorker(): Generator<StrictEffect, void, any> {
     if (data) {
       yield put({ type: AuthActionTypes.SET_DRIVER_DATA, payload: data });
       yield put(push('/order'));
+    } else {
+      yield put({ type: AuthActionTypes.HANDLE_ERROR });
     }
-    yield put({ type: AuthActionTypes.HANDLE_ERROR });
   }
 }
 

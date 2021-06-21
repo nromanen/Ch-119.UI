@@ -1,0 +1,30 @@
+.navigation {
+    
+    max-width: 600px;
+    margin:auto;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    background-color:  #007bff;
+    border-radius: .25rem;
+
+    ul {
+        padding: 0;
+        margin: 0;
+        list-style: none;
+        display: flex;
+        justify-content: space-evenly;
+    }
+
+    .item a {
+        color:#000;
+        padding: 5px;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    .item a.active {
+        color:#fff;
+    }
+
+}
+

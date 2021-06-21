@@ -1,6 +1,6 @@
 import React, { FC, useState } from 'react';
 import { Button } from 'react-bootstrap';
-import { Form, Field, FormSpy } from 'react-final-form';
+import { Form, Field } from 'react-final-form';
 import { required } from '../../utils/formValidators';
 
 export const Registration = (props: any) => {
@@ -12,7 +12,7 @@ export const Registration = (props: any) => {
   };
 
   return (
-    <div className="jumbotron">
+    <div className="jumbotron registration">
       <div className="container-fluid">
         <h1>Registration</h1>
         <Form
@@ -140,13 +140,12 @@ export const Registration = (props: any) => {
                   )}
                 </Field>
               </div>
-              <div className="col-xs-offset-2 col-xs-10 ml-5">
-                <label id="driver">Registrate as driver</label>
+              <div className="col-xs-4 font-weight-bold">
+                <label>Registrate as driver</label>
                 <input id="driver" type="checkbox" onChange={onChangeHandler} checked={isDriver}/>
               </div>
               {isDriver ? (<React.Fragment>
-              <div>
-
+                <div className="form-group">
               <Field
                   name="car_color"
                   type="text"
@@ -171,7 +170,7 @@ export const Registration = (props: any) => {
                   )}
                 </Field>
               </div>
-              <div>
+              <div className="form-group">
               <Field
                   name="car_model"
                   type="text"
@@ -196,7 +195,7 @@ export const Registration = (props: any) => {
                   )}
                 </Field>
               </div>
-              <div>
+              <div className="form-group">
               <Field
                   name="car_number"
                   type="text"
@@ -222,16 +221,11 @@ export const Registration = (props: any) => {
                 </Field>
               </div>
               </React.Fragment>): null}
-              <div className="col-xs-offset-2 col-xs-10 ml-5">
+              <div className="col-xs-4 mt-3">
                 <Button type="submit" disabled={submitting}>
-                  Register
+                  Regiser
                 </Button>
               </div>
-              <FormSpy subscription={{ values: true }}>
-                {({ values }) => (
-                  <pre>{JSON.stringify(values, undefined, 2)}</pre>
-                )}
-              </FormSpy>
             </form>
           )}
         </Form>

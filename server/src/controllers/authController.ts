@@ -11,11 +11,12 @@ import {
   // saveToken
 } from '../utils/jwtHelpers';
 import { generateVerifyCode } from '../services/verification';
+import { USER, ROLE, DRIVER, USER_ROLE, DRIVER_ROLE } from '../constants/modelsNames';
+import { MAX_AGE } from '../constants/api';
 
-// TODO CONSTANTS FOR MODELS
-const User = sequelize.models['users'];
-const Role = sequelize.models['roles'];
-const Driver = sequelize.models['drivers'];
+const User = sequelize.models[USER];
+const Role = sequelize.models[ROLE];
+const Driver = sequelize.models[DRIVER];
 const { Op } = sequelize.Sequelize;
 
 export default class AuthController {
@@ -24,19 +25,17 @@ export default class AuthController {
     const { car_model, car_color, car_number } = req.body;
 
     if (!phone || !password) {
-      return next(ApiError.badRequest('Incorrect password or phone'));
+      return next(ApiError.badRequest());
     }
 
     const candidate = await User.findOne({
       where: { phone },
     });
     if (candidate) {
-      return next(ApiError.conflict('User with this phone already exist'));
+      return next(ApiError.conflict());
     }
 
     if (!car_number) {
-    // функціонал введення правильних цифр від сервісу
-    // const verifyCode = generateVerifyCode()
     User.create({
       phone: req.body.phone,
       name: req.body.name,
@@ -44,7 +43,7 @@ export default class AuthController {
       verification_code: generateVerifyCode(),
     })
       .then((user: any) => {
-        const roles = req.body.roles ? req.body.roles : ['USER'];
+        const roles = req.body.roles ? req.body.roles : [USER_ROLE];
         Role.findAll({
           where: {
             name: {
@@ -79,7 +78,7 @@ export default class AuthController {
             //   })
             // } else {
             res.cookie('refreshToken', refreshToken, {
-              maxAge: 30 * 24 * 60 * 60 * 1000,
+              maxAge: MAX_AGE,
               httpOnly: true,
             });
             // saveToken(user.id, refreshToken)
@@ -88,14 +87,14 @@ export default class AuthController {
         });
       })
       .catch(() => {
-        return next(ApiError.forbidden('Server error'));
+        return next(ApiError.forbidden());
       });
     } else {
       const driver = await Driver.findOne({
         where: { car_number },
       });
       if (driver) {
-        return next(ApiError.conflict('Driver with this number already exist'));
+        return next(ApiError.conflict());
       }
         User.create({
           phone: req.body.phone,
@@ -104,7 +103,7 @@ export default class AuthController {
           verification_code: generateVerifyCode(),
         })
           .then((user: any) => {
-            const roles = req.body.roles ? req.body.roles : ['USER', 'DRIVER'];
+            const roles = req.body.roles ? req.body.roles : [USER_ROLE, DRIVER_ROLE];
             Role.findAll({
               where: {
                 name: {
@@ -142,7 +141,7 @@ export default class AuthController {
                   driver_info,
                 );
                 res.cookie('refreshToken', refreshToken, {
-                  maxAge: 30 * 24 * 60 * 60 * 1000,
+                  maxAge: MAX_AGE,
                   httpOnly: true,
                 });
                 return res.json({ accessToken, refreshToken });
@@ -150,7 +149,7 @@ export default class AuthController {
             });
           })
           .catch(() => {
-            return next(ApiError.forbidden('Server error'));
+            return next(ApiError.forbidden());
           });
     };
   };
@@ -163,7 +162,7 @@ export default class AuthController {
     })
       .then((user: any) => {
         if (!user) {
-          return next(ApiError.badRequest('Invalid Data!'));
+          return next(ApiError.badRequest());
         }
 
         const passwordIsValid = bcrypt.compareSync(
@@ -172,7 +171,7 @@ export default class AuthController {
         );
 
         if (!passwordIsValid) {
-          return next(ApiError.unathorized('Invalid Data!'));
+          return next(ApiError.unathorized());
         }
 
         const authorities: Array<string> = [];
@@ -186,7 +185,7 @@ export default class AuthController {
             authorities,
           );
           res.cookie('refreshToken', refreshToken, {
-            maxAge: 30 * 24 * 60 * 60 * 1000,
+            maxAge: MAX_AGE,
             httpOnly: true,
           });
           res.status(200).send({
@@ -200,7 +199,7 @@ export default class AuthController {
         });
       })
       .catch((err: Error) => {
-        return next(ApiError.forbidden('Server error'));
+        return next(ApiError.forbidden());
       });
   }
 
@@ -212,11 +211,11 @@ export default class AuthController {
       process.env.REFRESH_TOKEN_SECRET_KEY!,
     );
     if (!refreshToken) {
-      return next(ApiError.forbidden('Not authorized'));
+      return next(ApiError.forbidden());
     }
 
     res.cookie('refreshToken', refreshToken, {
-      maxAge: 30 * 24 * 60 * 60 * 1000,
+      maxAge: MAX_AGE,
       httpOnly: true,
     });
     return res.json({
@@ -249,7 +248,7 @@ export default class AuthController {
       (userInfo as any).roles,
     );
     res.cookie('refreshToken', refreshToken, {
-      maxAge: 30 * 24 * 60 * 60 * 1000,
+      maxAge: MAX_AGE,
       httpOnly: true,
     });
     return res.json({ accessToken, refreshToken });
@@ -260,18 +259,5 @@ export default class AuthController {
     deleteToken(req.body, refreshToken);
     res.clearCookie('refreshToken');
     res.sendStatus(204);
-  }
-
-  async getUsers(
-    req: Request,
-    res: Response,
-    next: NextFunction,
-  ): Promise<any> {
-    const users = await User.findAll().then((userslist: any) => {
-      if (!userslist) {
-        return next(ApiError.forbidden('Not authorized'));
-      }
-      return res.json(userslist);
-    });
   }
 }

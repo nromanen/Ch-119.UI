@@ -5,10 +5,10 @@ import { Form, Field } from 'react-final-form';
 import { REGISTRATION_ROUTE } from '../../constants/routerConstants';
 import { required } from '../../utils/formValidators';
 
-export const Login: FC = (props: any) => (
+export const Login: FC = (props: any) =>
   <div className='jumbotron'>
     <div className='container-fluid'>
-      <h1>Login Form</h1>
+      <h1>Login</h1>
       <Form
         onSubmit={(formObj) => {
           props.loginUser(formObj);
@@ -65,22 +65,19 @@ export const Login: FC = (props: any) => (
                 )}
               </Field>
             </div>
-
-            <div className='container-fluid'>
-              <div className='row'>
-                <div className='col-xs-offset-2 col-xs-10'>
+              <div className='form-group'>
+              <div className='col-xs-4 mb-3'>
+                  <NavLink className="link-primary" to={REGISTRATION_ROUTE}>Don't have an account?</NavLink>
+            </div>
+                <div className='col-xs-4'>
                   <Button type='submit' disabled={submitting}>
                     Login
                   </Button>
                 </div>
-                <div className='col-xs-offset-2 col-xs-10 ml-5'>
-                  <NavLink to={REGISTRATION_ROUTE}>Register</NavLink>
                 </div>
-              </div>
-            </div>
           </form>
         )}
       </Form>
     </div>
-  </div>
-);
+  </div>;
+

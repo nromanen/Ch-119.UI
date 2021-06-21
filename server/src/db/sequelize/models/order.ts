@@ -5,11 +5,6 @@ import { USER_IN_ORDER } from '../../../constants/foreignKeys';
 
 export default (sequelize: any, DataTypes: any) => {
   class Order extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
     static associate(models: any) {
       Order.belongsTo(models[USER], {
         foreignKey: {
@@ -18,12 +13,6 @@ export default (sequelize: any, DataTypes: any) => {
       });
       Order.belongsTo(models[DRIVER]);
       Order.belongsTo(models[CAR_TYPE]);
-      // define association here
-      // create associate with user and driver(id for user and id for driver from driver)
-      // order.hasOne(carType)
-      // carType.belongsTo(Order)
-      // order.hasMany(extraServices)
-      // extraServices.belongsToMany(Order)
     }
   }
   Order.init(
@@ -33,14 +22,6 @@ export default (sequelize: any, DataTypes: any) => {
         primaryKey: true,
         autoIncrement: true,
       },
-      // customer_id: {
-      //   type: DataTypes.INTEGER,
-      //   allowNull: false,
-      // },
-      // driver_id: {
-      //   type: DataTypes.INTEGER,
-      //   allowNull: true,
-      // },
       to: {
         type: DataTypes.STRING,
         allowNull: false,
@@ -53,10 +34,6 @@ export default (sequelize: any, DataTypes: any) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      // car_type: {
-      //   type: DataTypes.STRING,
-      //   allowNull: false,
-      // },
       status: {
         type: DataTypes.STRING,
         allowNull: true,

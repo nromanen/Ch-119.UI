@@ -28,10 +28,9 @@ $authHost.interceptors.response.use(authInterceptor, async (error) => {
       localStorage.setItem('token', response.data.accessToken);
       return $host.request(originalRequest);
     } catch (e) {
-      console.log('Not authorized');
+      return error;
     }
   }
-  throw error;
 });
 
 export { $host, $authHost };

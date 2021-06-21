@@ -2,6 +2,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { DataTypes } from 'sequelize';
 import { DEVELOPMENT } from '../../../constants/env';
+import { USER, TOKEN, ROLE } from '../../../constants/modelsNames';
 
 const Sequelize = require('sequelize');
 
@@ -30,8 +31,6 @@ fs.readdirSync(__dirname)
   )
   .forEach((file: any) => {
     try {
-      // eslint-disable-next-line global-require
-
       const model = require(path.join(__dirname, file)).default(
         sequelize,
         DataTypes,
@@ -48,9 +47,9 @@ Object.keys(db).forEach((modelName) => {
   }
 });
 
-db.user = sequelize.models['users'];
-db.role = sequelize.models['roles'];
-db.token = sequelize.models['tokens'];
+db.user = sequelize.models[USER];
+db.role = sequelize.models[ROLE];
+db.token = sequelize.models[TOKEN];
 
 db.token.belongsTo(db.user);
 

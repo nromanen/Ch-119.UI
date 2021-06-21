@@ -6,6 +6,7 @@ import store, { history } from './reduxStore';
 import AppRouter from './pages/AppRouter';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
+import './App.scss';
 
 function App() {
   return (

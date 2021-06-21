@@ -1,4 +1,4 @@
-import { AuthActionTypes, IAuthAction, IUser } from '../types/userTypes';
+import { AuthActionTypes, IUser } from '../types/userTypes';
 
 export const initialState: IUser = {
   name: '',
@@ -72,9 +72,15 @@ export const authReducer = (state = initialState, action: any): IUser => {
         role: [],
         isAuth: false,
         id: 0,
+        driver_info: {
+          car_color: '',
+          car_model: '',
+          car_number: '',
+          driver_id: null,
+        },
+        isDriver: false,
       };
     case AuthActionTypes.REGISTRATE_DRIVER:
-      console.log('PAYLOAD IN REDUCER', action.payload);
       return {
         ...state,
         name: action.payload.name,
@@ -85,69 +91,14 @@ export const authReducer = (state = initialState, action: any): IUser => {
           car_model: action.payload.car_model,
           car_number: action.payload.car_number,
         },
-        isDriver: true,
       };
     case AuthActionTypes.IS_DRIVER:
       return {
         ...state,
-        isDriver: action.payload.isDriver,
+        isDriver: action.payload,
       };
     default:
       return state;
   }
 };
 
-export const registrate = (payload: any): IAuthAction => ({
-  type: AuthActionTypes.REGISTRATE_USER,
-  payload,
-});
-
-export const registrateDriver = (payload: any): IAuthAction => ({
-  type: AuthActionTypes.REGISTRATE_DRIVER,
-  payload,
-});
-
-export const checkDriver = (payload: any) => ({
-  type: AuthActionTypes.IS_DRIVER,
-  payload,
-});
-
-export const login = (payload: any): IAuthAction => ({
-  type: AuthActionTypes.LOGIN_USER,
-  payload,
-});
-
-const setAuthUserData = (payload: any): IAuthAction => ({
-  type: AuthActionTypes.SET_USER_DATA,
-  payload,
-});
-
-export const getAuthUserData = () => async (dispatch: any) => {
-  const response: any = await check();
-
-  if (response.data.resultCode === 0) {
-    const { ...payload } = response.data.data;
-    dispatch(setAuthUserData({ ...payload }));
-  }
-};
-
-export const check = (): IAuthAction => ({
-  type: AuthActionTypes.CHECK_USER_DATA,
-});
-
-export const logout = () => ({
-  type: AuthActionTypes.LOGOUT_USER,
-});
-
-// export const login = (email, password, remeberMe) => async (dispatch) => {
-//   let response = await authAPI.login(email, password, remeberMe);
-//   if (response.data.resultCode === 0) {
-//     dispatch(getAuthUserData());
-//   } else {
-//     let message =
-//       response.data.messages.length > 0
-//         ? response.data.messages[0]
-//         : 'Some error';
-//     dispatch(stopSubmit('login', { _error: message }));
-//   }
-// };

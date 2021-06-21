@@ -1,6 +1,7 @@
 import { $host, $authHost } from './index';
 import jwtDecode from 'jwt-decode';
 import axios from 'axios';
+import { USER_ROLE, DRIVER_ROLE } from '../constants/registrationConstants';
 
 export const registration =
   (name: string, phone: string, password: string) => async () => {
@@ -8,7 +9,7 @@ export const registration =
       name,
       phone,
       password,
-      role: 'USER',
+      role: USER_ROLE,
     });
 
     if (data) {
@@ -17,7 +18,7 @@ export const registration =
       return new Promise((resolve, reject) =>
         resolve(jwtDecode(data.accessToken, data.refreshToken)),
       );
-    } else return 'Invalid Data';
+    } else return data.response.message;
   };
 
   export const registrationDriver =
@@ -26,7 +27,7 @@ export const registration =
       name,
       phone,
       password,
-      role: ['USER', 'Driver'],
+      role: [USER_ROLE, DRIVER_ROLE],
       car_color,
       car_model,
       car_number,
@@ -38,7 +39,7 @@ export const registration =
       return new Promise((resolve, reject) =>
         resolve(jwtDecode(data.accessToken, data.refreshToken)),
       );
-    } else return 'Invalid Data';
+    } else return data.response.message;
   };
 
 export const login = (phone: string, password: string) => async () => {
@@ -51,10 +52,10 @@ export const login = (phone: string, password: string) => async () => {
         resolve(jwtDecode(data.accessToken, data.refreshToken)),
       );
     } else {
-      console.log('Invalid data', data.message);
+      return data.response.message;
     }
-  } catch (e) {
-    console.log('');
+  } catch (e: any) {
+    return e.response?.data?.message;
   }
 };
 
@@ -65,14 +66,10 @@ export const logout = () => async () => {
     localStorage.removeItem('refreshToken');
     return new Promise((resolve, reject) => resolve(response));
   } catch (e: any) {
-    console.log(e.response?.data?.message);
+    return e.response?.data?.message;
   }
 };
-// add one more action with setAuth and implement
-// it in login and registrate logic
-// setAuth need only one parametr true and he change state
-// from isAuth: false on true
-// it can be add in redux-saga layer yield put(setAuth, true)
+
 export const check = () => async () => {
   const { data } = await $authHost.get('user/auth');
 

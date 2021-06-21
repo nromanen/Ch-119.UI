@@ -1,0 +1,34 @@
+import { AuthActionTypes, IAuthAction } from '../types/userTypes';
+
+export const registrate = (payload: any): IAuthAction => ({
+  type: AuthActionTypes.REGISTRATE_USER,
+  payload,
+});
+
+export const registrateDriver = (payload: any): IAuthAction => ({
+  type: AuthActionTypes.REGISTRATE_DRIVER,
+  payload,
+});
+
+export const checkDriver = (payload: any) => ({
+  type: AuthActionTypes.IS_DRIVER,
+  payload,
+});
+
+export const login = (payload: any): IAuthAction => ({
+  type: AuthActionTypes.LOGIN_USER,
+  payload,
+});
+
+const setAuthUserData = (payload: any): IAuthAction => ({
+  type: AuthActionTypes.SET_USER_DATA,
+  payload,
+});
+
+export const check = (): IAuthAction => ({
+  type: AuthActionTypes.CHECK_USER_DATA,
+});
+
+export const logout = () => ({
+  type: AuthActionTypes.LOGOUT_USER,
+});

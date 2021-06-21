@@ -1,0 +1,26 @@
+body {
+  background-color: #e9ecef;
+}
+
+.jumbotron {
+  margin-bottom: 0;
+  padding: 2rem 2rem !important;
+}
+
+.container-fluid {
+    max-width: 600px;
+    padding-left: 10vw !important;
+    padding-right: 10vw !important;
+    margin: auto;
+}
+
+#driver {
+    margin-left: 10px;
+}
+
+.col-xs-4>span {
+  margin-left: 5px;
+  color: red;
+}
+
+

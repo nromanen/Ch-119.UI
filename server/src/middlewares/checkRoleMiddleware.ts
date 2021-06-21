@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import * as jwt from 'jsonwebtoken';
 import sequelize from '../db/sequelize/models/index';
+import ApiError from '../errors/ApiErrors';
 
 const User = sequelize.models['users'];
 
@@ -14,7 +15,7 @@ export const checkRoleMiddleware = (role: string) => {
       const token: string = req.headers.authorization!.split(' ')[1];
 
       if (!token) {
-        return res.status(401).json({ message: 'Not authorized' });
+        return next(ApiError.internal());
       }
 
       const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET_KEY!);
@@ -25,14 +26,12 @@ export const checkRoleMiddleware = (role: string) => {
             next();
             return;
           }
-          res.status(403).send({
-            message: `Require driver role!`,
-          });
+          next(ApiError.internal());
           return;
         });
       });
     } catch (error) {
-      res.status(403).json({ message: 'Not authorized' });
+      return next(ApiError.internal());
     }
   };
 };
