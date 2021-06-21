@@ -5,8 +5,6 @@ import { ConnectedRouter } from 'connected-react-router';
 import store, { history } from './reduxStore';
 import AppRouter from './pages/AppRouter';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { ConnectedRouter } from 'connected-react-router';
-import { history } from './reduxStore';
 /**
  * @return {Object}
  */
