@@ -1,5 +1,10 @@
 import { Model } from 'sequelize';
-import { CAR_TYPE, CITY, CITY_CAR_TYPES } from '../../../constants/modelsNames';
+import {
+  ORDER,
+  CAR_TYPE,
+  CITY,
+  CITY_CAR_TYPES,
+} from '../../../constants/modelsNames';
 
 export default (sequelize: any, DataTypes: any) => {
   class CarType extends Model {
@@ -12,8 +17,9 @@ export default (sequelize: any, DataTypes: any) => {
       // define association here
       // CarType.hasMany(models[CITY]);
       CarType.belongsToMany(models[CITY], {
-        through: CITY_CAR_TYPES,
+        through: models[CITY_CAR_TYPES],
       });
+      CarType.hasMany(models[ORDER]);
     }
   }
   CarType.init(
@@ -33,6 +39,7 @@ export default (sequelize: any, DataTypes: any) => {
       sequelize,
       modelName: CAR_TYPE,
       underscored: true,
+      timestamps: false,
     },
   );
   return CarType;

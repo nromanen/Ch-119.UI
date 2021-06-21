@@ -36,6 +36,7 @@ export default (sequelize: any, DataTypes: any) => {
       sequelize,
       modelName: EXTRA_SERVICE,
       underscored: true,
+      timestamps: false,
     },
   );
   return ExtraService;

@@ -21,7 +21,7 @@ export default class InfoController {
           },
         ],
       });
-      res.status(STATUS_OK).send({ data, status: STATUS_OK });
+      res.status(STATUS_OK).send(data);
     } catch (error) {
       res
         .status(STATUS_BAD_REQUEST)

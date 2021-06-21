@@ -18,8 +18,9 @@ export default (sequelize: any, DataTypes: any) => {
      */
     static associate(models: any) {
       // City.hasMany(models[CAR_TYPE]);
+
       City.belongsToMany(models[CAR_TYPE], {
-        through: CITY_CAR_TYPES,
+        through: models[CITY_CAR_TYPES],
       });
       City.belongsToMany(models[EXTRA_SERVICE], {
         through: CITY_SERVICES,
@@ -37,7 +38,6 @@ export default (sequelize: any, DataTypes: any) => {
       //     include: [sequelize.models.car_type],
       //   },
       // );
-      // console.log('City created');
     }
   }
   City.init(
@@ -65,7 +65,8 @@ export default (sequelize: any, DataTypes: any) => {
       sequelize,
       modelName: CITY,
       underscored: true,
-      hooks: {},
+      // hooks: {},
+      timestamps: false,
     },
   );
 
