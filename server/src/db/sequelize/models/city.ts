@@ -43,7 +43,6 @@ export default (sequelize: any, DataTypes: any) => {
       sequelize,
       modelName: CITY,
       underscored: true,
-      // hooks: {},
       timestamps: false,
     },
   );

@@ -34,5 +34,3 @@ export default (sequelize: any, DataTypes: any) => {
 
   return Role;
 };
-
-export const ROLES = ['USER', 'DRIVER', 'ADMIN'];

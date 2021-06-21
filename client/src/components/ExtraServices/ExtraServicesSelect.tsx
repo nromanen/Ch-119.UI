@@ -2,7 +2,6 @@ import { FC } from 'react';
 import { Accordion, Card, Form } from 'react-bootstrap';
 import { ExtraServicesI } from '../../types/cityInfoTypes';
 import { ExtraServiceItem } from './ExtraServiceItem';
-// Icons
 
 interface ExtraServicesSelectI {
   title?: string;
@@ -29,7 +28,7 @@ export const ExtraServicesSelect: FC<ExtraServicesSelectI> = ({
       </Accordion.Toggle>
       <Card>
         <Accordion.Collapse eventKey="0">
-          <Card.Body className="extra-service">
+          <Card.Body className="extra-services">
             {avaliableInCityExtraServices.map(({ id, name }) => {
               const isActive = activeExtraServices.includes(id);
 

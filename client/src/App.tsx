@@ -7,10 +7,8 @@ import AppRouter from './pages/AppRouter';
 
 import './App.scss';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import './App.scss';
 
-/**
- * @return {Object}
- */
 function App() {
   return (
     <BrowserRouter>

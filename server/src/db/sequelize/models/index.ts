@@ -4,7 +4,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { DataTypes, Sequelize } from 'sequelize';
 import { DEVELOPMENT } from '../../../constants/env';
-import { ORDER } from '../../../constants/modelsNames';
+import { USER, TOKEN, ROLE, ORDER } from '../../../constants/modelsNames';
 
 const basename = path.basename(__filename);
 
@@ -47,10 +47,9 @@ Object.keys(db).forEach((modelName) => {
   }
 });
 
-db.user = sequelize.models['users'];
-db.role = sequelize.models['roles'];
-db.token = sequelize.models['tokens'];
-// db.order = sequelize.models[ORDER];
+db.user = sequelize.models[USER];
+db.role = sequelize.models[ROLE];
+db.token = sequelize.models[TOKEN];
 
 db.token.belongsTo(db.user);
 

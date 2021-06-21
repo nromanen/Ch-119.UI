@@ -1,13 +1,15 @@
 import React, { FC } from 'react';
-import { NavLink } from 'react-router-dom';
+import './Profile.scss';
+import Navbar from '../../components/Navbar/Navbar';
 
-const Profile: FC = (props: any) => {
-  return (
-    <div className='jumbotron'>
-      <div>Profile Component</div>
-      <button onClick={props.logoutUser}>Log out</button>
-    </div>
-  );
-};
+const Profile: FC = (props: any) =>
+    <div className='jumbotron profile'>
+      <div className="profile-info">
+      <h2>User Profile</h2>
+      <button className='btn btn-danger' onClick={props.logoutUser}>Log out</button>
+      </div>
+      <Navbar/>
+    </div>;
+
 
 export default Profile;

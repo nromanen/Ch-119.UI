@@ -48,9 +48,9 @@ const reducers = (history: any) =>
 const rootReducers = reducers(history);
 
 const store = createStore(
-  rootReducers,
-  initialState,
-  composeWithDevTools(applyMiddleware(sagaMiddleware, browserMiddleware)),
+    rootReducers,
+    initialState,
+    composeWithDevTools(applyMiddleware(sagaMiddleware, browserMiddleware)),
 );
 
 export type RootState = ReturnType<typeof rootReducers>;

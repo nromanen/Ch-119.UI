@@ -13,10 +13,7 @@ export default class OrderController {
 
       res.status(STATUS_OK).send(data);
     } catch (error) {
-      res.send({
-        message: error,
-        status: STATUS_BAD_REQUEST,
-      });
+      res.status(STATUS_BAD_REQUEST).send(error);
     }
   };
 
@@ -48,29 +45,30 @@ export default class OrderController {
   };
 
   getById = async (req: Request, res: Response): Promise<any> => {
-    // const { id } = req.params;
-    // console.log(id);
-    // try {
-    //   const data = await sequelize.models[ORDER].findOne(
-    //     {
-    //       where: {
-    //         id,
-    //       },
-    //     },
-    //     {
-    //       include: [
-    //         {
-    //           model: User,
-    //         },
-    //       ],
-    //     },
-    //   );
-    //   res.status(STATUS_OK).send({ data, status: STATUS_OK });
-    // } catch (error) {
-    //   console.log(error);
-    // res
-    // .status(STATUS_BAD_REQUEST)
-    // .send({ message: error.errors[0].message, status: STATUS_BAD_REQUEST });
+    const { id } = req.params;
+    console.log(id);
+    try {
+      const data = await sequelize.models[ORDER].findOne(
+        {
+          where: {
+            id,
+          },
+        },
+        // {
+        //   include: [
+        //     {
+        //       model: User,
+        //     },
+        //   ],
+        // },
+      );
+      res.status(STATUS_OK).send({ data, status: STATUS_OK });
+    } catch (error) {
+      console.log(error);
+      res
+        .status(STATUS_BAD_REQUEST)
+        .send({ message: error.errors[0].message, status: STATUS_BAD_REQUEST });
+    }
   };
 
   update = async (req: Request, res: Response): Promise<any> => {
