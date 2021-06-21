@@ -3,6 +3,7 @@ import { call, put, select, StrictEffect, takeEvery } from 'redux-saga/effects';
 import { OrderActionTypes } from '../types/orderTypes';
 import { makeOrder } from '../services/orderService';
 import {
+  changeOrderValue,
   makeOrderErrorAction,
   makeOrderSuccessAction,
 } from './../actions/orderActions';
@@ -16,7 +17,10 @@ function* makeOrderWorker(): Generator<StrictEffect, void, any> {
 
   try {
     const data = yield call(makeOrder(order, userID));
+    console.log(data, 'order');
+
     if (data.status === 200) {
+      yield put(changeOrderValue('id', data.data.id));
       yield put(makeOrderSuccessAction());
     } else {
       yield put(makeOrderErrorAction());

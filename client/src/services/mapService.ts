@@ -8,14 +8,13 @@ declare const process: {
   };
 };
 
+const url = process.env.REACT_APP_SERVER_URL;
+
 export const fetchCityInfo = (name: string) => () => {
-  const response = axios.get<CityInfoI>(
-    `${process.env.REACT_APP_SERVER_URL}info`,
-    {
-      params: {
-        name,
-      },
+  const response = axios.get<CityInfoI>(`${url}info`, {
+    params: {
+      name,
     },
-  );
+  });
   return response;
 };

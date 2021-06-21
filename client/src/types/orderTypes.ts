@@ -9,6 +9,7 @@ export interface OrderStateI {
   distance: google.maps.Distance | undefined;
   loading: boolean;
   error: boolean;
+  id?: number;
 }
 
 interface CarTypeI {
