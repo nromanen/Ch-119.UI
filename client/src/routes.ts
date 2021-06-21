@@ -39,7 +39,7 @@ export const authRouters = [
     component: OrderDriverAccepted,
   },
   {
-    path: ORDER_USER_ROUTE,
+    path: ORDER_USER_ROUTE + ':id',
     component: OrderUserActive,
   },
 ];
