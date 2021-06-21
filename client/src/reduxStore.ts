@@ -38,7 +38,6 @@ const browserMiddleware = routerMiddleware(history);
 const reducers = (history: any) =>
   combineReducers({
     order: orderReducer,
-    info: cityInfoReducer,
     feedback: feedbackReducer,
     router: connectRouter(history),
     auth: authReducer,

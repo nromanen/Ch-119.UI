@@ -8,13 +8,15 @@ import {
   ORDER_ACTIVE_ROUTE,
   ORDER_ACCEPTED_ROUTE,
 } from './constants/routerConstants';
+
 import Feedback from './pages/feedback/Feedback';
+import { Order } from './pages/Order/Order';
+import ProfileContainer from './pages/Profile/ProfileContainer';
+
 import OrderActive from './components/driver/orderActive';
 import OrderAccepted from './components/driver/orderAccepted';
-import { Order } from './pages/Order/Order';
 import LoginContainer from './components/Login/LoginContainer';
 import RegistrationContainer from './components/Login/RegistrationContainer';
-import ProfileContainer from './pages/Profile/ProfileContainer';
 
 export const authRouters: RouteProps[] = [
   {

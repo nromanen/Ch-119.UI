@@ -2,6 +2,7 @@ import { call, StrictEffect, select, put, takeEvery } from 'redux-saga/effects';
 import { AuthActionTypes } from '../types/userTypes';
 import { registration, login, logout, checkAuth } from '../http/userApi';
 import { push } from 'react-router-redux';
+import { ORDER_ROUTE } from '../constants/routerConstants';
 
 export const getUserFromState = (state: any) => state.auth;
 
@@ -17,7 +18,7 @@ function* registrateUserWorker(): Generator<StrictEffect, void, any> {
   );
   if (data) {
     yield put({ type: AuthActionTypes.SET_USER_DATA, payload: data });
-    yield put(push('/order'));
+    yield put(push(ORDER_ROUTE));
   } else {
     yield put({ type: AuthActionTypes.HANDLE_ERROR });
   }

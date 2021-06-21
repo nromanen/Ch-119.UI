@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { Accordion, Card, Form } from 'react-bootstrap';
-import { ExtraServicesI } from '../types/cityInfoTypes';
+import { ExtraServicesI } from '../../types/cityInfoTypes';
 import { ExtraServiceItem } from './ExtraServiceItem';
 // Icons
 

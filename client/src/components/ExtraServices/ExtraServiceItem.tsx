@@ -4,7 +4,7 @@ import { OverlayTrigger, Tooltip, Form } from 'react-bootstrap';
 import { ReactComponent as BabyChair } from './icons/babyChair.svg';
 import { ReactComponent as En } from './icons/en.svg';
 import { ReactComponent as Silent } from './icons/silent.svg';
-import { FormLabel } from './FormLabel';
+import { FormLabel } from '../FormLabel/FormLabel';
 
 interface IconsI {
   [index: string]: any;
