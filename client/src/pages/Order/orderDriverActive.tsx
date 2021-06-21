@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import OrderItem from '../../components/orderItem';
 import axios from 'axios';
+import Navbar from '../../components/Navbar/Navbar';
 
 
-/**
- * @return {Object}
- */
 const OrderDriverActive = () => {
   const [orders, setOrders] = useState<any[]>([]);
   useEffect(() => {
@@ -24,7 +22,7 @@ const OrderDriverActive = () => {
   };
 
   return (
-    <div className="jumbotron">
+    <div className="jumbotron driver-order-active">
       <h2 className="text-center">Order list:</h2>
 
       {
@@ -32,6 +30,7 @@ const OrderDriverActive = () => {
           <OrderItem key={order.id} order={order} />,
         )
       }
+      <Navbar />
     </div>
 
   );

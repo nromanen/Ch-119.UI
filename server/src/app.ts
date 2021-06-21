@@ -37,7 +37,7 @@ app.use(
 );
 app.use(express.urlencoded({ extended: true }));
 app.use(API_PATH, routes);
-app.use(corsMiddleware);
+// app.use(corsMiddleware);
 app.use(errorHandler);
 
 export const logger = winston.createLogger({

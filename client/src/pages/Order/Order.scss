@@ -2,8 +2,7 @@
   &.jumbotron {
     margin-bottom: 0;
   }
-  &__wrap {
-  }
+  
   .price {
     font-size: 1.3em !important;
     display: grid !important;
@@ -12,6 +11,7 @@
   &__form {
     max-width: 600px;
     margin: auto;
+    margin-bottom: 20px;
   }
 
   &__service-icon {

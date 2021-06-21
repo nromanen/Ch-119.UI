@@ -32,3 +32,8 @@ export const check = (): IAuthAction => ({
 export const logout = () => ({
   type: AuthActionTypes.LOGOUT_USER,
 });
+
+export const errorHandle = (payload: any): IAuthAction => ({
+  type: AuthActionTypes.HANDLE_ERROR,
+  payload,
+});

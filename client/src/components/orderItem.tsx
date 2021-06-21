@@ -24,7 +24,7 @@ const OrderItem = ({ order }: any) => {
           <ColInfo xs="col-4  padding-0" icon={faStar} order={<span>4.3 Ivan</span>} />
           <Col>
             <Link to={`/driver/order/${order.id}`}>
-              <Button onClick={(e) => changeStatus(order.id)} className="round-button" color="primary" size="sm">Take</Button>
+              <Button onClick={(e: any) => changeStatus(order.id)} className="round-button" color="primary" size="sm">Take</Button>
             </Link>
           </Col>
         </Row>

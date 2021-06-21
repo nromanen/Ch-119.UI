@@ -1,6 +1,7 @@
 .navigation {
     
     max-width: 600px;
+    margin-top: 10px;
     margin:auto;
     padding-top: 5px;
     padding-bottom: 5px;
@@ -13,17 +14,19 @@
         list-style: none;
         display: flex;
         justify-content: space-evenly;
+        flex-wrap: wrap;
     }
 
-    .item a {
-        color:#000;
+    .nav-link a {
+        color:#fff;
         padding: 5px;
         text-decoration: none;
         cursor: pointer;
     }
 
-    .item a.active {
-        color:#fff;
+    .nav-link a.active {
+        color:rgb(255, 236, 24);
+        font-weight: 700;
     }
 
 }

@@ -25,8 +25,8 @@ const Driver = sequelize.models[DRIVER];
 
 export default class AuthController {
   async registration(req: Request, res: Response, next: NextFunction) {
-    const { password, phone, verification_code } = req.body;
-    const { car_model, car_color, car_number } = req.body;
+    const { password, phone, verification_code,
+      car_model, car_color, car_number } = req.body;
 
     if (!phone || !password) {
       return next(ApiError.badRequest());

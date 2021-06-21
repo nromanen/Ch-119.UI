@@ -59,12 +59,13 @@ function* loginUserWorker(): Generator<StrictEffect, void, any> {
   const userInfoState = yield select(getUserFromState);
 
   const data = yield call(login(userInfoState.phone, userInfoState.password));
+  console.log('Data from server', data);
 
-  if (data) {
+  if (data.id) {
     yield put({ type: AuthActionTypes.SET_USER_DATA, payload: data });
     yield put(push('/order'));
   } else {
-    yield put({ type: AuthActionTypes.HANDLE_ERROR });
+    yield put({ type: AuthActionTypes.HANDLE_ERROR, payload: data });
   }
 }
 
