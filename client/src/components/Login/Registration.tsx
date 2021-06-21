@@ -44,7 +44,6 @@ export const Registration = (props: any) => {
                 <Field
                   name="name"
                   placeholder="Your name"
-                  // validate={maxLengthCreator(9)}
                   subscription={{
                     value: true,
                     active: true,
@@ -149,7 +148,6 @@ export const Registration = (props: any) => {
               <Field
                   name="car_color"
                   type="text"
-                  // validate={required}
                   subscription={{
                     value: true,
                     active: true,
@@ -174,7 +172,6 @@ export const Registration = (props: any) => {
               <Field
                   name="car_model"
                   type="text"
-                  // validate={required}
                   subscription={{
                     value: true,
                     active: true,
@@ -199,7 +196,6 @@ export const Registration = (props: any) => {
               <Field
                   name="car_number"
                   type="text"
-                  // validate={required}
                   subscription={{
                     value: true,
                     active: true,

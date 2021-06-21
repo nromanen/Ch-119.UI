@@ -64,7 +64,7 @@ function* loginUserWorker(): Generator<StrictEffect, void, any> {
     yield put(push('/order'));
   } else {
     yield put({ type: AuthActionTypes.HANDLE_ERROR });
-  } // showAlert(status, 'Error') по статусу кольори модалки
+  }
 }
 
 function* checkAuthUser(): Generator<StrictEffect, void, any> {
@@ -75,7 +75,7 @@ function* checkAuthUser(): Generator<StrictEffect, void, any> {
     yield put({ type: AuthActionTypes.SET_USER_DATA });
   } else {
     yield put({ type: AuthActionTypes.HANDLE_ERROR });
-  } // showAlert(status, 'Error') по статусу кольори модалки
+  }
 }
 
 function* logoutUserWorker(): Generator<StrictEffect, void, any> {

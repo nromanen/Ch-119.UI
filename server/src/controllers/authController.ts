@@ -3,12 +3,10 @@ import * as bcrypt from 'bcrypt';
 import * as jwt from 'jsonwebtoken';
 import sequelize from '../db/sequelize/models/index';
 import ApiError from '../errors/ApiErrors';
-// import { MobizonResponse, sendSMS } from '../services/notification';
 import {
   generateAccessToken,
   generateRefreshToken,
   deleteToken,
-  // saveToken
 } from '../utils/jwtHelpers';
 import { generateVerifyCode } from '../services/verification';
 import { USER, ROLE, DRIVER, USER_ROLE, DRIVER_ROLE } from '../constants/modelsNames';
@@ -66,22 +64,10 @@ export default class AuthController {
               user.name,
               authorities,
             );
-            // const noteServiceRes: Promise<MobizonResponse> = sendSMS(
-            //   phone,
-            //   `Go Taxi: your verify code ${verifyCode}`
-            // )
-            // if ( verifyCode !== verification_code) {
-            //   return res.status(401).json({
-            //     message: 'You should verify your account',
-            //     status: 'NOT_VERIFIED',
-            //     verifyCode: noteServiceRes,
-            //   })
-            // } else {
             res.cookie('refreshToken', refreshToken, {
               maxAge: MAX_AGE,
               httpOnly: true,
             });
-            // saveToken(user.id, refreshToken)
             return res.json({ accessToken, refreshToken });
           });
         });

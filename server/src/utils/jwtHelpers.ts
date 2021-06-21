@@ -36,8 +36,6 @@ export const generateRefreshToken = (
 
 export const deleteToken = (body: any, refreshToken: string) => {
   refreshTokens = refreshTokens.filter((token) => token !== body.token);
-  // const tokenData = Token.deleteOne({refreshToken})
-  // return tokenData;
 };
 
 export const saveToken = (userId: number, refreshToken: string) => {

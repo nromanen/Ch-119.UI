@@ -3,7 +3,6 @@ import { MapState } from './../types/mapTypes';
 
 export const initialState: MapState = {
   map: null,
-  // renderer: null,
   directions: null,
   directionsResult: undefined,
   isMapLoaded: false,

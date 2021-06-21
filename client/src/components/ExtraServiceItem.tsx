@@ -59,7 +59,6 @@ export const ExtraServiceItem: FC<ExtraServiceItemI> = ({
           id={name}
           aria-label={name}
           type="checkbox"
-          // label={name}
           data-db-id={id}
           name="extraServices"
           value={name}
