@@ -9,12 +9,18 @@ import {
   Spinner,
 } from 'react-bootstrap';
 
-import { Input } from '../../../components/Input';
-import { FormLabel } from '../../../components/FormLabel';
-import { CarTypesSelect } from '../../../components/CarTypesSelect';
-import { ExtraServicesSelect } from '../../../components/ExtraServicesSelect';
-import { Price } from '../../../components/Price';
+import { Input } from '../../../components/Input/Input';
+import { FormLabel } from '../../../components/FormLabel/FormLabel';
+import { CarTypesSelect } from '../../../components/CarTypeSelect/CarTypesSelect';
+import { ExtraServicesSelect } from '../../../components/ExtraServices/ExtraServicesSelect';
+import { Price } from '../../../components/Price/Price';
 import { CarTypesI, ExtraServicesI } from '../../../types/cityInfoTypes';
+import { NavLink } from 'react-router-dom';
+import {
+  ORDER_ACTIVE_ROUTE,
+  ORDER_USER_ACTIVE_ROUTE,
+  ORDER_USER_ROUTE,
+} from './../../../constants/routerConstants';
 
 interface OrderFormProps {
   onSubmit: (e: SyntheticEvent) => void;

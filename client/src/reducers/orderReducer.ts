@@ -15,6 +15,8 @@ export const initialState: OrderStateI = {
   },
   loading: false,
   error: false,
+  id: undefined,
+  // customerId: undefined,
 };
 
 export const orderReducer = (

@@ -1,5 +1,4 @@
 import { Model } from 'sequelize';
-import { carTypes } from '../../../constants/seeders';
 import {
   CAR_TYPE,
   CITY,
@@ -7,7 +6,6 @@ import {
   EXTRA_SERVICE,
   CITY_SERVICES,
 } from '../../../constants/modelsNames';
-import { extraServices } from '../../../constants/seeders';
 
 export default (sequelize: any, DataTypes: any) => {
   class City extends Model {

@@ -1,6 +1,7 @@
-import { NextFunction, Request, Response } from 'express';
-import * as bcrypt from 'bcrypt';
 import * as jwt from 'jsonwebtoken';
+import * as bcrypt from 'bcrypt';
+import { NextFunction, Request, Response } from 'express';
+import { Op } from 'sequelize';
 import sequelize from '../db/sequelize/models/index';
 import ApiError from '../errors/ApiErrors';
 import {
@@ -9,13 +10,18 @@ import {
   deleteToken,
 } from '../utils/jwtHelpers';
 import { generateVerifyCode } from '../services/verification';
-import { USER, ROLE, DRIVER, USER_ROLE, DRIVER_ROLE } from '../constants/modelsNames';
+import {
+  USER,
+  ROLE,
+  DRIVER,
+  USER_ROLE,
+  DRIVER_ROLE,
+} from '../constants/modelsNames';
 import { MAX_AGE } from '../constants/api';
 
 const User = sequelize.models[USER];
 const Role = sequelize.models[ROLE];
 const Driver = sequelize.models[DRIVER];
-const { Op } = sequelize.Sequelize;
 
 export default class AuthController {
   async registration(req: Request, res: Response, next: NextFunction) {
@@ -34,47 +40,47 @@ export default class AuthController {
     }
 
     if (!car_number) {
-    User.create({
-      phone: req.body.phone,
-      name: req.body.name,
-      password: bcrypt.hashSync(req.body.password, 5),
-      verification_code: generateVerifyCode(),
-    })
-      .then((user: any) => {
-        const roles = req.body.roles ? req.body.roles : [USER_ROLE];
-        Role.findAll({
-          where: {
-            name: {
-              [Op.or]: roles,
-            },
-          },
-        }).then((roles: any) => {
-          user.setRoles(roles).then(() => {
-            const authorities: Array<string> = [];
-            for (let i = 0; i < roles.length; i++) {
-              authorities.push(roles[i].name);
-            }
-            const accessToken = generateAccessToken(
-              user.id,
-              user.name,
-              authorities,
-            );
-            const refreshToken = generateRefreshToken(
-              user.id,
-              user.name,
-              authorities,
-            );
-            res.cookie('refreshToken', refreshToken, {
-              maxAge: MAX_AGE,
-              httpOnly: true,
-            });
-            return res.json({ accessToken, refreshToken });
-          });
-        });
+      User.create({
+        phone: req.body.phone,
+        name: req.body.name,
+        password: bcrypt.hashSync(req.body.password, 5),
+        verification_code: generateVerifyCode(),
       })
-      .catch(() => {
-        return next(ApiError.forbidden());
-      });
+        .then((user: any) => {
+          const roles = req.body.roles ? req.body.roles : [USER_ROLE];
+          Role.findAll({
+            where: {
+              name: {
+                [Op.or]: roles,
+              },
+            },
+          }).then((roles: any) => {
+            user.setRoles(roles).then(() => {
+              const authorities: Array<string> = [];
+              for (let i = 0; i < roles.length; i++) {
+                authorities.push(roles[i].name);
+              }
+              const accessToken = generateAccessToken(
+                user.id,
+                user.name,
+                authorities,
+              );
+              const refreshToken = generateRefreshToken(
+                user.id,
+                user.name,
+                authorities,
+              );
+              res.cookie('refreshToken', refreshToken, {
+                maxAge: MAX_AGE,
+                httpOnly: true,
+              });
+              return res.json({ accessToken, refreshToken });
+            });
+          });
+        })
+        .catch(() => {
+          return next(ApiError.forbidden());
+        });
     } else {
       const driver = await Driver.findOne({
         where: { car_number },
@@ -82,65 +88,67 @@ export default class AuthController {
       if (driver) {
         return next(ApiError.conflict());
       }
-        User.create({
-          phone: req.body.phone,
-          name: req.body.name,
-          password: bcrypt.hashSync(req.body.password, 5),
-          verification_code: generateVerifyCode(),
-        })
-          .then((user: any) => {
-            const roles = req.body.roles ? req.body.roles : [USER_ROLE, DRIVER_ROLE];
-            Role.findAll({
-              where: {
-                name: {
-                  [Op.or]: roles,
-                },
+      User.create({
+        phone: req.body.phone,
+        name: req.body.name,
+        password: bcrypt.hashSync(req.body.password, 5),
+        verification_code: generateVerifyCode(),
+      })
+        .then((user: any) => {
+          const roles = req.body.roles
+            ? req.body.roles
+            : [USER_ROLE, DRIVER_ROLE];
+          Role.findAll({
+            where: {
+              name: {
+                [Op.or]: roles,
               },
-            }).then((roles: any) => {
-              user.setRoles(roles).then(() => {
-                const authorities: Array<string> = [];
-                for (let i = 0; i < roles.length; i++) {
-                  authorities.push(roles[i].name);
-                }
-                Driver.create({
-                  user_id: user.id,
-                  car_color: req.body.car_color,
-                  car_model: req.body.car_model,
-                  car_number: req.body.car_number,
-                })  
-                const driver_info = {
-                  car_color,
-                  car_model,
-                  car_number
-                }
-
-                const accessToken = generateAccessToken(
-                  user.id,
-                  user.name,
-                  authorities,
-                  driver_info,
-                );
-                const refreshToken = generateRefreshToken(
-                  user.id,
-                  user.name,
-                  authorities,
-                  driver_info,
-                );
-                res.cookie('refreshToken', refreshToken, {
-                  maxAge: MAX_AGE,
-                  httpOnly: true,
-                });
-                return res.json({ accessToken, refreshToken });
+            },
+          }).then((roles: any) => {
+            user.setRoles(roles).then(() => {
+              const authorities: Array<string> = [];
+              for (let i = 0; i < roles.length; i++) {
+                authorities.push(roles[i].name);
+              }
+              Driver.create({
+                user_id: user.id,
+                car_color: req.body.car_color,
+                car_model: req.body.car_model,
+                car_number: req.body.car_number,
               });
-            });
-          })
-          .catch(() => {
-            return next(ApiError.forbidden());
-          });
-    };
-  };
+              const driver_info = {
+                car_color,
+                car_model,
+                car_number,
+              };
 
-  async login (req: Request, res: Response, next: NextFunction) {
+              const accessToken = generateAccessToken(
+                user.id,
+                user.name,
+                authorities,
+                driver_info,
+              );
+              const refreshToken = generateRefreshToken(
+                user.id,
+                user.name,
+                authorities,
+                driver_info,
+              );
+              res.cookie('refreshToken', refreshToken, {
+                maxAge: MAX_AGE,
+                httpOnly: true,
+              });
+              return res.json({ accessToken, refreshToken });
+            });
+          });
+        })
+        .catch(() => {
+          return next(ApiError.forbidden());
+        });
+    }
+  }
+
+  async login(req: Request, res: Response, next: NextFunction) {
     await User.findOne({
       where: {
         phone: req.body.phone,
@@ -180,13 +188,11 @@ export default class AuthController {
             phone: user.phone,
             roles: authorities,
             accessToken: generateAccessToken(user.id, user.name, authorities),
-            refreshToken: refreshToken,
+            refreshToken,
           });
         });
       })
-      .catch((err: Error) => {
-        return next(ApiError.forbidden());
-      });
+      .catch((err: Error) => next(ApiError.forbidden()));
   }
 
   async refresh(req: Request, res: Response, next: NextFunction): Promise<any> {

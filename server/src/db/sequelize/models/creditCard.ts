@@ -3,6 +3,9 @@ import { CREDIT_CARD } from '../../../constants/modelsNames';
 
 export default (sequelize: any, DataTypes: any) => {
   class CreditCard extends Model {
+    static associate() {
+      CreditCard.belongsTo(sequelize.models.users);
+    }
   }
   CreditCard.init(
     {

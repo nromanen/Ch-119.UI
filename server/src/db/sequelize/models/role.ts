@@ -2,6 +2,7 @@ import { Model } from 'sequelize';
 
 export default (sequelize: any, DataTypes: any) => {
   class Role extends Model {
+    static associate() {}
   }
   Role.init(
     {
@@ -33,5 +34,3 @@ export default (sequelize: any, DataTypes: any) => {
 
   return Role;
 };
-
-

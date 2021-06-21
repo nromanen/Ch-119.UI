@@ -4,10 +4,10 @@
 # Dependency directories
 /node_modules
 package-lock.json
-.env
 /.pnp
 .pnp.js
 yarn.lock
 /.vscode
 
 # dotenv environment variables file
+.env
