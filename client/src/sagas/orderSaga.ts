@@ -1,8 +1,14 @@
 import { call, put, select, StrictEffect, takeEvery } from 'redux-saga/effects';
+import { push } from 'react-router-redux';
 
 import { OrderActionTypes } from '../types/orderTypes';
 import { makeOrder } from '../services/orderService';
 import {
+  ORDER_USER_ACTIVE_ROUTE,
+  ORDER_USER_ROUTE,
+} from './../constants/routerConstants';
+import {
+  changeOrderValue,
   makeOrderErrorAction,
   makeOrderSuccessAction,
 } from './../actions/orderActions';
@@ -16,8 +22,11 @@ function* makeOrderWorker(): Generator<StrictEffect, void, any> {
 
   try {
     const data = yield call(makeOrder(order, userID));
+    console.log(ORDER_USER_ROUTE + data.data.id);
     if (data.status === 200) {
+      yield put(changeOrderValue('id', data.data.id));
       yield put(makeOrderSuccessAction());
+      yield put(push(ORDER_USER_ROUTE + data.data.id));
     } else {
       yield put(makeOrderErrorAction());
     }

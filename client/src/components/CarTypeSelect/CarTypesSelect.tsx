@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { Form } from 'react-bootstrap';
-import { CarTypesI } from './../types/cityInfoTypes';
+import { CarTypesI } from '../../types/cityInfoTypes';
 
 interface CarTypesSelectI {
   id: string;

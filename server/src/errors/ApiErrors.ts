@@ -5,23 +5,23 @@ export default class ApiError extends Error {
         this.message = message
     }
 
-    static badRequest(message: string) {
-        return new ApiError('400', message)
+    static badRequest() {
+        return new ApiError('400', 'Invalid Data!');
     }
 
-    static internal(message: string) {
-        return new ApiError('500', message)
+    static internal() {
+        return new ApiError('500', 'Not authorized');
     }
 
-    static forbidden(message: string) {
-        return new ApiError('403', message)
+    static forbidden() {
+        return new ApiError('403', 'Server error');
     }
 
-    static conflict(message: string) {
-        return new ApiError('409', message)
+    static conflict() {
+        return new ApiError('409', 'This data already exist');
     }
 
-    static unathorized(message: string) {
-        return new ApiError('401', message)
+    static unathorized() {
+        return new ApiError('401', 'Invalid Data!');
     }
 }

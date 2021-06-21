@@ -13,31 +13,26 @@ export default class OrderController {
       const data = await sequelize.models[ORDER].create(body);
       res.status(STATUS_OK).send(data);
     } catch (error) {
-      res.send({
-        message: error,
-        status: STATUS_BAD_REQUEST,
-      });
+      res.status(STATUS_BAD_REQUEST).send(error);
     }
   };
 
   getByStatus = async (req: Request, res: Response): Promise<any> => {
     let { limit, page } = req.query;
-    const { where } = req.query;
-    console.log(req.query);
+    // const { where } = req.query;
     // res.json(where);
 
     page = page || '1';
     limit = limit || '5';
+    const newLimit = Number(limit);
 
     const offset = +page * +limit - +limit;
 
     try {
       const data = await sequelize.models[ORDER].findAndCountAll({
-        where: {
-          status: req.query.status
-        },
+        // where,
         offset,
-        limit,
+        limit: newLimit,
       });
       res.status(STATUS_OK).send({ data, status: STATUS_OK });
     } catch (error) {
@@ -50,26 +45,29 @@ export default class OrderController {
   };
 
   getById = async (req: Request, res: Response): Promise<any> => {
-    const id = req.params.id;
+    const { id } = req.params;
     console.log(id);
-
     try {
-      const data = await sequelize.models[ORDER].findOne({
-        where: {
-          id: id,
-        }
-      }, {
-        include: [{
-          model: User,
-        }]
-      });
+      const data = await sequelize.models[ORDER].findOne(
+        {
+          where: {
+            id,
+          },
+        },
+        // {
+        //   include: [
+        //     {
+        //       model: User,
+        //     },
+        //   ],
+        // },
+      );
       res.status(STATUS_OK).send({ data, status: STATUS_OK });
     } catch (error) {
       console.log(error);
-
-      // res
-      // .status(STATUS_BAD_REQUEST)
-      // .send({ message: error.errors[0].message, status: STATUS_BAD_REQUEST });
+      res
+        .status(STATUS_BAD_REQUEST)
+        .send({ message: error.errors[0].message, status: STATUS_BAD_REQUEST });
     }
   };
 
@@ -78,13 +76,16 @@ export default class OrderController {
     console.log(status);
 
     try {
-      const data = await sequelize.models[ORDER].update({
-        status: status
-      }, {
-        where: {
-          id: id,
-        }
-      });
+      const data = await sequelize.models[ORDER].update(
+        {
+          status,
+        },
+        {
+          where: {
+            id,
+          },
+        },
+      );
 
       res.status(STATUS_OK).send({ data, status: STATUS_OK });
     } catch (error) {
@@ -94,5 +95,5 @@ export default class OrderController {
         .status(STATUS_BAD_REQUEST)
         .send({ message: error.errors[0].message, status: STATUS_BAD_REQUEST });
     }
-  }
+  };
 }

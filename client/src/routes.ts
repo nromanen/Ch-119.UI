@@ -1,28 +1,34 @@
-import { Order } from './pages/Order/Order';
-import LoginContainer from './components/Login/LoginContainer';
+import { RouteProps } from 'react-router-dom';
 import {
   LOGIN_ROUTE,
   REGISTRATION_ROUTE,
   ORDER_ROUTE,
   PROFILE_ROUTE,
+  FEEDBACK_ROUTE,
+  ORDER_ACTIVE_ROUTE,
+  ORDER_ACCEPTED_ROUTE,
+  ORDER_USER_ROUTE,
 } from './constants/routerConstants';
-import RegistrationContainer from './components/Login/RegistrationContainer';
+
+import Feedback from './pages/feedback/Feedback';
 import ProfileContainer from './pages/Profile/ProfileContainer';
+import { Order } from './pages/Order/Order';
+
+import LoginContainer from './components/Login/LoginContainer';
+import RegistrationContainer from './components/Login/RegistrationContainer';
+
 import OrderDriverActive from './pages/Order/orderDriverActive';
 import OrderDriverAccepted from './pages/Order/orderDriverAccepted';
 import OrderUserActive from './pages/Order/orderUserActive';
-import { ORDER_ACTIVE_ROUTE } from './constants/routerConstants';
-import { ORDER_ACCEPTED_ROUTE } from './constants/routerConstants';
-import { ORDER_USER_ROUTE } from './constants/routerConstants';
 
 export const authRouters = [
   {
-    path: PROFILE_ROUTE,
-    component: ProfileContainer,
-  },
-  {
     path: ORDER_ROUTE,
     component: Order,
+  },
+  {
+    path: PROFILE_ROUTE,
+    component: ProfileContainer,
   },
   {
     path: ORDER_ACTIVE_ROUTE,
@@ -33,12 +39,17 @@ export const authRouters = [
     component: OrderDriverAccepted,
   },
   {
-    path: ORDER_USER_ROUTE,
+    path: ORDER_USER_ROUTE + ':id',
     component: OrderUserActive,
   },
 ];
 
 export const publicRouters = [
+  {
+    path: FEEDBACK_ROUTE,
+    component: Feedback,
+    exact: true,
+  },
   {
     path: LOGIN_ROUTE,
     component: LoginContainer,

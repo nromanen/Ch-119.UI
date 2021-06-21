@@ -4,7 +4,7 @@ import { OverlayTrigger, Tooltip, Form } from 'react-bootstrap';
 import { ReactComponent as BabyChair } from './icons/babyChair.svg';
 import { ReactComponent as En } from './icons/en.svg';
 import { ReactComponent as Silent } from './icons/silent.svg';
-import { FormLabel } from './FormLabel';
+import { FormLabel } from '../FormLabel/FormLabel';
 
 interface IconsI {
   [index: string]: any;
@@ -51,7 +51,7 @@ export const ExtraServiceItem: FC<ExtraServiceItemI> = ({
     >
       <FormLabel
         title={showTitle && name}
-        classNames={['extra-service__label']}
+        classNames={['extra-services__label']}
         htmlFor={name}
       >
         <Form.Check
@@ -59,7 +59,6 @@ export const ExtraServiceItem: FC<ExtraServiceItemI> = ({
           id={name}
           aria-label={name}
           type="checkbox"
-          // label={name}
           data-db-id={id}
           name="extraServices"
           value={name}
