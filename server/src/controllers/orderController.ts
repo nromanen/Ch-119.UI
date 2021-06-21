@@ -9,8 +9,8 @@ export default class OrderController {
     const { body } = req.body;
 
     try {
+      console.log(req.body);
       const data = await sequelize.models[ORDER].create(body);
-
       res.status(STATUS_OK).send(data);
     } catch (error) {
       res.send({
