@@ -8,7 +8,7 @@ import {
   registrationDriver,
 } from '../http/userApi';
 import { push } from 'react-router-redux';
-import { ORDER_ROUTE } from '../constants/routerConstants';
+import { ORDER_ROUTE, LOGIN_ROUTE, ORDER_ACTIVE_ROUTE } from '../constants/routerConstants';
 
 export const getUserFromState = (state: any) => state.auth;
 
@@ -25,9 +25,9 @@ function* registrateUserWorker(): Generator<StrictEffect, void, any> {
     );
     if (data) {
       yield put({ type: AuthActionTypes.SET_USER_DATA, payload: data });
-      yield put(push('/order'));
+      yield put(push(ORDER_ROUTE));
     } else {
-      yield put({ type: AuthActionTypes.HANDLE_ERROR });
+      yield put({ type: AuthActionTypes.HANDLE_ERROR, payload: {data: data, hasError: true} });
     }
   }
 }
@@ -46,11 +46,11 @@ function* registrateDriverWorker(): Generator<StrictEffect, void, any> {
         userInfoState.driver_info.car_number,
       ),
     );
-    if (data) {
+    if (data.id) {
       yield put({ type: AuthActionTypes.SET_DRIVER_DATA, payload: data });
-      yield put(push('/order'));
+      yield put(push(ORDER_ROUTE));
     } else {
-      yield put({ type: AuthActionTypes.HANDLE_ERROR });
+      yield put({ type: AuthActionTypes.HANDLE_ERROR, payload: {data: data, hasError: true} });
     }
   }
 }
@@ -61,10 +61,15 @@ function* loginUserWorker(): Generator<StrictEffect, void, any> {
   const data = yield call(login(userInfoState.phone, userInfoState.password));
 
   if (data.id) {
+    if (!data.driver_info) {
     yield put({ type: AuthActionTypes.SET_USER_DATA, payload: data });
-    yield put(push('/order'));
+    yield put(push(ORDER_ROUTE));
+    } else {
+      yield put({ type: AuthActionTypes.SET_DRIVER_DATA, payload: data });
+      yield put(push(ORDER_ACTIVE_ROUTE));
+    }
   } else {
-    yield put({ type: AuthActionTypes.HANDLE_ERROR, payload: data });
+    yield put({ type: AuthActionTypes.HANDLE_ERROR, payload: {data: data, hasError: true} });
   }
 }
 
@@ -83,7 +88,7 @@ function* logoutUserWorker(): Generator<StrictEffect, void, any> {
   const userInfoState = yield select(getUserFromState);
 
   const data = yield call(logout());
-  yield put(push('/login'));
+  yield put(push(LOGIN_ROUTE));
 }
 
 export function* userInfoWatcher() {

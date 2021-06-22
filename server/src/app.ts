@@ -20,8 +20,6 @@ dotenv.config();
 
 const app = express();
 
-app.use(corsMiddleware);
-
 app.use(
   cors({
     credentials: true,
@@ -37,8 +35,7 @@ app.use(
 );
 app.use(express.urlencoded({ extended: true }));
 app.use(API_PATH, routes);
-// app.use(corsMiddleware);
-app.use(errorHandler);
+app.use(corsMiddleware);
 
 export const logger = winston.createLogger({
   level: 'info',
@@ -57,7 +54,7 @@ if (process.env.NODE_ENV !== PRODUCTION) {
     }),
   );
 }
-
+app.use(errorHandler);
 const start = async () => {
   try {
     await sequelize.authenticate();

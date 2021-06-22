@@ -8,9 +8,9 @@ import AlertContainer from '../Alert/AlertContainer';
 
 export const Login: FC = (props: any) =>
   <div className='jumbotron'>
-    <div className='container-fluid'>
+    <div className='container-fluid login'>
     <AlertContainer />
-      <h1>Login</h1>
+      <h2>Login</h2>
       <Form
         onSubmit={(formObj) => {
           props.loginUser(formObj);
