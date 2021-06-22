@@ -17,6 +17,8 @@ export const initialState: OrderStateI = {
   error: false,
   id: undefined,
   // customerId: undefined,
+  showModalForUser: false,
+  showModalForDriver: false,
 };
 
 export const orderReducer = (
@@ -32,7 +34,16 @@ export const orderReducer = (
       return { ...state, loading: false, error: false };
     case OrderActionTypes.MAKE_ORDER_ERROR:
       return { ...state, loading: false, error: true };
-
+    case OrderActionTypes.FINISH_ORDER:
+      return { ...state, loading: true, error: false };
+    case OrderActionTypes.FINISH_ORDER_SUCCESS:
+      return { ...state, loading: false, error: false, status: 'finished' };
+    case OrderActionTypes.FINISH_ORDER_ERROR:
+      return { ...state, loading: false, error: true };
+    case OrderActionTypes.TOGGLE_MODAL_FOR_USER:
+      return { ...state, showModalForUser: !state.showModalForUser };
+    case OrderActionTypes.TOGGLE_MODAL_FOR_DRIVER:
+      return { ...state, showModalForDriver: !state.showModalForDriver };
     default:
       return state;
   }

@@ -8,6 +8,7 @@ import AppRouter from './pages/AppRouter';
 import './App.scss';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.scss';
+import Feedback from './pages/feedback/Feedback';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
       <Provider store={store}>
         <ConnectedRouter history={history}>
           <AppRouter />
+          <Feedback></Feedback>
         </ConnectedRouter>
       </Provider>
     </BrowserRouter>

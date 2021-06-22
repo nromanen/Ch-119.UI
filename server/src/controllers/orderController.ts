@@ -7,6 +7,7 @@ import User from '../db/sequelize/models/user';
 export default class OrderController {
   create = async (req: Request, res: Response): Promise<any> => {
     const { body } = req.body;
+    console.log(body);
 
     try {
       const data = await sequelize.models[ORDER].create(body);
@@ -72,10 +73,8 @@ export default class OrderController {
   };
 
   update = async (req: Request, res: Response): Promise<any> => {
-    const { id, status } = req.body;
-    console.log(status);
-
     try {
+      const { id, status } = req.body.body;
       const data = await sequelize.models[ORDER].update(
         {
           status,
@@ -89,11 +88,7 @@ export default class OrderController {
 
       res.status(STATUS_OK).send({ data, status: STATUS_OK });
     } catch (error) {
-      console.log(error);
-
-      res
-        .status(STATUS_BAD_REQUEST)
-        .send({ message: error.errors[0].message, status: STATUS_BAD_REQUEST });
+      res.status(STATUS_BAD_REQUEST).send({ message: error.message });
     }
   };
 }
