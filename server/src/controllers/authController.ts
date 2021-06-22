@@ -111,6 +111,7 @@ export default class AuthController {
               for (let i = 0; i < roles.length; i++) {
                 authorities.push(roles[i].name);
               }
+              
               Driver.create({
                 user_id: user.id,
                 car_color: req.body.car_color,
@@ -151,8 +152,9 @@ export default class AuthController {
     }
   }
 
-  async login(req: Request, res: Response, next: NextFunction) {
+  async login (req: Request, res: Response, next: NextFunction) {
     try {
+      let driverInfo: any = null;
     await User.findOne({
       where: {
         phone: req.body.phone,
@@ -163,6 +165,16 @@ export default class AuthController {
           return next(ApiError.badRequest());
         }
 
+        Driver.findOne({
+          where: {
+            user_id: user.id,
+          },
+        }) 
+        .then((driver: any) => {
+          driverInfo = driver.dataValues;
+          console.log(driverInfo)
+        })
+
         const passwordIsValid = bcrypt.compareSync(
           req.body.password,
           user.password,
@@ -171,7 +183,6 @@ export default class AuthController {
         if (!passwordIsValid) {
           return next(ApiError.unathorized());
         }
-
         const authorities: Array<string> = [];
         user.getRoles().then((roles: any) => {
           for (let i = 0; i < roles.length; i++) {
@@ -181,6 +192,7 @@ export default class AuthController {
             user.id,
             user.name,
             authorities,
+            driverInfo
           );
           res.cookie('refreshToken', refreshToken, {
             maxAge: MAX_AGE,
@@ -191,7 +203,8 @@ export default class AuthController {
             name: user.name,
             phone: user.phone,
             roles: authorities,
-            accessToken: generateAccessToken(user.id, user.name, authorities),
+            driverInfo,
+            accessToken: generateAccessToken(user.id, user.name, authorities, driverInfo),
             refreshToken,
           });
         });
