@@ -35,6 +35,7 @@ export const authReducer = (state = initialState, action: any): IUser => {
         name: action.payload.name,
         role: [action.payload.roles[0], action.payload.roles[1]],
         isAuth: true,
+        isDriver: true,
         hasError: false,
         id: action.payload.id,
         driver_info: {
