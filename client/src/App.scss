@@ -6,6 +6,12 @@ body {
   margin-bottom: 0;
 }
 
+.login, .registration {
+  background-color: #fff;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
 .order-user-active, .driver-order-active {
   max-width: 600px;
   margin: auto;

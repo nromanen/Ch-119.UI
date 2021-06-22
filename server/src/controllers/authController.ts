@@ -38,8 +38,9 @@ export default class AuthController {
     if (candidate) {
       return next(ApiError.conflict());
     }
-
+    try {
     if (!car_number) {
+      try {
       User.create({
         phone: req.body.phone,
         name: req.body.name,
@@ -77,10 +78,9 @@ export default class AuthController {
               return res.json({ accessToken, refreshToken });
             });
           });
-        })
-        .catch(() => {
+        })} catch {
           return next(ApiError.forbidden());
-        });
+        };
     } else {
       const driver = await Driver.findOne({
         where: { car_number },
@@ -88,6 +88,7 @@ export default class AuthController {
       if (driver) {
         return next(ApiError.conflict());
       }
+      try {
       User.create({
         phone: req.body.phone,
         name: req.body.name,
@@ -141,14 +142,17 @@ export default class AuthController {
               return res.json({ accessToken, refreshToken });
             });
           });
-        })
-        .catch(() => {
+        })} catch {
           return next(ApiError.forbidden());
-        });
+        };
+    }
+    } catch {
+      return next(ApiError.forbidden());
     }
   }
 
   async login(req: Request, res: Response, next: NextFunction) {
+    try {
     await User.findOne({
       where: {
         phone: req.body.phone,
@@ -191,8 +195,9 @@ export default class AuthController {
             refreshToken,
           });
         });
-      })
-      .catch((err: Error) => next(ApiError.forbidden()));
+      })} catch {
+        return next(ApiError.forbidden());
+      };
   }
 
   async refresh(req: Request, res: Response, next: NextFunction): Promise<any> {

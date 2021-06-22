@@ -2,6 +2,8 @@ import React, { FC, useState } from 'react';
 import { Button } from 'react-bootstrap';
 import { Form, Field } from 'react-final-form';
 import { required } from '../../utils/formValidators';
+import AlertContainer from '../Alert/AlertContainer';
+import { REQUIRED, MATCH_PASSWORDS } from '../../constants/validatorsConstants';
 
 export const Registration = (props: any) => {
   const [isDriver, setIsDriver] = useState(false);
@@ -12,9 +14,10 @@ export const Registration = (props: any) => {
   };
 
   return (
-    <div className="jumbotron registration">
-      <div className="container-fluid">
-        <h1>Registration</h1>
+    <div className="jumbotron">
+      <div className="container-fluid registration">
+      <AlertContainer />
+        <h2>Registration</h2>
         <Form
           onSubmit={(formObj) => {
             if (!isDriver) {
@@ -25,12 +28,12 @@ export const Registration = (props: any) => {
           validate={(values) => {
             const errors: any = {};
             if (!values.password) {
-              errors.password = 'Required';
+              errors.password = REQUIRED;
             }
             if (!values.confirm) {
-              errors.confirm = 'Required';
+              errors.confirm = REQUIRED;
             } else if (values.confirm !== values.password) {
-              errors.confirm = 'Must match';
+              errors.confirm = MATCH_PASSWORDS;
             }
             return errors;
           }}
@@ -219,7 +222,7 @@ export const Registration = (props: any) => {
               </React.Fragment>): null}
               <div className="col-xs-4 mt-3">
                 <Button type="submit" disabled={submitting}>
-                  Regiser
+                  Register
                 </Button>
               </div>
             </form>
