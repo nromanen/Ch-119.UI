@@ -59,7 +59,6 @@ function* loginUserWorker(): Generator<StrictEffect, void, any> {
   const userInfoState = yield select(getUserFromState);
 
   const data = yield call(login(userInfoState.phone, userInfoState.password));
-  console.log('Data from server', data);
 
   if (data.id) {
     yield put({ type: AuthActionTypes.SET_USER_DATA, payload: data });

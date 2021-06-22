@@ -44,7 +44,6 @@ export const saveToken = (userId: number, refreshToken: string) => {
   const tokenData: any = Token.findOne({ where: { user_id: userId } });
   if (tokenData) {
     tokenData.refreshToken = refreshToken;
-    console.log('TOKEN DATA', tokenData);
 
     return tokenData.save();
   }

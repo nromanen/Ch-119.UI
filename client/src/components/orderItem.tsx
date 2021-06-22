@@ -9,23 +9,26 @@ import { useTypedSelector } from '../hooks/useTypedSelector';
 import jwt_decode from 'jwt-decode';
 
 const OrderItem = ({ order }: any) => {
-  const changeStatus = async (id: number | string) => {
-    const data = await axios.put(`${process.env.REACT_APP_SERVER_URL}order/${id}`, {
-      id: `${id}`,
+  const changeStatus = async (orderId: number | string, driverId: number | string) => {
+    await axios.put(`${process.env.REACT_APP_SERVER_URL}order/${orderId}`, {
+      id: `${orderId}`,
       status: 'accepted',
-      driver_id: driver.id,
+      driver_id: driverId,
     });
-    console.log(data);
   };
 
   const { car_types } = useTypedSelector((state) => state.cityInfo);
   const carType = car_types.find((type) => type.id === order.carTypeId);
 
+  const { extra_services } = useTypedSelector((state) => state.cityInfo);
+  const extraServices = order.extra_services.map((id: number) => {
+    const extServItem = extra_services.find((extServ) => extServ.id === id);
+    return extServItem?.name;
+  }) || [];
+
   const driverInfo: any = localStorage.getItem('refreshToken');
-  console.log(driverInfo);
 
   const driver: any = jwt_decode(driverInfo);
-  console.log(driver.id);
 
   return (
     <div className="box">
@@ -33,10 +36,10 @@ const OrderItem = ({ order }: any) => {
       <Container>
         <Row>
           <ColInfo xs="col-6" icon={faMapMarkerAlt} order={order.from} />
-          <ColInfo xs="col-4  padding-0" icon={faStar} order={<span>4.3 Ivan</span>} />
+          <ColInfo xs="col-4  padding-0" icon={faStar} order={order.user?.name} />
           <Col>
             <Link to={`/driver/order/${order.id}`}>
-              <Button onClick={(e: any) => changeStatus(order.id)} className="round-button" color="primary" size="sm">Take</Button>
+              <Button onClick={(e: any) => changeStatus(order.id, driver.id)} className="round-button" color="primary" size="sm">Take</Button>
             </Link>
           </Col>
         </Row>
@@ -60,7 +63,7 @@ const OrderItem = ({ order }: any) => {
         <UncontrolledCollapse toggler={'#togler' + order.id}>
           <Card id="card">
             <CardBody>
-              <span>Extra services: {order.extra_services}</span>
+              <span>Extra services: {extraServices.join(', ').toLowerCase()}</span>
             </CardBody>
           </Card>
         </UncontrolledCollapse>

@@ -1,8 +1,9 @@
 import { Request, Response } from 'express';
 import sequelize from '../db/sequelize/models/index';
-import { ORDER } from '../constants/modelsNames';
+import { ORDER, DRIVER, USER } from '../constants/modelsNames';
 import { STATUS_BAD_REQUEST, STATUS_OK } from '../constants/api';
 import User from '../db/sequelize/models/user';
+import driver from '../db/sequelize/models/driver';
 
 export default class OrderController {
   create = async (req: Request, res: Response): Promise<any> => {
@@ -30,7 +31,7 @@ export default class OrderController {
 
     try {
       const data = await sequelize.models[ORDER].findAndCountAll({
-        // where,
+        include: sequelize.models[USER],
         offset,
         limit: newLimit,
       });
@@ -46,22 +47,17 @@ export default class OrderController {
 
   getById = async (req: Request, res: Response): Promise<any> => {
     const { id } = req.params;
-    console.log(id);
+
     try {
       const data = await sequelize.models[ORDER].findOne(
         {
           where: {
             id,
           },
-        },
-        // {
-        //   include: [
-        //     {
-        //       model: User,
-        //     },
-        //   ],
-        // },
+            include: sequelize.models[USER],
+          },
       );
+      
       res.status(STATUS_OK).send({ data, status: STATUS_OK });
     } catch (error) {
       console.log(error);
@@ -71,15 +67,36 @@ export default class OrderController {
     }
   };
 
+  getDriverIdByUserId = async (id: any) => {
+      const res = await sequelize.models[DRIVER].findOne(
+        {
+          where: {
+            user_id: id,
+          },
+        })
+
+        return res
+        
+        
+        // then((driver: any) => {
+        //   console.log("IS DRIVER _-------------------", driver);
+          
+        //   return driver.dataValues.id;
+        // })
+        
+  }
+
   update = async (req: Request, res: Response): Promise<any> => {
     const { id, status, driver_id } = req.body;
-    console.log(status);
 
+    const driver = await this.getDriverIdByUserId(driver_id);
+
+    const driverId = driver.getDataValue('id')
     try {
       const data = await sequelize.models[ORDER].update(
         {
           status,
-          driver_id
+          driver_id: driverId
         },
         {
           where: {

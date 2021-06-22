@@ -11,7 +11,6 @@ import { useTypedSelector } from './../../hooks/useTypedSelector';
  * @return {Object}
  */
 const OrderDriverAccepted = ({ match }: any) => {
-  console.log(match);
   const [order, setOrder]: any = useState<any[]>([]);
   const { car_types } = useTypedSelector((state) => state.cityInfo);
   useEffect(() => {
@@ -21,11 +20,15 @@ const OrderDriverAccepted = ({ match }: any) => {
   const fetchOrders = async () => {
     const data = await axios.get(`${process.env.REACT_APP_SERVER_URL}order/${match.params.id}`);
 
-    console.log(data);
     setOrder(data.data.data);
   };
 
   const carType = car_types.find((type) => type.id === order.carTypeId);
+  const { extra_services } = useTypedSelector((state) => state.cityInfo);
+  const extraServices = order?.extra_services?.map((id: number) => {
+    const extServItem = extra_services.find((extServ) => extServ.id === id);
+    return extServItem?.name;
+  }) || [];
 
   return (
     <div className="jumbotron">
@@ -39,17 +42,17 @@ const OrderDriverAccepted = ({ match }: any) => {
           <Container>
             <Row>
               <ColInfo xs="col-6" icon={faMapMarkerAlt} order={order.from} />
-              <ColInfo icon={faPhone} order={<a href="tel:+38 099 123 45 67">099 123 45 67</a>} />
+              <ColInfo icon={faPhone} order={<a href={'tel:' + order.user?.phone}>{order.user?.phone}</a>} />
             </Row>
 
             <Row>
               <ColInfo xs="col-6" icon={faArrowAltCircleRight} order={order.to} />
-              <ColInfo icon={faInfoCircle} order={order.extra_services} />
+              <ColInfo icon={faInfoCircle} order={extraServices.join(', ').toLowerCase()} />
             </Row>
 
             <Row>
               <ColInfo xs="col-6" icon={faHryvnia} order={<strong>{order.price}</strong>} />
-              <ColInfo icon={faStar} order={<span>{order.info} 4.5 Oleg</span>} />
+              <ColInfo icon={faStar} order={<span>{order.user?.name}</span>} />
             </Row>
 
             {carType && (
