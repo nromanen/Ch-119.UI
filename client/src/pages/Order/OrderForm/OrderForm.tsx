@@ -9,6 +9,7 @@ import {
   Spinner,
 } from 'react-bootstrap';
 
+import Navbar from '../../../components/Navbar/Navbar';
 import { Input } from '../../../components/Input/Input';
 import { FormLabel } from '../../../components/FormLabel/FormLabel';
 import { CarTypesSelect } from '../../../components/CarTypeSelect/CarTypesSelect';
@@ -159,6 +160,7 @@ export const OrderForm: FC<OrderFormProps> = ({
           </ButtonToolbar>
         </div>
       </Form>
+      <Navbar />
     </Jumbotron>
   );
 };

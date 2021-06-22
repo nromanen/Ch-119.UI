@@ -5,7 +5,7 @@ import axios from 'axios';
 import { faMapMarkerAlt, faArrowAltCircleRight, faHryvnia, faInfoCircle, faPhone, faTaxi, faStar } from '@fortawesome/free-solid-svg-icons';
 import { Container, Row } from 'reactstrap';
 import { ColInfo } from '../../components/colInfo';
-
+import { useTypedSelector } from './../../hooks/useTypedSelector';
 
 /**
  * @return {Object}
@@ -13,7 +13,7 @@ import { ColInfo } from '../../components/colInfo';
 const OrderDriverAccepted = ({ match }: any) => {
   console.log(match);
   const [order, setOrder]: any = useState<any[]>([]);
-  // const accepted = useSelector(state => state.orderList.accepted)
+  const { car_types } = useTypedSelector((state) => state.cityInfo);
   useEffect(() => {
     fetchOrders();
   }, []);
@@ -25,13 +25,19 @@ const OrderDriverAccepted = ({ match }: any) => {
     setOrder(data.data.data);
   };
 
+  const carType = car_types.find((type) => type.id === order.carTypeId);
+
   return (
     <div className="jumbotron">
       <div>
-        <div className="walk-img animation"><p>passenger is waiting</p></div>
+        <div className="overflow">
+          <div className="walk-img animation">
+            <p>passenger is waiting</p>
+            </div>
+        </div>
         <div className="box">
           <Container>
-          <Row>
+            <Row>
               <ColInfo xs="col-6" icon={faMapMarkerAlt} order={order.from} />
               <ColInfo icon={faPhone} order={<a href="tel:+38 099 123 45 67">099 123 45 67</a>} />
             </Row>
@@ -46,9 +52,12 @@ const OrderDriverAccepted = ({ match }: any) => {
               <ColInfo icon={faStar} order={<span>{order.info} 4.5 Oleg</span>} />
             </Row>
 
-            <Row>
-              <ColInfo xs="col-6" icon={faTaxi} order={order.car_type} />
-            </Row>
+            {carType && (
+              <Row>
+                <ColInfo xs="col-6" icon={faTaxi} order={carType.name} />
+              </Row>
+            )}
+
             <div className="btn-space">
               <Link to={'#'}>
                 <Button variant="success">Start</Button>

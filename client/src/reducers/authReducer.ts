@@ -7,6 +7,7 @@ export const initialState: IUser = {
   role: [],
   isAuth: false,
   hasError: false,
+  authError: '',
   id: null,
   isDriver: false,
   driver_info: {
@@ -61,6 +62,7 @@ export const authReducer = (state = initialState, action: any): IUser => {
     case AuthActionTypes.HANDLE_ERROR:
       return {
         ...state,
+        authError: action.payload.data,
         hasError: true,
       };
     case AuthActionTypes.LOGOUT_USER:

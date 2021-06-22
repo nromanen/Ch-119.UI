@@ -35,6 +35,7 @@ export interface IUser {
   id: number | null;
   driver_info?: IDriver,
   isDriver: boolean,
+  authError: string,
 }
 
 export interface IDriver {

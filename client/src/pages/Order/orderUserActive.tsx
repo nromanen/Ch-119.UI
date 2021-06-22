@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
+import Navbar from '../../components/Navbar/Navbar';
 import axios from 'axios';
 import {
   faMapMarkerAlt,
@@ -15,14 +16,9 @@ import { Container, Row } from 'reactstrap';
 import { ColInfo } from '../../components/colInfo';
 import { useTypedSelector } from './../../hooks/useTypedSelector';
 
-/**
- * @return {Object}
- */
 const OrderUserActive = ({ match }: any) => {
-  console.log(match, 'match');
   const [order, setOrder]: any = useState<any[]>([]);
   const { car_types } = useTypedSelector((state) => state.cityInfo);
-  // const accepted = useSelector(state => state.orderList.accepted)
   useEffect(() => {
     fetchOrderById();
   }, []);
@@ -31,19 +27,17 @@ const OrderUserActive = ({ match }: any) => {
     const data = await axios.get(
       `${process.env.REACT_APP_SERVER_URL}order/${match.params.id}`,
     );
-
-    console.log(data);
     setOrder(data.data.data);
   };
 
   const carType = car_types.find((type) => type.id === order.carTypeId);
 
   return (
-    <div className="jumbotron">
+    <div className="jumbotron order-user-active">
       <div>
         <div className="overflow">
           <div className="taxi-img animation">
-            {/* <p>driver is on the way</p> */}
+            <p>driver is on the way</p>
           </div>
         </div>
         <div className="box">
@@ -71,10 +65,6 @@ const OrderUserActive = ({ match }: any) => {
                 icon={faHryvnia}
                 order={<strong>{order.price}</strong>}
               />
-              {/* <ColInfo
-                icon={faStar}
-                order={<span>{order.info} 4.3 Ivan</span>}
-              /> */}
             </Row>
 
             {carType && (
@@ -90,6 +80,7 @@ const OrderUserActive = ({ match }: any) => {
             </div>
           </Container>
         </div>
+        <Navbar />
       </div>
     </div>
   );

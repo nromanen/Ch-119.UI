@@ -10,5 +10,5 @@ export default (
   if (err instanceof ApiError) {
     res.status(parseInt(err.name, 10)).json({ message: err.message });
   }
-  return res.status(500).json({ message: 'Unexpected error' });
+  return next(res.status(500).json({ message: 'Unexpected error' }));
 };

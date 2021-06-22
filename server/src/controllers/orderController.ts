@@ -9,8 +9,8 @@ export default class OrderController {
     const { body } = req.body;
 
     try {
-      console.log(req.body);
       const data = await sequelize.models[ORDER].create(body);
+
       res.status(STATUS_OK).send(data);
     } catch (error) {
       res.status(STATUS_BAD_REQUEST).send(error);
@@ -72,13 +72,14 @@ export default class OrderController {
   };
 
   update = async (req: Request, res: Response): Promise<any> => {
-    const { id, status } = req.body;
+    const { id, status, driver_id } = req.body;
     console.log(status);
 
     try {
       const data = await sequelize.models[ORDER].update(
         {
           status,
+          driver_id
         },
         {
           where: {
