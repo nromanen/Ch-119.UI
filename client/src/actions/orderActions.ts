@@ -25,3 +25,22 @@ export const makeOrderSuccessAction = () => ({
 export const makeOrderErrorAction = () => ({
   type: OrderActionTypes.MAKE_ORDER_ERROR,
 });
+export const finishOrderAction = () => ({
+  type: OrderActionTypes.FINISH_ORDER,
+});
+export const finishOrderSuccessAction = () => ({
+  type: OrderActionTypes.FINISH_ORDER_SUCCESS,
+});
+export const finishOrderErrorAction = () => ({
+  type: OrderActionTypes.FINISH_ORDER_ERROR,
+});
+export const toggleModalForUser = () => {
+  return {
+    type: OrderActionTypes.TOGGLE_MODAL_FOR_USER,
+  };
+};
+export const toggleModalForDriver = () => {
+  return {
+    type: OrderActionTypes.TOGGLE_MODAL_FOR_DRIVER,
+  };
+};

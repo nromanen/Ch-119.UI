@@ -1,28 +1,31 @@
 import React from 'react';
 import StarRatingComponent from 'react-star-rating-component';
 import { Form, Field } from 'react-final-form';
-import { useParams } from 'react-router-dom';
 import { Button, Modal } from 'react-bootstrap';
 import { useTypedSelector } from '../../hooks/useTypedSelector';
 import {
-  useFeedbackActions,
   useFeedbackFormActions,
+  useOrderActions,
 } from '../../hooks/useActions';
-import { ParamTypes } from '../../utils/interfaces';
 import './Feedback.scss';
 import { required, maxValue } from '../../utils/validators';
 
 export const Feedback: React.FC = () => {
-  const isShown = useTypedSelector((state) => state.feedback.isShown);
-  const { hideModal } = useFeedbackActions();
+  const isShownForDriver = useTypedSelector(
+    (state) => state.order.showModalForDriver,
+  );
+
+  const orderId = useTypedSelector((state) => state.order.id);
+  const authorId = useTypedSelector((state) => state.auth.id);
+
+  const { toggleModalForDriver } = useOrderActions();
   const { createFeedback } = useFeedbackFormActions();
-  const { orderId } = useParams<ParamTypes>();
 
   const onSubmit = (values: any) => {
     const feedback = {
       text: values.feedbackText,
       rating: values.stars,
-      author_id: 13,
+      author_id: Number(authorId),
       subject_id: 31,
       orderId: Number(orderId),
     };
@@ -31,8 +34,8 @@ export const Feedback: React.FC = () => {
 
   return (
     <Modal
-      show={isShown}
-      onHide={hideModal}
+      show={isShownForDriver}
+      onHide={toggleModalForDriver}
       className="d-flex justify-content-center"
     >
       <Modal.Header closeButton>
@@ -83,7 +86,7 @@ export const Feedback: React.FC = () => {
                   )}
                 </Field>
                 <div className="d-flex justify-content-end buttons">
-                  <Button variant="secondary" onClick={hideModal}>
+                  <Button variant="secondary" onClick={toggleModalForDriver}>
                     Close
                   </Button>
                   <Button
@@ -91,7 +94,7 @@ export const Feedback: React.FC = () => {
                     type="submit"
                     className="submit_btn"
                     disabled={invalid}
-                    onClick={hideModal}
+                    onClick={toggleModalForDriver}
                   >
                     Send
                   </Button>
