@@ -92,15 +92,15 @@ const OrderDriverAccepted = ({ match }: any) => {
             )}
 
             <div className="btn-space">
-              <Link to={'#'}>
+              {/* <Link to={'#'}>
                 <Button variant="success">Start</Button>
-              </Link>
+              </Link> */}
               <Button variant="primary" onClick={finishOrderAction}>
                 Finish
               </Button>
-              <Link to={'#'}>
+              {/* <Link to={'#'}>
                 <Button variant="danger">Cancel</Button>
-              </Link>
+              </Link> */}
             </div>
           </Container>
         </div>
