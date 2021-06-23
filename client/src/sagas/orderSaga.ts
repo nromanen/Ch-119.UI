@@ -41,6 +41,7 @@ function* finishOrderWorker(): Generator<StrictEffect, void, any> {
   yield put(finishOrderSuccessAction());
   const userID = yield select(getUserID);
   const order = yield select(getOrder);
+  yield put(changeOrderValue('status', 'active'));
 
   try {
     const data = yield call(updateOrder(order, userID));

@@ -49,7 +49,7 @@ function* registrateDriverWorker(): Generator<StrictEffect, void, any> {
     );
     if (data.id) {
       yield put({ type: AuthActionTypes.SET_DRIVER_DATA, payload: data });
-      yield put(push(ORDER_ROUTE));
+      yield put(push(ORDER_ACTIVE_ROUTE));
     } else {
       yield put({ type: AuthActionTypes.HANDLE_ERROR, payload: {data: data, hasError: true} });
     }
