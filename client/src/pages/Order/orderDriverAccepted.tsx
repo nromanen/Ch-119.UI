@@ -6,6 +6,7 @@ import { faMapMarkerAlt, faArrowAltCircleRight, faHryvnia, faInfoCircle, faPhone
 import { Container, Row } from 'reactstrap';
 import { ColInfo } from '../../components/colInfo';
 import { useTypedSelector } from './../../hooks/useTypedSelector';
+import Navbar from '../../components/Navbar/Navbar';
 
 /**
  * @return {Object}
@@ -74,6 +75,7 @@ const OrderDriverAccepted = ({ match }: any) => {
             </div>
           </Container>
         </div>
+        <Navbar />
       </div>
     </div>
   );

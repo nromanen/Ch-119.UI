@@ -164,17 +164,7 @@ export default class AuthController {
         if (!user) {
           return next(ApiError.badRequest());
         }
-
-        Driver.findOne({
-          where: {
-            user_id: user.id,
-          },
-        }) 
-        .then((driver: any) => {
-          driverInfo = driver.dataValues;
-          console.log(driverInfo)
-        })
-
+        
         const passwordIsValid = bcrypt.compareSync(
           req.body.password,
           user.password,
@@ -183,6 +173,20 @@ export default class AuthController {
         if (!passwordIsValid) {
           return next(ApiError.unathorized());
         }
+
+        Driver.findOne({
+          where: {
+            user_id: user.id,
+          },
+        }) 
+        .then((driver: any) => {
+          if (!driver) {
+            driverInfo = null
+          } else {
+          driverInfo = driver.dataValues;
+          console.log(driverInfo)
+          }
+        })
         const authorities: Array<string> = [];
         user.getRoles().then((roles: any) => {
           for (let i = 0; i < roles.length; i++) {
