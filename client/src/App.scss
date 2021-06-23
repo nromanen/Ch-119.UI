@@ -19,6 +19,8 @@ body {
 
 .login-btn > a {
   color: #fff;
+  padding-left: 2px;
+  padding-right: 2px;
 }
 
 .login-btn > a:hover {
@@ -26,7 +28,7 @@ body {
   text-decoration: none;
 }
 
-.order-user-active, .driver-order-active {
+.order-user-active, .driver-order-active, .order-driver-accepted {
   max-width: 600px;
   margin: auto;
 }

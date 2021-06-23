@@ -45,7 +45,7 @@ const OrderDriverAccepted = ({ match }: any) => {
     }) || [];
 
   return (
-    <div className="jumbotron">
+    <div className="jumbotron order-driver-accepted">
       <div>
         <div className="overflow">
           <div className="walk-img animation">
