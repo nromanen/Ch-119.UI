@@ -17,7 +17,6 @@ const OrderDriverActive = () => {
       },
     });
 
-    console.log(data);
     setOrders(data.data.data.rows);
   };
 

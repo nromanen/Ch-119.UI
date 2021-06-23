@@ -13,15 +13,12 @@ const OrderAccepted = () => {
   const [order, setOrders] = useState<any[]>([]);
   useEffect(() => {
     fetchOrders();
-    console.log(order);
   }, []);
 
   const fetchOrders = async () => {
     const data = await fetch('https://fakestoreapi.com/products');
 
     const item = await data.json();
-    console.log(data);
-    console.log(item);
     setOrders(item);
   };
 

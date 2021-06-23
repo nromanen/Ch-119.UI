@@ -30,23 +30,26 @@ const OrderUserActive = ({ match }: any) => {
     setOrder(data.data.data);
   };
 
-  const carType = car_types.find((type) => type.id === order.carTypeId);
+  const carType = car_types.find((type: any) => type.id === order.carTypeId);
+  const { extra_services } = useTypedSelector((state) => state.cityInfo);
+  const extraServices = order?.extra_services?.map((id: number) => {
+    const extServItem = extra_services.find((extServ) => extServ.id === id);
+    return extServItem?.name;
+  }) || [];
 
   return (
     <div className="jumbotron order-user-active">
       <div>
         <div className="overflow">
           <div className="taxi-img animation">
+            <p>driver is on the way</p>
           </div>
         </div>
         <div className="box">
           <Container>
             <Row>
               <ColInfo xs="col-6" icon={faMapMarkerAlt} order={order.from} />
-              <ColInfo
-                icon={faPhone}
-                order={<a href="tel:+38 099 123 45 67">099 123 45 67</a>}
-              />
+              <ColInfo icon={faPhone} order={<a href={'tel:' + order.user?.phone}>{order.user?.phone}</a>} />
             </Row>
 
             <Row>
@@ -55,7 +58,7 @@ const OrderUserActive = ({ match }: any) => {
                 icon={faArrowAltCircleRight}
                 order={order.to}
               />
-              <ColInfo icon={faInfoCircle} order={order.extra_services} />
+              <ColInfo icon={faInfoCircle} order={extraServices.join(', ').toLowerCase()} />
             </Row>
 
             <Row>
