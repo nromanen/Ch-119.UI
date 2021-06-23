@@ -64,7 +64,7 @@ export const makeOrder = (order: OrderStateI, userId: number) => async () => {
 export const updateOrder = (order: OrderStateI, userId: number) => async () => {
   const orderDTO = new OrderDTO(order, userId);
   orderDTO.id = order.id;
-  const url = `${process.env.REACT_APP_SERVER_URL}order`;
+  const url = `${process.env.REACT_APP_SERVER_URL}order/${orderDTO.id}`;
   try {
     const response = axios.put(url, {
       body: orderDTO,

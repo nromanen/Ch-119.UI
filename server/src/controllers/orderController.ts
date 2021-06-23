@@ -68,14 +68,13 @@ export default class OrderController {
   };
 
   getDriverIdByUserId = async (id: any) => {
-    const res = await sequelize.models[DRIVER].findOne(
-      {
-        where: {
-          user_id: id,
-        },
-      });
-      return res;   
-}
+    const res = await sequelize.models[DRIVER].findOne({
+      where: {
+        user_id: id,
+      },
+    });
+    return res;
+  };
 
   update = async (req: Request, res: Response): Promise<any> => {
     try {
@@ -96,8 +95,6 @@ export default class OrderController {
 
       res.status(STATUS_OK).send({ data, status: STATUS_OK });
     } catch (error) {
-      console.log(error);
-
       res
         .status(STATUS_BAD_REQUEST)
         .send({ message: error.errors[0].message, status: STATUS_BAD_REQUEST });
