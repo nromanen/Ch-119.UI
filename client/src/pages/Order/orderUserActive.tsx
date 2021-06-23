@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import Button from 'react-bootstrap/Button';
 import Navbar from '../../components/Navbar/Navbar';
 import axios from 'axios';
 import {
@@ -10,7 +8,6 @@ import {
   faInfoCircle,
   faPhone,
   faTaxi,
-  faStar,
 } from '@fortawesome/free-solid-svg-icons';
 import { Container, Row } from 'reactstrap';
 import { ColInfo } from '../../components/colInfo';
@@ -76,9 +73,6 @@ const OrderUserActive = ({ match }: any) => {
             )}
 
             <div className="btn-space">
-              {/* <Link to={'#'}>
-                <Button variant="danger">Cancel</Button>
-              </Link> */}
             </div>
           </Container>
         </div>

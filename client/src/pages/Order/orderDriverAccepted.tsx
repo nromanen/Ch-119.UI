@@ -1,5 +1,4 @@
-import React, { useState, useEffect, SyntheticEvent } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
 import Button from 'react-bootstrap/Button';
 import axios from 'axios';
 import {
@@ -17,9 +16,6 @@ import { useOrderActions } from '../../hooks/useActions';
 import { useTypedSelector } from './../../hooks/useTypedSelector';
 import Navbar from '../../components/Navbar/Navbar';
 
-/**
- * @return {Object}
- */
 const OrderDriverAccepted = ({ match }: any) => {
   const [order, setOrder]: any = useState<any[]>([]);
   const { car_types } = useTypedSelector((state) => state.cityInfo);
@@ -92,15 +88,9 @@ const OrderDriverAccepted = ({ match }: any) => {
             )}
 
             <div className="btn-space">
-              {/* <Link to={'#'}>
-                <Button variant="success">Start</Button>
-              </Link> */}
               <Button variant="primary" onClick={finishOrderAction}>
                 Finish
               </Button>
-              {/* <Link to={'#'}>
-                <Button variant="danger">Cancel</Button>
-              </Link> */}
             </div>
           </Container>
         </div>

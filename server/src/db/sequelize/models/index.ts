@@ -65,9 +65,6 @@ db.user.belongsToMany(db.role, {
   otherKey: 'roleId',
 });
 
-// db.order.belongsTo(db.user);
-// db.user.hasMany(db.order);
-
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 

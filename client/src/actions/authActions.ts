@@ -20,11 +20,6 @@ export const login = (payload: any): IAuthAction => ({
   payload,
 });
 
-const setAuthUserData = (payload: any): IAuthAction => ({
-  type: AuthActionTypes.SET_USER_DATA,
-  payload,
-});
-
 export const check = (): IAuthAction => ({
   type: AuthActionTypes.CHECK_USER_DATA,
 });

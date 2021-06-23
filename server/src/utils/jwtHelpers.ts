@@ -1,6 +1,5 @@
 import * as jwt from 'jsonwebtoken';
 import sequelize from '../db/sequelize/models/index';
-import ApiError from '../errors/ApiErrors';
 
 const Token = sequelize.models.tokens;
 

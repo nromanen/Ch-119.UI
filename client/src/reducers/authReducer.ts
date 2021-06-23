@@ -69,22 +69,7 @@ export const authReducer = (state = initialState, action: any): IUser => {
         hasError: action.payload.hasError,
       };
     case AuthActionTypes.LOGOUT_USER:
-      return {
-        ...state,
-        name: '',
-        phone: '',
-        password: '',
-        role: [],
-        isAuth: false,
-        id: 0,
-        driver_info: {
-          car_color: '',
-          car_model: '',
-          car_number: '',
-          driver_id: null,
-        },
-        isDriver: false,
-      };
+      return initialState;
     case AuthActionTypes.REGISTRATE_DRIVER:
       return {
         ...state,

@@ -20,7 +20,6 @@ export default class OrderController {
   getByStatus = async (req: Request, res: Response): Promise<any> => {
     let { limit, page } = req.query;
     const { where } = req.query;
-    // res.json(where);
 
     page = page || '1';
     limit = limit || '5';

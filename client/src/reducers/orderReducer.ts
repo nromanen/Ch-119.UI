@@ -1,4 +1,3 @@
-import { Order } from '../pages/Order/Order';
 import { OrderAction, OrderActionTypes } from '../types/orderTypes';
 import { OrderStateI } from './../types/orderTypes';
 
@@ -17,7 +16,6 @@ export const initialState: OrderStateI = {
   loading: false,
   error: false,
   id: undefined,
-  // customerId: undefined,
   showModalForUser: false,
   showModalForDriver: false,
 };

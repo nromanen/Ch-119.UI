@@ -1,4 +1,3 @@
-import { RouteProps } from 'react-router-dom';
 import {
   LOGIN_ROUTE,
   REGISTRATION_ROUTE,

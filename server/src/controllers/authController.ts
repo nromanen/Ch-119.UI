@@ -184,7 +184,6 @@ export default class AuthController {
             driverInfo = null
           } else {
           driverInfo = driver.dataValues;
-          console.log(driverInfo)
           }
         })
         const authorities: Array<string> = [];

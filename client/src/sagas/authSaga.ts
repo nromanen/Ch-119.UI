@@ -75,8 +75,6 @@ function* loginUserWorker(): Generator<StrictEffect, void, any> {
 }
 
 function* checkAuthUser(): Generator<StrictEffect, void, any> {
-  const userInfoState = yield select(getUserFromState);
-
   const data = yield call(checkAuth());
   if (data) {
     yield put({ type: AuthActionTypes.SET_USER_DATA });
@@ -86,9 +84,7 @@ function* checkAuthUser(): Generator<StrictEffect, void, any> {
 }
 
 function* logoutUserWorker(): Generator<StrictEffect, void, any> {
-  const userInfoState = yield select(getUserFromState);
-
-  const data = yield call(logout());
+  yield call(logout());
   yield put(resetOrderState());
   yield put(push(LOGIN_ROUTE));
 }

@@ -6,7 +6,7 @@ import AlertContainer from '../Alert/AlertContainer';
 import { REQUIRED, MATCH_PASSWORDS } from '../../constants/validatorsConstants';
 import { NavLink } from 'react-router-dom';
 
-export const Registration = (props: any) => {
+export const Registration: FC = (props: any) => {
   const [isDriver, setIsDriver] = useState(false);
 
   const onChangeHandler = (e: any) => {
