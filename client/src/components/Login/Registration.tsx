@@ -4,6 +4,7 @@ import { Form, Field } from 'react-final-form';
 import { required } from '../../utils/formValidators';
 import AlertContainer from '../Alert/AlertContainer';
 import { REQUIRED, MATCH_PASSWORDS } from '../../constants/validatorsConstants';
+import { NavLink } from 'react-router-dom';
 
 export const Registration = (props: any) => {
   const [isDriver, setIsDriver] = useState(false);
@@ -222,8 +223,13 @@ export const Registration = (props: any) => {
               </React.Fragment>): null}
               <div className="col-xs-4 mt-3">
                 <Button type="submit" disabled={submitting}>
-                  Register
+                  Sign up
                 </Button>
+                <div className="btn btn-primary login-btn">
+                <NavLink to="/">
+                  Sign in
+                </NavLink>
+                </div>
               </div>
             </form>
           )}

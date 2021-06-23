@@ -9,6 +9,7 @@ import {
 } from '../http/userApi';
 import { push } from 'react-router-redux';
 import { ORDER_ROUTE, LOGIN_ROUTE, ORDER_ACTIVE_ROUTE } from '../constants/routerConstants';
+import { resetOrderState } from '../actions/orderActions';
 
 export const getUserFromState = (state: any) => state.auth;
 
@@ -88,6 +89,7 @@ function* logoutUserWorker(): Generator<StrictEffect, void, any> {
   const userInfoState = yield select(getUserFromState);
 
   const data = yield call(logout());
+  yield put(resetOrderState());
   yield put(push(LOGIN_ROUTE));
 }
 

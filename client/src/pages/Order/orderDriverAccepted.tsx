@@ -13,9 +13,9 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { Container, Row } from 'reactstrap';
 import { ColInfo } from '../../components/colInfo';
+import { useOrderActions } from '../../hooks/useActions';
 import { useTypedSelector } from './../../hooks/useTypedSelector';
 import Navbar from '../../components/Navbar/Navbar';
-import { useOrderActions } from '../../hooks/useActions';
 
 /**
  * @return {Object}
@@ -35,13 +35,14 @@ const OrderDriverAccepted = ({ match }: any) => {
     setOrder(data.data.data);
   };
 
+  const { finishOrderAction } = useOrderActions();
   const carType = car_types.find((type) => type.id === order.carTypeId);
   const { extra_services } = useTypedSelector((state) => state.cityInfo);
-  const extraServices = order?.extra_services?.map((id: number) => {
-    const extServItem = extra_services.find((extServ) => extServ.id === id);
-    return extServItem?.name;
-  }) || [];
-  const { finishOrderAction } = useOrderActions();
+  const extraServices =
+    order?.extra_services?.map((id: number) => {
+      const extServItem = extra_services.find((extServ) => extServ.id === id);
+      return extServItem?.name;
+    }) || [];
 
   return (
     <div className="jumbotron">
@@ -49,23 +50,41 @@ const OrderDriverAccepted = ({ match }: any) => {
         <div className="overflow">
           <div className="walk-img animation">
             <p>passenger is waiting</p>
-            </div>
+          </div>
+        </div>
         <div className="box">
           <Container>
             <Row>
               <ColInfo xs="col-6" icon={faMapMarkerAlt} order={order.from} />
-              <ColInfo icon={faPhone} order={<a href={'tel:' + order.user?.phone}>{order.user?.phone}</a>} />
+              <ColInfo
+                icon={faPhone}
+                order={
+                  <a href={'tel:' + order.user?.phone}>{order.user?.phone}</a>
+                }
+              />
             </Row>
 
             <Row>
-              <ColInfo xs="col-6" icon={faArrowAltCircleRight} order={order.to} />
-              <ColInfo icon={faInfoCircle} order={extraServices.join(', ').toLowerCase()} />
+              <ColInfo
+                xs="col-6"
+                icon={faArrowAltCircleRight}
+                order={order.to}
+              />
+              <ColInfo
+                icon={faInfoCircle}
+                order={extraServices.join(', ').toLowerCase()}
+              />
             </Row>
 
             <Row>
-              <ColInfo xs="col-6" icon={faHryvnia} order={<strong>{order.price}</strong>} />
+              <ColInfo
+                xs="col-6"
+                icon={faHryvnia}
+                order={<strong>{order.price}</strong>}
+              />
               <ColInfo icon={faStar} order={<span>{order.user?.name}</span>} />
-              </Row>
+            </Row>
+
             {carType && (
               <Row>
                 <ColInfo xs="col-6" icon={faTaxi} order={carType.name} />
@@ -88,7 +107,6 @@ const OrderDriverAccepted = ({ match }: any) => {
         <Navbar />
         </div>
       </div>
-    </div>
   );
 };
 

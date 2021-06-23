@@ -1,3 +1,4 @@
+import { Order } from '../pages/Order/Order';
 import { OrderAction, OrderActionTypes } from '../types/orderTypes';
 import { OrderStateI } from './../types/orderTypes';
 
@@ -44,6 +45,8 @@ export const orderReducer = (
       return { ...state, showModalForUser: !state.showModalForUser };
     case OrderActionTypes.TOGGLE_MODAL_FOR_DRIVER:
       return { ...state, showModalForDriver: !state.showModalForDriver };
+    case OrderActionTypes.RESET_ORDER_STATE:
+      return initialState;
     default:
       return state;
   }

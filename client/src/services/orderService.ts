@@ -66,9 +66,7 @@ export const updateOrder = (order: OrderStateI, userId: number) => async () => {
   const orderDTO = new OrderDTO(order, userId);
   const url = `${process.env.REACT_APP_SERVER_URL}order`;
   try {
-    const response = axios.put(url, {
-      body: orderDTO,
-    });
+    const response = axios.put(url, orderDTO);
     response.catch((error) => {
       // throw new Error('Something gone wrong');
     });

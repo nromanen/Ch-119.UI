@@ -1,2 +1,2 @@
 export const REQUIRED = 'Required';
-export const MATCH_PASSWORDS = 'Passwords must match';
+export const MATCH_PASSWORDS = 'Pass must match';

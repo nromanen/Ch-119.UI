@@ -62,6 +62,9 @@ export interface ToggleModalForUserAction {
 export interface ToggleModalForDriverAction {
   type: OrderActionTypes.TOGGLE_MODAL_FOR_DRIVER;
 }
+export interface ResetOrderState {
+  type: OrderActionTypes.RESET_ORDER_STATE
+}
 
 export enum OrderActionTypes {
   CHANGE_VALUE = 'CHANGE_ORDER_VALUE',
@@ -73,6 +76,7 @@ export enum OrderActionTypes {
   FINISH_ORDER_ERROR = 'FINISH_ORDER_ERROR',
   TOGGLE_MODAL_FOR_USER = 'TOGGLE_MODAL_FOR_USER',
   TOGGLE_MODAL_FOR_DRIVER = 'TOGGLE_MODAL_FOR_DRIVER',
+  RESET_ORDER_STATE = 'RESET_ORDER_STATE'
 }
 export type OrderAction =
   | ChangeValueAction
@@ -83,4 +87,5 @@ export type OrderAction =
   | FinishOrderSuccessAction
   | FinishOrderErrorAction
   | ToggleModalForUserAction
-  | ToggleModalForDriverAction;
+  | ToggleModalForDriverAction
+  | ResetOrderState;

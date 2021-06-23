@@ -44,3 +44,9 @@ export const toggleModalForDriver = () => {
     type: OrderActionTypes.TOGGLE_MODAL_FOR_DRIVER,
   };
 };
+
+export const resetOrderState = () => {
+  return {
+    type: OrderActionTypes.RESET_ORDER_STATE,
+  };
+};

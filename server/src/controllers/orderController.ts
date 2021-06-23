@@ -2,8 +2,6 @@ import { Request, Response } from 'express';
 import sequelize from '../db/sequelize/models/index';
 import { ORDER, DRIVER, USER } from '../constants/modelsNames';
 import { STATUS_BAD_REQUEST, STATUS_OK } from '../constants/api';
-import User from '../db/sequelize/models/user';
-import driver from '../db/sequelize/models/driver';
 
 export default class OrderController {
   create = async (req: Request, res: Response): Promise<any> => {
@@ -33,11 +31,11 @@ export default class OrderController {
     try {
       const data = await sequelize.models[ORDER].findAndCountAll({
         where: {
-          status: req.query.status
+          status: req.query.status,
         },
         offset,
         limit: newLimit,
-        include: sequelize.models[USER]
+        include: sequelize.models[USER],
       });
       res.status(STATUS_OK).send({ data, status: STATUS_OK });
     } catch (error) {
@@ -53,15 +51,13 @@ export default class OrderController {
     const { id } = req.params;
 
     try {
-      const data = await sequelize.models[ORDER].findOne(
-        {
-          where: {
-            id,
-          },
-            include: sequelize.models[USER],
-          },
-      );
-      
+      const data = await sequelize.models[ORDER].findOne({
+        where: {
+          id,
+        },
+        include: sequelize.models[USER],
+      });
+
       res.status(STATUS_OK).send({ data, status: STATUS_OK });
     } catch (error) {
       console.log(error);
@@ -72,23 +68,23 @@ export default class OrderController {
   };
 
   getDriverIdByUserId = async (id: any) => {
-      const res = await sequelize.models[DRIVER].findOne(
-        {
-          where: {
-            user_id: id,
-          },
-        })
+    const res = await sequelize.models[DRIVER].findOne(
+      {
+        where: {
+          user_id: id,
+        },
+      })
 
-        return res
+      return res
+      
+      
+      // then((driver: any) => {
+      //   console.log("IS DRIVER _-------------------", driver);
         
-        
-        // then((driver: any) => {
-        //   console.log("IS DRIVER _-------------------", driver);
-          
-        //   return driver.dataValues.id;
-        // })
-        
-  }
+      //   return driver.dataValues.id;
+      // })
+      
+}
 
   update = async (req: Request, res: Response): Promise<any> => {
     const { id, status, driver_id } = req.body;
@@ -97,7 +93,6 @@ export default class OrderController {
 
     const driverId = driver.getDataValue('id')
     try {
-      const { id, status } = req.body.body;
       const data = await sequelize.models[ORDER].update(
         {
           status,
@@ -112,7 +107,11 @@ export default class OrderController {
 
       res.status(STATUS_OK).send({ data, status: STATUS_OK });
     } catch (error) {
-      res.status(STATUS_BAD_REQUEST).send({ message: error.message });
+      console.log(error);
+
+      res
+        .status(STATUS_BAD_REQUEST)
+        .send({ message: error.errors[0].message, status: STATUS_BAD_REQUEST });
     }
   };
 }

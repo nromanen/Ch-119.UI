@@ -69,11 +69,11 @@ export const Login: FC = (props: any) =>
             </div>
               <div className='form-group'>
               <div className='col-xs-4 mb-3'>
-                  <NavLink className="link-primary" to={REGISTRATION_ROUTE}>Don't have an account?</NavLink>
+                  <NavLink className="link-primary" to={REGISTRATION_ROUTE}>Don't have an account? Sign up!</NavLink>
             </div>
                 <div className='col-xs-4'>
                   <Button type='submit' disabled={submitting}>
-                    Login
+                    Sign in
                   </Button>
                 </div>
                 </div>
