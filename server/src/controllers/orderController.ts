@@ -85,15 +85,10 @@ export default class OrderController {
 
   update = async (req: Request, res: Response): Promise<any> => {
     try {
-      const { id, status, driver_id } = req.body;
-
-      const driver = await this.getDriverIdByUserId(driver_id);
-
-      const driverId = driver.getDataValue('id');
+      const { id, status } = req.body.body;
       const data = await sequelize.models[ORDER].update(
         {
           status,
-          driver_id: driverId,
         },
         {
           where: {
