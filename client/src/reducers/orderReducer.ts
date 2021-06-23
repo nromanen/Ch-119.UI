@@ -2,8 +2,8 @@ import { OrderAction, OrderActionTypes } from '../types/orderTypes';
 import { OrderStateI } from './../types/orderTypes';
 
 export const initialState: OrderStateI = {
-  from: 'Головна 265',
-  to: 'Ватутіна 1, Чернівці',
+  from: '',
+  to: '',
   carType: { name: 'basic', id: 1 },
   extraServices: [],
   paymentType: 'cash',

@@ -7,7 +7,6 @@ const router = new Router();
 const controller = new OrderController();
 
 router.post('/', controller.create);
-router.put('/', controller.update);
 router.get('/', controller.getByStatus);
 router.get('/:id', controller.getById);
 router.put('/:id', controller.update);

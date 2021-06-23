@@ -50,9 +50,6 @@ const OrderDriverAccepted = ({ match }: any) => {
           <div className="walk-img animation">
             <p>passenger is waiting</p>
             </div>
-        <div className="walk-img animation">
-          <p>passenger is waiting</p>
-        </div>
         <div className="box">
           <Container>
             <Row>
@@ -68,33 +65,7 @@ const OrderDriverAccepted = ({ match }: any) => {
             <Row>
               <ColInfo xs="col-6" icon={faHryvnia} order={<strong>{order.price}</strong>} />
               <ColInfo icon={faStar} order={<span>{order.user?.name}</span>} />
-              <ColInfo
-                icon={faPhone}
-                order={<a href="tel:+38 099 123 45 67">099 123 45 67</a>}
-              />
-            </Row>
-
-            <Row>
-              <ColInfo
-                xs="col-6"
-                icon={faArrowAltCircleRight}
-                order={order.to}
-              />
-              <ColInfo icon={faInfoCircle} order={order.extra_services} />
-            </Row>
-
-            <Row>
-              <ColInfo
-                xs="col-6"
-                icon={faHryvnia}
-                order={<strong>{order.price}</strong>}
-              />
-              <ColInfo
-                icon={faStar}
-                order={<span>{order.info} 4.5 Oleg</span>}
-              />
-            </Row>
-
+              </Row>
             {carType && (
               <Row>
                 <ColInfo xs="col-6" icon={faTaxi} order={carType.name} />
