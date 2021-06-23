@@ -20,7 +20,6 @@ export class OrderDTO {
     this.price = order.price;
     this.status = order.status;
     this.to = order.to;
-    this.id = order.id;
   }
 }
 
@@ -64,6 +63,7 @@ export const makeOrder = (order: OrderStateI, userId: number) => async () => {
 
 export const updateOrder = (order: OrderStateI, userId: number) => async () => {
   const orderDTO = new OrderDTO(order, userId);
+  orderDTO.id = order.id;
   const url = `${process.env.REACT_APP_SERVER_URL}order`;
   try {
     const response = axios.put(url, {
