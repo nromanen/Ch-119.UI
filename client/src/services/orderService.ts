@@ -69,9 +69,6 @@ export const updateOrder = (order: OrderStateI, userId: number) => async () => {
     const response = axios.put(url, {
       body: orderDTO,
     });
-    response.catch((error) => {
-      // throw new Error('Something gone wrong');
-    });
     return response;
   } catch (error) {
     throw new Error('Something gone wrong');
