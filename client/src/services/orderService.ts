@@ -20,7 +20,7 @@ export class OrderDTO {
     this.price = order.price;
     this.status = order.status;
     this.to = order.to;
-    this.id = order.id;
+    // this.id = order.id;
   }
 }
 

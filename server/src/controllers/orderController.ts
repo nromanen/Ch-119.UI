@@ -73,17 +73,8 @@ export default class OrderController {
         where: {
           user_id: id,
         },
-      })
-
-      return res
-      
-      
-      // then((driver: any) => {
-      //   console.log("IS DRIVER _-------------------", driver);
-        
-      //   return driver.dataValues.id;
-      // })
-      
+      });
+      return res;   
 }
 
   update = async (req: Request, res: Response): Promise<any> => {
