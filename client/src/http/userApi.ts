@@ -23,6 +23,7 @@ export const registration =
 
   export const registrationDriver =
   (name: string, phone: string, password: string, car_color: string, car_model: string, car_number: string ) => async () => {
+    try {
     const { data } = await $host.post('user/registration', {
       name,
       phone,
@@ -39,7 +40,12 @@ export const registration =
       return new Promise((resolve, reject) =>
         resolve(jwtDecode(data.accessToken, data.refreshToken)),
       );
-    } else return data.response.message;
+    } else {
+      return data.response.message;
+    }
+  } catch (e: any) {
+      return e.response?.data?.message;
+    }
   };
 
 export const login = (phone: string, password: string) => async () => {

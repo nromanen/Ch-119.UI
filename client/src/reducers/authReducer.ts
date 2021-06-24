@@ -24,6 +24,7 @@ export const authReducer = (state = initialState, action: any): IUser => {
       return {
         ...state,
         name: action.payload.name,
+        password: '',
         role: action.payload.roles,
         isAuth: true,
         hasError: false,
@@ -33,6 +34,7 @@ export const authReducer = (state = initialState, action: any): IUser => {
       return {
         ...state,
         name: action.payload.name,
+        password: '',
         role: [action.payload.roles[0], action.payload.roles[1]],
         isAuth: true,
         isDriver: true,
@@ -42,7 +44,7 @@ export const authReducer = (state = initialState, action: any): IUser => {
           car_color: action.payload.driver_info.car_color,
           car_model: action.payload.driver_info.car_model,
           car_number: action.payload.driver_info.car_number,
-          driver_id: action.payload.driver_info.driver_id,
+          driver_id: action.payload.driver_info.id,
         },
       };
     case AuthActionTypes.LOGIN_USER:

@@ -1,9 +1,9 @@
 import React, { FC, useState } from 'react';
 import { Button } from 'react-bootstrap';
 import { Form, Field } from 'react-final-form';
-import { required } from '../../utils/formValidators';
+import { phoneMask, maxValue, carMask, passwordMask } from '../../utils/validators';
 import AlertContainer from '../Alert/AlertContainer';
-import { REQUIRED, MATCH_PASSWORDS } from '../../constants/validatorsConstants';
+import { REQUIERED_ERROR_MESSAGE, MATCH_PASSWORDS } from '../../constants/errorConstants';
 import { NavLink } from 'react-router-dom';
 
 export const Registration: FC = (props: any) => {
@@ -23,19 +23,20 @@ export const Registration: FC = (props: any) => {
           onSubmit={(formObj) => {
             if (!isDriver) {
             props.registrateUser(formObj);
-            }
+            } else {
             props.registrateDriver(formObj);
+            }
           }}
           validate={(values) => {
             const errors: any = {};
             if (!values.password) {
-              errors.password = REQUIRED;
+              errors.password = REQUIERED_ERROR_MESSAGE;
             }
             if (!values.confirm) {
-              errors.confirm = REQUIRED;
+              errors.confirm = REQUIERED_ERROR_MESSAGE;
             } else if (values.confirm !== values.password) {
               errors.confirm = MATCH_PASSWORDS;
-            }
+            } // } else if (values.phone !== )
             return errors;
           }}
           subscription={{
@@ -48,6 +49,8 @@ export const Registration: FC = (props: any) => {
                 <Field
                   name="name"
                   placeholder="Your name"
+                  validate={maxValue(20)}
+                  required
                   subscription={{
                     value: true,
                     active: true,
@@ -60,9 +63,13 @@ export const Registration: FC = (props: any) => {
                       <label className="col-xs-2">Name:</label>
                       <div className="col-xs-4">
                         <input {...input} placeholder={placeholder} />
-                        {meta.error && meta.touched && (
-                          <span>{meta.error}</span>
-                        )}
+                          <div className="validate_warning">
+                            {meta.error && meta.touched && (
+                              <div className="alert alert-warning">
+                                {meta.touched && <span>{meta.error}</span>}
+                              </div>
+                            )}
+                          </div>
                       </div>
                     </div>
                   )}
@@ -72,7 +79,8 @@ export const Registration: FC = (props: any) => {
                 <Field
                   name="phone"
                   placeholder="+380501233314"
-                  validate={required}
+                  validate={phoneMask}
+                  required
                   subscription={{
                     value: true,
                     active: true,
@@ -85,9 +93,13 @@ export const Registration: FC = (props: any) => {
                       <label className="col-xs-2">Phone number:</label>
                       <div className="col-xs-4">
                         <input {...input} placeholder={placeholder} />
-                        {meta.error && meta.touched && (
-                          <span>{meta.error}</span>
-                        )}
+                          <div className="validate_warning">
+                            {meta.error && meta.touched && (
+                              <div className="alert alert-warning">
+                                {meta.touched && <span>{meta.error}</span>}
+                              </div>
+                            )}
+                          </div>
                       </div>
                     </div>
                   )}
@@ -97,7 +109,8 @@ export const Registration: FC = (props: any) => {
                 <Field
                   name="password"
                   type="password"
-                  validate={required}
+                  validate={passwordMask}
+                  required
                   subscription={{
                     value: true,
                     active: true,
@@ -110,9 +123,13 @@ export const Registration: FC = (props: any) => {
                       <label className="col-xs-2">Password:</label>
                       <div className="col-xs-4">
                         <input {...input} />
-                        {meta.error && meta.touched && (
-                          <span>{meta.error}</span>
-                        )}
+                        <div className="validate_warning">
+                            {meta.error && meta.touched && (
+                              <div className="alert alert-warning">
+                                {meta.touched && <span>{meta.error}</span>}
+                              </div>
+                            )}
+                          </div>
                       </div>
                     </div>
                   )}
@@ -122,7 +139,8 @@ export const Registration: FC = (props: any) => {
                 <Field
                   name="confirm"
                   type="password"
-                  validate={required}
+                  validate={maxValue(50)}
+                  required
                   subscription={{
                     value: true,
                     active: true,
@@ -135,9 +153,13 @@ export const Registration: FC = (props: any) => {
                       <label className="col-xs-2">Repeat password:</label>
                       <div className="col-xs-4">
                         <input {...input} />
-                        {meta.error && meta.touched && (
-                          <span>{meta.error}</span>
-                        )}
+                        <div className="validate_warning">
+                            {meta.error && meta.touched && (
+                              <div className="alert alert-warning">
+                                {meta.touched && <span>{meta.error}</span>}
+                              </div>
+                            )}
+                          </div>
                       </div>
                     </div>
                   )}
@@ -152,6 +174,8 @@ export const Registration: FC = (props: any) => {
               <Field
                   name="car_color"
                   type="text"
+                  validate={maxValue(15)}
+                  required
                   subscription={{
                     value: true,
                     active: true,
@@ -164,9 +188,13 @@ export const Registration: FC = (props: any) => {
                       <label className="col-xs-2">Car color:</label>
                       <div className="col-xs-4">
                         <input {...input} />
-                        {meta.error && meta.touched && (
-                          <span>{meta.error}</span>
-                        )}
+                        <div className="validate_warning">
+                            {meta.error && meta.touched && (
+                              <div className="alert alert-warning">
+                                {meta.touched && <span>{meta.error}</span>}
+                              </div>
+                            )}
+                          </div>
                       </div>
                     </div>
                   )}
@@ -176,6 +204,8 @@ export const Registration: FC = (props: any) => {
               <Field
                   name="car_model"
                   type="text"
+                  validate={maxValue(30)}
+                  required
                   subscription={{
                     value: true,
                     active: true,
@@ -188,9 +218,13 @@ export const Registration: FC = (props: any) => {
                       <label className="col-xs-2">Car model:</label>
                       <div className="col-xs-4">
                         <input {...input} />
-                        {meta.error && meta.touched && (
-                          <span>{meta.error}</span>
-                        )}
+                        <div className="validate_warning">
+                            {meta.error && meta.touched && (
+                              <div className="alert alert-warning">
+                                {meta.touched && <span>{meta.error}</span>}
+                              </div>
+                            )}
+                          </div>
                       </div>
                     </div>
                   )}
@@ -200,6 +234,8 @@ export const Registration: FC = (props: any) => {
               <Field
                   name="car_number"
                   type="text"
+                  validate={carMask}
+                  required
                   subscription={{
                     value: true,
                     active: true,
@@ -212,9 +248,13 @@ export const Registration: FC = (props: any) => {
                       <label className="col-xs-2">Car number:</label>
                       <div className="col-xs-4">
                         <input {...input} />
-                        {meta.error && meta.touched && (
-                          <span>{meta.error}</span>
-                        )}
+                        <div className="validate_warning">
+                            {meta.error && meta.touched && (
+                              <div className="alert alert-warning">
+                                {meta.touched && <span>{meta.error}</span>}
+                              </div>
+                            )}
+                          </div>
                       </div>
                     </div>
                   )}

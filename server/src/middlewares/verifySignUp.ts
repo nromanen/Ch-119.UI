@@ -12,8 +12,7 @@ const checkDuplicatePhone = (req: Request, res: Response, next: NextFunction) =>
     }
   }).then((user: any) => {
     if (user) {
-      res.status(400).send(ApiError.badRequest());
-      return;
+      return next(ApiError.conflict());
     }
       next();
     });

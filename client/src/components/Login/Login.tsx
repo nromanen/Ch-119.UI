@@ -3,8 +3,9 @@ import { Button } from 'react-bootstrap';
 import { NavLink } from 'react-router-dom';
 import { Form, Field } from 'react-final-form';
 import { REGISTRATION_ROUTE } from '../../constants/routerConstants';
-import { required } from '../../utils/formValidators';
+import { required } from '../../utils/validators';
 import AlertContainer from '../Alert/AlertContainer';
+import './Login.scss';
 
 export const Login: FC = (props: any) =>
   <div className='jumbotron'>
@@ -25,7 +26,7 @@ export const Login: FC = (props: any) =>
               <Field
                 name='phone'
                 placeholder='+380501233314'
-                validate={required}
+                required
                 subscription={{
                   value: true,
                   active: true,
@@ -38,7 +39,13 @@ export const Login: FC = (props: any) =>
                     <label className='col-xs-2'>Phone number:</label>
                     <div className='col-xs-4'>
                       <input {...input} placeholder={placeholder} />
-                      {meta.error && meta.touched && <span>{meta.error}</span>}
+                      <div className="validate_warning">
+                            {meta.error && meta.touched && (
+                              <div className="alert alert-warning">
+                                {meta.touched && <span>{meta.error}</span>}
+                              </div>
+                            )}
+                          </div>
                     </div>
                   </div>
                 )}
@@ -48,7 +55,7 @@ export const Login: FC = (props: any) =>
               <Field
                 name='password'
                 type='password'
-                validate={required}
+                required
                 subscription={{
                   value: true,
                   active: true,
@@ -61,7 +68,13 @@ export const Login: FC = (props: any) =>
                     <label className='col-xs-2'>Password:</label>
                     <div className='col-xs-4'>
                       <input {...input} />
-                      {meta.error && meta.touched && <span>{meta.error}</span>}
+                      <div className="validate_warning">
+                            {meta.error && meta.touched && (
+                              <div className="alert alert-warning">
+                                {meta.touched && <span>{meta.error}</span>}
+                              </div>
+                            )}
+                          </div>
                     </div>
                   </div>
                 )}
