@@ -1,14 +1,6 @@
 import React, { FormEvent, FC } from 'react';
+import { InputI } from '../../utils/interfaces';
 
-interface InputI {
-  onChange: (e: FormEvent<HTMLInputElement>) => void;
-  value: string;
-  className: string;
-  type: string;
-  name: string;
-  id: string;
-  placeholder: string;
-}
 export const Input: FC<InputI> = ({
   onChange,
   value,
@@ -17,16 +9,14 @@ export const Input: FC<InputI> = ({
   name,
   id,
   placeholder,
-}) => {
-  return (
-    <input
-      onChange={onChange}
-      value={value}
-      className={className}
-      type={type}
-      name={name}
-      id={id}
-      placeholder={placeholder}
-    />
-  );
-};
+}) => (
+  <input
+    onChange={onChange}
+    value={value}
+    className={className}
+    type={type}
+    name={name}
+    id={id}
+    placeholder={placeholder}
+  />
+);

@@ -1,5 +1,9 @@
+$bodyColor: #e9ecef;
+$white: #fff;
+$yellow: #ffff00;
+
 body {
-  background-color: #e9ecef !important;
+  background-color: $bodyColor !important;
 }
 
 .jumbotron:last-child {
@@ -16,9 +20,9 @@ body {
 }
 
 .box {
-  background-color: #ffff;
-  margin: 20px 0 20px 0;
-  padding: 10px 0 10px 0;
+  background-color: $white;
+  margin: 20px 0;
+  padding: 10px 0;
   border-radius: .25rem;
   font-size: 14px;
 }
@@ -35,14 +39,14 @@ body {
   flex-direction: column;
   min-width: 0;
   word-wrap: break-word;
-  background-color: #fff;
+  background-color: $white;
   background-clip: border-box;
   border: none;
   border-radius: 0.25rem;
 }
 
 .extra-service {
-  background-color: #ffff00;
+  background-color: $yellow;
 }
 
 @keyframes example {
@@ -120,9 +124,4 @@ body {
 
 #driver {
   margin-left: 10px;
-}
-
-.col-xs-4 > span {
-  margin-left: 5px;
-  color: red;
 }

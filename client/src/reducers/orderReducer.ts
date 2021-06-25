@@ -1,5 +1,6 @@
 import { OrderAction, OrderActionTypes } from '../types/orderTypes';
 import { OrderStateI } from './../types/orderTypes';
+import { Statuses } from '../constants/statuses';
 
 export const initialState: OrderStateI = {
   from: '',
@@ -8,7 +9,7 @@ export const initialState: OrderStateI = {
   extraServices: [],
   paymentType: 'cash',
   price: 0,
-  status: 'active',
+  status: Statuses.ACTIVE,
   distance: {
     text: '',
     value: 0,
@@ -36,7 +37,7 @@ export const orderReducer = (
     case OrderActionTypes.FINISH_ORDER:
       return { ...state, loading: true, error: false };
     case OrderActionTypes.FINISH_ORDER_SUCCESS:
-      return { ...state, loading: false, error: false, status: 'finished' };
+      return { ...state, loading: false, error: false, status: Statuses.FINISHED };
     case OrderActionTypes.FINISH_ORDER_ERROR:
       return { ...state, loading: false, error: true };
     case OrderActionTypes.TOGGLE_MODAL_FOR_USER:

@@ -6,18 +6,22 @@ import { PHONE_NUMBER_EXIST } from '../constants/errors';
 
 const User = sequelize.models['users'];
 
-const checkDuplicatePhone = (req: Request, res: Response, next: NextFunction) => {
+const checkDuplicatePhone = (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   User.findOne({
     where: {
-      phone: req.body.phone
-    }
+      phone: req.body.phone,
+    },
   }).then((user: any) => {
     if (user) {
       return next(ApiError.conflict(PHONE_NUMBER_EXIST));
     }
-      next();
-    });
-  };
+    next();
+  });
+};
 
 const checkRolesExisted = (req: Request, res: Response, next: NextFunction) => {
   if (req.body.roles) {
@@ -32,8 +36,8 @@ const checkRolesExisted = (req: Request, res: Response, next: NextFunction) => {
 };
 
 const verifySignUp = {
-    checkDuplicatePhone: checkDuplicatePhone,
-  checkRolesExisted: checkRolesExisted
+  checkDuplicatePhone: checkDuplicatePhone,
+  checkRolesExisted: checkRolesExisted,
 };
 
 export default verifySignUp;

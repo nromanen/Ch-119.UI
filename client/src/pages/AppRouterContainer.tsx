@@ -8,13 +8,13 @@ const mapStateToProps = (state: any) => {
   };
 };
 
-const mapDispathToProps = (dispatch: any) => (
-    {setUser: (payload: any) => {
-        dispatch(setUserData(payload));
-    },
-    setDriver: (payload: any) => {
-        dispatch(setDriverData(payload));
-    }}
-);
+const mapDispathToProps = (dispatch: any) => ({
+  setUser: (payload: any) => {
+    dispatch(setUserData(payload));
+  },
+  setDriver: (payload: any) => {
+    dispatch(setDriverData(payload));
+  },
+});
 
 export default connect(mapStateToProps, mapDispathToProps)(AppRouter);

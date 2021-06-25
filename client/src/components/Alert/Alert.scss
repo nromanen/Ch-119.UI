@@ -1,6 +1,9 @@
+$generalAlert: #ff7474;
+$black: #000;
+
 .toast, .toast-header {
-    background-color: rgb(255, 116, 116) !important;
-    color: #000 !important;
+    background-color: $generalAlert !important;
+    color: $black !important;
 }
 
 .modal {

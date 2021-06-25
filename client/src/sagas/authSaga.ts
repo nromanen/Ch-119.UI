@@ -8,7 +8,11 @@ import {
   registrationDriver,
 } from '../http/userApi';
 import { push } from 'react-router-redux';
-import { ORDER_ROUTE, LOGIN_ROUTE, ORDER_ACTIVE_ROUTE } from '../constants/routerConstants';
+import {
+  ORDER_ROUTE,
+  LOGIN_ROUTE,
+  ORDER_ACTIVE_ROUTE,
+} from '../constants/routerConstants';
 import { resetOrderState } from '../actions/orderActions';
 
 export const getUserFromState = (state: any) => state.auth;
@@ -28,7 +32,10 @@ function* registrateUserWorker(): Generator<StrictEffect, void, any> {
       yield put({ type: AuthActionTypes.SET_USER_DATA, payload: data });
       yield put(push(ORDER_ROUTE));
     } else {
-      yield put({ type: AuthActionTypes.HANDLE_ERROR, payload: {data: data, hasError: true} });
+      yield put({
+        type: AuthActionTypes.HANDLE_ERROR,
+        payload: { data: data, hasError: true },
+      });
     }
   }
 }
@@ -51,7 +58,10 @@ function* registrateDriverWorker(): Generator<StrictEffect, void, any> {
       yield put({ type: AuthActionTypes.SET_DRIVER_DATA, payload: data });
       yield put(push(ORDER_ACTIVE_ROUTE));
     } else {
-      yield put({ type: AuthActionTypes.HANDLE_ERROR, payload: {data: data, hasError: true} });
+      yield put({
+        type: AuthActionTypes.HANDLE_ERROR,
+        payload: { data: data, hasError: true },
+      });
     }
   }
 }
@@ -71,12 +81,15 @@ function* loginUserWorker(): Generator<StrictEffect, void, any> {
 
   if (data.id) {
     if (!data.driver_info) {
-    yield put({ type: AuthActionTypes.SET_USER_DATA, payload: data });
+      yield put({ type: AuthActionTypes.SET_USER_DATA, payload: data });
     } else {
       yield put({ type: AuthActionTypes.SET_DRIVER_DATA, payload: data });
     }
   } else {
-    yield put({ type: AuthActionTypes.HANDLE_ERROR, payload: {data: data, hasError: true} });
+    yield put({
+      type: AuthActionTypes.HANDLE_ERROR,
+      payload: { data: data, hasError: true },
+    });
   }
 }
 

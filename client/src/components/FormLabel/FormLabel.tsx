@@ -1,13 +1,7 @@
 import React, { FC } from 'react';
 import { Form } from 'react-bootstrap';
-
+import { FormLabelI } from '../../utils/interfaces';
 import './FormLabel.scss';
-
-interface FormLabelI {
-  title?: string | false;
-  htmlFor?: string;
-  classNames?: string[];
-}
 
 export const FormLabel: FC<FormLabelI> = ({
   classNames = [],

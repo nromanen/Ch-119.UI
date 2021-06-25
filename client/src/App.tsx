@@ -10,8 +10,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.scss';
 import Feedback from './pages/feedback/Feedback';
 
-function App() {
-  return (
+const App = () =>
     <BrowserRouter>
       <Provider store={store}>
         <ConnectedRouter history={history}>
@@ -19,8 +18,7 @@ function App() {
           <Feedback></Feedback>
         </ConnectedRouter>
       </Provider>
-    </BrowserRouter>
-  );
-}
+    </BrowserRouter>;
+
 
 export default App;

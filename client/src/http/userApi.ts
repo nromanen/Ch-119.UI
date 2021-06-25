@@ -3,9 +3,12 @@ import jwtDecode from 'jwt-decode';
 import axios from 'axios';
 import { USER_ROLE, DRIVER_ROLE } from '../constants/registrationConstants';
 
-export const registration =
-  (name: string, phone: string, password: string) => async () => {
-    try {
+export const registration = (
+  name: string,
+  phone: string,
+  password: string,
+) => async () => {
+  try {
     const { data } = await $host.post('user/registration', {
       name,
       phone,
@@ -22,12 +25,18 @@ export const registration =
     } else return data.response.message;
   } catch (e: any) {
     return e.response?.data?.message;
-    }
-  };
+  }
+};
 
-  export const registrationDriver =
-  (name: string, phone: string, password: string, car_color: string, car_model: string, car_number: string ) => async () => {
-    try {
+export const registrationDriver = (
+  name: string,
+  phone: string,
+  password: string,
+  car_color: string,
+  car_model: string,
+  car_number: string,
+) => async () => {
+  try {
     const { data } = await $host.post('user/registration', {
       name,
       phone,
@@ -48,9 +57,9 @@ export const registration =
       return data.response.message;
     }
   } catch (e: any) {
-      return e.response?.data?.message;
-    }
-  };
+    return e.response?.data?.message;
+  }
+};
 
 export const login = (phone: string, password: string) => async () => {
   try {
@@ -82,12 +91,15 @@ export const logout = () => async () => {
 
 export const check = () => async () => {
   const { data } = await $authHost.get('user/auth');
-
-  localStorage.setItem('token', data.accessToken);
-  localStorage.setItem('refreshToken', data.refreshToken);
-  return new Promise((resolve, reject) =>
-    resolve(jwtDecode(data.accessToken, data.refreshToken)),
-  );
+  try {
+    localStorage.setItem('token', data.accessToken);
+    localStorage.setItem('refreshToken', data.refreshToken);
+    return new Promise((resolve, reject) =>
+      resolve(jwtDecode(data.accessToken, data.refreshToken)),
+    );
+  } catch (e: any) {
+    return e.response?.data?.message;
+  }
 };
 
 export const checkAuth = () => async () => {
@@ -101,6 +113,6 @@ export const checkAuth = () => async () => {
       resolve(jwtDecode(data.accessToken)),
     );
   } catch (e: any) {
-    console.log(e.respose?.data?.message);
+    return e.response?.data?.message;
   }
 };

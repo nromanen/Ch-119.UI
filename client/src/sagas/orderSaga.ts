@@ -1,6 +1,5 @@
 import { call, put, select, StrictEffect, takeEvery } from 'redux-saga/effects';
 import { push } from 'react-router-redux';
-
 import { OrderActionTypes } from '../types/orderTypes';
 import { makeOrder, updateOrder } from '../services/orderService';
 import {
@@ -14,6 +13,7 @@ import {
   makeOrderErrorAction,
   makeOrderSuccessAction,
 } from './../actions/orderActions';
+import { Statuses } from '../constants/statuses';
 
 export const getUserID = (state: any) => state.auth.id;
 export const getOrder = (state: any) => state.order;
@@ -40,7 +40,7 @@ function* finishOrderWorker(): Generator<StrictEffect, void, any> {
   yield put(finishOrderSuccessAction());
   const userID = yield select(getUserID);
   const order = yield select(getOrder);
-  yield put(changeOrderValue('status', 'active'));
+  yield put(changeOrderValue('status', Statuses.ACTIVE));
 
   try {
     const data = yield call(updateOrder(order, userID));

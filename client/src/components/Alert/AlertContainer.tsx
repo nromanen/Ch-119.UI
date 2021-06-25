@@ -8,10 +8,10 @@ const mapStateToProps = (state: any) => {
   };
 };
 
-const mapDispathToProps = (dispatch: any) => (
-    {handleError: (payload: any) => {
-        dispatch(errorHandle(payload));
-    }}
-);
+const mapDispathToProps = (dispatch: any) => ({
+  handleError: (payload: any) => {
+    dispatch(errorHandle(payload));
+  },
+});
 
 export default connect(mapStateToProps, mapDispathToProps)(Alert);

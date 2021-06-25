@@ -8,10 +8,10 @@ import AlertContainer from '../Alert/AlertContainer';
 import './Login.scss';
 import { InputGeneral } from '../InputGeneral';
 
-export const Login: FC = (props: any) =>
-  <div className='jumbotron'>
-    <div className='container-fluid login'>
-    <AlertContainer />
+export const Login: FC = (props: any) => (
+  <div className="jumbotron">
+    <div className="container-fluid login">
+      <AlertContainer />
       <h2>Login</h2>
       <Form
         onSubmit={(formObj) => {
@@ -22,32 +22,34 @@ export const Login: FC = (props: any) =>
         }}
       >
         {({ handleSubmit, submitting }) => (
-          <form onSubmit={handleSubmit} className='form-horizontal'>
+          <form onSubmit={handleSubmit} className="form-horizontal">
             <InputGeneral
-            name='phone'
-            placeholder='+380501233314'
-            validate={required}
-            label='Phone number:'
+              name="phone"
+              placeholder="+380501233314"
+              validate={required}
+              label="Phone number:"
             />
             <InputGeneral
-            name='password'
-            type='password'
-            validate={required}
-            label='Password:'
+              name="password"
+              type="password"
+              validate={required}
+              label="Password:"
             />
-            <div className='form-group'>
-              <div className='col-xs-4 mb-3'>
-                  <NavLink className="link-primary" to={REGISTRATION_ROUTE}>Don't have an account? Sign up!</NavLink>
+            <div className="form-group">
+              <div className="col-xs-4 mb-3">
+                <NavLink className="link-primary" to={REGISTRATION_ROUTE}>
+                  Don't have an account? Sign up!
+                </NavLink>
               </div>
-              <div className='col-xs-4'>
-                  <Button type='submit' disabled={submitting}>
-                    Sign in
-                  </Button>
+              <div className="col-xs-4">
+                <Button type="submit" disabled={submitting}>
+                  Sign in
+                </Button>
               </div>
             </div>
           </form>
         )}
       </Form>
     </div>
-  </div>;
-
+  </div>
+);

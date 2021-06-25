@@ -1,6 +1,5 @@
 import { call, put, select, StrictEffect, takeEvery } from 'redux-saga/effects';
 import { AxiosResponse } from 'axios';
-
 import { InfoActionTypes, CityInfoI } from '../types/cityInfoTypes';
 import { setCityInfoCreator } from '../actions/cityInfoActions';
 import { fetchCityInfo } from '../services/mapService';

@@ -1,3 +1,7 @@
+$navbarColor: #007bff;
+$white: #fff;
+$yellow: #ffff00;
+
 .navigation {
     
     max-width: 600px;
@@ -5,7 +9,7 @@
     margin:auto;
     padding-top: 5px;
     padding-bottom: 5px;
-    background-color:  #007bff;
+    background-color:  $navbarColor;
     border-radius: .25rem;
 
     ul {
@@ -18,14 +22,14 @@
     }
 
     .nav-link a {
-        color:#fff;
+        color:$white;
         padding: 5px;
         text-decoration: none;
         cursor: pointer;
     }
 
     .nav-link a.active {
-        color:#ffff00dc ;
+        color:$yellow;
         font-weight: 700;
     }
 

@@ -95,4 +95,3 @@ export const authReducer = (state = initialState, action: any): IUser => {
       return state;
   }
 };
-

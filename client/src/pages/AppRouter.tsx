@@ -1,6 +1,4 @@
 import { FC, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import { authRouters, publicRouters } from '../routes';
 import { LOGIN_ROUTE } from '../constants/routerConstants';

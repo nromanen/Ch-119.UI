@@ -1,14 +1,7 @@
 import { FC } from 'react';
 import { Accordion, Card, Form } from 'react-bootstrap';
-import { ExtraServicesI } from '../../types/cityInfoTypes';
+import { ExtraServicesSelectI } from '../../types/cityInfoTypes';
 import { ExtraServiceItem } from './ExtraServiceItem';
-
-interface ExtraServicesSelectI {
-  title?: string;
-  avaliableInCityExtraServices: ExtraServicesI[] | undefined;
-  activeExtraServices: number[];
-  onExtraServicesChanged: () => any;
-}
 
 export const ExtraServicesSelect: FC<ExtraServicesSelectI> = ({
   title,

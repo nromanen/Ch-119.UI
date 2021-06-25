@@ -1,3 +1,5 @@
+$white: #fff;
+
 .profile {
     max-width: 600px;
     margin: auto;
@@ -10,7 +12,7 @@
         margin-top: 15px;
         padding-top: 10px;
         padding-bottom: 10px;
-        background-color:#fff;
+        background-color:$white;
         border-radius: .25rem;
     }
 }
