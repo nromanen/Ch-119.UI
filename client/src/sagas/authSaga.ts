@@ -60,6 +60,10 @@ function* setUserWorker(): Generator<StrictEffect, void, any> {
   yield put(push(ORDER_ROUTE));
 }
 
+function* setDriverWorker(): Generator<StrictEffect, void, any> {
+  yield put(push(ORDER_ACTIVE_ROUTE));
+}
+
 function* loginUserWorker(): Generator<StrictEffect, void, any> {
   const userInfoState = yield select(getUserFromState);
 
@@ -70,7 +74,6 @@ function* loginUserWorker(): Generator<StrictEffect, void, any> {
     yield put({ type: AuthActionTypes.SET_USER_DATA, payload: data });
     } else {
       yield put({ type: AuthActionTypes.SET_DRIVER_DATA, payload: data });
-      yield put(push(ORDER_ACTIVE_ROUTE));
     }
   } else {
     yield put({ type: AuthActionTypes.HANDLE_ERROR, payload: {data: data, hasError: true} });
@@ -93,6 +96,7 @@ function* logoutUserWorker(): Generator<StrictEffect, void, any> {
 }
 
 export function* userInfoWatcher() {
+  yield takeEvery(AuthActionTypes.SET_DRIVER_DATA, setDriverWorker);
   yield takeEvery(AuthActionTypes.SET_USER_DATA, setUserWorker);
   yield takeEvery(AuthActionTypes.REGISTRATE_USER, registrateUserWorker);
   yield takeEvery(AuthActionTypes.REGISTRATE_DRIVER, registrateDriverWorker);

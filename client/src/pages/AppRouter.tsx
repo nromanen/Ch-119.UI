@@ -5,7 +5,6 @@ import { Switch, Route, Redirect } from 'react-router-dom';
 import { authRouters, publicRouters } from '../routes';
 import { LOGIN_ROUTE } from '../constants/routerConstants';
 import { useTypedSelector } from '../hooks/useTypedSelector';
-import * as authActions from '../actions/authActions';
 import jwtDecode from 'jwt-decode';
 
 const AppRouter: FC = (props: any) => {
@@ -15,8 +14,12 @@ const AppRouter: FC = (props: any) => {
     if (!isAuth) {
       const token = localStorage.getItem('token');
       if (token) {
-        // check driverInfo in token and setDriverInfo
-        props.setUser(jwtDecode(token)); // add setDriver
+        const tokenInfo: any = jwtDecode(token);
+        if (!tokenInfo.driver_info) {
+          props.setUser(tokenInfo);
+        } else {
+          props.setDriver(tokenInfo);
+        }
       }
     }
   }, []);

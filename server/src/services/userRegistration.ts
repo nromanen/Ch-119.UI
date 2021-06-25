@@ -44,11 +44,13 @@ export const createUserInDb = (body: any) => {
           const accessToken = generateAccessToken(
             user.id,
             user.name,
+            user.phone,
             authorities,
           );
           const refreshToken = generateRefreshToken(
             user.id,
             user.name,
+            user.phone,
             authorities,
           );
           return { accessToken, refreshToken };

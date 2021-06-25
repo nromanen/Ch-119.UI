@@ -2,6 +2,7 @@ import { ROLES } from '../constants/modelsNames';
 import sequelize from '../db/sequelize/models/index';
 import { NextFunction, Request, Response } from 'express';
 import ApiError from '../errors/ApiErrors';
+import { PHONE_NUMBER_EXIST } from '../constants/errors';
 
 const User = sequelize.models['users'];
 
@@ -12,7 +13,7 @@ const checkDuplicatePhone = (req: Request, res: Response, next: NextFunction) =>
     }
   }).then((user: any) => {
     if (user) {
-      return next(ApiError.conflict('This phone number is already exist'));
+      return next(ApiError.conflict(PHONE_NUMBER_EXIST));
     }
       next();
     });

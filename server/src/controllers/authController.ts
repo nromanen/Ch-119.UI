@@ -18,6 +18,7 @@ import {
   DRIVER_ROLE,
 } from '../constants/modelsNames';
 import { MAX_AGE } from '../constants/api';
+import { CAR_NUMBER_EXIST } from '../constants/errors';
 
 const User = sequelize.models[USER];
 const Role = sequelize.models[ROLE];
@@ -37,7 +38,7 @@ export default class AuthController {
         where: { car_number },
       });
       if (driver) {
-        return next(ApiError.conflict('This car number is already exist'));
+        return next(ApiError.conflict(CAR_NUMBER_EXIST));
       }
       try {
       User.create({
@@ -78,12 +79,14 @@ export default class AuthController {
               const accessToken = generateAccessToken(
                 user.id,
                 user.name,
+                user.phone,
                 authorities,
                 driver_info,
               );
               const refreshToken = generateRefreshToken(
                 user.id,
                 user.name,
+                user.phone,
                 authorities,
                 driver_info,
               );
@@ -122,11 +125,13 @@ export default class AuthController {
               const accessToken = generateAccessToken(
                 user.id,
                 user.name,
+                user.phone,
                 authorities,
               );
               const refreshToken = generateRefreshToken(
                 user.id,
                 user.name,
+                user.phone,
                 authorities,
               );
               res.cookie('refreshToken', refreshToken, {
@@ -186,6 +191,7 @@ export default class AuthController {
           const refreshToken = generateRefreshToken(
             user.id,
             user.name,
+            user.phone,
             authorities,
             driverInfo
           );
@@ -199,7 +205,7 @@ export default class AuthController {
             phone: user.phone,
             roles: authorities,
             driverInfo,
-            accessToken: generateAccessToken(user.id, user.name, authorities, driverInfo),
+            accessToken: generateAccessToken(user.id, user.name, user.phone, authorities,  driverInfo),
             refreshToken,
           });
         });
@@ -227,11 +233,13 @@ export default class AuthController {
       accessToken: generateAccessToken(
         (userInfo as any).id,
         (userInfo as any).name,
+        (userInfo as any).phone,
         (userInfo as any).roles,
       ),
       refreshToken: generateRefreshToken(
         (userInfo as any).id,
         (userInfo as any).name,
+        (userInfo as any).phone,
         (userInfo as any).roles,
       ),
     });
@@ -245,11 +253,13 @@ export default class AuthController {
     const accessToken = generateAccessToken(
       (userInfo as any).id,
       (userInfo as any).name,
+      (userInfo as any).phone,
       (userInfo as any).roles,
     );
     const refreshToken = generateRefreshToken(
       (userInfo as any).id,
       (userInfo as any).name,
+      (userInfo as any).phone,
       (userInfo as any).roles,
     );
     res.cookie('refreshToken', refreshToken, {
