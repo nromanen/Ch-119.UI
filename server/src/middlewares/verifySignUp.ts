@@ -12,7 +12,7 @@ const checkDuplicatePhone = (req: Request, res: Response, next: NextFunction) =>
     }
   }).then((user: any) => {
     if (user) {
-      return next(ApiError.conflict());
+      return next(ApiError.conflict('This phone number is already exist'));
     }
       next();
     });

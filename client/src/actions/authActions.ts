@@ -10,6 +10,11 @@ export const registrateDriver = (payload: any): IAuthAction => ({
   payload,
 });
 
+export const setUserData = (payload: any): IAuthAction => ({
+  type: AuthActionTypes.SET_USER_DATA,
+  payload,
+});
+
 export const checkDriver = (payload: any) => ({
   type: AuthActionTypes.IS_DRIVER,
   payload,

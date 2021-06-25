@@ -37,7 +37,7 @@ export default class AuthController {
         where: { car_number },
       });
       if (driver) {
-        return next(ApiError.conflict());
+        return next(ApiError.conflict('This car number is already exist'));
       }
       try {
       User.create({

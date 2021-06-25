@@ -6,7 +6,7 @@ import { REGISTRATION_ROUTE } from '../../constants/routerConstants';
 import { required } from '../../utils/validators';
 import AlertContainer from '../Alert/AlertContainer';
 import './Login.scss';
-import { InputLog } from '../InputGeneral';
+import { InputGeneral } from '../InputGeneral';
 
 export const Login: FC = (props: any) =>
   <div className='jumbotron'>
@@ -23,13 +23,13 @@ export const Login: FC = (props: any) =>
       >
         {({ handleSubmit, submitting }) => (
           <form onSubmit={handleSubmit} className='form-horizontal'>
-            <InputLog
+            <InputGeneral
             name='phone'
             placeholder='+380501233314'
             validate={required}
             label='Phone number:'
             />
-            <InputLog
+            <InputGeneral
             name='password'
             type='password'
             validate={required}

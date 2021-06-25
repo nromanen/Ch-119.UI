@@ -5,14 +5,12 @@
     padding-bottom: 9px;
 }
 
-.login-btn {
+.login-link {
   margin-left: 1rem;
 }
 
-.login-btn > a {
-  color: #fff;
-  padding-left: 2px;
-  padding-right: 2px;
+.login-btn {
+  margin-left: 1rem;
 }
 
 .login-btn > a:hover {
@@ -25,7 +23,7 @@
 }
 
 .alert {
-    max-width: 182px!important;
+    max-width: 182px;
     padding-top: .5rem!important;
     padding-bottom: .5em!important;
 }

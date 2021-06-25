@@ -6,7 +6,7 @@ import AlertContainer from '../Alert/AlertContainer';
 import { REQUIERED_ERROR_MESSAGE, MATCH_PASSWORDS } from '../../constants/errorConstants';
 import { NavLink } from 'react-router-dom';
 import './Login.scss';
-import { InputLog } from '../InputGeneral';
+import { InputGeneral } from '../InputGeneral';
 
 export const Registration: FC = (props: any) => {
   const [isDriver, setIsDriver] = useState(false);
@@ -56,27 +56,27 @@ export const Registration: FC = (props: any) => {
         >
           {({ handleSubmit, submitting }) => (
             <form onSubmit={handleSubmit} className="form-horizontal">
-            <InputLog
+            <InputGeneral
             name='name'
             type='text'
             placeholder="Your name"
             validate={maxValue(20)}
             label='Your name:'
             />
-            <InputLog
+            <InputGeneral
             name='phone'
             type='text'
             placeholder="+380501233314"
             validate={phoneMask}
             label='Phone number:'
             />
-            <InputLog
+            <InputGeneral
             name='password'
             type='password'
             validate={passwordMask}
             label='Password:'
             />
-            <InputLog
+            <InputGeneral
             name='confirm'
             type='password'
             validate={maxValue(25)}
@@ -88,7 +88,7 @@ export const Registration: FC = (props: any) => {
               <input id="driver" type="checkbox" onChange={onChangeHandler} checked={isDriver}/>
             </div>
               {isDriver ? (<React.Fragment>
-                <InputLog
+                <InputGeneral
                 name='car_color'
                 type='text'
                 validate={maxValue(15)}
@@ -96,7 +96,7 @@ export const Registration: FC = (props: any) => {
                 required
                 label='Car color:'
                 />
-                <InputLog
+                <InputGeneral
                 name='car_model'
                 type='text'
                 placeholder="Ford"
@@ -104,7 +104,7 @@ export const Registration: FC = (props: any) => {
                 required
                 label='Car model:'
                 />
-                <InputLog
+                <InputGeneral
                 name='car_number'
                 type='text'
                 validate={carMask}
@@ -117,11 +117,9 @@ export const Registration: FC = (props: any) => {
                 <Button type="submit" disabled={submitting}>
                   Sign up
                 </Button>
-                <div className="btn btn-primary login-btn">
-                <NavLink to="/">
+                <NavLink className="login-link" to="/">
                   Sign in
                 </NavLink>
-                </div>
               </div>
             </form>
           )}

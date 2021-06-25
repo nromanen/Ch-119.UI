@@ -3,7 +3,7 @@ import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'connected-react-router';
 
 import store, { history } from './reduxStore';
-import AppRouter from './pages/AppRouter';
+import AppRouterContainer from './pages/AppRouterContainer';
 
 import './App.scss';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -15,7 +15,7 @@ function App() {
     <BrowserRouter>
       <Provider store={store}>
         <ConnectedRouter history={history}>
-          <AppRouter />
+          <AppRouterContainer />
           <Feedback></Feedback>
         </ConnectedRouter>
       </Provider>

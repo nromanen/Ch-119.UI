@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { Field } from 'react-final-form';
 
-interface InputLogI {
+interface InputGeneralI {
     className?: string;
     type?: string;
     name: string;
@@ -11,7 +11,7 @@ interface InputLogI {
     label: string;
   }
 
-export const InputLog: FC<InputLogI> = ({
+export const InputGeneral: FC<InputGeneralI> = ({
     type,
     name,
     placeholder,

@@ -37,7 +37,10 @@ export const phoneMask = (value: any) => {
 };
 
 export const carMask = (value: any) => {
+  // RegExp = array with 2 letters 4 digits and 2 letters (RegExp.test(value)) = true/false
   if (!value?.includes('CE')) {
     return WRONG_CAR_NUMBER;
   }
 };
+
+
