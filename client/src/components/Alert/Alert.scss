@@ -5,6 +5,9 @@
 
 .modal {
     height: inherit!important;
-    top: 19%!important;
-    left: 5%!important;
+    margin: auto!important;
+    position: absolute!important;
+    top: 20%!important;
+    left: 50%!important;
+    transform: translate(-50%, -50%)!important;
 }

@@ -1,3 +1,25 @@
+.login, .registration {
+    background-color: #fff;
+    border-radius: .25rem;
+    padding-top: 5px;
+    padding-bottom: 9px;
+}
+
+.login-btn {
+  margin-left: 1rem;
+}
+
+.login-btn > a {
+  color: #fff;
+  padding-left: 2px;
+  padding-right: 2px;
+}
+
+.login-btn > a:hover {
+  color: inherit!important;
+  text-decoration: none;
+}
+
 .validate_warning {
     margin-top: 8px;
 }

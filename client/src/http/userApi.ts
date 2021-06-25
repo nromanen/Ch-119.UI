@@ -5,6 +5,7 @@ import { USER_ROLE, DRIVER_ROLE } from '../constants/registrationConstants';
 
 export const registration =
   (name: string, phone: string, password: string) => async () => {
+    try {
     const { data } = await $host.post('user/registration', {
       name,
       phone,
@@ -19,6 +20,9 @@ export const registration =
         resolve(jwtDecode(data.accessToken, data.refreshToken)),
       );
     } else return data.response.message;
+  } catch (e: any) {
+    return e.response?.data?.message;
+    }
   };
 
   export const registrationDriver =
