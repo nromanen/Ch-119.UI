@@ -1,25 +1,24 @@
-import store from './reduxStore';
-import React from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import AppRouter from './pages/AppRouter';
-import { ConnectedRouter} from 'connected-react-router';
-import { history } from './reduxStore';
+import { ConnectedRouter } from 'connected-react-router';
 
-/**
- * @return {Object}
- */
-function App() {
-  return (
+import store, { history } from './reduxStore';
+import AppRouterContainer from './pages/AppRouterContainer';
+
+import './App.scss';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import './App.scss';
+import Feedback from './pages/feedback/Feedback';
+
+const App = () =>
     <BrowserRouter>
       <Provider store={store}>
         <ConnectedRouter history={history}>
-          <AppRouter />
+          <AppRouterContainer />
+          <Feedback></Feedback>
         </ConnectedRouter>
       </Provider>
-    </BrowserRouter>
-  );
-}
+    </BrowserRouter>;
+
 
 export default App;

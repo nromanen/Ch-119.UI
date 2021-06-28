@@ -3,22 +3,27 @@ import * as cors from 'cors';
 import * as cookieParser from 'cookie-parser';
 import * as winston from 'winston';
 import * as dotenv from 'dotenv';
+
 import routes from './routes';
+import sequelize from './db/sequelize/models/index';
+
 import { PORT } from './constants/app';
 import { API_PATH } from './constants/api';
 import { PRODUCTION } from './constants/env';
 import { JSON_LIMIT, JSON_TYPE } from './constants/json';
-import sequelize from './db/sequelize/models/index';
 import errorHandler from './middlewares/errorHandlingMiddleware';
+import { corsMiddleware } from './middlewares/cors';
 
 dotenv.config();
 
 const app = express();
 
-app.use(cors( {
-  credentials: true,
-  origin: process.env.CLIENT_URL
-}));
+app.use(
+  cors({
+    credentials: true,
+    origin: process.env.CLIENT_URL,
+  }),
+);
 app.use(cookieParser());
 app.use(
   express.json({
@@ -28,6 +33,7 @@ app.use(
 );
 app.use(express.urlencoded({ extended: true }));
 app.use(API_PATH, routes);
+app.use(corsMiddleware);
 
 export const logger = winston.createLogger({
   level: 'info',
@@ -46,18 +52,33 @@ if (process.env.NODE_ENV !== PRODUCTION) {
     }),
   );
 }
-
 app.use(errorHandler);
-
 const start = async () => {
   try {
     await sequelize.authenticate();
-    console.log('Sequielize connected');
-    const res = await sequelize.sync({
-      alter: true,
-    });
+    const options = {
+      // force: true,
+      // alter: true,
+    };
+    await sequelize.sync(options);
+    // Create tables if not exist asd
+    // Uncomment if you don't have city table
+    // and set optins to alter: true
+    // comment after creating in db and disable alter (comment it)
 
-    console.log('created tables', res.models);
+    // await sequelize.models[CITY].create(
+    //   {
+    //     name: 'Chernivtsi',
+    //     basePrice: 41,
+    //     basePriceForKm: 10,
+    //     car_types: carTypes.slice(0, 4),
+    //     extra_services: extraServices,
+    //   },
+    //   {
+    //     include: [sequelize.models[CAR_TYPE], sequelize.models[EXTRA_SERVICE]],
+    //   },
+    // );
+    // End Possibly not right
 
     app.listen(PORT, () => {
       logger.log(

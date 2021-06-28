@@ -6,6 +6,19 @@ export enum AuthActionTypes {
   LOGOUT_USER = 'LOGOUT_USER',
   HANDLE_ERROR = 'HANDLE_ERROR',
   NOT_AUTHORIZED = 'NOT_AUTHORIZED',
+  REGISTRATE_DRIVER = 'REGISTRATE_DRIVER',
+  SET_DRIVER_DATA = 'SET_DRIVER_DATA',
+  IS_DRIVER = 'IS_DRIVER',
+}
+
+export interface InputGeneralI {
+  className?: string;
+  type?: string;
+  name: string;
+  placeholder?: string;
+  validate: any;
+  required?: any;
+  label: string;
 }
 
 export interface IAuthState {
@@ -29,4 +42,15 @@ export interface IUser {
   tripsNum?: number;
   isAuth: boolean;
   hasError: boolean;
+  id: number | null;
+  driver_info?: IDriver,
+  isDriver: boolean,
+  authError: string,
+}
+
+export interface IDriver {
+  car_color: string;
+  car_model: string;
+  car_number: string;
+  driver_id?: number | null;
 }

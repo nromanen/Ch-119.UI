@@ -1,4 +1,4 @@
-import { AuthActionTypes, IAuthAction, IUser } from '../types/userTypes';
+import { AuthActionTypes, IUser } from '../types/userTypes';
 
 export const initialState: IUser = {
   name: '',
@@ -7,6 +7,15 @@ export const initialState: IUser = {
   role: [],
   isAuth: false,
   hasError: false,
+  authError: '',
+  id: null,
+  isDriver: false,
+  driver_info: {
+    car_color: '',
+    car_model: '',
+    car_number: '',
+    driver_id: null,
+  },
 };
 
 export const authReducer = (state = initialState, action: any): IUser => {
@@ -15,8 +24,30 @@ export const authReducer = (state = initialState, action: any): IUser => {
       return {
         ...state,
         name: action.payload.name,
+        password: '',
+        phone: action.payload.phone,
         role: action.payload.roles,
         isAuth: true,
+        hasError: false,
+        id: action.payload.id,
+      };
+    case AuthActionTypes.SET_DRIVER_DATA:
+      return {
+        ...state,
+        name: action.payload.name,
+        password: '',
+        phone: action.payload.phone,
+        role: [action.payload.roles[0], action.payload.roles[1]],
+        isAuth: true,
+        isDriver: true,
+        hasError: false,
+        id: action.payload.id,
+        driver_info: {
+          car_color: action.payload.driver_info.car_color,
+          car_model: action.payload.driver_info.car_model,
+          car_number: action.payload.driver_info.car_number,
+          driver_id: action.payload.driver_info.id,
+        },
       };
     case AuthActionTypes.LOGIN_USER:
       return {
@@ -38,63 +69,29 @@ export const authReducer = (state = initialState, action: any): IUser => {
     case AuthActionTypes.HANDLE_ERROR:
       return {
         ...state,
-        hasError: true,
+        authError: action.payload.data,
+        hasError: action.payload.hasError,
       };
     case AuthActionTypes.LOGOUT_USER:
+      return initialState;
+    case AuthActionTypes.REGISTRATE_DRIVER:
       return {
         ...state,
-        name: '',
-        phone: '',
-        password: '',
-        role: [],
-        isAuth: false,
+        name: action.payload.name,
+        phone: action.payload.phone,
+        password: action.payload.password,
+        driver_info: {
+          car_color: action.payload.car_color,
+          car_model: action.payload.car_model,
+          car_number: action.payload.car_number,
+        },
+      };
+    case AuthActionTypes.IS_DRIVER:
+      return {
+        ...state,
+        isDriver: action.payload,
       };
     default:
       return state;
   }
 };
-
-export const registrate = (payload: any): IAuthAction => ({
-  type: AuthActionTypes.REGISTRATE_USER,
-  payload,
-});
-
-export const login = (payload: any): IAuthAction => ({
-  type: AuthActionTypes.LOGIN_USER,
-  payload,
-});
-
-const setAuthUserData = (payload: any): IAuthAction => ({
-  type: AuthActionTypes.SET_USER_DATA,
-  payload,
-});
-
-export const getAuthUserData = () => async (dispatch: any) => {
-  const response: any = await check();
-
-  if (response.data.resultCode === 0) {
-    const { ...payload } = response.data.data;
-    dispatch(setAuthUserData({ ...payload }));
-  }
-};
-
-export const check = (): IAuthAction => ({
-  type: AuthActionTypes.CHECK_USER_DATA,
-});
-
-export const logout = () => ({
-  type: AuthActionTypes.LOGOUT_USER,
-});
-
-// export const login = (email, password, remeberMe) => async (dispatch) => {
-//   let response = await authAPI.login(email, password, remeberMe);
-//   if (response.data.resultCode === 0) {
-//     dispatch(getAuthUserData());
-//   } else {
-//     let message =
-//       response.data.messages.length > 0
-//         ? response.data.messages[0]
-//         : 'Some error';
-//     dispatch(stopSubmit('login', { _error: message }));
-//   }
-// };

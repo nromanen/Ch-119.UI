@@ -1,5 +1,5 @@
 import Profile from './Profile';
-import { logout } from '../../reducers/authReducer';
+import { logout } from '../../actions/authActions';
 import { connect } from 'react-redux';
 
 const mapStateToProps = (state: any) => {

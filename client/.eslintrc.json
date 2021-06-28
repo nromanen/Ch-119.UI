@@ -14,11 +14,19 @@
   },
   "plugins": ["react", "@typescript-eslint"],
   "rules": {
+    "camelcase": "off",
     "object-curly-spacing": "off",
     "linebreak-style": 0,
     "isolatedModules": 0,
-    "arrow-parens": "off",
-    "no-unused-vars":"off",
-    "require-jsdoc": "off"
+    "indent": "off",
+    "require-jsdoc": "off",
+    "max-len": "off",
+    "no-unused-vars": "warn",
+    "no-invalid-this": "warn"
+  },
+  "globals": {
+    "google": "readonly",
+    "process": "readonly",
+    "arrow-parens": "off"
   }
 }

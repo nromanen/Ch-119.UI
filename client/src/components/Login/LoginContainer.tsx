@@ -1,5 +1,5 @@
 import { Login } from './Login';
-import { login, check } from '../../reducers/authReducer';
+import { login, check } from '../../actions/authActions';
 import { connect } from 'react-redux';
 
 const mapStateToProps = (state: any) => {
@@ -8,16 +8,13 @@ const mapStateToProps = (state: any) => {
   };
 };
 
-const mapDispatchToProps = (dispatch: any) => {
-  return {
-    loginUser: (payload: any) => {
-      dispatch(login(payload));
-      console.log(payload);
-    },
-    checkUser: () => {
-      dispatch(check());
-    },
-  };
-};
+const mapDispatchToProps = (dispatch: any) => ({
+  loginUser: (payload: any) => {
+    dispatch(login(payload));
+  },
+  checkUser: () => {
+    dispatch(check());
+  },
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);
