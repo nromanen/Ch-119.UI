@@ -8,6 +8,7 @@ const controller = new OrderController();
 
 router.post('/', controller.create);
 router.get('/', controller.getByStatus);
+router.get('/list', controller.getWithFilter);
 router.get('/:id', controller.getById);
 router.put('/:id', controller.update);
 

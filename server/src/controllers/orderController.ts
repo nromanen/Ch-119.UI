@@ -1,8 +1,12 @@
 import { Request, Response } from 'express';
 import sequelize from '../db/sequelize/models/index';
-import { ORDER, DRIVER, USER } from '../constants/modelsNames';
-import { STATUS_BAD_REQUEST, STATUS_OK } from '../constants/api';
-import { ORDER_ON_PAGE, PAGE_COUNT } from '../constants/api';
+import { ORDER, DRIVER, USER, CAR_TYPE } from '../constants/modelsNames';
+import {
+  STATUS_BAD_REQUEST,
+  STATUS_OK,
+  ORDER_ON_PAGE,
+  PAGE_COUNT,
+} from '../constants/api';
 
 export default class OrderController {
   create = async (req: Request, res: Response): Promise<any> => {
@@ -11,6 +15,50 @@ export default class OrderController {
     try {
       const data = await sequelize.models[ORDER].create(body);
 
+      res.status(STATUS_OK).send(data);
+    } catch (error) {
+      res.status(STATUS_BAD_REQUEST).send(error);
+    }
+  };
+
+  getWithFilter = async (req: Request, res: Response): Promise<any> => {
+    const { status, driverId, withDriver, withUser, limit } = req.query;
+    const seqOptions: any = {
+      where: {
+        status,
+      },
+      attributes: { exclude: ['carTypeId', 'driver_id'] },
+      limit: limit || 5,
+      include: [
+        {
+          model: sequelize.models[CAR_TYPE], // return carType from car_types table
+        },
+      ],
+      order: [
+        // return orders recently created
+        ['updatedAt', 'DESC'],
+      ],
+    };
+
+    if (driverId) {
+      seqOptions.where.driver_id = driverId;
+    }
+    if (withDriver) {
+      seqOptions.include.push({
+        model: sequelize.models[DRIVER],
+        attributes: ['car_color', 'car_number', 'car_model', 'driver_rating'], // field that back from sequelize
+      });
+    }
+
+    if (withUser) {
+      seqOptions.include.push({
+        model: sequelize.models[USER],
+        attributes: ['name', 'phone'],
+      });
+    }
+
+    try {
+      const data = await sequelize.models[ORDER].findAndCountAll(seqOptions);
       res.status(STATUS_OK).send(data);
     } catch (error) {
       res.status(STATUS_BAD_REQUEST).send(error);

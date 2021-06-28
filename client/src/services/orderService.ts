@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { OrderStateI } from './../types/orderTypes';
 import { ERROR_IN_ORDER } from '../constants/errorConstants';
+import { Statuses } from '../constants/statuses';
 
 export class OrderDTO {
   carTypeId: number;
@@ -70,6 +71,24 @@ export const updateOrder = (order: OrderStateI, userId: number) => async () => {
     const response = axios.put(url, {
       body: orderDTO,
     });
+    return response;
+  } catch (error) {
+    throw new Error(ERROR_IN_ORDER);
+  }
+};
+
+export const fetchDriverOrderNew = async () => {
+  const url = `${process.env.REACT_APP_SERVER_URL}order/list`;
+
+  try {
+    const response = axios.get(url, {
+      params: {
+        status: Statuses.ACTIVE,
+        withUser: '1', // pass any not falsy value
+      },
+    });
+
+    // console.log(`response`, response);
     return response;
   } catch (error) {
     throw new Error(ERROR_IN_ORDER);

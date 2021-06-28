@@ -24,6 +24,7 @@ function* makeOrderWorker(): Generator<StrictEffect, void, any> {
 
   try {
     const data = yield call(makeOrder(order, userID));
+    console.log(`maked order`, data);
     if (data.status === 200) {
       yield put(changeOrderValue('id', data.data.id));
       yield put(makeOrderSuccessAction());

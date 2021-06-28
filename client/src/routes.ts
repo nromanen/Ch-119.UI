@@ -19,6 +19,7 @@ import RegistrationContainer from './components/Login/RegistrationContainer';
 import OrderDriverActive from './pages/Order/orderDriverActive';
 import OrderDriverAccepted from './pages/Order/orderDriverAccepted';
 import OrderUserActive from './pages/Order/orderUserActive';
+import { OrderList } from './pages/OrderList/OrderList';
 
 export const authRouters = [
   {
@@ -31,7 +32,7 @@ export const authRouters = [
   },
   {
     path: ORDER_ACTIVE_ROUTE,
-    component: OrderDriverActive,
+    component: OrderList,
   },
   {
     path: ORDER_ACCEPTED_ROUTE,
