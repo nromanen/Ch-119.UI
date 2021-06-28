@@ -18,7 +18,7 @@ export default class ApiError extends Error {
     }
 
     static conflict(message: string) {
-        return new ApiError('409', message);
+        return new ApiError('401', message);
     }
 
     static unathorized() {

@@ -19,6 +19,7 @@ export interface InputGeneralI {
   validate: any;
   required?: any;
   label: string;
+  id?: string;
 }
 
 export interface IAuthState {

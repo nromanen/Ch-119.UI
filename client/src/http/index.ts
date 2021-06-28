@@ -22,7 +22,7 @@ $authHost.interceptors.response.use(authInterceptor, async (error) => {
     originalRequest._isRetry = true;
     try {
       const response = await axios.get(
-        `${process.env.REACT_APP_SERVER_URL}/token`,
+        `${process.env.REACT_APP_SERVER_URL}user/token`,
         { withCredentials: true },
       );
       localStorage.setItem('token', response.data.accessToken);

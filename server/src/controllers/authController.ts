@@ -229,18 +229,21 @@ export default class AuthController {
       maxAge: MAX_AGE,
       httpOnly: true,
     });
+
     return res.json({
       accessToken: generateAccessToken(
         (userInfo as any).id,
         (userInfo as any).name,
         (userInfo as any).phone,
         (userInfo as any).roles,
+        (userInfo as any).driver_info,
       ),
       refreshToken: generateRefreshToken(
         (userInfo as any).id,
         (userInfo as any).name,
         (userInfo as any).phone,
         (userInfo as any).roles,
+        (userInfo as any).driver_info,
       ),
     });
   }

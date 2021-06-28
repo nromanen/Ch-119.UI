@@ -70,6 +70,7 @@ export const Registration: FC = (props: any) => {
                 placeholder="Your name"
                 validate={maxValue(20)}
                 label="Your name:"
+                id="name"
               />
               <InputGeneral
                 name="phone"
@@ -77,12 +78,14 @@ export const Registration: FC = (props: any) => {
                 placeholder="+380501233314"
                 validate={phoneMask}
                 label="Phone number:"
+                id="phone"
               />
               <InputGeneral
                 name="password"
                 type="password"
                 validate={passwordMask}
                 label="Password:"
+                id="password"
               />
               <InputGeneral
                 name="confirm"
@@ -90,6 +93,7 @@ export const Registration: FC = (props: any) => {
                 validate={maxValue(25)}
                 required
                 label="Confirm password:"
+                id="confirm"
               />
               <div className="col-xs-4 font-weight-bold">
                 <label>Registrate as driver</label>
@@ -109,6 +113,7 @@ export const Registration: FC = (props: any) => {
                     placeholder="Blue"
                     required
                     label="Car color:"
+                    id="car_color"
                   />
                   <InputGeneral
                     name="car_model"
@@ -117,6 +122,7 @@ export const Registration: FC = (props: any) => {
                     validate={maxValue(30)}
                     required
                     label="Car model:"
+                    id="car_model"
                   />
                   <InputGeneral
                     name="car_number"
@@ -125,6 +131,7 @@ export const Registration: FC = (props: any) => {
                     placeholder="CE7890BT"
                     required
                     label="Car number:"
+                    id="car_number"
                   />
                 </React.Fragment>
               ) : null}

@@ -28,12 +28,14 @@ export const Login: FC = (props: any) => (
               placeholder="+380501233314"
               validate={required}
               label="Phone number:"
+              id="phone"
             />
             <InputGeneral
               name="password"
               type="password"
               validate={required}
               label="Password:"
+              id="password"
             />
             <div className="form-group">
               <div className="col-xs-4 mb-3">

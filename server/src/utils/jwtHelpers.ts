@@ -13,7 +13,7 @@ export const generateAccessToken = (
   const accessToken = jwt.sign(
     { id, name, roles, phone, driver_info },
     process.env.ACCESS_TOKEN_SECRET_KEY,
-    { expiresIn: process.env.ACCESS_TOKEN_TIME },
+    { expiresIn: '30s' },
   );
 
   return accessToken;
@@ -31,7 +31,7 @@ export const generateRefreshToken = (
   const refreshToken = jwt.sign(
     { id, name, roles, phone, driver_info },
     process.env.REFRESH_TOKEN_SECRET_KEY,
-    { expiresIn: process.env.REFRESH_TOKEN_TIME },
+    { expiresIn: '30min' },
   );
   refreshTokens.push(refreshToken);
   return refreshToken;

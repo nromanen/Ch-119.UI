@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { OrderStateI } from './../types/orderTypes';
 import { ERROR_IN_ORDER } from '../constants/errorConstants';
+import { $authHost } from '../http/index';
 
 export class OrderDTO {
   carTypeId: number;
@@ -50,7 +51,7 @@ export const makeOrder = (order: OrderStateI, userId: number) => async () => {
   const orderDTO = new OrderDTO(order, userId);
   const url = `${process.env.REACT_APP_SERVER_URL}order`;
   try {
-    const response = axios.post(url, {
+    const response = $authHost.post(url, {
       body: orderDTO,
     });
     response.catch((error) => {
