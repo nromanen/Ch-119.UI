@@ -2,11 +2,11 @@ import { Request, Response } from 'express';
 import sequelize from '../db/sequelize/models/index';
 import { ORDER, DRIVER, USER } from '../constants/modelsNames';
 import { STATUS_BAD_REQUEST, STATUS_OK } from '../constants/api';
+import { ORDER_ON_PAGE, PAGE_COUNT } from '../constants/api';
 
 export default class OrderController {
   create = async (req: Request, res: Response): Promise<any> => {
     const { body } = req.body;
-    console.log(body);
 
     try {
       const data = await sequelize.models[ORDER].create(body);
@@ -20,10 +20,9 @@ export default class OrderController {
   getByStatus = async (req: Request, res: Response): Promise<any> => {
     let { limit, page } = req.query;
     const { where } = req.query;
-    // res.json(where);
 
-    page = page || '1';
-    limit = limit || '5';
+    page = page || PAGE_COUNT;
+    limit = limit || ORDER_ON_PAGE;
     const newLimit = Number(limit);
 
     const offset = +page * +limit - +limit;

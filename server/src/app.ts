@@ -11,8 +11,6 @@ import { PORT } from './constants/app';
 import { API_PATH } from './constants/api';
 import { PRODUCTION } from './constants/env';
 import { JSON_LIMIT, JSON_TYPE } from './constants/json';
-import { CAR_TYPE, CITY, EXTRA_SERVICE } from './constants/modelsNames';
-import { carTypes, extraServices } from './constants/seeders';
 import errorHandler from './middlewares/errorHandlingMiddleware';
 import { corsMiddleware } from './middlewares/cors';
 

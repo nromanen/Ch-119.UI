@@ -11,6 +11,16 @@ export enum AuthActionTypes {
   IS_DRIVER = 'IS_DRIVER',
 }
 
+export interface InputGeneralI {
+  className?: string;
+  type?: string;
+  name: string;
+  placeholder?: string;
+  validate: any;
+  required?: any;
+  label: string;
+}
+
 export interface IAuthState {
   phone: string;
   password: string;

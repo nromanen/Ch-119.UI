@@ -14,7 +14,7 @@
   },
   "plugins": ["react", "@typescript-eslint"],
   "rules": {
-    "camelcase": "warn",
+    "camelcase": "off",
     "object-curly-spacing": "off",
     "linebreak-style": 0,
     "isolatedModules": 0,

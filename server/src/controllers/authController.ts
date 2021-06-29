@@ -18,6 +18,7 @@ import {
   DRIVER_ROLE,
 } from '../constants/modelsNames';
 import { MAX_AGE } from '../constants/api';
+import { CAR_NUMBER_EXIST } from '../constants/errors';
 
 const User = sequelize.models[USER];
 const Role = sequelize.models[ROLE];
@@ -31,62 +32,13 @@ export default class AuthController {
     if (!phone || !password) {
       return next(ApiError.badRequest());
     }
-
-    const candidate = await User.findOne({
-      where: { phone },
-    });
-    if (candidate) {
-      return next(ApiError.conflict());
-    }
     try {
-    if (!car_number) {
-      try {
-      User.create({
-        phone: req.body.phone,
-        name: req.body.name,
-        password: bcrypt.hashSync(req.body.password, 5),
-        verification_code: generateVerifyCode(),
-      })
-        .then((user: any) => {
-          const roles = req.body.roles ? req.body.roles : [USER_ROLE];
-          Role.findAll({
-            where: {
-              name: {
-                [Op.or]: roles,
-              },
-            },
-          }).then((roles: any) => {
-            user.setRoles(roles).then(() => {
-              const authorities: Array<string> = [];
-              for (let i = 0; i < roles.length; i++) {
-                authorities.push(roles[i].name);
-              }
-              const accessToken = generateAccessToken(
-                user.id,
-                user.name,
-                authorities,
-              );
-              const refreshToken = generateRefreshToken(
-                user.id,
-                user.name,
-                authorities,
-              );
-              res.cookie('refreshToken', refreshToken, {
-                maxAge: MAX_AGE,
-                httpOnly: true,
-              });
-              return res.json({ accessToken, refreshToken });
-            });
-          });
-        })} catch {
-          return next(ApiError.forbidden());
-        };
-    } else {
+    if (car_number) {
       const driver = await Driver.findOne({
         where: { car_number },
       });
       if (driver) {
-        return next(ApiError.conflict());
+        return next(ApiError.conflict(CAR_NUMBER_EXIST));
       }
       try {
       User.create({
@@ -127,12 +79,14 @@ export default class AuthController {
               const accessToken = generateAccessToken(
                 user.id,
                 user.name,
+                user.phone,
                 authorities,
                 driver_info,
               );
               const refreshToken = generateRefreshToken(
                 user.id,
                 user.name,
+                user.phone,
                 authorities,
                 driver_info,
               );
@@ -146,8 +100,51 @@ export default class AuthController {
         })} catch {
           return next(ApiError.forbidden());
         };
-    }
-    } catch {
+    } else {
+      try {
+      User.create({
+        phone: req.body.phone,
+        name: req.body.name,
+        password: bcrypt.hashSync(req.body.password, 5),
+        verification_code: generateVerifyCode(),
+      })
+        .then((user: any) => {
+          const roles = req.body.roles ? req.body.roles : [USER_ROLE];
+          Role.findAll({
+            where: {
+              name: {
+                [Op.or]: roles,
+              },
+            },
+          }).then((roles: any) => {
+            user.setRoles(roles).then(() => {
+              const authorities: Array<string> = [];
+              for (let i = 0; i < roles.length; i++) {
+                authorities.push(roles[i].name);
+              }
+              const accessToken = generateAccessToken(
+                user.id,
+                user.name,
+                user.phone,
+                authorities,
+              );
+              const refreshToken = generateRefreshToken(
+                user.id,
+                user.name,
+                user.phone,
+                authorities,
+              );
+              res.cookie('refreshToken', refreshToken, {
+                maxAge: MAX_AGE,
+                httpOnly: true,
+              });
+              return res.json({ accessToken, refreshToken });
+            });
+          });
+        })} catch {
+          return next(ApiError.forbidden());
+        };
+    }} catch {
       return next(ApiError.forbidden());
     }
   }
@@ -184,7 +181,6 @@ export default class AuthController {
             driverInfo = null
           } else {
           driverInfo = driver.dataValues;
-          console.log(driverInfo)
           }
         })
         const authorities: Array<string> = [];
@@ -195,6 +191,7 @@ export default class AuthController {
           const refreshToken = generateRefreshToken(
             user.id,
             user.name,
+            user.phone,
             authorities,
             driverInfo
           );
@@ -208,7 +205,7 @@ export default class AuthController {
             phone: user.phone,
             roles: authorities,
             driverInfo,
-            accessToken: generateAccessToken(user.id, user.name, authorities, driverInfo),
+            accessToken: generateAccessToken(user.id, user.name, user.phone, authorities,  driverInfo),
             refreshToken,
           });
         });
@@ -236,11 +233,13 @@ export default class AuthController {
       accessToken: generateAccessToken(
         (userInfo as any).id,
         (userInfo as any).name,
+        (userInfo as any).phone,
         (userInfo as any).roles,
       ),
       refreshToken: generateRefreshToken(
         (userInfo as any).id,
         (userInfo as any).name,
+        (userInfo as any).phone,
         (userInfo as any).roles,
       ),
     });
@@ -254,11 +253,13 @@ export default class AuthController {
     const accessToken = generateAccessToken(
       (userInfo as any).id,
       (userInfo as any).name,
+      (userInfo as any).phone,
       (userInfo as any).roles,
     );
     const refreshToken = generateRefreshToken(
       (userInfo as any).id,
       (userInfo as any).name,
+      (userInfo as any).phone,
       (userInfo as any).roles,
     );
     res.cookie('refreshToken', refreshToken, {

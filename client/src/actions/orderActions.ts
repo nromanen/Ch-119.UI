@@ -40,19 +40,13 @@ export const finishOrderSuccessAction = () => ({
 export const finishOrderErrorAction = () => ({
   type: OrderActionTypes.FINISH_ORDER_ERROR,
 });
-export const toggleModalForUser = () => {
-  return {
+export const toggleModalForUser = () => ({
     type: OrderActionTypes.TOGGLE_MODAL_FOR_USER,
-  };
-};
-export const toggleModalForDriver = () => {
-  return {
+});
+export const toggleModalForDriver = () => ({
     type: OrderActionTypes.TOGGLE_MODAL_FOR_DRIVER,
-  };
-};
+});
 
-export const resetOrderState = () => {
-  return {
+export const resetOrderState = () => ({
     type: OrderActionTypes.RESET_ORDER_STATE,
-  };
-};
+});

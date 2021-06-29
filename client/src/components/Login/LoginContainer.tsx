@@ -8,14 +8,13 @@ const mapStateToProps = (state: any) => {
   };
 };
 
-const mapDispatchToProps = (dispatch: any) => (
-    {loginUser: (payload: any) => {
-      dispatch(login(payload));
-    },
-    checkUser: () => {
-      dispatch(check());
-    },
-  }
-);
+const mapDispatchToProps = (dispatch: any) => ({
+  loginUser: (payload: any) => {
+    dispatch(login(payload));
+  },
+  checkUser: () => {
+    dispatch(check());
+  },
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);

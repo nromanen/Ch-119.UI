@@ -1,4 +1,3 @@
-import { RouteProps } from 'react-router-dom';
 import {
   LOGIN_ROUTE,
   REGISTRATION_ROUTE,
@@ -42,14 +41,14 @@ export const authRouters = [
     path: ORDER_USER_ROUTE + ':id',
     component: OrderUserActive,
   },
-];
-
-export const publicRouters = [
   {
     path: FEEDBACK_ROUTE,
     component: Feedback,
     exact: true,
   },
+];
+
+export const publicRouters = [
   {
     path: LOGIN_ROUTE,
     component: LoginContainer,

@@ -1,13 +1,6 @@
 import { FC } from 'react';
 import { Form } from 'react-bootstrap';
-import { CarTypesI } from '../../types/cityInfoTypes';
-
-interface CarTypesSelectI {
-  id: string;
-  selectedValue: string;
-  onChange: (e: any) => void;
-  carTypes?: CarTypesI[];
-}
+import { CarTypesSelectI } from '../../types/cityInfoTypes';
 
 export const CarTypesSelect: FC<CarTypesSelectI> = ({
   id,

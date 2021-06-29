@@ -43,9 +43,6 @@ export const MapContainer = () => {
   );
 
   const onMapLoaded = React.useCallback(function onLoad(mapInstance) {
-    // do something with map Instance
-
-    // changeMapValue('map', mapInstance);
     changeMapValue('isMapLoaded', true);
   }, []);
 
@@ -90,8 +87,8 @@ export const MapContainer = () => {
   const renderOptions = useMemo(
     () => ({
       directions: directionsResult,
-      draggable: true, // can drag A and B markers
-      preserveViewport: true, // do not zoom on render
+      draggable: true,
+      preserveViewport: true,
     }),
     [directionsResult],
   );

@@ -1,9 +1,10 @@
 import { InfoAction, InfoActionTypes } from '../types/cityInfoTypes';
 import { CityInfoI } from '../types/cityInfoTypes';
+import { BASE_PRICE, BASE_PRICE_FOR_KM } from '../constants/orderConstants';
 
 export const initialState: CityInfoI = {
-  basePrice: 41,
-  basePriceForKm: 10,
+  basePrice: BASE_PRICE,
+  basePriceForKm: BASE_PRICE_FOR_KM,
   car_types: [
     {
       id: 1,

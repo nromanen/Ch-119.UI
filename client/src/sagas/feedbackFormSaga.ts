@@ -7,7 +7,7 @@ function* createFeedbackWorker(
 ): Generator<StrictEffect, void, any> {
   try {
     yield call(createFeedback, action.payload);
-  } catch (error) {
+  } catch (error: any) {
     return error;
   }
 }

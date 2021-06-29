@@ -1,29 +1,16 @@
 import React, { FC } from 'react';
 import { OverlayTrigger, Tooltip, Form } from 'react-bootstrap';
-
 import { ReactComponent as BabyChair } from './icons/babyChair.svg';
 import { ReactComponent as En } from './icons/en.svg';
 import { ReactComponent as Silent } from './icons/silent.svg';
 import { FormLabel } from '../FormLabel/FormLabel';
-
-interface IconsI {
-  [index: string]: any;
-}
+import { IconsI, ExtraServiceItemI } from '../../types/cityInfoTypes';
 
 const extraServicesIcons: IconsI = {
   'English speaking': En,
   'Silent driver': Silent,
   'Baby chair': BabyChair,
 };
-interface ExtraServiceItemI {
-  id: string | number;
-  name: string;
-  onExtraServicesChanged: (e: any) => any;
-  isActive: boolean;
-  showTitle: boolean;
-  iconActiveClass?: string;
-  iconClasses: string[];
-}
 
 export const ExtraServiceItem: FC<ExtraServiceItemI> = ({
   id,

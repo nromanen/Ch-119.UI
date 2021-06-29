@@ -1,4 +1,16 @@
+$generalAlert: #ff7474;
+$black: #000;
+
 .toast, .toast-header {
-    background-color: rgb(253, 80, 80) !important;
-    color: #000 !important;
+    background-color: $generalAlert !important;
+    color: $black !important;
+}
+
+.modal {
+    height: inherit!important;
+    margin: auto!important;
+    position: absolute!important;
+    top: 20%!important;
+    left: 50%!important;
+    transform: translate(-50%, -50%)!important;
 }

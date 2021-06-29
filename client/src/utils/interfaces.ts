@@ -1,3 +1,15 @@
+import { FormEvent } from 'react';
+
+export interface InputI {
+  onChange: (e: FormEvent<HTMLInputElement>) => void;
+  value: string;
+  className: string;
+  type: string;
+  name: string;
+  id: string;
+  placeholder: string;
+}
+
 export interface RegisterData {
   name: string;
   phone: string;
@@ -15,4 +27,11 @@ export interface FeedbackFormI {
   author_role: number;
   subject_role: number;
   orderId: number;
+}
+
+
+export interface FormLabelI {
+  title?: string | false;
+  htmlFor?: string;
+  classNames?: string[];
 }

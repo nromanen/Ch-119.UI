@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { OrderStateI } from './../types/orderTypes';
+import { ERROR_IN_ORDER } from '../constants/errorConstants';
 
 export class OrderDTO {
   carTypeId: number;
@@ -57,7 +58,7 @@ export const makeOrder = (order: OrderStateI, userId: number) => async () => {
     });
     return response;
   } catch (error) {
-    throw new Error('Something gone wrong');
+    throw new Error(ERROR_IN_ORDER);
   }
 };
 
@@ -71,6 +72,6 @@ export const updateOrder = (order: OrderStateI, userId: number) => async () => {
     });
     return response;
   } catch (error) {
-    throw new Error('Something gone wrong');
+    throw new Error(ERROR_IN_ORDER);
   }
 };

@@ -1,5 +1,4 @@
 import { all } from 'redux-saga/effects';
-
 import { cityInfoWatcher } from './infoSaga';
 import { mapWatcher } from './mapSaga';
 import { createFeedbackWatcher } from './feedbackFormSaga';
