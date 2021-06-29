@@ -1,7 +1,6 @@
 import { connect } from 'react-redux';
 import AppRouter from './AppRouter';
-import { setUserData, setDriverData } from '../actions/authActions';
-import { checkAuth } from '../http/userApi';
+import { setUserData, setDriverData, check } from '../actions/authActions';
 
 const mapStateToProps = (state: any) => {
   return {
@@ -16,8 +15,8 @@ const mapDispathToProps = (dispatch: any) => ({
   setDriver: (payload: any) => {
     dispatch(setDriverData(payload));
   },
-  check: () => {
-    dispatch(checkAuth());
+  checkAuth: () => {
+    dispatch(check());
   },
 });
 

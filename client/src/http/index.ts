@@ -26,7 +26,7 @@ $authHost.interceptors.response.use(authInterceptor, async (error) => {
         { withCredentials: true },
       );
       localStorage.setItem('token', response.data.accessToken);
-      return $host.request(originalRequest);
+      return $authHost.request(originalRequest);
     } catch (e) {
       return error;
     }
