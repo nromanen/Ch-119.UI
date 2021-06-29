@@ -122,6 +122,8 @@ export default class AuthController {
               for (let i = 0; i < roles.length; i++) {
                 authorities.push(roles[i].name);
               }
+
+              // replace authorization 
               const accessToken = generateAccessToken(
                 user.id,
                 user.name,
@@ -170,6 +172,9 @@ export default class AuthController {
         if (!passwordIsValid) {
           return next(ApiError.unathorized());
         }
+
+        // check verification code if null do the same if not null send message for verification
+        // use other method for send res with message
 
         Driver.findOne({
           where: {

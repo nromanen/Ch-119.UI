@@ -28,6 +28,7 @@ function* registrateUserWorker(): Generator<StrictEffect, void, any> {
         userInfoState.password,
       ),
     );
+    // create new method for sending SMS with state.auth.phone
     if (data.id) {
       yield put({ type: AuthActionTypes.SET_USER_DATA, payload: data });
       yield put(push(ORDER_ROUTE));

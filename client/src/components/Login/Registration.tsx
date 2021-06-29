@@ -47,14 +47,16 @@ export const Registration: FC = (props: any) => {
             } else if (values.confirm !== values.password) {
               errors.confirm = MATCH_PASSWORDS;
             }
-            if (!values.car_color) {
-              errors.car_color = REQUIERED_ERROR_MESSAGE;
-            }
-            if (!values.car_model) {
-              errors.car_model = REQUIERED_ERROR_MESSAGE;
-            }
-            if (!values.car_number) {
-              errors.car_number = REQUIERED_ERROR_MESSAGE;
+            if (isDriver) {
+              if (!values.car_color) {
+                errors.car_color = REQUIERED_ERROR_MESSAGE;
+              }
+              if (!values.car_model) {
+                errors.car_model = REQUIERED_ERROR_MESSAGE;
+              }
+              if (!values.car_number) {
+                errors.car_number = REQUIERED_ERROR_MESSAGE;
+              }
             }
             return errors;
           }}
