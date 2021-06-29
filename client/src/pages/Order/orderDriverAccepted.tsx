@@ -105,8 +105,8 @@ const OrderDriverAccepted = ({ match }: any) => {
           </Container>
         </div>
         <Navbar />
-        </div>
       </div>
+    </div>
   );
 };
 

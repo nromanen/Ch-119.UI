@@ -16,7 +16,8 @@ export const Feedback: React.FC = () => {
   );
 
   const orderId = useTypedSelector((state) => state.order.id);
-  const authorId = useTypedSelector((state) => state.auth.id);
+  const userRoles = useTypedSelector((state) => state.auth.role);
+  console.log(userRoles);
 
   const { toggleModalForDriver } = useOrderActions();
   const { createFeedback } = useFeedbackFormActions();
@@ -25,8 +26,8 @@ export const Feedback: React.FC = () => {
     const feedback = {
       text: values.feedbackText,
       rating: values.stars,
-      author_id: Number(authorId),
-      subject_id: 31,
+      author_role: 2,
+      subject_role: 1,
       orderId: Number(orderId),
     };
     return createFeedback(feedback);

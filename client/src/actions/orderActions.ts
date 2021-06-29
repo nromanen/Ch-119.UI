@@ -3,6 +3,7 @@ import {
   ChangeValueAction,
   OrderActionTypes,
   OrderValues,
+  UpdateOrderAction,
 } from '../types/orderTypes';
 
 export const changeOrderValue = (
@@ -14,6 +15,11 @@ export const changeOrderValue = (
     prop,
     value,
   },
+});
+
+export const updateOrderState = (order: OrderStateI): UpdateOrderAction => ({
+  type: OrderActionTypes.UPDATE_ORDER,
+  payload: order,
 });
 
 export const makeOrderAction = () => ({

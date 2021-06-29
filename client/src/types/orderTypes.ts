@@ -32,6 +32,11 @@ export interface ChangeValueAction {
   };
 }
 
+export interface UpdateOrderAction {
+  type: OrderActionTypes.UPDATE_ORDER;
+  payload: OrderStateI;
+}
+
 export interface MakeOrderAction {
   type: OrderActionTypes.MAKE_ORDER;
 }
@@ -63,7 +68,7 @@ export interface ToggleModalForDriverAction {
   type: OrderActionTypes.TOGGLE_MODAL_FOR_DRIVER;
 }
 export interface ResetOrderState {
-  type: OrderActionTypes.RESET_ORDER_STATE
+  type: OrderActionTypes.RESET_ORDER_STATE;
 }
 
 export enum OrderActionTypes {
@@ -76,7 +81,8 @@ export enum OrderActionTypes {
   FINISH_ORDER_ERROR = 'FINISH_ORDER_ERROR',
   TOGGLE_MODAL_FOR_USER = 'TOGGLE_MODAL_FOR_USER',
   TOGGLE_MODAL_FOR_DRIVER = 'TOGGLE_MODAL_FOR_DRIVER',
-  RESET_ORDER_STATE = 'RESET_ORDER_STATE'
+  RESET_ORDER_STATE = 'RESET_ORDER_STATE',
+  UPDATE_ORDER = 'UPDATE_ORDER',
 }
 export type OrderAction =
   | ChangeValueAction
@@ -88,4 +94,5 @@ export type OrderAction =
   | FinishOrderErrorAction
   | ToggleModalForUserAction
   | ToggleModalForDriverAction
-  | ResetOrderState;
+  | ResetOrderState
+  | UpdateOrderAction;

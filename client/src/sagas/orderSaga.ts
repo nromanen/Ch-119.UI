@@ -5,7 +5,6 @@ import { OrderActionTypes } from '../types/orderTypes';
 import { makeOrder, updateOrder } from '../services/orderService';
 import {
   ORDER_DRIVER_ACTIVE_ROUTE,
-  ORDER_USER_ACTIVE_ROUTE,
   ORDER_USER_ROUTE,
 } from './../constants/routerConstants';
 import {

@@ -47,6 +47,8 @@ export const orderReducer = (
       return { ...state, showModalForDriver: !state.showModalForDriver };
     case OrderActionTypes.RESET_ORDER_STATE:
       return initialState;
+    case OrderActionTypes.UPDATE_ORDER:
+      return { ...state, ...action.payload };
     default:
       return state;
   }

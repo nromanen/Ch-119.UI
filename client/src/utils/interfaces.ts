@@ -12,7 +12,7 @@ export interface ParamTypes {
 export interface FeedbackFormI {
   text: string;
   rating: number;
-  author_id: number;
-  subject_id: number;
+  author_role: number;
+  subject_role: number;
   orderId: number;
 }

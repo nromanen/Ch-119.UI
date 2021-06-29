@@ -14,8 +14,10 @@ import { Container, Row, Col } from 'reactstrap';
 import { ColInfo } from './colInfo';
 import { useTypedSelector } from '../hooks/useTypedSelector';
 import jwt_decode from 'jwt-decode';
+import { useOrderActions } from '../hooks/useActions';
 
 const OrderItem = ({ order }: any) => {
+  const { updateOrderState } = useOrderActions();
   const changeStatus = async (
     orderId: number | string,
     driverId: number | string,
@@ -27,6 +29,7 @@ const OrderItem = ({ order }: any) => {
         customer_id: driverId,
       },
     });
+    updateOrderState(order);
   };
 
   const { car_types } = useTypedSelector((state) => state.cityInfo);
