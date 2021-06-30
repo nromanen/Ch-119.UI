@@ -4,11 +4,7 @@ import { ORDER } from '../../../constants/modelsNames';
 export default (sequelize: any, DataTypes: any) => {
   class Driver extends Model {
     static associate(models: any) {
-      Driver.hasMany(models[ORDER], {
-        foreignKey: {
-          name: 'driver_id',
-        },
-      });
+      Driver.hasMany(models[ORDER]);
     }
   }
   Driver.init(
@@ -24,7 +20,7 @@ export default (sequelize: any, DataTypes: any) => {
           model: 'users',
           key: 'id',
         },
-      }
+      },
     },
     {
       sequelize,

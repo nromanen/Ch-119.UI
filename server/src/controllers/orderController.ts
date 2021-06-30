@@ -1,8 +1,12 @@
 import { Request, Response } from 'express';
 import sequelize from '../db/sequelize/models/index';
 import { ORDER, DRIVER, USER } from '../constants/modelsNames';
-import { STATUS_BAD_REQUEST, STATUS_OK } from '../constants/api';
-import { ORDER_ON_PAGE, PAGE_COUNT } from '../constants/api';
+import {
+  STATUS_BAD_REQUEST,
+  STATUS_OK,
+  ORDER_ON_PAGE,
+  PAGE_COUNT,
+} from '../constants/api';
 
 export default class OrderController {
   create = async (req: Request, res: Response): Promise<any> => {
@@ -56,7 +60,6 @@ export default class OrderController {
         },
         include: sequelize.models[USER],
       });
-
       res.status(STATUS_OK).send({ data, status: STATUS_OK });
     } catch (error) {
       console.log(error);

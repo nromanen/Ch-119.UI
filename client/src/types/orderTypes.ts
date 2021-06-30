@@ -10,9 +10,9 @@ export interface OrderStateI {
   loading: boolean;
   error: boolean;
   id?: number;
-  customerId?: number;
-  showModalForUser: boolean;
-  showModalForDriver: boolean;
+  customer_id?: number;
+  driverId?: number;
+  showModal: boolean;
 }
 
 interface CarTypeI {
@@ -60,13 +60,10 @@ export interface FinishOrderErrorAction {
   type: OrderActionTypes.FINISH_ORDER_ERROR;
 }
 
-export interface ToggleModalForUserAction {
-  type: OrderActionTypes.TOGGLE_MODAL_FOR_USER;
+export interface ToggleModalAction {
+  type: OrderActionTypes.TOGGLE_MODAL;
 }
 
-export interface ToggleModalForDriverAction {
-  type: OrderActionTypes.TOGGLE_MODAL_FOR_DRIVER;
-}
 export interface ResetOrderState {
   type: OrderActionTypes.RESET_ORDER_STATE;
 }
@@ -79,8 +76,7 @@ export enum OrderActionTypes {
   FINISH_ORDER = 'FINISH_ORDER',
   FINISH_ORDER_SUCCESS = 'FINISH_ORDER_SUCCESS',
   FINISH_ORDER_ERROR = 'FINISH_ORDER_ERROR',
-  TOGGLE_MODAL_FOR_USER = 'TOGGLE_MODAL_FOR_USER',
-  TOGGLE_MODAL_FOR_DRIVER = 'TOGGLE_MODAL_FOR_DRIVER',
+  TOGGLE_MODAL = 'TOGGLE_MODAL',
   RESET_ORDER_STATE = 'RESET_ORDER_STATE',
   UPDATE_ORDER = 'UPDATE_ORDER',
 }
@@ -92,7 +88,6 @@ export type OrderAction =
   | FinishOrderAction
   | FinishOrderSuccessAction
   | FinishOrderErrorAction
-  | ToggleModalForUserAction
-  | ToggleModalForDriverAction
+  | ToggleModalAction
   | ResetOrderState
   | UpdateOrderAction;

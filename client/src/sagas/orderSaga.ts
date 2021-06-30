@@ -12,6 +12,7 @@ import {
   finishOrderSuccessAction,
   makeOrderErrorAction,
   makeOrderSuccessAction,
+  toggleModal,
 } from './../actions/orderActions';
 import { Statuses } from '../constants/statuses';
 
@@ -46,7 +47,7 @@ function* finishOrderWorker(): Generator<StrictEffect, void, any> {
     const data = yield call(updateOrder(order, userID));
     if (data.status === 200) {
       yield put(push(ORDER_DRIVER_ACTIVE_ROUTE));
-      yield put(changeOrderValue('showModalForDriver', true));
+      yield put(toggleModal());
     } else {
       yield put(finishOrderErrorAction());
     }

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import StarRatingComponent from 'react-star-rating-component';
 import { Form, Field } from 'react-final-form';
 import { Button, Modal } from 'react-bootstrap';
@@ -9,25 +9,35 @@ import {
 } from '../../hooks/useActions';
 import './Feedback.scss';
 import { required, maxValue } from '../../utils/validators';
+import { useEffect } from 'react';
 
 export const Feedback: React.FC = () => {
-  const isShownForDriver = useTypedSelector(
-    (state) => state.order.showModalForDriver,
-  );
+  const isShown = useTypedSelector((state) => state.order.showModal);
 
   const orderId = useTypedSelector((state) => state.order.id);
-  const userRoles = useTypedSelector((state) => state.auth.role);
-  console.log(userRoles);
+  const userAuthId = useTypedSelector((state) => state.auth.id);
+  const userOrderId = useTypedSelector((state) => state.order.customer_id);
+  const [authorRole, setAuthorRole] = useState<number>(0);
+  const [subjectRole, setSubjectRole] = useState<number>(0);
+  useEffect(() => {
+    if (userAuthId === userOrderId) {
+      setAuthorRole(1);
+      setSubjectRole(2);
+    } else {
+      setAuthorRole(2);
+      setSubjectRole(1);
+    }
+  });
 
-  const { toggleModalForDriver } = useOrderActions();
+  const { toggleModal } = useOrderActions();
   const { createFeedback } = useFeedbackFormActions();
 
   const onSubmit = (values: any) => {
     const feedback = {
       text: values.feedbackText,
       rating: values.stars,
-      author_role: 2,
-      subject_role: 1,
+      author_role: authorRole,
+      subject_role: subjectRole,
       orderId: Number(orderId),
     };
     return createFeedback(feedback);
@@ -35,8 +45,8 @@ export const Feedback: React.FC = () => {
 
   return (
     <Modal
-      show={isShownForDriver}
-      onHide={toggleModalForDriver}
+      show={isShown}
+      onHide={toggleModal}
       className="d-flex justify-content-center"
     >
       <Modal.Header closeButton>
@@ -87,7 +97,7 @@ export const Feedback: React.FC = () => {
                   )}
                 </Field>
                 <div className="d-flex justify-content-end buttons">
-                  <Button variant="secondary" onClick={toggleModalForDriver}>
+                  <Button variant="secondary" onClick={toggleModal}>
                     Close
                   </Button>
                   <Button
@@ -95,7 +105,7 @@ export const Feedback: React.FC = () => {
                     type="submit"
                     className="submit_btn"
                     disabled={invalid}
-                    onClick={toggleModalForDriver}
+                    onClick={toggleModal}
                   >
                     Send
                   </Button>
