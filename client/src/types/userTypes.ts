@@ -43,9 +43,9 @@ export interface IUser {
   isAuth: boolean;
   hasError: boolean;
   id: number | null;
-  driver_info?: IDriver,
-  isDriver: boolean,
-  authError: string,
+  driver_info?: IDriver;
+  isDriver: boolean;
+  authError: string;
 }
 
 export interface IDriver {

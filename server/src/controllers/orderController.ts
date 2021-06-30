@@ -86,7 +86,7 @@ export default class OrderController {
       const data = await sequelize.models[ORDER].update(
         {
           status,
-          driver_id: driverId,
+          driverId,
         },
         {
           where: {
