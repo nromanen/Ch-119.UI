@@ -1,12 +1,13 @@
 import React, { FC } from 'react';
-import { maxValue } from '../../utils/validators';
+import { required } from '../../utils/validators';
 import { InputGeneral } from '../InputGeneral';
-import { Button } from 'react-bootstrap';
+import { Button, Toast } from 'react-bootstrap';
 import { Form } from 'react-final-form';
 import { VERIFICATE } from '../../constants/registrationConstants';
 
 const VerificationInput: FC = (props: any) => {
   let showInput = false;
+  const code = { code: ''};
 
   if (props.auth?.authError?.includes(VERIFICATE) && !props.auth.verification_code) {
     showInput = true;
@@ -14,33 +15,41 @@ const VerificationInput: FC = (props: any) => {
 
   return showInput ? (
     <React.Fragment>
+        <Toast
+        className="modal"
+      >
       <Form
         onSubmit={(formObj) => {
-          props.verifyCode(formObj);
-          props.loginUser(props.auth);
+          if (formObj.code === props.splitError(props.auth?.authError)) {
+            props.verifyCode(formObj);
+            props.loginUser(props.auth);
+            props.verifyCode(code);
+          }
+          props.handleError({ data: 'Wrong verify code', hasError: true});
         }}
         subscription={{
           submitting: true,
         }}
       >
         {({ handleSubmit, submitting }) => (
-          <form onSubmit={handleSubmit} className="form-horizontal">
+          <form onSubmit={handleSubmit} className="form-horizontal jumbotron">
             <InputGeneral
               name="code"
               type="text"
-              placeholder="1111"
-              validate={maxValue(4)}
+              validate={required}
               label="Write your verify code:"
               id="code"
+              required
             />
             <div className="col-xs-4">
               <Button type="submit" disabled={submitting}>
-                Sign in
+                Verify
               </Button>
             </div>
           </form>
         )}
       </Form>
+      </Toast>
     </React.Fragment>
   ) : (
     <div></div>

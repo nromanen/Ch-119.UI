@@ -18,8 +18,16 @@ router.post(
   '/registration',
   verifySignUp.checkDuplicatePhone,
   controller.registration,
+  verifySignUp.checkVerifyCode,
+  controller.login,
+  controller.authorization,
 );
-router.post('/login', verifySignUp.checkVerifyCode, controller.login, controller.authorization);
+router.post(
+  '/login',
+  verifySignUp.checkVerifyCode,
+  controller.login,
+  controller.authorization,
+);
 router.get(
   '/auth',
   checkRoleMiddleware(USER_ROLE),

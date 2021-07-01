@@ -71,34 +71,14 @@ export default class AuthController {
                   car_color,
                   car_model,
                   car_number,
-                ).then((dbDriver: any) => {
-                  const driver_info = dbDriver.dataValues;
-                  const accessToken = generateAccessToken(
-                    user.id,
-                    user.name,
-                    user.phone,
-                    authorities,
-                    driver_info,
-                  );
-                  const refreshToken = generateRefreshToken(
-                    user.id,
-                    user.name,
-                    user.phone,
-                    authorities,
-                    driver_info,
-                  );
-                  res.cookie('refreshToken', refreshToken, {
-                    maxAge: MAX_AGE,
-                    httpOnly: true,
-                  });
-                  return res.json({ accessToken, refreshToken });
+                )
+                next();
                 });
               });
-            });
-          });
-        } catch {
-          return next(ApiError.forbidden());
-        }
+            })
+          } catch {
+            return next(ApiError.forbidden());
+          }
       } else {
         try {
           createUser(
@@ -120,25 +100,7 @@ export default class AuthController {
                 for (let i = 0; i < roles.length; i++) {
                   authorities.push(roles[i].name);
                 }
-
-                // replace authorization
-                const accessToken = generateAccessToken(
-                  user.id,
-                  user.name,
-                  user.phone,
-                  authorities,
-                );
-                const refreshToken = generateRefreshToken(
-                  user.id,
-                  user.name,
-                  user.phone,
-                  authorities,
-                );
-                res.cookie('refreshToken', refreshToken, {
-                  maxAge: MAX_AGE,
-                  httpOnly: true,
-                });
-                return res.json({ accessToken, refreshToken });
+                next();
               });
             });
           });
@@ -176,7 +138,7 @@ export default class AuthController {
           // use other method for send res with message
           // sendSMS(
           //   req.body.phone,
-          //   `Your verification code is ${user.verification_code}`,
+          //   `Go taxi: Your verification code is ${user.verification_code}`,
           // );
           return next(ApiError.conflict(`U forgot to verify ${user.verification_code}`));
         }

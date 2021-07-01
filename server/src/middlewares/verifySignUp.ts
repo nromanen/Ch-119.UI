@@ -49,7 +49,7 @@ const checkVerifyCode = (
 
     if (req.body.verification_code) {
       const checkEqualCode: boolean = user.verification_code === req.body.verification_code
-       if (checkEqualCode){
+       if (checkEqualCode) {
         user.verification_code = 'null';
          await user.save();
          next();

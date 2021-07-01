@@ -5,7 +5,11 @@ import './Alert.scss';
 
 const Alert: FC = (props: any) => {
   const changeError = () => {
-    props.handleError({ data: VERIFICATE, hasError: false });
+    if (props.auth.authError?.includes(VERIFICATE)) {
+      props.handleError({ data: props.auth.authError, hasError: false });
+    } else {
+      props.handleError({ data: '', hasError: false });
+    }
   };
 
     return props?.auth?.hasError ? (

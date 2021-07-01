@@ -11,9 +11,9 @@ import { InputGeneral } from '../InputGeneral';
 
 export const Login: FC = (props: any) => (
   <div className="jumbotron">
-    <div className="container-fluid login">
-      <AlertContainer />
       <VerificationCodeContainer />
+      <AlertContainer />
+    <div className="container-fluid login">
       <h2>Login</h2>
       <Form
         onSubmit={(formObj) => {

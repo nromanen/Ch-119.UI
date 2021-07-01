@@ -55,10 +55,7 @@ function* registrateDriverWorker(): Generator<StrictEffect, void, any> {
         userInfoState.driver_info.car_number,
       ),
     );
-    if (data.id) {
-      yield put({ type: AuthActionTypes.SET_DRIVER_DATA, payload: data });
-      yield put(push(ORDER_ACTIVE_ROUTE));
-    } else {
+    if (!data.id) {
       yield put({
         type: AuthActionTypes.HANDLE_ERROR,
         payload: { data: data, hasError: true },

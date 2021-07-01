@@ -15,6 +15,7 @@ import {
 import { NavLink } from 'react-router-dom';
 import './Login.scss';
 import { InputGeneral } from '../InputGeneral';
+import VerificationCodeContainer from '../VerificationInput/VerificationInputContainer';
 
 export const Registration: FC = (props: any) => {
   const [isDriver, setIsDriver] = useState(false);
@@ -28,6 +29,7 @@ export const Registration: FC = (props: any) => {
     <div className="jumbotron">
       <div className="container-fluid registration">
         <AlertContainer />
+        <VerificationCodeContainer />
         <h2>Registration</h2>
         <Form
           onSubmit={(formObj) => {

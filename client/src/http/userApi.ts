@@ -16,7 +16,7 @@ export const registration = (
       role: USER_ROLE,
     });
 
-    if (data.id) {
+    if (data) {
       localStorage.setItem('token', data.accessToken);
       localStorage.setItem('refreshToken', data.refreshToken);
       return new Promise((resolve, reject) =>
@@ -47,7 +47,7 @@ export const registrationDriver = (
       car_number,
     });
 
-    if (data.id) {
+    if (data) {
       localStorage.setItem('token', data.accessToken);
       localStorage.setItem('refreshToken', data.refreshToken);
       return new Promise((resolve, reject) =>
