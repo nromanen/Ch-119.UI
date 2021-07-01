@@ -14,11 +14,11 @@ export default class ApiError extends Error {
     }
 
     static forbidden() {
-        return new ApiError('403', 'Server error');
+        return new ApiError('403', 'Forbidden error');
     }
 
-    static conflict() {
-        return new ApiError('409', 'This data already exist');
+    static conflict(message: string) {
+        return new ApiError('409', message);
     }
 
     static unathorized() {

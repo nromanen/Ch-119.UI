@@ -13,8 +13,8 @@ import {
   faStar,
 } from '@fortawesome/free-solid-svg-icons';
 import { Container, Row } from 'reactstrap';
-import { ColInfo } from '../../components/colInfo';
-import { useTypedSelector } from './../../hooks/useTypedSelector';
+import { ColInfo } from '../../components/Order/ColInfo';
+import { useTypedSelector } from '../../hooks/useTypedSelector';
 
 const OrderUserActive = ({ match }: any) => {
   const [order, setOrder]: any = useState<any[]>([]);
@@ -76,9 +76,9 @@ const OrderUserActive = ({ match }: any) => {
             )}
 
             <div className="btn-space">
-              <Link to={'#'}>
+              {/* <Link to={'#'}>
                 <Button variant="danger">Cancel</Button>
-              </Link>
+              </Link> */}
             </div>
           </Container>
         </div>

@@ -18,8 +18,6 @@ export const changeMapValue = (
   };
 };
 
-export const getCurrentLocation = () => {
-  return {
+export const getCurrentLocation = () => ({
     type: MapActionTypes.GET_CURRENT_LOCATION,
-  };
-};
+});

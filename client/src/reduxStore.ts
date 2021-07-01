@@ -21,6 +21,7 @@ import {
   initialState as OrderState,
 } from './reducers/orderReducer';
 import { rootWatcher } from './sagas/index';
+import ordersReducer from './reducers/ordersReducer';
 
 const sagaMiddleware = createSagaMiddleware();
 
@@ -43,6 +44,7 @@ const reducers = (history: any) =>
     auth: authReducer,
     cityInfo: cityInfoReducer,
     map: mapReducer,
+    orders: ordersReducer,
   });
 
 const rootReducers = reducers(history);

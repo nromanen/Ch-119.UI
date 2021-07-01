@@ -15,7 +15,6 @@ const controller = new AuthController();
 router.post(
   '/registration',
   verifySignUp.checkDuplicatePhone,
-  verifySignUp.checkRolesExisted,
   controller.registration,
 );
 router.post('/login', controller.login);

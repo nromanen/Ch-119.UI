@@ -50,10 +50,6 @@ export const Map: FC<MapProps> = ({
     libraries: libraries,
   });
 
-  // const directionsServiceLoaded = useCallback((dirService: any) => {
-  //   // console.log('dirService', dirService);
-  // }, []);
-
   const renderMap = () => {
     return (
       <GoogleMap
@@ -66,7 +62,6 @@ export const Map: FC<MapProps> = ({
           <DirectionsService
             callback={directionsServiceCallback}
             options={directions}
-            // onLoad={directionsServiceLoaded}
           />
         )}
         {directionsResult && renderOptions && (
@@ -76,18 +71,6 @@ export const Map: FC<MapProps> = ({
             onDirectionsChanged={onDirectionsChanged}
           />
         )}
-        {/* {markers.length &&
-            markers.map((marker: any, i: number) => (
-              <Marker key={`${marker.lat}${marker.lng}`} position={marker} />
-            ))} */}
-
-        {/* {currentLocation && (
-            <InfoWindow position={currentLocation}>
-              <div>
-                <p>Your location</p>
-              </div>
-            </InfoWindow>
-          )} */}
       </GoogleMap>
     );
   };

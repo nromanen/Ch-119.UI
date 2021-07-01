@@ -1,4 +1,3 @@
-import { RouteProps } from 'react-router-dom';
 import {
   LOGIN_ROUTE,
   REGISTRATION_ROUTE,
@@ -17,9 +16,9 @@ import { Order } from './pages/Order/Order';
 import LoginContainer from './components/Login/LoginContainer';
 import RegistrationContainer from './components/Login/RegistrationContainer';
 
-import OrderDriverActive from './pages/Order/orderDriverActive';
-import OrderDriverAccepted from './pages/Order/orderDriverAccepted';
-import OrderUserActive from './pages/Order/orderUserActive';
+import OrderList from './pages/Order/OrderList';
+import OrderDriverAccepted from './pages/Order/OrderDriverAccepted';
+import OrderUserActive from './pages/Order/OrderUserActive';
 
 export const authRouters = [
   {
@@ -32,7 +31,7 @@ export const authRouters = [
   },
   {
     path: ORDER_ACTIVE_ROUTE,
-    component: OrderDriverActive,
+    component: OrderList,
   },
   {
     path: ORDER_ACCEPTED_ROUTE,
@@ -42,14 +41,14 @@ export const authRouters = [
     path: ORDER_USER_ROUTE + ':id',
     component: OrderUserActive,
   },
-];
-
-export const publicRouters = [
   {
     path: FEEDBACK_ROUTE,
     component: Feedback,
     exact: true,
   },
+];
+
+export const publicRouters = [
   {
     path: LOGIN_ROUTE,
     component: LoginContainer,

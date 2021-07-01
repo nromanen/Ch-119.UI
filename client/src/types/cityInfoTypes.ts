@@ -5,12 +5,25 @@ interface CityCarTypeI {
   carTypeId: number;
   cityId: number;
 }
+
+export interface CarTypesSelectI {
+  id: string;
+  selectedValue: string;
+  onChange: (e: any) => void;
+  carTypes?: CarTypesI[];
+}
+
 interface CityExtraServiceI {
   price: number;
   createdAt?: Date;
   updatedAt?: Date;
   carTypeId: number;
   cityId: number;
+}
+
+export interface PricePropsI {
+  price: number;
+  currencyCodePoint?: number;
 }
 
 export interface CarTypesI {
@@ -37,6 +50,27 @@ export interface CityInfoI {
   updatedAt?: Date;
   car_types: CarTypesI[];
   extra_services: ExtraServicesI[];
+}
+
+export interface IconsI {
+  [index: string]: any;
+}
+
+export interface ExtraServiceItemI {
+  id: string | number;
+  name: string;
+  onExtraServicesChanged: (e: any) => any;
+  isActive: boolean;
+  showTitle: boolean;
+  iconActiveClass?: string;
+  iconClasses: string[];
+}
+
+export interface ExtraServicesSelectI {
+  title?: string;
+  avaliableInCityExtraServices: ExtraServicesI[] | undefined;
+  activeExtraServices: number[];
+  onExtraServicesChanged: () => any;
 }
 
 type ValueOf<T> = T[keyof T];

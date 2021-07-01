@@ -1,11 +1,22 @@
 import React, { FC, useState } from 'react';
 import { Button } from 'react-bootstrap';
-import { Form, Field } from 'react-final-form';
-import { required } from '../../utils/formValidators';
+import { Form } from 'react-final-form';
+import {
+  phoneMask,
+  maxValue,
+  carMask,
+  passwordMask,
+} from '../../utils/validators';
 import AlertContainer from '../Alert/AlertContainer';
-import { REQUIRED, MATCH_PASSWORDS } from '../../constants/validatorsConstants';
+import {
+  REQUIERED_ERROR_MESSAGE,
+  MATCH_PASSWORDS,
+} from '../../constants/errorConstants';
+import { NavLink } from 'react-router-dom';
+import './Login.scss';
+import { InputGeneral } from '../InputGeneral';
 
-export const Registration = (props: any) => {
+export const Registration: FC = (props: any) => {
   const [isDriver, setIsDriver] = useState(false);
 
   const onChangeHandler = (e: any) => {
@@ -16,24 +27,34 @@ export const Registration = (props: any) => {
   return (
     <div className="jumbotron">
       <div className="container-fluid registration">
-      <AlertContainer />
+        <AlertContainer />
         <h2>Registration</h2>
         <Form
           onSubmit={(formObj) => {
             if (!isDriver) {
-            props.registrateUser(formObj);
+              props.registrateUser(formObj);
+            } else {
+              props.registrateDriver(formObj);
             }
-            props.registrateDriver(formObj);
           }}
           validate={(values) => {
             const errors: any = {};
             if (!values.password) {
-              errors.password = REQUIRED;
+              errors.password = REQUIERED_ERROR_MESSAGE;
             }
             if (!values.confirm) {
-              errors.confirm = REQUIRED;
+              errors.confirm = REQUIERED_ERROR_MESSAGE;
             } else if (values.confirm !== values.password) {
               errors.confirm = MATCH_PASSWORDS;
+            }
+            if (!values.car_color) {
+              errors.car_color = REQUIERED_ERROR_MESSAGE;
+            }
+            if (!values.car_model) {
+              errors.car_model = REQUIERED_ERROR_MESSAGE;
+            }
+            if (!values.car_number) {
+              errors.car_number = REQUIERED_ERROR_MESSAGE;
             }
             return errors;
           }}
@@ -43,187 +64,77 @@ export const Registration = (props: any) => {
         >
           {({ handleSubmit, submitting }) => (
             <form onSubmit={handleSubmit} className="form-horizontal">
-              <div className="form-group">
-                <Field
-                  name="name"
-                  placeholder="Your name"
-                  subscription={{
-                    value: true,
-                    active: true,
-                    error: true,
-                    touched: true,
-                  }}
-                >
-                  {({ input, meta, placeholder }) => (
-                    <div>
-                      <label className="col-xs-2">Name:</label>
-                      <div className="col-xs-4">
-                        <input {...input} placeholder={placeholder} />
-                        {meta.error && meta.touched && (
-                          <span>{meta.error}</span>
-                        )}
-                      </div>
-                    </div>
-                  )}
-                </Field>
-              </div>
-              <div className="form-group">
-                <Field
-                  name="phone"
-                  placeholder="+380501233314"
-                  validate={required}
-                  subscription={{
-                    value: true,
-                    active: true,
-                    error: true,
-                    touched: true,
-                  }}
-                >
-                  {({ input, meta, placeholder }) => (
-                    <div>
-                      <label className="col-xs-2">Phone number:</label>
-                      <div className="col-xs-4">
-                        <input {...input} placeholder={placeholder} />
-                        {meta.error && meta.touched && (
-                          <span>{meta.error}</span>
-                        )}
-                      </div>
-                    </div>
-                  )}
-                </Field>
-              </div>
-              <div className="form-group">
-                <Field
-                  name="password"
-                  type="password"
-                  validate={required}
-                  subscription={{
-                    value: true,
-                    active: true,
-                    error: true,
-                    touched: true,
-                  }}
-                >
-                  {({ input, meta }) => (
-                    <div>
-                      <label className="col-xs-2">Password:</label>
-                      <div className="col-xs-4">
-                        <input {...input} />
-                        {meta.error && meta.touched && (
-                          <span>{meta.error}</span>
-                        )}
-                      </div>
-                    </div>
-                  )}
-                </Field>
-              </div>
-              <div className="form-group">
-                <Field
-                  name="confirm"
-                  type="password"
-                  validate={required}
-                  subscription={{
-                    value: true,
-                    active: true,
-                    error: true,
-                    touched: true,
-                  }}
-                >
-                  {({ input, meta }) => (
-                    <div>
-                      <label className="col-xs-2">Repeat password:</label>
-                      <div className="col-xs-4">
-                        <input {...input} />
-                        {meta.error && meta.touched && (
-                          <span>{meta.error}</span>
-                        )}
-                      </div>
-                    </div>
-                  )}
-                </Field>
-              </div>
+              <InputGeneral
+                name="name"
+                type="text"
+                placeholder="Your name"
+                validate={maxValue(20)}
+                label="Your name:"
+              />
+              <InputGeneral
+                name="phone"
+                type="text"
+                placeholder="+380501233314"
+                validate={phoneMask}
+                label="Phone number:"
+              />
+              <InputGeneral
+                name="password"
+                type="password"
+                validate={passwordMask}
+                label="Password:"
+              />
+              <InputGeneral
+                name="confirm"
+                type="password"
+                validate={maxValue(25)}
+                required
+                label="Confirm password:"
+              />
               <div className="col-xs-4 font-weight-bold">
                 <label>Registrate as driver</label>
-                <input id="driver" type="checkbox" onChange={onChangeHandler} checked={isDriver}/>
+                <input
+                  id="driver"
+                  type="checkbox"
+                  onChange={onChangeHandler}
+                  checked={isDriver}
+                />
               </div>
-              {isDriver ? (<React.Fragment>
-                <div className="form-group">
-              <Field
-                  name="car_color"
-                  type="text"
-                  subscription={{
-                    value: true,
-                    active: true,
-                    error: true,
-                    touched: true,
-                  }}
-                >
-                  {({ input, meta }) => (
-                    <div>
-                      <label className="col-xs-2">Car color:</label>
-                      <div className="col-xs-4">
-                        <input {...input} />
-                        {meta.error && meta.touched && (
-                          <span>{meta.error}</span>
-                        )}
-                      </div>
-                    </div>
-                  )}
-                </Field>
-              </div>
-              <div className="form-group">
-              <Field
-                  name="car_model"
-                  type="text"
-                  subscription={{
-                    value: true,
-                    active: true,
-                    error: true,
-                    touched: true,
-                  }}
-                >
-                  {({ input, meta }) => (
-                    <div>
-                      <label className="col-xs-2">Car model:</label>
-                      <div className="col-xs-4">
-                        <input {...input} />
-                        {meta.error && meta.touched && (
-                          <span>{meta.error}</span>
-                        )}
-                      </div>
-                    </div>
-                  )}
-                </Field>
-              </div>
-              <div className="form-group">
-              <Field
-                  name="car_number"
-                  type="text"
-                  subscription={{
-                    value: true,
-                    active: true,
-                    error: true,
-                    touched: true,
-                  }}
-                >
-                  {({ input, meta }) => (
-                    <div>
-                      <label className="col-xs-2">Car number:</label>
-                      <div className="col-xs-4">
-                        <input {...input} />
-                        {meta.error && meta.touched && (
-                          <span>{meta.error}</span>
-                        )}
-                      </div>
-                    </div>
-                  )}
-                </Field>
-              </div>
-              </React.Fragment>): null}
+              {isDriver ? (
+                <React.Fragment>
+                  <InputGeneral
+                    name="car_color"
+                    type="text"
+                    validate={maxValue(15)}
+                    placeholder="Blue"
+                    required
+                    label="Car color:"
+                  />
+                  <InputGeneral
+                    name="car_model"
+                    type="text"
+                    placeholder="Ford"
+                    validate={maxValue(30)}
+                    required
+                    label="Car model:"
+                  />
+                  <InputGeneral
+                    name="car_number"
+                    type="text"
+                    validate={carMask}
+                    placeholder="CE7890BT"
+                    required
+                    label="Car number:"
+                  />
+                </React.Fragment>
+              ) : null}
               <div className="col-xs-4 mt-3">
                 <Button type="submit" disabled={submitting}>
-                  Register
+                  Sign up
                 </Button>
+                <NavLink className="login-link" to="/">
+                  Sign in
+                </NavLink>
               </div>
             </form>
           )}

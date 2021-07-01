@@ -1,14 +1,15 @@
 import { OrderAction, OrderActionTypes } from '../types/orderTypes';
 import { OrderStateI } from './../types/orderTypes';
+import { Statuses } from '../constants/statuses';
 
 export const initialState: OrderStateI = {
-  from: 'Головна 265',
-  to: 'Ватутіна 1, Чернівці',
+  from: '',
+  to: '',
   carType: { name: 'basic', id: 1 },
   extraServices: [],
   paymentType: 'cash',
   price: 0,
-  status: 'active',
+  status: Statuses.ACTIVE,
   distance: {
     text: '',
     value: 0,
@@ -16,7 +17,8 @@ export const initialState: OrderStateI = {
   loading: false,
   error: false,
   id: undefined,
-  // customerId: undefined,
+  showModalForUser: false,
+  showModalForDriver: false,
 };
 
 export const orderReducer = (
@@ -32,7 +34,18 @@ export const orderReducer = (
       return { ...state, loading: false, error: false };
     case OrderActionTypes.MAKE_ORDER_ERROR:
       return { ...state, loading: false, error: true };
-
+    case OrderActionTypes.FINISH_ORDER:
+      return { ...state, loading: true, error: false };
+    case OrderActionTypes.FINISH_ORDER_SUCCESS:
+      return { ...state, loading: false, error: false, status: Statuses.FINISHED };
+    case OrderActionTypes.FINISH_ORDER_ERROR:
+      return { ...state, loading: false, error: true };
+    case OrderActionTypes.TOGGLE_MODAL_FOR_USER:
+      return { ...state, showModalForUser: !state.showModalForUser };
+    case OrderActionTypes.TOGGLE_MODAL_FOR_DRIVER:
+      return { ...state, showModalForDriver: !state.showModalForDriver };
+    case OrderActionTypes.RESET_ORDER_STATE:
+      return initialState;
     default:
       return state;
   }

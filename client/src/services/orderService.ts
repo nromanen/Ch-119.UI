@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { OrderStateI } from './../types/orderTypes';
+import { ERROR_IN_ORDER } from '../constants/errorConstants';
 
 export class OrderDTO {
   carTypeId: number;
@@ -10,6 +11,7 @@ export class OrderDTO {
   price: string;
   status: string;
   to: string;
+  id?: number;
   constructor(order: any, id: number) {
     this.carTypeId = order.carType.id;
     this.customer_id = id || 1;
@@ -56,6 +58,20 @@ export const makeOrder = (order: OrderStateI, userId: number) => async () => {
     });
     return response;
   } catch (error) {
-    throw new Error('Something gone wrong');
+    throw new Error(ERROR_IN_ORDER);
+  }
+};
+
+export const updateOrder = (order: OrderStateI, userId: number) => async () => {
+  const orderDTO = new OrderDTO(order, userId);
+  orderDTO.id = order.id;
+  const url = `${process.env.REACT_APP_SERVER_URL}order/${orderDTO.id}`;
+  try {
+    const response = axios.put(url, {
+      body: orderDTO,
+    });
+    return response;
+  } catch (error) {
+    throw new Error(ERROR_IN_ORDER);
   }
 };
