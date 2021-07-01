@@ -42,3 +42,8 @@ export const errorHandle = (payload: IUser): IAuthAction => ({
     type: AuthActionTypes.HANDLE_ERROR,
     payload,
 });
+
+export const verifyUser = (payload: IUser): IAuthAction => ({
+    type: AuthActionTypes.VERIFY_USER,
+    payload,
+});

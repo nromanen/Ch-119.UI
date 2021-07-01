@@ -11,7 +11,6 @@ const AppRouter: FC = (props: any) => {
 
   useEffect(() => {
     if (!isAuth) {
-      // props.checkAuth();
       const token = localStorage.getItem('token');
       if (token) {
         const tokenInfo: any = jwtDecode(token);

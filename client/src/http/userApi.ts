@@ -16,7 +16,7 @@ export const registration = (
       role: USER_ROLE,
     });
 
-    if (data) {
+    if (data.id) {
       localStorage.setItem('token', data.accessToken);
       localStorage.setItem('refreshToken', data.refreshToken);
       return new Promise((resolve, reject) =>
@@ -47,7 +47,7 @@ export const registrationDriver = (
       car_number,
     });
 
-    if (data) {
+    if (data.id) {
       localStorage.setItem('token', data.accessToken);
       localStorage.setItem('refreshToken', data.refreshToken);
       return new Promise((resolve, reject) =>
@@ -61,9 +61,9 @@ export const registrationDriver = (
   }
 };
 
-export const login = (phone: string, password: string) => async () => {
+export const login = (phone: string, password: string, verification_code?: number) => async () => {
   try {
-    const { data } = await $host.post('user/login', { phone, password });
+    const { data } = await $host.post('user/login', { phone, password, verification_code });
     if (data) {
       localStorage.setItem('token', data.accessToken);
       localStorage.setItem('refreshToken', data.refreshToken);

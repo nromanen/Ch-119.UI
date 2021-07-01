@@ -9,6 +9,7 @@ export enum AuthActionTypes {
   REGISTRATE_DRIVER = 'REGISTRATE_DRIVER',
   SET_DRIVER_DATA = 'SET_DRIVER_DATA',
   IS_DRIVER = 'IS_DRIVER',
+  VERIFY_USER = 'VERIFY_USER',
 }
 
 export interface InputGeneralI {
@@ -47,6 +48,7 @@ export interface IUser {
   driver_info?: IDriver,
   isDriver: boolean,
   authError: string,
+  verification_code?: number;
 }
 
 export interface IDriver {

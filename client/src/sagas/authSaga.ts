@@ -78,8 +78,9 @@ function* setDriverWorker(): Generator<StrictEffect, void, any> {
 function* loginUserWorker(): Generator<StrictEffect, void, any> {
   const userInfoState = yield select(getUserFromState);
 
-  const data = yield call(login(userInfoState.phone, userInfoState.password));
-
+  if (userInfoState.verification_code !== 0) {
+    const data = yield call(login(userInfoState.phone, userInfoState.password, userInfoState.verification_code));
+    console.log('BEFORE VERIFY', data);
   if (data.id) {
     if (!data.driver_info) {
       yield put({ type: AuthActionTypes.SET_USER_DATA, payload: data });
@@ -91,6 +92,22 @@ function* loginUserWorker(): Generator<StrictEffect, void, any> {
       type: AuthActionTypes.HANDLE_ERROR,
       payload: { data: data, hasError: true },
     });
+  }
+  } else {
+    const data = yield call(login(userInfoState.phone, userInfoState.password));
+    console.log('AFTER VERIFY', data);
+    if (data.id) {
+      if (!data.driver_info) {
+        yield put({ type: AuthActionTypes.SET_USER_DATA, payload: data });
+      } else {
+        yield put({ type: AuthActionTypes.SET_DRIVER_DATA, payload: data });
+      }
+    } else {
+      yield put({
+        type: AuthActionTypes.HANDLE_ERROR,
+        payload: { data: data, hasError: true },
+      });
+    }
   }
 }
 

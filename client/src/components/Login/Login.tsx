@@ -5,6 +5,7 @@ import { Form } from 'react-final-form';
 import { REGISTRATION_ROUTE } from '../../constants/routerConstants';
 import { required } from '../../utils/validators';
 import AlertContainer from '../Alert/AlertContainer';
+import VerificationCodeContainer from '../VerificationInput/VerificationInputContainer';
 import './Login.scss';
 import { InputGeneral } from '../InputGeneral';
 
@@ -12,6 +13,7 @@ export const Login: FC = (props: any) => (
   <div className="jumbotron">
     <div className="container-fluid login">
       <AlertContainer />
+      <VerificationCodeContainer />
       <h2>Login</h2>
       <Form
         onSubmit={(formObj) => {

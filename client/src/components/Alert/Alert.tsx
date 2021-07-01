@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { FC } from 'react';
 import Toast from 'react-bootstrap/Toast';
+import { VERIFICATE } from '../../constants/registrationConstants';
 import './Alert.scss';
 
-const Alert = (props: any) => {
+const Alert: FC = (props: any) => {
   const changeError = () => {
-    props.handleError({ data: '', hasError: false });
+    props.handleError({ data: VERIFICATE, hasError: false });
   };
 
     return props?.auth?.hasError ? (

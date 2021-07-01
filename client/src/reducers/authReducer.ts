@@ -10,6 +10,7 @@ export const initialState: IUser = {
   authError: '',
   id: null,
   isDriver: false,
+  verification_code: 0,
   driver_info: {
     car_color: '',
     car_model: '',
@@ -54,6 +55,12 @@ export const authReducer = (state = initialState, action: any): IUser => {
         ...state,
         phone: action.payload.phone,
         password: action.payload.password,
+      };
+    case AuthActionTypes.VERIFY_USER:
+      return {
+        ...state,
+        verification_code: action.payload.code,
+        authError: '',
       };
     case AuthActionTypes.REGISTRATE_USER:
       return {

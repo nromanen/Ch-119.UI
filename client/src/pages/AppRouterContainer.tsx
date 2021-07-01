@@ -15,9 +15,6 @@ const mapDispathToProps = (dispatch: any) => ({
   setDriver: (payload: any) => {
     dispatch(setDriverData(payload));
   },
-  checkAuth: () => {
-    dispatch(check());
-  },
 });
 
 export default connect(mapStateToProps, mapDispathToProps)(AppRouter);
