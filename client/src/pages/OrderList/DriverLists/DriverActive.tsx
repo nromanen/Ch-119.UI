@@ -6,11 +6,14 @@ import { useTypedSelector } from '../../../hooks/useTypedSelector';
 import { useDriverOrderNewActions } from '../../../hooks/useActions';
 
 export const DriverActive = () => {
-  const { fetchDriverOrderNew } = useDriverOrderNewActions();
+  const { fetchDriverOrderNewAction } = useDriverOrderNewActions();
+  const { current } = useTypedSelector((state) => state.driverOrdes);
+
+  const mayTakeOrder = !!current.length;
 
   // TODO do not refetch because tabs do not render again but make display: none
   useEffect(() => {
-    fetchDriverOrderNew();
+    fetchDriverOrderNewAction();
   }, []);
 
   const { active: list } = useTypedSelector((state) => state.driverOrdes);
@@ -35,6 +38,7 @@ export const DriverActive = () => {
             lastUpdate={order.updatedAt}
             isDriver={true} // TODO change dynamic
             page={Pages.ALL}
+            mayTakeOrder={mayTakeOrder}
           />
         );
       })}

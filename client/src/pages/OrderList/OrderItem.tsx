@@ -1,12 +1,12 @@
 import { FC } from 'react';
 
 import { useTypedSelector } from './../../hooks/useTypedSelector';
-import { extraServicesIcons } from '../../components/ExtraServices/icons';
+import { useDriverOrderNewActions } from '../../hooks/useActions';
+import { Statuses } from '../../constants/statuses';
+
 import { Pages } from './OrderList';
 
 import './OrderItem.scss';
-import { Statuses } from '../../constants/statuses';
-import { useDriverOrderNewActions } from '../../hooks/useActions';
 
 interface CustomerInfoI {
   name: string;
@@ -32,6 +32,7 @@ interface OrderItemPropsI {
   page: Pages;
   customerInfo?: CustomerInfoI;
   driverInfo?: DriverInfoI;
+  mayTakeOrder?: boolean;
 }
 
 export const OrderItem: FC<OrderItemPropsI> = ({
@@ -47,6 +48,7 @@ export const OrderItem: FC<OrderItemPropsI> = ({
   page,
   customerInfo,
   driverInfo,
+  mayTakeOrder,
 }) => {
   const { extra_services } = useTypedSelector((state) => state.cityInfo);
   const newFrom = from.split(', ').slice(0, 2).join(', ');
@@ -62,6 +64,7 @@ export const OrderItem: FC<OrderItemPropsI> = ({
       const extServItem = extra_services.find((extServ) => extServ.id === id);
       return extServItem?.name;
     }) || [];
+
   return (
     <li className="request__item">
       <div className="group request__up">
@@ -131,26 +134,22 @@ export const OrderItem: FC<OrderItemPropsI> = ({
                   })
                 }
                 className="request__button take button button--hovered button--outlined button--border"
-                disabled={!'countOfActiveRequests > 0'}
-                title="
-                countOfActiveRequests > 0
-                  ? 'You should finish current order!'
-                  : 'Take order.'
-                  "
+                disabled={mayTakeOrder}
+                title={
+                  mayTakeOrder
+                    ? 'You should finish current order!'
+                    : 'Take order.'
+                }
               >
                 Take order
               </button>
             )}
-            {!isDriver && page === Pages.ALL && (
+            {page === Pages.HISTORY && (
               <button
-                onClick={() => 'takeRequest(request.id)'}
+                onClick={() => 'leaveFeedback'}
                 className="request__button take button button--hovered button--outlined button--border"
-                disabled={!'countOfActiveRequests > 0'}
-                title="
-                countOfActiveRequests > 0
-                  ? 'You should finish current order!'
-                  : 'Take order.'
-                  "
+                disabled={true}
+                title="Leave feedback"
               >
                 Feedback
               </button>
@@ -174,9 +173,10 @@ export const OrderItem: FC<OrderItemPropsI> = ({
           <p className="info__label">ExtraServices:</p>
           {/* <p className="info__value">{ description }</p> */}
 
-          {/* {extraServicesNames.map((serviceName?: string) => {
-            const Icon = extraServicesIcons[serviceName!];
-            return <Icon className="info__icon" />;
+          {/* {extraServicesNames.map((serviceName: any) => {
+            const Icon = extraServicesIcons[serviceName];
+            console.log(`Icon`, Icon);
+            return <Icon key={serviceName} />;
           })} */}
         </div>
 

@@ -1,3 +1,4 @@
+import { RemoveOrderFromDriverListPayload } from './../types/driverOrderNew';
 import {
   DriverOrderNewActionTypes,
   SetOrdersPayload,
@@ -10,11 +11,14 @@ export const changeOrderStatusAction = (payload: any) => {
   };
 };
 
-export const fetchDriverOrderNew = () => ({
+export const fetchDriverOrderCurrentAction = () => ({
+  type: DriverOrderNewActionTypes.FETCH_CURRENT_ORDERS,
+});
+export const fetchDriverOrderNewAction = () => ({
   type: DriverOrderNewActionTypes.FETCH_ACTIVE_ORDERS,
 });
 
-export const fetchDriverOrderHistory = () => ({
+export const fetchDriverOrderHistoryAction = () => ({
   type: DriverOrderNewActionTypes.FETCH_HISTORY_ORDERS,
 });
 
@@ -28,6 +32,12 @@ export const moveOrderToCurrentAction = (payload: any) => ({
 });
 export const removeOrderFromCurrentAction = () => ({
   type: DriverOrderNewActionTypes.REMOVE_FROM_CURRENT_ORDER,
+});
+export const removeOrderFromDriverListAction = (
+  payload: RemoveOrderFromDriverListPayload,
+) => ({
+  type: DriverOrderNewActionTypes.REMOVE_FROM_ORDER_LIST,
+  payload,
 });
 
 export const fetchDriverOrderNewSuccessAction = () => ({

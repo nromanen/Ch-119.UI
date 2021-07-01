@@ -45,6 +45,16 @@ export interface RemoveFromCurrentOrder {
   type: DriverOrderNewActionTypes.REMOVE_FROM_CURRENT_ORDER;
 }
 
+export interface RemoveOrderFromDriverListPayload {
+  filterKey: keyof CurrentOrder;
+  value: any;
+  filterList: Lists;
+}
+export interface RemoveOrderFromDriverList {
+  type: DriverOrderNewActionTypes.REMOVE_FROM_ORDER_LIST;
+  payload: RemoveOrderFromDriverListPayload;
+}
+
 export interface SetOrders {
   type: DriverOrderNewActionTypes.SET_ORDERS;
   payload: SetOrdersPayload;
@@ -68,16 +78,22 @@ export interface FetchOrdersError {
 
 export enum DriverOrderNewActionTypes {
   REMOVE_FROM_CURRENT_ORDER = 'REMOVE_FROM_CURRENT_ORDER',
+  REMOVE_FROM_ORDER_LIST = 'REMOVE_FROM_ORDER_LIST',
   MOVE_TO_CURRENT_ORDER = 'MOVE_TO_CURRENT_ORDER',
+
   CHANGE_STATUS = 'CHANGE_ORDER_STATUS',
   SET_ORDERS = 'SET_ORDERS_FOR_DRIVER',
+
   FETCH_ACTIVE_ORDERS = 'FETCH_ACTIVE_ORDERS_FOR_DRIVER',
   FETCH_HISTORY_ORDERS = 'FETCH_HISTORY_FOR_DRIVER',
+  FETCH_CURRENT_ORDERS = 'FETCH_CURRENT_ORDERS',
+
   FETCH_ORDERS_SUCCESS = 'FETCH_ORDERS_FOR_DRIVER_SUCCESS',
   FETCH_ORDERS_ERROR = 'FETCH_ORDERS_FOR_DRIVER_ERROR',
 }
 
 export type DriverOrderNewAction =
+  | RemoveOrderFromDriverList
   | RemoveFromCurrentOrder
   | MoveToCurrentOrder
   | SetOrders

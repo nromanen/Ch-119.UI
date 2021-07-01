@@ -33,6 +33,17 @@ export const driverOrderNewReducer = (
         ...state,
         current: [],
       };
+    case DriverOrderNewActionTypes.REMOVE_FROM_ORDER_LIST:
+      return {
+        ...state,
+        [action.payload.filterList]: state[action.payload.filterList].filter(
+          (order) => {
+            const { filterKey, value } = action.payload;
+
+            return order[filterKey] !== value;
+          },
+        ),
+      };
     default:
       return state;
   }

@@ -87,6 +87,10 @@ export default class OrderController {
           {
             model: sequelize.models[CAR_TYPE], // return carType from car_types table
           },
+          {
+            model: sequelize.models[USER],
+            attributes: ['name', 'phone'],
+          },
         ],
       });
       res.status(STATUS_OK).send(dataNew);

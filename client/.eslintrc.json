@@ -22,7 +22,8 @@
     "require-jsdoc": "off",
     "max-len": "off",
     "no-unused-vars": "warn",
-    "no-invalid-this": "warn"
+    "no-invalid-this": "warn",
+    "operator-linebreak": "off"
   },
   "globals": {
     "google": "readonly",

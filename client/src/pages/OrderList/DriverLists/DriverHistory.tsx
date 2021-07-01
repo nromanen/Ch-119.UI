@@ -6,11 +6,11 @@ import { useTypedSelector } from '../../../hooks/useTypedSelector';
 import { useDriverOrderNewActions } from '../../../hooks/useActions';
 
 export const DriverHistory = () => {
-  const { fetchDriverOrderHistory } = useDriverOrderNewActions();
+  const { fetchDriverOrderHistoryAction } = useDriverOrderNewActions();
   useEffect(() => {
-    fetchDriverOrderHistory();
+    fetchDriverOrderHistoryAction();
   }, []);
-
+  console.log(`render history INSIDE`);
   const { history: list } = useTypedSelector((state) => state.driverOrdes);
 
   if (!list.length) {

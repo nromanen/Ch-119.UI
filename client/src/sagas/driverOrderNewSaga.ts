@@ -1,9 +1,4 @@
 import {
-  fetchDriverOrderNew,
-  fetchDriverOrderHistory,
-  changeOrderById,
-} from '../services/orderService';
-import {
   call,
   takeEvery,
   StrictEffect,
@@ -15,13 +10,38 @@ import { DriverOrderNewActionTypes } from '../types/driverOrderNew';
 import {
   fetchDriverOrderNewErrorAction,
   fetchDriverOrderNewSuccessAction,
+  removeOrderFromDriverListAction,
+  moveOrderToCurrentAction,
   setDriverOrderNewAction,
 } from '../actions/driverOrderNewActions';
 import { Statuses } from '../constants/statuses';
-import { moveOrderToCurrentAction } from './../actions/driverOrderNewActions';
+import {
+  fetchDriverOrderNew,
+  fetchDriverOrderHistory,
+  changeOrderById,
+  fetchDriverOrderCurrent,
+} from '../services/orderService';
 
 export const getDriverId = (state: any) => state.auth.driver_info.driver_id;
 
+function* fetchDriverOrderCurrentWorker(): Generator<StrictEffect, void, any> {
+  const driverId = yield select(getDriverId);
+
+  const response = yield call(fetchDriverOrderCurrent(driverId));
+  const orders = response.data.rows;
+
+  if (response.status === 200) {
+    yield put(fetchDriverOrderNewSuccessAction());
+    yield put(
+      setDriverOrderNewAction({
+        list: 'current',
+        values: orders,
+      }),
+    );
+  } else {
+    yield put(fetchDriverOrderNewErrorAction());
+  }
+}
 function* fetchDriverOrderNewWorker(): Generator<StrictEffect, void, any> {
   const response = yield call(fetchDriverOrderNew);
   const orders = response.data.rows;
@@ -66,6 +86,27 @@ function* changeStatusWorker(): Generator<StrictEffect, void, any> {
 
   if (status === Statuses.ACCEPTED) {
     yield put(moveOrderToCurrentAction(response.data));
+    yield put(
+      removeOrderFromDriverListAction({
+        filterKey: 'id',
+        value: id,
+        filterList: 'active',
+      }),
+    );
+  }
+
+  if (
+    status === Statuses.CANCELED ||
+    status === Statuses.FINISHED ||
+    status === Statuses.DONE
+  ) {
+    yield put(
+      removeOrderFromDriverListAction({
+        filterKey: 'id',
+        value: id,
+        filterList: 'current',
+      }),
+    );
   }
   console.log(`response`, response.data);
 }
@@ -99,4 +140,8 @@ export function* driverOrderNewWatcher() {
     fetchDriverOrderHistoryWorker,
   );
   yield takeEvery(DriverOrderNewActionTypes.CHANGE_STATUS, changeStatusWorker);
+  yield takeEvery(
+    DriverOrderNewActionTypes.FETCH_CURRENT_ORDERS,
+    fetchDriverOrderCurrentWorker,
+  );
 }

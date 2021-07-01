@@ -6,9 +6,9 @@ import { useTypedSelector } from '../../../hooks/useTypedSelector';
 import { useDriverOrderNewActions } from '../../../hooks/useActions';
 
 export const DriverCurrent = () => {
-  const { fetchDriverOrderNew } = useDriverOrderNewActions();
+  const { fetchDriverOrderCurrentAction } = useDriverOrderNewActions();
   useEffect(() => {
-    fetchDriverOrderNew();
+    fetchDriverOrderCurrentAction();
   }, []);
 
   const { current: list } = useTypedSelector((state) => state.driverOrdes);
@@ -33,6 +33,7 @@ export const DriverCurrent = () => {
             lastUpdate={order.updatedAt}
             isDriver={true} // TODO change dynamic
             page={Pages.CURRENT}
+            customerInfo={order.user}
           />
         );
       })}

@@ -107,6 +107,23 @@ export const fetchDriverOrderNew = async () => {
     throw new Error(ERROR_IN_ORDER);
   }
 };
+export const fetchDriverOrderCurrent = (driverId: number) => async () => {
+  const url = `${process.env.REACT_APP_SERVER_URL}order/list`;
+
+  try {
+    const response = axios.get(url, {
+      params: {
+        driverId,
+        status: Statuses.ACCEPTED,
+        withUser: '1', // pass any not falsy value, return user info for order in customer_id column
+      },
+    });
+
+    return response;
+  } catch (error) {
+    throw new Error(ERROR_IN_ORDER);
+  }
+};
 
 export const fetchDriverOrderHistory = (driverId: number) => async () => {
   const url = `${process.env.REACT_APP_SERVER_URL}order/list`;
@@ -120,7 +137,6 @@ export const fetchDriverOrderHistory = (driverId: number) => async () => {
       },
     });
 
-    // console.log(`response`, response);
     return response;
   } catch (error) {
     throw new Error(ERROR_IN_ORDER);
