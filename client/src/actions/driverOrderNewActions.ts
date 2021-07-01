@@ -1,10 +1,24 @@
-import { DriverOrderNewActionTypes } from '../types/driverOrderNew';
+import {
+  DriverOrderNewActionTypes,
+  SetOrdersPayload,
+} from '../types/driverOrderNew';
+
+export const changeOrderStatusAction = (payload: any) => {
+  return {
+    type: DriverOrderNewActionTypes.CHANGE_STATUS,
+    payload,
+  };
+};
 
 export const fetchDriverOrderNew = () => ({
-  type: DriverOrderNewActionTypes.FETCH_ORDERS,
+  type: DriverOrderNewActionTypes.FETCH_ACTIVE_ORDERS,
 });
 
-export const setDriverOrderNewAction = (payload: any) => ({
+export const fetchDriverOrderHistory = () => ({
+  type: DriverOrderNewActionTypes.FETCH_HISTORY_ORDERS,
+});
+
+export const setDriverOrderNewAction = (payload: SetOrdersPayload) => ({
   type: DriverOrderNewActionTypes.SET_ORDERS,
   payload,
 });

@@ -77,6 +77,20 @@ export const updateOrder = (order: OrderStateI, userId: number) => async () => {
   }
 };
 
+export const changeOrderById =
+  (id: number, orderNewValues: any) => async () => {
+    const url = `${process.env.REACT_APP_SERVER_URL}order`;
+    try {
+      const response = axios.put(url, {
+        ...orderNewValues,
+        id,
+      });
+      return response;
+    } catch (error) {
+      throw new Error(ERROR_IN_ORDER);
+    }
+  };
+
 export const fetchDriverOrderNew = async () => {
   const url = `${process.env.REACT_APP_SERVER_URL}order/list`;
 
@@ -84,7 +98,25 @@ export const fetchDriverOrderNew = async () => {
     const response = axios.get(url, {
       params: {
         status: Statuses.ACTIVE,
-        withUser: '1', // pass any not falsy value
+        withUser: '1', // pass any not falsy value, return user info for order in customer_id column
+      },
+    });
+
+    return response;
+  } catch (error) {
+    throw new Error(ERROR_IN_ORDER);
+  }
+};
+
+export const fetchDriverOrderHistory = (driverId: number) => async () => {
+  const url = `${process.env.REACT_APP_SERVER_URL}order/list`;
+
+  try {
+    const response = axios.get(url, {
+      params: {
+        status: [Statuses.DONE, Statuses.FINISHED, Statuses.CANCELED], // change if its same
+        withUser: '1', // pass any not falsy value, return user info for order in customer_id column
+        driverId,
       },
     });
 

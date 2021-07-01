@@ -27,7 +27,7 @@ export default class OrderController {
       where: {
         status,
       },
-      attributes: { exclude: ['carTypeId', 'driver_id'] },
+      attributes: { exclude: ['carTypeId', 'driver_id'] }, // exclude driver_id because return driverId
       limit: limit || 5,
       include: [
         {
@@ -65,6 +65,36 @@ export default class OrderController {
     }
   };
 
+  // TODO change name in future
+  updateO = async (req: Request, res: Response): Promise<any> => {
+    try {
+      const { id } = req.body;
+      const data = await sequelize.models[ORDER].update(
+        {
+          ...req.body,
+        },
+        {
+          where: {
+            id,
+          },
+          returning: true,
+        },
+      );
+
+      // TODO make another fetch for CAR_TYPE model values, do not right
+      const dataNew = await sequelize.models[ORDER].findByPk(id, {
+        include: [
+          {
+            model: sequelize.models[CAR_TYPE], // return carType from car_types table
+          },
+        ],
+      });
+      res.status(STATUS_OK).send(dataNew);
+    } catch (error) {
+      res.status(STATUS_BAD_REQUEST).send(error);
+    }
+  };
+
   getByStatus = async (req: Request, res: Response): Promise<any> => {
     let { limit, page } = req.query;
     const { where } = req.query;
@@ -86,8 +116,6 @@ export default class OrderController {
       });
       res.status(STATUS_OK).send({ data, status: STATUS_OK });
     } catch (error) {
-      console.log(error);
-
       res
         .status(STATUS_BAD_REQUEST)
         .send({ message: error.errors[0].message, status: STATUS_BAD_REQUEST });
@@ -107,7 +135,6 @@ export default class OrderController {
 
       res.status(STATUS_OK).send({ data, status: STATUS_OK });
     } catch (error) {
-      console.log(error);
       res
         .status(STATUS_BAD_REQUEST)
         .send({ message: error.errors[0].message, status: STATUS_BAD_REQUEST });

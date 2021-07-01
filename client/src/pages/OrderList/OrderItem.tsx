@@ -1,8 +1,12 @@
 import { FC } from 'react';
+
 import { useTypedSelector } from './../../hooks/useTypedSelector';
+import { extraServicesIcons } from '../../components/ExtraServices/icons';
+import { Pages } from './OrderList';
 
 import './OrderItem.scss';
-import { Pages } from './OrderList';
+import { Statuses } from '../../constants/statuses';
+import { useDriverOrderNewActions } from '../../hooks/useActions';
 
 interface CustomerInfoI {
   name: string;
@@ -16,6 +20,7 @@ interface DriverInfoI {
   carModel: string;
 }
 interface OrderItemPropsI {
+  orderId: number;
   from: string;
   to: string;
   status: string;
@@ -30,6 +35,7 @@ interface OrderItemPropsI {
 }
 
 export const OrderItem: FC<OrderItemPropsI> = ({
+  orderId,
   from,
   to,
   status,
@@ -48,10 +54,10 @@ export const OrderItem: FC<OrderItemPropsI> = ({
   const date = new Date(lastUpdate).toLocaleDateString();
   const time = new Date(lastUpdate).toLocaleTimeString();
 
-  console.log(`date`, date);
-  console.log(`newFrom`, newFrom);
+  const { changeOrderStatusAction } = useDriverOrderNewActions();
+
   // TODO do not have cityInfo without open order page
-  const extraServicesStr =
+  const extraServicesNames =
     extraServices.map((id: number) => {
       const extServItem = extra_services.find((extServ) => extServ.id === id);
       return extServItem?.name;
@@ -90,7 +96,12 @@ export const OrderItem: FC<OrderItemPropsI> = ({
           <div className="group">
             {page === Pages.CURRENT && (
               <button
-                onClick={() => 'cancelRequest(request.id)'}
+                onClick={() =>
+                  changeOrderStatusAction({
+                    status: Statuses.CANCELED,
+                    id: orderId,
+                  })
+                }
                 className="request__button cancel button button--hovered button--outlined button--border"
               >
                 Cancel order
@@ -99,7 +110,12 @@ export const OrderItem: FC<OrderItemPropsI> = ({
 
             {isDriver && page === Pages.CURRENT && (
               <button
-                onClick={() => 'finishRequest(request.id)'}
+                onClick={() =>
+                  changeOrderStatusAction({
+                    status: Statuses.FINISHED,
+                    id: orderId,
+                  })
+                }
                 className="request__button finish button button--hovered button--outlined button--border"
               >
                 Finish order
@@ -108,7 +124,12 @@ export const OrderItem: FC<OrderItemPropsI> = ({
 
             {isDriver && page === Pages.ALL && (
               <button
-                onClick={() => 'takeRequest(request.id)'}
+                onClick={() =>
+                  changeOrderStatusAction({
+                    status: Statuses.ACCEPTED,
+                    id: orderId,
+                  })
+                }
                 className="request__button take button button--hovered button--outlined button--border"
                 disabled={!'countOfActiveRequests > 0'}
                 title="
@@ -152,7 +173,11 @@ export const OrderItem: FC<OrderItemPropsI> = ({
         <div className="info" title="request.description">
           <p className="info__label">ExtraServices:</p>
           {/* <p className="info__value">{ description }</p> */}
-          {extraServicesStr.join(', ')}
+
+          {/* {extraServicesNames.map((serviceName?: string) => {
+            const Icon = extraServicesIcons[serviceName!];
+            return <Icon className="info__icon" />;
+          })} */}
         </div>
 
         {isDriver && page === Pages.CURRENT && (

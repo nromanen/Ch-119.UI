@@ -1,11 +1,15 @@
+import { DriverOrderNewStateI } from './../types/driverOrderNew';
 import {
   DriverOrderNewAction,
   DriverOrderNewActionTypes,
 } from '../types/driverOrderNew';
 
-export const initialState = {
-  list: [],
-  currentOrder: null,
+export const initialState: DriverOrderNewStateI = {
+  history: [],
+  active: [],
+  current: [],
+  loading: false,
+  error: null,
 };
 
 export const driverOrderNewReducer = (
@@ -16,18 +20,18 @@ export const driverOrderNewReducer = (
     case DriverOrderNewActionTypes.SET_ORDERS:
       return {
         ...state,
-        list: action.payload,
+        [action.payload.list]: action.payload.values,
       };
 
     case DriverOrderNewActionTypes.MOVE_TO_CURRENT_ORDER:
       return {
         ...state,
-        currentOrder: action.payload,
+        current: [...state.current, action.payload],
       };
     case DriverOrderNewActionTypes.REMOVE_FROM_CURRENT_ORDER:
       return {
         ...state,
-        currentOrder: null,
+        current: [],
       };
     default:
       return state;

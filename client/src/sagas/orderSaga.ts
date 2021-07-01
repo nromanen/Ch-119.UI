@@ -24,7 +24,6 @@ function* makeOrderWorker(): Generator<StrictEffect, void, any> {
 
   try {
     const data = yield call(makeOrder(order, userID));
-    console.log(`maked order`, data);
     if (data.status === 200) {
       yield put(changeOrderValue('id', data.data.id));
       yield put(makeOrderSuccessAction());
@@ -41,7 +40,7 @@ function* finishOrderWorker(): Generator<StrictEffect, void, any> {
   yield put(finishOrderSuccessAction());
   const userID = yield select(getUserID);
   const order = yield select(getOrder);
-  yield put(changeOrderValue('status', Statuses.ACTIVE));
+  yield put(changeOrderValue('status', Statuses.ACTIVE)); // why active?
 
   try {
     const data = yield call(updateOrder(order, userID));

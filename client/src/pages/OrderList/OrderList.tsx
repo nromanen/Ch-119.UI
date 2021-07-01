@@ -1,45 +1,36 @@
-import React, { useEffect } from 'react';
-import { useDriverOrderNewActions } from '../../hooks/useActions';
-import { useTypedSelector } from './../../hooks/useTypedSelector';
-import { OrderItem } from './OrderItem';
+import Navbar from './../../components/Navbar/Navbar';
+import { Tab, Tabs } from 'react-bootstrap';
+import { DriverActive } from './DriverLists/DriverActive';
+import { DriverHistory } from './DriverLists/DriverHistory';
+import { DriverCurrent } from './DriverLists/DriverCurrent';
 
 import './OrderList.scss';
-import Navbar from './../../components/Navbar/Navbar';
 
 export enum Pages {
   ALL = 'ALL',
   CURRENT = 'CURRENT',
+  HISTORY = 'HISTORY',
 }
 
 export const OrderList = () => {
-  const { fetchDriverOrderNew } = useDriverOrderNewActions();
-  useEffect(() => {
-    fetchDriverOrderNew();
-  }, []);
-
-  const { list } = useTypedSelector((state) => state.driverOrdes);
   return (
     <>
       <div className="dark">
-        <ul className="order__list">
-          {list.map((order: any) => {
-            return (
-              <OrderItem
-                key={order.id}
-                from={order.from}
-                to={order.to}
-                status={order.status}
-                price={order.price}
-                carType={order.car_type.name}
-                extraServices={order.extra_services}
-                lastUpdate={order.updatedAt}
-                isDriver={true}
-                page={Pages.CURRENT}
-              />
-            );
-          })}
-        </ul>
-        <Navbar></Navbar>
+        <div className="wrap">
+          <Tabs defaultActiveKey="profile" id="order__tabs">
+            <Tab eventKey={Pages.HISTORY} title={Pages.HISTORY}>
+              <DriverHistory />
+            </Tab>
+            <Tab eventKey={Pages.ALL} title={Pages.ALL}>
+              <DriverActive />
+            </Tab>
+            <Tab eventKey={Pages.CURRENT} title={Pages.CURRENT}>
+              <DriverCurrent />
+            </Tab>
+          </Tabs>
+
+          <Navbar></Navbar>
+        </div>
       </div>
     </>
   );
