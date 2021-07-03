@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import Alert from './Alert';
-import { errorHandle, verifyUser } from '../../actions/authActions';
+import { errorHandle } from '../../actions/authActions';
 
 const mapStateToProps = (state: any) => {
   return {

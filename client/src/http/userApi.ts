@@ -22,9 +22,9 @@ export const registration = (
       return new Promise((resolve, reject) =>
         resolve(jwtDecode(data.accessToken, data.refreshToken)),
       );
-    } else return data.response.message;
+    } else return data.response;
   } catch (e: any) {
-    return e.response?.data?.message;
+    return e.response?.data;
   }
 };
 
@@ -54,16 +54,24 @@ export const registrationDriver = (
         resolve(jwtDecode(data.accessToken, data.refreshToken)),
       );
     } else {
-      return data.response.message;
+      return data.response;
     }
   } catch (e: any) {
-    return e.response?.data?.message;
+    return e.response?.data;
   }
 };
 
-export const login = (phone: string, password: string, verification_code?: number) => async () => {
+export const login = (
+  phone: string,
+  password: string,
+  verification_code?: number,
+) => async () => {
   try {
-    const { data } = await $host.post('user/login', { phone, password, verification_code });
+    const { data } = await $host.post('user/login', {
+      phone,
+      password,
+      verification_code,
+    });
     if (data) {
       localStorage.setItem('token', data.accessToken);
       localStorage.setItem('refreshToken', data.refreshToken);
@@ -71,10 +79,10 @@ export const login = (phone: string, password: string, verification_code?: numbe
         resolve(jwtDecode(data.accessToken, data.refreshToken)),
       );
     } else {
-      return data.response.message;
+      return data.response;
     }
   } catch (e: any) {
-    return e.response?.data?.message;
+    return e.response?.data;
   }
 };
 

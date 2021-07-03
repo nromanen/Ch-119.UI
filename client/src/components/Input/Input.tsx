@@ -1,4 +1,4 @@
-import React, { FormEvent, FC } from 'react';
+import React, { FC } from 'react';
 import { InputI } from '../../utils/interfaces';
 
 export const Input: FC<InputI> = ({

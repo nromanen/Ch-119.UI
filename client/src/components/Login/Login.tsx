@@ -11,8 +11,8 @@ import { InputGeneral } from '../InputGeneral';
 
 export const Login: FC = (props: any) => (
   <div className="jumbotron">
-      <VerificationCodeContainer />
-      <AlertContainer />
+    <VerificationCodeContainer />
+    <AlertContainer />
     <div className="container-fluid login">
       <h2>Login</h2>
       <Form
@@ -22,8 +22,11 @@ export const Login: FC = (props: any) => (
         subscription={{
           submitting: true,
         }}
-      >
-        {({ handleSubmit, submitting }) => (
+        initialValues={{
+          phone: props.auth.phone ? props.auth.phone : '',
+          password: props.auth.password ? props.auth.password : '',
+        }}
+        render = {({ handleSubmit, submitting, invalid }) => (
           <form onSubmit={handleSubmit} className="form-horizontal">
             <InputGeneral
               name="phone"
@@ -46,14 +49,14 @@ export const Login: FC = (props: any) => (
                 </NavLink>
               </div>
               <div className="col-xs-4">
-                <Button type="submit" disabled={submitting}>
+                <Button type="submit" disabled={invalid}>
                   Sign in
                 </Button>
               </div>
             </div>
           </form>
         )}
-      </Form>
+      />
     </div>
   </div>
 );

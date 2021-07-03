@@ -14,8 +14,12 @@ import {
   DRIVER_ROLE,
 } from '../constants/modelsNames';
 import { MAX_AGE } from '../constants/api';
+import {
+  VERIFICATION_MESSAGE,
+  VERIFICATED_IN_DB,
+} from '../constants/verification';
 import { createDriver, createUser } from '../services/dbRequestsIForAuth';
-import { CAR_NUMBER_EXIST } from '../constants/errors';
+import { CAR_NUMBER_EXIST, VERIFY_ERROR } from '../constants/errors';
 
 const User = sequelize.models[USER];
 const Role = sequelize.models[ROLE];
@@ -66,19 +70,14 @@ export default class AuthController {
                 for (let i = 0; i < roles.length; i++) {
                   authorities.push(roles[i].name);
                 }
-                createDriver(
-                  user.id,
-                  car_color,
-                  car_model,
-                  car_number,
-                )
+                createDriver(user.id, car_color, car_model, car_number);
                 next();
-                });
               });
-            })
-          } catch {
-            return next(ApiError.forbidden());
-          }
+            });
+          });
+        } catch {
+          return next(ApiError.forbidden());
+        }
       } else {
         try {
           createUser(
@@ -100,6 +99,10 @@ export default class AuthController {
                 for (let i = 0; i < roles.length; i++) {
                   authorities.push(roles[i].name);
                 }
+                // sendSMS(
+                //   req.body.phone,
+                //   VERIFICATION_MESSAGE(user.verification_code),
+                // );
                 next();
               });
             });
@@ -133,14 +136,12 @@ export default class AuthController {
           return next(ApiError.unathorized());
         }
 
-        if (user.verification_code !== 'null') {
-          // check verification code if null do the same if not null send message for verification
-          // use other method for send res with message
-          // sendSMS(
-          //   req.body.phone,
-          //   `Go taxi: Your verification code is ${user.verification_code}`,
-          // );
-          return next(ApiError.conflict(`U forgot to verify ${user.verification_code}`));
+        if (user.verification_code !== VERIFICATED_IN_DB) {
+          next(
+            res
+              .status(401)
+              .send({ message: VERIFY_ERROR, code: user.verification_code }),
+          );
         }
         next();
       });
@@ -149,7 +150,7 @@ export default class AuthController {
     }
   }
 
-  async authorization (req: Request, res: Response, next: NextFunction) {
+  async authorization(req: Request, res: Response, next: NextFunction) {
     try {
       let driverInfo: any = null;
       User.findOne({
@@ -161,7 +162,7 @@ export default class AuthController {
           where: {
             user_id: user.id,
           },
-        }).then((driver: any) => {  
+        }).then((driver: any) => {
           if (!driver) {
             driverInfo = null;
           } else {

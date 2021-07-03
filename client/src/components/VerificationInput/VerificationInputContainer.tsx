@@ -9,9 +9,6 @@ const mapStateToProps = (state: any) => {
 };
 
 const mapDispathToProps = (dispatch: any) => ({
-  splitError: (value: any) => {
-    return value.split(' ')[4];
-  },
   handleError: (payload: any) => {
     dispatch(errorHandle(payload));
   },

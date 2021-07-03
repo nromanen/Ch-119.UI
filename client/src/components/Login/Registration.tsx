@@ -28,8 +28,8 @@ export const Registration: FC = (props: any) => {
   return (
     <div className="jumbotron">
       <div className="container-fluid registration">
-        <AlertContainer />
         <VerificationCodeContainer />
+        <AlertContainer />
         <h2>Registration</h2>
         <Form
           onSubmit={(formObj) => {

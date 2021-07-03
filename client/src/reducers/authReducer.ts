@@ -78,6 +78,7 @@ export const authReducer = (state = initialState, action: any): IUser => {
         ...state,
         authError: action.payload.data,
         hasError: action.payload.hasError,
+        verification_code: action.payload.verification_code,
       };
     case AuthActionTypes.LOGOUT_USER:
       return initialState;

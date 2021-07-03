@@ -17,7 +17,7 @@ export interface InputGeneralI {
   type?: string;
   name: string;
   placeholder?: string;
-  validate: any;
+  validate?: any;
   required?: any;
   label: string;
   id?: string;

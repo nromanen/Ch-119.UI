@@ -6,9 +6,9 @@ import './Alert.scss';
 const Alert: FC = (props: any) => {
   const changeError = () => {
     if (props.auth.authError?.includes(VERIFICATE)) {
-      props.handleError({ data: props.auth.authError, hasError: false });
+      props.handleError({ data: props.auth.authError, hasError: false, verification_code: props.auth.verification_code });
     } else {
-      props.handleError({ data: '', hasError: false });
+      props.handleError({ data: '', hasError: false, verification_code: props.auth.verification_code });
     }
   };
 

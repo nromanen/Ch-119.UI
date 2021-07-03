@@ -28,14 +28,17 @@ function* registrateUserWorker(): Generator<StrictEffect, void, any> {
         userInfoState.password,
       ),
     );
-    // create new method for sending SMS with state.auth.phone
+    console.log('Register VERIFY', data);
     if (data.id) {
       yield put({ type: AuthActionTypes.SET_USER_DATA, payload: data });
-      yield put(push(ORDER_ROUTE));
     } else {
       yield put({
         type: AuthActionTypes.HANDLE_ERROR,
-        payload: { data: data, hasError: true },
+        payload: {
+          data: data.message,
+          hasError: true,
+          verification_code: data.code,
+        },
       });
     }
   }
@@ -55,10 +58,16 @@ function* registrateDriverWorker(): Generator<StrictEffect, void, any> {
         userInfoState.driver_info.car_number,
       ),
     );
-    if (!data.id) {
+    if (data.id) {
+      yield put({ type: AuthActionTypes.SET_USER_DATA, payload: data });
+    } else {
       yield put({
         type: AuthActionTypes.HANDLE_ERROR,
-        payload: { data: data, hasError: true },
+        payload: {
+          data: data.message,
+          hasError: true,
+          verification_code: data.code,
+        },
       });
     }
   }
@@ -76,23 +85,13 @@ function* loginUserWorker(): Generator<StrictEffect, void, any> {
   const userInfoState = yield select(getUserFromState);
 
   if (userInfoState.verification_code !== 0) {
-    const data = yield call(login(userInfoState.phone, userInfoState.password, userInfoState.verification_code));
-    console.log('BEFORE VERIFY', data);
-  if (data.id) {
-    if (!data.driver_info) {
-      yield put({ type: AuthActionTypes.SET_USER_DATA, payload: data });
-    } else {
-      yield put({ type: AuthActionTypes.SET_DRIVER_DATA, payload: data });
-    }
-  } else {
-    yield put({
-      type: AuthActionTypes.HANDLE_ERROR,
-      payload: { data: data, hasError: true },
-    });
-  }
-  } else {
-    const data = yield call(login(userInfoState.phone, userInfoState.password));
-    console.log('AFTER VERIFY', data);
+    const data = yield call(
+      login(
+        userInfoState.phone,
+        userInfoState.password,
+        userInfoState.verification_code,
+      ),
+    );
     if (data.id) {
       if (!data.driver_info) {
         yield put({ type: AuthActionTypes.SET_USER_DATA, payload: data });
@@ -102,8 +101,41 @@ function* loginUserWorker(): Generator<StrictEffect, void, any> {
     } else {
       yield put({
         type: AuthActionTypes.HANDLE_ERROR,
-        payload: { data: data, hasError: true },
+        payload: {
+          data: data,
+          hasError: true,
+          verification_code: userInfoState.verification_code,
+        },
       });
+    }
+  } else {
+    const data = yield call(login(userInfoState.phone, userInfoState.password));
+    if (data.id) {
+      if (!data.driver_info) {
+        yield put({ type: AuthActionTypes.SET_USER_DATA, payload: data });
+      } else {
+        yield put({ type: AuthActionTypes.SET_DRIVER_DATA, payload: data });
+      }
+    } else {
+      {
+        data.code ?
+            yield put({
+              type: AuthActionTypes.HANDLE_ERROR,
+              payload: {
+                data: data.message,
+                hasError: false,
+                verification_code: data.code,
+              },
+            }) :
+            yield put({
+              type: AuthActionTypes.HANDLE_ERROR,
+              payload: {
+                data: data.message,
+                hasError: true,
+                verification_code: userInfoState.verification_code,
+              },
+            });
+      }
     }
   }
 }
