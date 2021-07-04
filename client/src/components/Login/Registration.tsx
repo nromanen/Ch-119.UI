@@ -140,7 +140,7 @@ export const Registration: FC = (props: any) => {
                 </React.Fragment>
               ) : null}
               <div className="col-xs-4 mt-3">
-                <Button type="submit" disabled={submitting}>
+                <Button type="submit" disabled={submitting || props.auth.verification_code}>
                   Sign up
                 </Button>
                 <NavLink className="login-link" to="/">

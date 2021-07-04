@@ -28,7 +28,6 @@ function* registrateUserWorker(): Generator<StrictEffect, void, any> {
         userInfoState.password,
       ),
     );
-    console.log('Register VERIFY', data);
     if (data.id) {
       yield put({ type: AuthActionTypes.SET_USER_DATA, payload: data });
     } else {
@@ -55,7 +54,7 @@ function* registrateDriverWorker(): Generator<StrictEffect, void, any> {
         userInfoState.password,
         userInfoState.driver_info.car_color,
         userInfoState.driver_info.car_model,
-        userInfoState.driver_info.car_number,
+        userInfoState.driver_info.car_number.toUpperCase(),
       ),
     );
     if (data.id) {

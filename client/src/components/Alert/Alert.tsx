@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import Toast from 'react-bootstrap/Toast';
-import { VERIFICATE } from '../../constants/registrationConstants';
+import { VERIFICATE, ALERT_DELAY } from '../../constants/registrationConstants';
 import './Alert.scss';
 
 const Alert: FC = (props: any) => {
@@ -16,7 +16,7 @@ const Alert: FC = (props: any) => {
       <Toast
         className="modal"
         onClose={changeError}
-        delay={3000}
+        delay={ALERT_DELAY}
         autohide
         show={props.hasError}
       >

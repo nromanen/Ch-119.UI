@@ -33,3 +33,7 @@ $white: #fff;
 .jumbotron > .verify {
   max-width: 250px;
 }
+
+.wrapper >* {
+   visibility: hidden;
+}

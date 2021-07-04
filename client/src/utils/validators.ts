@@ -11,7 +11,6 @@ import {
 import {
   PASS_MAX_LENGTH,
   PASS_MIN_LENGTH,
-  PHONE_LENGTH,
 } from '../constants/registrationConstants';
 
 export const required = (value: any) =>
@@ -32,13 +31,14 @@ export const passwordMask = (value: any) => {
 };
 
 export const phoneMask = (value: any) => {
-  if (!value?.includes('+380')) return WRONG_PHONE;
-  if (value.length < PHONE_LENGTH) return WRONG_PHONE;
+  if (!(RegExp('^\\+380[0-9]{9}$').test(value))) {
+    return WRONG_PHONE;
+  }
 };
 
 export const carMask = (value: any) => {
-  // RegExp = array with 2 letters 4 digits and 2 letters (RegExp.test(value)) = true/false
-  if (!value?.includes('CE')) {
+  const val = value?.toUpperCase();
+  if (!(RegExp('^[ABCEHIKMOPTX]{2}[0-9]{4}[ABCEHIKMOPTX]{2}$').test(val))) {
     return WRONG_CAR_NUMBER;
   }
 };

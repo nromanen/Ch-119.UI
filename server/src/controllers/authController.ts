@@ -71,6 +71,10 @@ export default class AuthController {
                   authorities.push(roles[i].name);
                 }
                 createDriver(user.id, car_color, car_model, car_number);
+                // sendSMS(
+                //   req.body.phone,
+                //   VERIFICATION_MESSAGE(user.verification_code),
+                // );
                 next();
               });
             });
