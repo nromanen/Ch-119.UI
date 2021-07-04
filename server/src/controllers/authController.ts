@@ -27,14 +27,7 @@ const Driver = sequelize.models[DRIVER];
 
 export default class AuthController {
   async registration(req: Request, res: Response, next: NextFunction) {
-    const {
-      password,
-      phone,
-      verification_code,
-      car_model,
-      car_color,
-      car_number,
-    } = req.body;
+    const { password, phone, car_model, car_color, car_number } = req.body;
 
     const verifyCode = generateVerifyCode();
     if (!phone || !password) {
@@ -199,6 +192,49 @@ export default class AuthController {
           return res.json({ accessToken, refreshToken });
         });
       });
+    } catch {
+      return next(ApiError.unathorized());
+    }
+  }
+
+  async changeInfo(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { name, phone, car_number, id } = req.body;
+      const user: any = await User.findOne({
+        where: {
+          id: id,
+        },
+      });
+      if (phone) {
+        user.phone = phone;
+        await user.save();
+      }
+      if (name) {
+        user.name = name;
+        await user.save();
+      }
+      if (car_number) {
+        const driverNumber = await Driver.findOne({
+          where: {
+            car_number: car_number,
+            user_id: {
+              [Op.not]: user.id
+            }
+          },
+        });
+        if (!driverNumber) {
+          const driver: any = await Driver.findOne({
+            where: {
+              user_id: user.id,
+            },
+          });
+          driver.car_number = car_number;
+          await driver.save();
+        } else {
+          return next(ApiError.conflict(CAR_NUMBER_EXIST));
+        }
+      }
+      next();
     } catch {
       return next(ApiError.unathorized());
     }

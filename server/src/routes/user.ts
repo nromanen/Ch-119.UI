@@ -36,5 +36,6 @@ router.get(
 );
 router.get('/token', refreshTokenMiddleware, tokenController.refresh);
 router.delete('/logout', tokenController.delToken);
+router.put('/edit', verifySignUp.checkDuplicatePhone, controller.changeInfo, controller.authorization);
 
 export default router;

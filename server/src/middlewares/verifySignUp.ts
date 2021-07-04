@@ -1,5 +1,6 @@
 import { ROLES } from '../constants/modelsNames';
 import sequelize from '../db/sequelize/models/index';
+import { Op } from 'sequelize';
 import { NextFunction, Request, Response } from 'express';
 import ApiError from '../errors/ApiErrors';
 import { PHONE_NUMBER_EXIST } from '../constants/errors';
@@ -12,9 +13,13 @@ const checkDuplicatePhone = (
   res: Response,
   next: NextFunction,
 ) => {
+  if (req.body.phone) {
   User.findOne({
     where: {
       phone: req.body.phone,
+      id: {
+        [Op.not]: req.body.id
+      }
     },
   }).then((user: any) => {
     if (user) {
@@ -22,6 +27,9 @@ const checkDuplicatePhone = (
     }
     next();
   });
+  } else {
+    next();
+  }
 };
 
 const checkVerifyCode = (
