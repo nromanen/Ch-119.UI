@@ -1,46 +1,24 @@
-import React, { useState } from 'react';
+import React from 'react';
 import StarRatingComponent from 'react-star-rating-component';
 import { Form, Field } from 'react-final-form';
-import { Button, Modal } from 'react-bootstrap';
+import { Modal } from 'react-bootstrap';
 import { useTypedSelector } from '../../hooks/useTypedSelector';
-import {
-  useFeedbackFormActions,
-  useOrderActions,
-} from '../../hooks/useActions';
+import { useFeedbackActions } from '../../hooks/useActions';
 import './Feedback.scss';
 import { required, maxValue } from '../../utils/validators';
-import { useEffect } from 'react';
+import { CustomButton } from '../../components/Button/Button';
 
 export const Feedback: React.FC = () => {
-  const isShown = useTypedSelector((state) => state.order.showModal);
+  const isShown = useTypedSelector((state) => state.feedback.isShown);
 
-  const orderId = useTypedSelector((state) => state.order.id);
-  const userAuthId = useTypedSelector((state) => state.auth.id);
-  const userOrderId = useTypedSelector((state) => state.order.customer_id);
-  const [authorRole, setAuthorRole] = useState<number>(0);
-  const [subjectRole, setSubjectRole] = useState<number>(0);
-  useEffect(() => {
-    if (userAuthId === userOrderId) {
-      setAuthorRole(1);
-      setSubjectRole(2);
-    } else {
-      setAuthorRole(2);
-      setSubjectRole(1);
-    }
-  });
-
-  const { toggleModal } = useOrderActions();
-  const { createFeedback } = useFeedbackFormActions();
+  const { createFeedback, toggleModal } = useFeedbackActions();
 
   const onSubmit = (values: any) => {
-    const feedback = {
+    const feedbackForm = {
       text: values.feedbackText,
       rating: values.stars,
-      author_role: authorRole,
-      subject_role: subjectRole,
-      orderId: Number(orderId),
     };
-    return createFeedback(feedback);
+    return createFeedback(feedbackForm);
   };
 
   return (
@@ -97,18 +75,19 @@ export const Feedback: React.FC = () => {
                   )}
                 </Field>
                 <div className="d-flex justify-content-end buttons">
-                  <Button variant="secondary" onClick={toggleModal}>
-                    Close
-                  </Button>
-                  <Button
+                  <CustomButton
+                    variant="secondary"
+                    onClick={toggleModal}
+                    label="Close"
+                  ></CustomButton>
+                  <CustomButton
                     variant="primary"
                     type="submit"
+                    onClick={toggleModal}
                     className="submit_btn"
                     disabled={invalid}
-                    onClick={toggleModal}
-                  >
-                    Send
-                  </Button>
+                    label="Send"
+                  ></CustomButton>
                 </div>
               </form>
             </div>

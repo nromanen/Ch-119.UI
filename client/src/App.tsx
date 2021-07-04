@@ -8,17 +8,17 @@ import AppRouterContainer from './pages/AppRouterContainer';
 import './App.scss';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.scss';
-import Feedback from './pages/feedback/Feedback';
+import Feedback from './pages/Feedback/Feedback';
 
-const App = () =>
-    <BrowserRouter>
-      <Provider store={store}>
-        <ConnectedRouter history={history}>
-          <AppRouterContainer />
-          <Feedback></Feedback>
-        </ConnectedRouter>
-      </Provider>
-    </BrowserRouter>;
-
+const App = () => (
+  <BrowserRouter>
+    <Provider store={store}>
+      <ConnectedRouter history={history}>
+        <AppRouterContainer />
+        <Feedback></Feedback>
+      </ConnectedRouter>
+    </Provider>
+  </BrowserRouter>
+);
 
 export default App;

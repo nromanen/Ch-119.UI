@@ -1,7 +1,7 @@
 import { all } from 'redux-saga/effects';
 import { cityInfoWatcher } from './infoSaga';
 import { mapWatcher } from './mapSaga';
-import { createFeedbackWatcher } from './feedbackFormSaga';
+import { feedbackWatcher } from './feedbackSaga';
 import { userInfoWatcher } from './authSaga';
 import { orderWatcher } from './orderSaga';
 
@@ -11,6 +11,6 @@ export function* rootWatcher() {
     mapWatcher(),
     userInfoWatcher(),
     orderWatcher(),
-    createFeedbackWatcher(),
+    feedbackWatcher(),
   ]);
 }

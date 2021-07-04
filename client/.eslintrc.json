@@ -21,7 +21,7 @@
     "indent": "off",
     "require-jsdoc": "off",
     "max-len": "off",
-    "no-unused-vars": "warn",
+    "no-unused-vars": "off",
     "no-invalid-this": "warn"
   },
   "globals": {

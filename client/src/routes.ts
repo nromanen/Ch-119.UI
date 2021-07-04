@@ -9,7 +9,7 @@ import {
   ORDER_USER_ROUTE,
 } from './constants/routerConstants';
 
-import Feedback from './pages/feedback/Feedback';
+import Feedback from './pages/Feedback/Feedback';
 import ProfileContainer from './pages/Profile/ProfileContainer';
 import { Order } from './pages/Order/Order';
 

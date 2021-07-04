@@ -10,6 +10,15 @@ export interface InputI {
   placeholder: string;
 }
 
+export interface ButtonPropsI {
+  onClick?: () => {};
+  className?: string;
+  disabled?: boolean;
+  type?: string;
+  label?: string;
+  variant?: string;
+}
+
 export interface RegisterData {
   name: string;
   phone: string;
@@ -22,13 +31,9 @@ export interface ParamTypes {
 }
 
 export interface FeedbackFormI {
-  text: string;
-  rating: number;
-  author_role: number;
-  subject_role: number;
-  orderId: number;
+  text: string | undefined;
+  rating: number | undefined;
 }
-
 
 export interface FormLabelI {
   title?: string | false;

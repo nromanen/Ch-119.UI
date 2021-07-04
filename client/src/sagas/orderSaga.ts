@@ -12,9 +12,9 @@ import {
   finishOrderSuccessAction,
   makeOrderErrorAction,
   makeOrderSuccessAction,
-  toggleModal,
 } from './../actions/orderActions';
 import { Statuses } from '../constants/statuses';
+import { toggleModal } from '../actions/feedbackActions';
 
 export const getUserID = (state: any) => state.auth.id;
 export const getOrder = (state: any) => state.order;

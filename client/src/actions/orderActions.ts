@@ -40,9 +40,6 @@ export const finishOrderSuccessAction = () => ({
 export const finishOrderErrorAction = () => ({
   type: OrderActionTypes.FINISH_ORDER_ERROR,
 });
-export const toggleModal = () => ({
-  type: OrderActionTypes.TOGGLE_MODAL,
-});
 
 export const resetOrderState = () => ({
   type: OrderActionTypes.RESET_ORDER_STATE,

@@ -17,7 +17,6 @@ export const initialState: OrderStateI = {
   loading: false,
   error: false,
   id: undefined,
-  showModal: false,
 };
 
 export const orderReducer = (
@@ -44,8 +43,6 @@ export const orderReducer = (
       };
     case OrderActionTypes.FINISH_ORDER_ERROR:
       return { ...state, loading: false, error: true };
-    case OrderActionTypes.TOGGLE_MODAL:
-      return { ...state, showModal: !state.showModal };
     case OrderActionTypes.RESET_ORDER_STATE:
       return initialState;
     case OrderActionTypes.UPDATE_ORDER:
