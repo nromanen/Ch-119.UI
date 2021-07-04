@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 
-import { OrderItem } from '../OrderItem';
+import { OrderItem } from '../OrderItem/OrderItem';
 import { Pages } from '../OrderList';
 import { useTypedSelector } from '../../../hooks/useTypedSelector';
 import { useDriverOrderNewActions } from '../../../hooks/useActions';
@@ -10,7 +10,6 @@ export const DriverHistory = () => {
   useEffect(() => {
     fetchDriverOrderHistoryAction();
   }, []);
-  console.log(`render history INSIDE`);
   const { history: list } = useTypedSelector((state) => state.driverOrdes);
 
   if (!list.length) {

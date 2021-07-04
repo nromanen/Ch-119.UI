@@ -72,7 +72,7 @@ export const OrderForm: FC<OrderFormProps> = ({
     <>
       <Jumbotron className="dark order">
         <Form ref={formRef} className="order__form" onSubmit={onSubmit}>
-          <Alert variant="primary">Your current location : {currentCity}</Alert>
+          {/* <Alert variant="primary">Your current location : {currentCity}</Alert> */}
           <Form.Group className="form-group">
             <FormLabel classNames={['col-xs-2']} htmlFor="from" title="From:" />
             <div className="col-xs-4">
@@ -140,7 +140,11 @@ export const OrderForm: FC<OrderFormProps> = ({
           <div className="col-xs-offset-2 col-xs-10">
             <ButtonToolbar className="order__button-toolbar">
               <Price price={price} />
-              <Button type="submit" variant="info" disabled={loading} size="lg">
+              <button
+                className="button button--hovered button--outlined button--border"
+                // variant="info"
+                disabled={loading}
+              >
                 Make order
                 {loading && (
                   <Spinner
@@ -152,7 +156,7 @@ export const OrderForm: FC<OrderFormProps> = ({
                     aria-hidden="true"
                   />
                 )}
-              </Button>
+              </button>
             </ButtonToolbar>
           </div>
         </Form>

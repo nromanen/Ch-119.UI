@@ -6,3 +6,19 @@
 
   background-color: var(--section-bg-color);
 }
+
+.nav.nav-tabs {
+  border-bottom: none;
+}
+
+.nav-item {
+  color: var(--accent-color) !important;
+  &:hover {
+    border-color: var(--accent-color) !important;
+  }
+  &.active {
+    background-color: var(--accent-color) !important;
+    color: var(--section-bg-color) !important;
+    border-color: var(--section-bg-color) !important;
+  }
+}

@@ -78,12 +78,13 @@ function* fetchDriverOrderHistoryWorker(): Generator<StrictEffect, void, any> {
   }
 }
 
+// BUG action called after second click on any button ??
 function* changeStatusWorker(): Generator<StrictEffect, void, any> {
   const { payload } = yield take(DriverOrderNewActionTypes.CHANGE_STATUS);
   const driverId = yield select(getDriverId);
   const { status, id } = payload;
-  const response = yield call(changeOrderById(id, { status, driverId }));
 
+  const response = yield call(changeOrderById(id, { status, driverId }));
   if (status === Statuses.ACCEPTED) {
     yield put(moveOrderToCurrentAction(response.data));
     yield put(
@@ -108,7 +109,6 @@ function* changeStatusWorker(): Generator<StrictEffect, void, any> {
       }),
     );
   }
-  console.log(`response`, response.data);
 }
 
 // function* changeStatusWorker(): Generator<StrictEffect, void, any> {

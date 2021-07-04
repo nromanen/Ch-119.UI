@@ -1,10 +1,11 @@
 import { FC } from 'react';
 
-import { useTypedSelector } from './../../hooks/useTypedSelector';
-import { useDriverOrderNewActions } from '../../hooks/useActions';
-import { Statuses } from '../../constants/statuses';
+import { useTypedSelector } from '../../../hooks/useTypedSelector';
+import { useDriverOrderNewActions } from '../../../hooks/useActions';
+import { Statuses } from '../../../constants/statuses';
 
-import { Pages } from './OrderList';
+import { extraServicesIcons } from '../../../components/ExtraServices/icons';
+import { Pages } from '../OrderList';
 
 import './OrderItem.scss';
 
@@ -83,11 +84,12 @@ export const OrderItem: FC<OrderItemPropsI> = ({
         <div className="request__data">
           <ul className="request__info list group">
             <li>
+              {/* icon carType
               <i
                 title="{ true }"
                 id="request.carType"
                 className="request__car"
-              ></i>
+              ></i> */}
               <span> {carType} </span>
             </li>
 
@@ -163,27 +165,47 @@ export const OrderItem: FC<OrderItemPropsI> = ({
           <p className="info__value">{status}</p>
         </div>
         <div className="info">
-          <p className="info__label">Date:</p>
+          <p className="info__label">
+            {page === Pages.HISTORY ? 'Date:' : 'Time:'}
+          </p>
           <p className="info__value date">
-            {date} <br />
+            {page === Pages.HISTORY && (
+              <span>
+                {date}
+                <br />
+              </span>
+            )}
             {time}
           </p>
         </div>
-        <div className="info" title="request.description">
-          <p className="info__label">ExtraServices:</p>
-          {/* <p className="info__value">{ description }</p> */}
+        {extraServicesNames.length > 0 && (
+          <div className="info" title="request.description">
+            <p className="info__label">Services:</p>
+            {/* <p className="info__value">{ description }</p> */}
 
-          {/* {extraServicesNames.map((serviceName: any) => {
-            const Icon = extraServicesIcons[serviceName];
-            console.log(`Icon`, Icon);
-            return <Icon key={serviceName} />;
-          })} */}
-        </div>
+            <div className="info__extra-services">
+              {extraServicesNames
+                .filter((name) => {
+                  return !!name;
+                })
+                .map((serviceName: any) => {
+                  const Icon = extraServicesIcons[serviceName];
+                  return (
+                    <Icon
+                      key={serviceName}
+                      className="info__extra-services-icon"
+                      title={serviceName}
+                    />
+                  );
+                })}
+            </div>
+          </div>
+        )}
 
         {isDriver && page === Pages.CURRENT && (
-          <div className="info" title="isDriver && info">
+          <div className="info" title="User phone number">
             <p className="info__label">Phone:</p>
-            <a className="info__value" href="'tel:+' + info.phone_number">
+            <a className="info__value" href={'tel:' + customerInfo!.phone}>
               {customerInfo && customerInfo.phone}
             </a>
           </div>

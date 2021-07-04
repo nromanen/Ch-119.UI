@@ -68,8 +68,6 @@ export const MapContainer = () => {
         const directions =
           renderer.getDirections() as google.maps.DirectionsResult;
 
-        console.log(`directions`, directions);
-
         const origin = directions.routes[0].legs[0].start_address;
         const destination = directions.routes[0].legs[0].end_address;
         const directionRoutes = directions.routes[0].legs[0];

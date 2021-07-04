@@ -3,6 +3,7 @@ import { push } from 'react-router-redux';
 import { OrderActionTypes } from '../types/orderTypes';
 import { makeOrder, updateOrder } from '../services/orderService';
 import {
+  ORDER_ACTIVE_ROUTE,
   ORDER_DRIVER_ACTIVE_ROUTE,
   ORDER_USER_ROUTE,
 } from './../constants/routerConstants';
@@ -27,7 +28,7 @@ function* makeOrderWorker(): Generator<StrictEffect, void, any> {
     if (data.status === 200) {
       yield put(changeOrderValue('id', data.data.id));
       yield put(makeOrderSuccessAction());
-      // yield put(push(ORDER_USER_ROUTE + data.data.id));
+      yield put(push(ORDER_ACTIVE_ROUTE));
     } else {
       yield put(makeOrderErrorAction());
     }
