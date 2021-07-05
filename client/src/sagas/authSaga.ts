@@ -6,6 +6,7 @@ import {
   logout,
   checkAuth,
   registrationDriver,
+  editProfile,
 } from '../http/userApi';
 import { push } from 'react-router-redux';
 import {
@@ -139,6 +140,50 @@ function* loginUserWorker(): Generator<StrictEffect, void, any> {
   }
 }
 
+function* editUserWorker(): Generator<StrictEffect, void, any> {
+  const userInfoState = yield select(getUserFromState);
+  if (userInfoState.isDriver) {
+    const data = yield call(
+      editProfile(
+        userInfoState.id,
+        userInfoState.name,
+        userInfoState.phone,
+        userInfoState.driver_info.car_number,
+      ),
+    );
+    if (data.id) {
+      yield put({ type: AuthActionTypes.SET_DRIVER_DATA, payload: data });
+      yield put({ type: AuthActionTypes.IS_MODIFIED, payload: false});
+    } else {
+      yield put({
+        type: AuthActionTypes.HANDLE_ERROR,
+        payload: {
+          data: data.message,
+          hasError: true,
+          verification_code: userInfoState.verification_code,
+        },
+      });
+    }
+  } else {
+    const data = yield call(
+      editProfile(userInfoState.id, userInfoState.name, userInfoState.phone),
+    );
+    if (data.id) {
+      yield put({ type: AuthActionTypes.SET_USER_DATA, payload: data });
+      yield put({ type: AuthActionTypes.IS_MODIFIED, payload: false});
+    } else {
+      yield put({
+        type: AuthActionTypes.HANDLE_ERROR,
+        payload: {
+          data: data.message,
+          hasError: true,
+          verification_code: userInfoState.verification_code,
+        },
+      });
+    }
+  }
+}
+
 function* checkAuthUser(): Generator<StrictEffect, void, any> {
   const data = yield call(checkAuth());
   if (data) {
@@ -162,4 +207,5 @@ export function* userInfoWatcher() {
   yield takeEvery(AuthActionTypes.LOGIN_USER, loginUserWorker);
   yield takeEvery(AuthActionTypes.LOGOUT_USER, logoutUserWorker);
   yield takeEvery(AuthActionTypes.CHECK_USER_DATA, checkAuthUser);
+  yield takeEvery(AuthActionTypes.EDIT_USER, editUserWorker);
 }

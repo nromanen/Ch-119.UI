@@ -86,6 +86,31 @@ export const login = (
   }
 };
 
+export const editProfile = (
+  id: number,
+  name?: string,
+  phone?: string,
+  car_number?: string,
+) => async () => {
+  try {
+    const { data } = await $host.put('user/edit', {
+      id,
+      name,
+      phone,
+      car_number,
+    });
+    if (data) {
+      localStorage.setItem('token', data.accessToken);
+      localStorage.setItem('refreshToken', data.refreshToken);
+      return new Promise((resolve, reject) =>
+        resolve(jwtDecode(data.accessToken, data.refreshToken)),
+      );
+    } else return data.response;
+  } catch (e: any) {
+    return e.response?.data;
+  }
+};
+
 export const logout = () => async () => {
   try {
     const response = await $host.delete('user/logout');

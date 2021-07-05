@@ -10,6 +10,8 @@ export enum AuthActionTypes {
   SET_DRIVER_DATA = 'SET_DRIVER_DATA',
   IS_DRIVER = 'IS_DRIVER',
   VERIFY_USER = 'VERIFY_USER',
+  IS_MODIFIED = 'IS_MODIFIED',
+  EDIT_USER = 'EDIT_USER',
 }
 
 export interface InputGeneralI {
@@ -47,13 +49,14 @@ export interface IUser {
   id: number | null;
   driver_info?: IDriver,
   isDriver: boolean,
+  isModified: boolean,
   authError: string,
   verification_code?: number;
 }
 
 export interface IDriver {
-  car_color: string;
-  car_model: string;
+  car_color?: string;
+  car_model?: string;
   car_number: string;
   driver_id?: number | null;
 }

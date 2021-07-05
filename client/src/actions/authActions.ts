@@ -25,6 +25,16 @@ export const checkDriver = (payload: IUser) => ({
     payload,
 });
 
+export const checkModify = (payload: IUser): IAuthAction => ({
+    type: AuthActionTypes.IS_MODIFIED,
+    payload,
+});
+
+export const editUser = (payload: IUser): IAuthAction => ({
+    type: AuthActionTypes.EDIT_USER,
+    payload,
+});
+
 export const login = (payload: IUser): IAuthAction => ({
     type: AuthActionTypes.LOGIN_USER,
     payload,
@@ -47,3 +57,5 @@ export const verifyUser = (payload: IUser): IAuthAction => ({
     type: AuthActionTypes.VERIFY_USER,
     payload,
 });
+
+

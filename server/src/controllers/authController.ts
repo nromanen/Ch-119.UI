@@ -42,12 +42,12 @@ export default class AuthController {
           return next(ApiError.conflict(CAR_NUMBER_EXIST));
         }
         try {
-          createUser(
+          const user: any = await createUser(
             req.body.phone,
             req.body.name,
             req.body.password,
             verifyCode,
-          ).then((user: any) => {
+          )
             const roles = req.body.roles
               ? req.body.roles
               : [USER_ROLE, DRIVER_ROLE];
@@ -63,7 +63,7 @@ export default class AuthController {
                 for (let i = 0; i < roles.length; i++) {
                   authorities.push(roles[i].name);
                 }
-                createDriver(user.id, car_color, car_model, car_number);
+                createDriver(user.id, car_color, car_model, car_number.toUpperCase());
                 // sendSMS(
                 //   req.body.phone,
                 //   VERIFICATION_MESSAGE(user.verification_code),
@@ -71,18 +71,17 @@ export default class AuthController {
                 next();
               });
             });
-          });
         } catch {
           return next(ApiError.forbidden());
         }
       } else {
         try {
-          createUser(
+          const user: any = await createUser(
             req.body.phone,
             req.body.name,
             req.body.password,
             verifyCode,
-          ).then((user: any) => {
+          )
             const roles = req.body.roles ? req.body.roles : [USER_ROLE];
             Role.findAll({
               where: {
@@ -102,7 +101,6 @@ export default class AuthController {
                 // );
                 next();
               });
-            });
           });
         } catch {
           return next(ApiError.forbidden());
@@ -115,11 +113,11 @@ export default class AuthController {
 
   async login(req: Request, res: Response, next: NextFunction) {
     try {
-      await User.findOne({
+      const user: any = await User.findOne({
         where: {
           phone: req.body.phone,
         },
-      }).then((user: any) => {
+      })
         if (!user) {
           return next(ApiError.badRequest());
         }
@@ -141,7 +139,6 @@ export default class AuthController {
           );
         }
         next();
-      });
     } catch {
       return next(ApiError.forbidden());
     }
@@ -150,22 +147,21 @@ export default class AuthController {
   async authorization(req: Request, res: Response, next: NextFunction) {
     try {
       let driverInfo: any = null;
-      User.findOne({
+      const user: any = await User.findOne({
         where: {
           phone: req.body.phone,
         },
-      }).then((user: any) => {
-        Driver.findOne({
+      })
+        const driver: any = await Driver.findOne({
           where: {
             user_id: user.id,
           },
-        }).then((driver: any) => {
+        })
           if (!driver) {
             driverInfo = null;
           } else {
             driverInfo = driver.dataValues;
           }
-        });
         const authorities: Array<string> = [];
         user.getRoles().then((roles: any) => {
           for (let i = 0; i < roles.length; i++) {
@@ -191,7 +187,6 @@ export default class AuthController {
           });
           return res.json({ accessToken, refreshToken });
         });
-      });
     } catch {
       return next(ApiError.unathorized());
     }
@@ -200,6 +195,7 @@ export default class AuthController {
   async changeInfo(req: Request, res: Response, next: NextFunction) {
     try {
       const { name, phone, car_number, id } = req.body;
+      
       const user: any = await User.findOne({
         where: {
           id: id,

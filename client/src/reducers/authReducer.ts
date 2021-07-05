@@ -9,6 +9,7 @@ export const initialState: IUser = {
   hasError: false,
   authError: '',
   id: null,
+  isModified: false,
   isDriver: false,
   verification_code: 0,
   driver_info: {
@@ -99,6 +100,19 @@ export const authReducer = (state = initialState, action: any): IUser => {
         ...state,
         isDriver: action.payload,
       };
+    case AuthActionTypes.IS_MODIFIED:
+      return {
+        ...state,
+        isModified: action.payload,
+      };
+    case AuthActionTypes.EDIT_USER:
+        return {
+          ...state,
+          name: action.payload.name,
+          phone: action.payload.phone,
+          driver_info: {
+            car_number: action.payload.car_number },
+        };
     default:
       return state;
   }

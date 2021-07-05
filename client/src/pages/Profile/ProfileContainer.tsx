@@ -1,5 +1,5 @@
 import Profile from './Profile';
-import { logout } from '../../actions/authActions';
+import { logout, checkModify, editUser } from '../../actions/authActions';
 import { connect } from 'react-redux';
 
 const mapStateToProps = (state: any) => {
@@ -8,12 +8,16 @@ const mapStateToProps = (state: any) => {
   };
 };
 
-const mapDispatchToProps = (dispatch: any) => {
-  return {
-    logoutUser: () => {
+const mapDispatchToProps = (dispatch: any) => (
+    {logoutUser: () => {
       dispatch(logout());
     },
-  };
-};
+    checkModified: (payload: any) => {
+      dispatch(checkModify(payload));
+    },
+    updateUser: (payload:any) => {
+      dispatch(editUser(payload));
+    }}
+  );
 
 export default connect(mapStateToProps, mapDispatchToProps)(Profile);
