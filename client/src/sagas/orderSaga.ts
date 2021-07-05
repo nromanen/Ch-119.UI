@@ -3,6 +3,7 @@ import { push } from 'react-router-redux';
 import { OrderActionTypes } from '../types/orderTypes';
 import { makeOrder, updateOrder } from '../services/orderService';
 import {
+  ORDER_ACTIVE_ROUTE,
   ORDER_DRIVER_ACTIVE_ROUTE,
   ORDER_USER_ROUTE,
 } from './../constants/routerConstants';
@@ -29,7 +30,7 @@ function* makeOrderWorker(): Generator<StrictEffect, void, any> {
       yield put(changeOrderValue('id', data.data.id));
       yield put(changeOrderValue('customer_id', data.data.customer_id));
       yield put(makeOrderSuccessAction());
-      yield put(push(ORDER_USER_ROUTE + data.data.id));
+      yield put(push(ORDER_ACTIVE_ROUTE));
     } else {
       yield put(makeOrderErrorAction());
     }
@@ -42,7 +43,7 @@ function* finishOrderWorker(): Generator<StrictEffect, void, any> {
   yield put(finishOrderSuccessAction());
   const userID = yield select(getUserID);
   const order = yield select(getOrder);
-  yield put(changeOrderValue('status', Statuses.ACTIVE));
+  yield put(changeOrderValue('status', Statuses.ACTIVE)); // why active?
 
   try {
     const data = yield call(updateOrder(order, userID));

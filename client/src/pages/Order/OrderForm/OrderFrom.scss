@@ -1,0 +1,11 @@
+.jumbotron {
+  border-radius: 0 !important;
+}
+
+.order__form {
+  padding: 10px;
+
+  border-radius: var(--input-border-radius);
+
+  background-color: var(--section-bg-color);
+}

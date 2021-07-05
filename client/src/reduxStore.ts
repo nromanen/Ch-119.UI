@@ -20,6 +20,12 @@ import {
   orderReducer,
   initialState as OrderState,
 } from './reducers/orderReducer';
+
+import {
+  driverOrderNewReducer,
+  initialState as DriverOrderNewState,
+} from './reducers/driverOrderNew';
+
 import { rootWatcher } from './sagas/index';
 
 const sagaMiddleware = createSagaMiddleware();
@@ -30,6 +36,7 @@ const initialState = {
   cityInfo: InfoState,
   map: MapState,
   feedback: FeedbackState,
+  driverOrdes: DriverOrderNewState,
 };
 
 export const history = createBrowserHistory();
@@ -43,14 +50,15 @@ const reducers = (history: any) =>
     auth: authReducer,
     cityInfo: cityInfoReducer,
     map: mapReducer,
+    driverOrdes: driverOrderNewReducer,
   });
 
 const rootReducers = reducers(history);
 
 const store = createStore(
-    rootReducers,
-    initialState,
-    composeWithDevTools(applyMiddleware(sagaMiddleware, browserMiddleware)),
+  rootReducers,
+  initialState,
+  composeWithDevTools(applyMiddleware(sagaMiddleware, browserMiddleware)),
 );
 
 export type RootState = ReturnType<typeof rootReducers>;

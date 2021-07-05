@@ -2,10 +2,11 @@ import React, { useCallback, useMemo, useState } from 'react';
 import { Map } from './Map';
 import { useTypedSelector } from './../../../hooks/useTypedSelector';
 import { useMapActions, useOrderActions } from './../../../hooks/useActions';
+import { dark } from './MapThemes';
 
 const mapContainerStyle = {
   width: '100%',
-  height: '50vh',
+  height: '90vh',
 };
 
 const center = {
@@ -26,6 +27,7 @@ export const MapContainer = () => {
     () => ({
       center: currentLocation || center,
       zoom: 12,
+      styles: dark,
     }),
     [],
   );
