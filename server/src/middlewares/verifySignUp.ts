@@ -8,26 +8,33 @@ import * as bcrypt from 'bcrypt';
 
 const User = sequelize.models['users'];
 
-const checkDuplicatePhone = (
+const checkDuplicatePhone = async(
   req: Request,
   res: Response,
   next: NextFunction,
 ) => {
-  if (req.body.phone) {
-  User.findOne({
+  if (req.body.id) {
+  const user = await User.findOne({
     where: {
       phone: req.body.phone,
       id: {
         [Op.not]: req.body.id
       }
     },
-  }).then((user: any) => {
+  })
     if (user) {
       return next(ApiError.conflict(PHONE_NUMBER_EXIST));
     }
     next();
-  });
   } else {
+    const userPhone = await User.findOne({
+      where: {
+        phone: req.body.phone,
+      }
+    })
+    if (userPhone) {
+      return next(ApiError.conflict(PHONE_NUMBER_EXIST));
+    }
     next();
   }
 };

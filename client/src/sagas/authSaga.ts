@@ -32,14 +32,25 @@ function* registrateUserWorker(): Generator<StrictEffect, void, any> {
     if (data.id) {
       yield put({ type: AuthActionTypes.SET_USER_DATA, payload: data });
     } else {
-      yield put({
-        type: AuthActionTypes.HANDLE_ERROR,
-        payload: {
-          data: data.message,
-          hasError: true,
-          verification_code: data.code,
-        },
-      });
+      {
+        data.code ?
+            yield put({
+              type: AuthActionTypes.HANDLE_ERROR,
+              payload: {
+                data: data.message,
+                hasError: false,
+                verification_code: data.code,
+              },
+            }) :
+            yield put({
+              type: AuthActionTypes.HANDLE_ERROR,
+              payload: {
+                data: data.message,
+                hasError: true,
+                verification_code: userInfoState.verification_code,
+              },
+            });
+      }
     }
   }
 }
@@ -61,14 +72,25 @@ function* registrateDriverWorker(): Generator<StrictEffect, void, any> {
     if (data.id) {
       yield put({ type: AuthActionTypes.SET_USER_DATA, payload: data });
     } else {
-      yield put({
-        type: AuthActionTypes.HANDLE_ERROR,
-        payload: {
-          data: data.message,
-          hasError: true,
-          verification_code: data.code,
-        },
-      });
+      {
+        data.code ?
+            yield put({
+              type: AuthActionTypes.HANDLE_ERROR,
+              payload: {
+                data: data.message,
+                hasError: false,
+                verification_code: data.code,
+              },
+            }) :
+            yield put({
+              type: AuthActionTypes.HANDLE_ERROR,
+              payload: {
+                data: data.message,
+                hasError: true,
+                verification_code: userInfoState.verification_code,
+              },
+            });
+      }
     }
   }
 }
