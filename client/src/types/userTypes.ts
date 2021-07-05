@@ -12,6 +12,7 @@ export enum AuthActionTypes {
   VERIFY_USER = 'VERIFY_USER',
   IS_MODIFIED = 'IS_MODIFIED',
   EDIT_USER = 'EDIT_USER',
+  DRIVER_IN_PROFILE = 'DRIVER_IN_PROFILE',
 }
 
 export interface InputGeneralI {

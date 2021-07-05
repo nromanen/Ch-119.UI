@@ -95,6 +95,14 @@ export const authReducer = (state = initialState, action: any): IUser => {
           car_number: action.payload.car_number,
         },
       };
+    case AuthActionTypes.DRIVER_IN_PROFILE:
+      return {
+        ...state,
+        driver_info: {
+          car_color: action.payload.car_color,
+          car_model: action.payload.car_model,
+          car_number: action.payload.car_number },
+      };
     case AuthActionTypes.IS_DRIVER:
       return {
         ...state,

@@ -7,6 +7,7 @@ import {
   checkAuth,
   registrationDriver,
   editProfile,
+  driverReg,
 } from '../http/userApi';
 import { push } from 'react-router-redux';
 import {
@@ -93,6 +94,18 @@ function* registrateDriverWorker(): Generator<StrictEffect, void, any> {
       }
     }
   }
+}
+
+function* driverRegWorker(): Generator<StrictEffect, void, any> {
+  const userInfoState = yield select(getUserFromState);
+  yield call(
+    driverReg(
+      userInfoState.id,
+      userInfoState.driver_info.car_color,
+      userInfoState.driver_info.car_model,
+      userInfoState.driver_info.car_number,
+    ),
+  );
 }
 
 function* setUserWorker(): Generator<StrictEffect, void, any> {
@@ -230,4 +243,5 @@ export function* userInfoWatcher() {
   yield takeEvery(AuthActionTypes.LOGOUT_USER, logoutUserWorker);
   yield takeEvery(AuthActionTypes.CHECK_USER_DATA, checkAuthUser);
   yield takeEvery(AuthActionTypes.EDIT_USER, editUserWorker);
+  yield takeEvery(AuthActionTypes.DRIVER_IN_PROFILE, driverRegWorker);
 }

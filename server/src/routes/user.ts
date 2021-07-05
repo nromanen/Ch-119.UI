@@ -22,6 +22,12 @@ router.post(
   controller.login,
   controller.authorization,
 );
+
+router.post(
+  '/driver',
+  controller.registerInProfile,
+);
+
 router.post(
   '/login',
   verifySignUp.checkVerifyCode,

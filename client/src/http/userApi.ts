@@ -111,6 +111,24 @@ export const editProfile = (
   }
 };
 
+export const driverReg = (
+  id: number,
+  car_color: string,
+  car_model: string,
+  car_number: string,
+) => async () => {
+  try {
+    await $host.post('user/driver', {
+      id,
+      car_color,
+      car_model,
+      car_number,
+    });
+  } catch (e: any) {
+    return e.response?.data;
+  }
+};
+
 export const logout = () => async () => {
   try {
     const response = await $host.delete('user/logout');
