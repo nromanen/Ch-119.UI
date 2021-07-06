@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import Button from 'react-bootstrap/Button';
 import axios from 'axios';
 import {
@@ -12,7 +12,6 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { Container, Row } from 'reactstrap';
 import { ColInfo } from '../../components/colInfo';
-import { useOrderActions } from '../../hooks/useActions';
 import { useTypedSelector } from './../../hooks/useTypedSelector';
 import Navbar from '../../components/Navbar/Navbar';
 
@@ -31,7 +30,6 @@ const OrderDriverAccepted = ({ match }: any) => {
     setOrder(data.data.data);
   };
 
-  const { finishOrderAction } = useOrderActions();
   const carType = car_types.find((type) => type.id === order.carTypeId);
   const { extra_services } = useTypedSelector((state) => state.cityInfo);
   const extraServices =
@@ -88,9 +86,7 @@ const OrderDriverAccepted = ({ match }: any) => {
             )}
 
             <div className="btn-space">
-              <Button variant="primary" onClick={finishOrderAction}>
-                Finish
-              </Button>
+              <Button variant="primary">Finish</Button>
             </div>
           </Container>
         </div>

@@ -26,15 +26,6 @@ export interface RegisterData {
   rpassword: string;
 }
 
-export interface ParamTypes {
-  orderId: string;
-}
-
-export interface FeedbackFormI {
-  text: string | undefined;
-  rating: number | undefined;
-}
-
 export interface FormLabelI {
   title?: string | false;
   htmlFor?: string;

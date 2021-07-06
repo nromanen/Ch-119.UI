@@ -9,9 +9,9 @@ const feedbackSchema = Joi.object({
 
   rating: Joi.number().min(1).max(5).required(),
 
-  author_role: Joi.number().required(),
+  authorRole: Joi.number().required(),
 
-  subject_role: Joi.number().required(),
+  subjectRole: Joi.number().required(),
 
   orderId: Joi.number().required(),
 });

@@ -174,7 +174,7 @@ export default class OrderController {
     } catch (error) {
       res
         .status(STATUS_BAD_REQUEST)
-        .send({ message: error.errors[0].message, status: STATUS_BAD_REQUEST });
+        .send({ message: error.message, status: STATUS_BAD_REQUEST });
     }
   };
 }

@@ -23,17 +23,9 @@ type ValueOf<T> = T[keyof T];
 
 export type OrderValues = ValueOf<OrderStateI>;
 
-export interface ChangeValueAction {
-  type: OrderActionTypes.CHANGE_VALUE;
-  payload: {
-    prop: keyof OrderStateI;
-    value: OrderValues;
-  };
-}
-
-export interface UpdateOrderAction {
-  type: OrderActionTypes.UPDATE_ORDER;
-  payload: OrderStateI;
+export interface ChangeOrderValuesAction {
+  type: OrderActionTypes.CHANGE_ORDER_VALUES;
+  payload: {};
 }
 
 export interface MakeOrderAction {
@@ -47,24 +39,12 @@ export interface MakeOrderErrorAction {
   type: OrderActionTypes.MAKE_ORDER_ERROR;
 }
 
-export interface FinishOrderAction {
-  type: OrderActionTypes.FINISH_ORDER;
-}
-
-export interface FinishOrderSuccessAction {
-  type: OrderActionTypes.FINISH_ORDER_SUCCESS;
-}
-
-export interface FinishOrderErrorAction {
-  type: OrderActionTypes.FINISH_ORDER_ERROR;
-}
-
 export interface ResetOrderState {
   type: OrderActionTypes.RESET_ORDER_STATE;
 }
 
 export enum OrderActionTypes {
-  CHANGE_VALUE = 'CHANGE_ORDER_VALUE',
+  CHANGE_ORDER_VALUES = 'CHANGE_ORDER_VALUES',
   MAKE_ORDER = 'MAKE_ORDER',
   MAKE_ORDER_SUCCESS = 'MAKE_ORDER_SUCCESS',
   MAKE_ORDER_ERROR = 'MAKE_ORDER_ERROR',
@@ -75,12 +55,8 @@ export enum OrderActionTypes {
   UPDATE_ORDER = 'UPDATE_ORDER',
 }
 export type OrderAction =
-  | ChangeValueAction
+  | ChangeOrderValuesAction
   | MakeOrderAction
   | MakeOrderSuccessAction
   | MakeOrderErrorAction
-  | FinishOrderAction
-  | FinishOrderSuccessAction
-  | FinishOrderErrorAction
-  | ResetOrderState
-  | UpdateOrderAction;
+  | ResetOrderState;

@@ -21,6 +21,7 @@ import {
   changeOrderById,
   fetchDriverOrderCurrent,
 } from '../services/orderService';
+import { toggleModal } from '../actions/feedbackActions';
 
 export const getDriverId = (state: any) => state.auth.driver_info.driver_id;
 
@@ -96,11 +97,7 @@ function* changeStatusWorker(): Generator<StrictEffect, void, any> {
     );
   }
 
-  if (
-    status === Statuses.CANCELED ||
-    status === Statuses.FINISHED ||
-    status === Statuses.DONE
-  ) {
+  if (status === Statuses.CANCELED || status === Statuses.DONE) {
     yield put(
       removeOrderFromDriverListAction({
         filterKey: 'id',
@@ -108,6 +105,10 @@ function* changeStatusWorker(): Generator<StrictEffect, void, any> {
         filterList: 'current',
       }),
     );
+  }
+
+  if (status === Statuses.FINISHED) {
+    yield put(toggleModal());
   }
 }
 

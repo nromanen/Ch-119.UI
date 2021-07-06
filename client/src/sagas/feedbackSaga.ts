@@ -4,13 +4,13 @@ import {
   FeedbackActionTypes,
 } from '../types/feedbackTypes';
 import { createFeedback } from '../services/apiFeedbackService';
-import { changeFeedbackValue } from '../actions/feedbackActions';
+import { toggleModal } from '../actions/feedbackActions';
 import { UserRoles } from '../constants/userRoles';
+import { removeOrderFromDriverListAction } from '../actions/driverOrderNewActions';
 
-const getFeedback = (state: any) => state.feedback;
 const userAuthId = (state: any) => state.auth.id;
-const userOrderId = (state: any) => state.order.customer_id;
-const orderId = (state: any) => state.order.id;
+const userOrderId = (state: any) => state.driverOrders.current[0].customer_id;
+const orderId = (state: any) => state.driverOrders.current[0].id;
 
 function* createFeedbackWorker(
   action: CreateFeedbackAction,
@@ -19,18 +19,40 @@ function* createFeedbackWorker(
     const currentUserId = yield select(userAuthId);
     const customerId = yield select(userOrderId);
     const currentOrderId = yield select(orderId);
-    yield put(changeFeedbackValue('text', action.payload.text));
-    yield put(changeFeedbackValue('rating', action.payload.rating));
-    yield put(changeFeedbackValue('orderId', currentOrderId));
-    if (currentUserId === customerId) {
-      yield put(changeFeedbackValue('author_role', UserRoles.USER));
-      yield put(changeFeedbackValue('subject_role', UserRoles.DRIVER));
-    } else {
-      yield put(changeFeedbackValue('author_role', UserRoles.DRIVER));
-      yield put(changeFeedbackValue('subject_role', UserRoles.USER));
-    }
-    const feedback = yield select(getFeedback);
+    const feedback = {
+      text: action.payload.text,
+      rating: action.payload.rating,
+      orderId: currentOrderId,
+      authorRole:
+        currentUserId === customerId ? UserRoles.USER : UserRoles.DRIVER,
+      subjectRole:
+        currentUserId === customerId ? UserRoles.DRIVER : UserRoles.USER,
+    };
     yield call(createFeedback, feedback);
+    yield put(
+      removeOrderFromDriverListAction({
+        filterKey: 'id',
+        value: currentOrderId,
+        filterList: 'current',
+      }),
+    );
+    yield put(toggleModal());
+  } catch (error: any) {
+    return error;
+  }
+}
+
+function* closeModalWorker(): Generator<StrictEffect, void, any> {
+  try {
+    const currentOrderId = yield select(orderId);
+    yield put(
+      removeOrderFromDriverListAction({
+        filterKey: 'id',
+        value: currentOrderId,
+        filterList: 'current',
+      }),
+    );
+    yield put(toggleModal());
   } catch (error: any) {
     return error;
   }
@@ -38,4 +60,5 @@ function* createFeedbackWorker(
 
 export function* feedbackWatcher() {
   yield takeEvery(FeedbackActionTypes.CREATE_FEEDBACK, createFeedbackWorker);
+  yield takeEvery(FeedbackActionTypes.CLOSE_MODAL, closeModalWorker);
 }

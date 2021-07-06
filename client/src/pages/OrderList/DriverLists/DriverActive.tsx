@@ -7,7 +7,7 @@ import { useDriverOrderNewActions } from '../../../hooks/useActions';
 
 export const DriverActive = () => {
   const { fetchDriverOrderNewAction } = useDriverOrderNewActions();
-  const { current } = useTypedSelector((state) => state.driverOrdes);
+  const { current } = useTypedSelector((state) => state.driverOrders);
 
   const mayTakeOrder = !!current.length;
 
@@ -16,7 +16,7 @@ export const DriverActive = () => {
     fetchDriverOrderNewAction();
   }, []);
 
-  const { active: list } = useTypedSelector((state) => state.driverOrdes);
+  const { active: list } = useTypedSelector((state) => state.driverOrders);
 
   if (!list.length) {
     return <div>Nobody want a ride</div>;

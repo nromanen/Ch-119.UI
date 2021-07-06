@@ -11,7 +11,7 @@ import { CustomButton } from '../../components/Button/Button';
 export const Feedback: React.FC = () => {
   const isShown = useTypedSelector((state) => state.feedback.isShown);
 
-  const { createFeedback, toggleModal } = useFeedbackActions();
+  const { createFeedback, toggleModal, closeModal } = useFeedbackActions();
 
   const onSubmit = (values: any) => {
     const feedbackForm = {
@@ -77,13 +77,12 @@ export const Feedback: React.FC = () => {
                 <div className="d-flex justify-content-end buttons">
                   <CustomButton
                     variant="secondary"
-                    onClick={toggleModal}
+                    onClick={closeModal}
                     label="Close"
                   ></CustomButton>
                   <CustomButton
                     variant="primary"
                     type="submit"
-                    onClick={toggleModal}
                     className="submit_btn"
                     disabled={invalid}
                     label="Send"

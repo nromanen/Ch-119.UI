@@ -19,7 +19,7 @@ export const MapContainer = () => {
     (state) => state.map,
   );
   const { changeMapValue } = useMapActions();
-  const { changeOrderValue } = useOrderActions();
+  const { changeOrderValues } = useOrderActions();
 
   const [renderer, setrenderer] = useState<google.maps.DirectionsRenderer>();
 
@@ -73,10 +73,11 @@ export const MapContainer = () => {
         const directionRoutes = directions.routes[0].legs[0];
         const distance: google.maps.Distance =
           directionRoutes.distance as google.maps.Distance;
-
-        changeOrderValue('distance', distance);
-        changeOrderValue('from', origin);
-        changeOrderValue('to', destination);
+        changeOrderValues({
+          distance: distance,
+          from: origin,
+          to: destination,
+        });
       }
     },
     [renderer, directionsResult],

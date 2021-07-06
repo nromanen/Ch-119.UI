@@ -21,13 +21,8 @@ import {
 import { ColInfo } from './colInfo';
 import { useTypedSelector } from '../hooks/useTypedSelector';
 import jwt_decode from 'jwt-decode';
-import { useOrderActions } from '../hooks/useActions';
 
 const OrderItem = ({ order }: any) => {
-  const { updateOrderState } = useOrderActions();
-  const driver_id = useTypedSelector(
-    (state) => state.auth.driver_info?.driver_id,
-  );
   const changeStatus = async (
     orderId: number | string,
     driverId: number | string,
@@ -39,8 +34,6 @@ const OrderItem = ({ order }: any) => {
         customer_id: driverId,
       },
     });
-    order.driverId = driver_id;
-    updateOrderState(order);
   };
 
   const { car_types } = useTypedSelector((state) => state.cityInfo);

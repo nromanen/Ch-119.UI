@@ -10,7 +10,7 @@ export const DriverHistory = () => {
   useEffect(() => {
     fetchDriverOrderHistoryAction();
   }, []);
-  const { history: list } = useTypedSelector((state) => state.driverOrdes);
+  const { history: list } = useTypedSelector((state) => state.driverOrders);
 
   if (!list.length) {
     return <div>You have't done any order</div>;

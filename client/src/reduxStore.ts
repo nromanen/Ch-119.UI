@@ -36,7 +36,7 @@ const initialState = {
   cityInfo: InfoState,
   map: MapState,
   feedback: FeedbackState,
-  driverOrdes: DriverOrderNewState,
+  driverOrders: DriverOrderNewState,
 };
 
 export const history = createBrowserHistory();
@@ -50,7 +50,7 @@ const reducers = (history: any) =>
     auth: authReducer,
     cityInfo: cityInfoReducer,
     map: mapReducer,
-    driverOrdes: driverOrderNewReducer,
+    driverOrders: driverOrderNewReducer,
   });
 
 const rootReducers = reducers(history);

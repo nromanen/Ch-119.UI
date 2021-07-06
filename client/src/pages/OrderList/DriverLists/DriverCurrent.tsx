@@ -11,7 +11,7 @@ export const DriverCurrent = () => {
     fetchDriverOrderCurrentAction();
   }, []);
 
-  const { current: list } = useTypedSelector((state) => state.driverOrdes);
+  const { current: list } = useTypedSelector((state) => state.driverOrders);
 
   if (!list.length) {
     return <div>You haven't accepted order</div>;

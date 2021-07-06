@@ -1,7 +1,5 @@
-import { FeedbackFormI } from '../utils/interfaces';
-
 export interface FeedbackState {
-  text: string;
+  text: string | undefined;
   rating: number | undefined;
   author_role: number | undefined;
   subject_role: number | undefined;
@@ -9,9 +7,10 @@ export interface FeedbackState {
   isShown: boolean;
 }
 
-type ValueOf<T> = T[keyof T];
-
-export type FeedbackValues = ValueOf<FeedbackState>;
+export interface FeedbackFormI {
+  text: string | undefined;
+  rating: number | undefined;
+}
 
 export interface CreateFeedbackAction {
   type: FeedbackActionTypes.CREATE_FEEDBACK;
@@ -22,21 +21,30 @@ export interface ToggleModalAction {
   type: FeedbackActionTypes.TOGGLE_MODAL;
 }
 
-export interface ChangeValueAction {
-  type: FeedbackActionTypes.CHANGE_VALUE;
-  payload: {
-    prop: keyof FeedbackState;
-    value: FeedbackValues;
-  };
+export interface CloseModalAction {
+  type: FeedbackActionTypes.CLOSE_MODAL;
+}
+
+export interface ResetFeedbackState {
+  type: FeedbackActionTypes.RESET_FEEDBACK_STATE;
+}
+
+export interface ChangeFeedbackValuesAction {
+  type: FeedbackActionTypes.CHANGE_FEEDBACK_VALUES;
+  payload: {};
 }
 
 export enum FeedbackActionTypes {
   CREATE_FEEDBACK = 'CREATE_FEEDBACK',
   TOGGLE_MODAL = 'TOGGLE_MODAL',
-  CHANGE_VALUE = 'CHANGE_VALUE',
+  CHANGE_FEEDBACK_VALUES = 'CHANGE_FEEDBACK_VALUES',
+  CLOSE_MODAL = 'CLOSE_MODAL',
+  RESET_FEEDBACK_STATE = 'RESET_FEEDBACK_STATE',
 }
 
 export type FeedbackAction =
   | CreateFeedbackAction
   | ToggleModalAction
-  | ChangeValueAction;
+  | CloseModalAction
+  | ChangeFeedbackValuesAction
+  | ResetFeedbackState;

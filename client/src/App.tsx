@@ -17,7 +17,7 @@ const App = () => (
     <Provider store={store}>
       <ConnectedRouter history={history}>
         <AppRouterContainer />
-        <Feedback></Feedback>
+        <Feedback />
       </ConnectedRouter>
     </Provider>
   </BrowserRouter>

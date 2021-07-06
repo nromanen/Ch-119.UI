@@ -16,7 +16,6 @@ export const initialState: OrderStateI = {
   },
   loading: false,
   error: false,
-  id: undefined,
 };
 
 export const orderReducer = (
@@ -24,29 +23,16 @@ export const orderReducer = (
   action: OrderAction,
 ): OrderStateI => {
   switch (action.type) {
-    case OrderActionTypes.CHANGE_VALUE:
-      return { ...state, [action.payload.prop]: action.payload.value };
+    case OrderActionTypes.CHANGE_ORDER_VALUES:
+      return { ...state, ...action.payload };
     case OrderActionTypes.MAKE_ORDER:
       return { ...state, loading: true, error: false };
     case OrderActionTypes.MAKE_ORDER_SUCCESS:
       return { ...state, loading: false, error: false };
     case OrderActionTypes.MAKE_ORDER_ERROR:
       return { ...state, loading: false, error: true };
-    case OrderActionTypes.FINISH_ORDER:
-      return { ...state, loading: true, error: false };
-    case OrderActionTypes.FINISH_ORDER_SUCCESS:
-      return {
-        ...state,
-        loading: false,
-        error: false,
-        status: Statuses.FINISHED,
-      };
-    case OrderActionTypes.FINISH_ORDER_ERROR:
-      return { ...state, loading: false, error: true };
     case OrderActionTypes.RESET_ORDER_STATE:
       return initialState;
-    case OrderActionTypes.UPDATE_ORDER:
-      return { ...state, ...action.payload };
     default:
       return state;
   }
