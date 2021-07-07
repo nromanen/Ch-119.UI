@@ -5,14 +5,26 @@ $white: #fff;
     margin: auto;
 
     .profile-info {
-        margin-bottom: 15px;
+        margin-bottom: 10px;
+        background-color:$white;
     }
 
     .profile-text {
         margin-top: 15px;
         padding-top: 10px;
         padding-bottom: 10px;
-        background-color:$white;
         border-radius: .25rem;
+    }
+
+    .profile-buttons {
+        display: flex;
+    }
+
+    #edit {
+        margin-left: 5px;
+    }
+
+    .logout {
+        width:100%;
     }
 }

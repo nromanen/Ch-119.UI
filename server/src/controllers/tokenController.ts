@@ -9,7 +9,7 @@ export default class TokenController {
 async refresh(req: Request, res: Response, next: NextFunction): Promise<any> {
     const { refreshToken } = req.cookies;
 
-    const userInfo = jwt.verify(
+    const userInfo: any = jwt.verify(
       refreshToken,
       process.env.REFRESH_TOKEN_SECRET_KEY!,
     );
@@ -24,18 +24,18 @@ async refresh(req: Request, res: Response, next: NextFunction): Promise<any> {
 
     return res.json({
       accessToken: generateAccessToken(
-        (userInfo as any).id,
-        (userInfo as any).name,
-        (userInfo as any).phone,
-        (userInfo as any).roles,
-        (userInfo as any).driver_info,
+        userInfo.id,
+        userInfo.name,
+        userInfo.phone,
+        userInfo.roles,
+        userInfo.driver_info,
       ),
       refreshToken: generateRefreshToken(
-        (userInfo as any).id,
-        (userInfo as any).name,
-        (userInfo as any).phone,
-        (userInfo as any).roles,
-        (userInfo as any).driver_info,
+        userInfo.id,
+        userInfo.name,
+        userInfo.phone,
+        userInfo.roles,
+        userInfo.driver_info,
       ),
     });
   }
@@ -43,19 +43,19 @@ async refresh(req: Request, res: Response, next: NextFunction): Promise<any> {
   async check(req: Request, res: Response, next: NextFunction): Promise<any> {
     const token: string = req.headers.authorization!.split(' ')[1];
 
-    const userInfo = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET_KEY!);
+    const userInfo: any = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET_KEY!);
 
     const accessToken = generateAccessToken(
-      (userInfo as any).id,
-      (userInfo as any).name,
-      (userInfo as any).phone,
-      (userInfo as any).roles,
+      userInfo.id,
+      userInfo.name,
+      userInfo.phone,
+      userInfo.roles,
     );
     const refreshToken = generateRefreshToken(
-      (userInfo as any).id,
-      (userInfo as any).name,
-      (userInfo as any).phone,
-      (userInfo as any).roles,
+      userInfo.id,
+      userInfo.name,
+      userInfo.phone,
+      userInfo.roles,
     );
     res.cookie('refreshToken', refreshToken, {
       maxAge: MAX_AGE,

@@ -69,10 +69,10 @@ export default class AuthController {
                 car_model,
                 car_number.toUpperCase(),
               );
-              sendSMS(
-                req.body.phone,
-                VERIFICATION_MESSAGE(user.verification_code),
-              );
+              // sendSMS(
+              //   req.body.phone,
+              //   VERIFICATION_MESSAGE(user.verification_code),
+              // );
               next();
             });
           });
@@ -100,10 +100,10 @@ export default class AuthController {
               for (let i = 0; i < roles.length; i++) {
                 authorities.push(roles[i].name);
               }
-              sendSMS(
-                req.body.phone,
-                VERIFICATION_MESSAGE(user.verification_code),
-              );
+              // sendSMS(
+              //   req.body.phone,
+              //   VERIFICATION_MESSAGE(user.verification_code),
+              // );
               next();
             });
           });

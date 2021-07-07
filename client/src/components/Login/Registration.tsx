@@ -6,6 +6,7 @@ import {
   maxValue,
   carMask,
   passwordMask,
+  nameMask,
 } from '../../utils/validators';
 import AlertContainer from '../Alert/AlertContainer';
 import {
@@ -71,8 +72,7 @@ export const Registration: FC = (props: any) => {
               <InputGeneral
                 name="name"
                 type="text"
-                placeholder="Your name"
-                validate={maxValue(20)}
+                validate={nameMask(15)}
                 label="Your name:"
                 id="name"
               />

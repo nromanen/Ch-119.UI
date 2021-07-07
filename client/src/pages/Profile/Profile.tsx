@@ -26,11 +26,11 @@ const Profile: FC = (props: any) => {
   return (
     <div className="jumbotron profile">
       <AlertContainer />
-      <div className="profile-info">
+      <div className="container profile-info">
         <div>
-          <h2>User Profile</h2>
+          <h2>Your Profile</h2>
           {!props.auth.isModified ? (
-            <div className="container profile-text">
+            <div className="profile-text">
               <p>
                 <strong>Username:</strong> {props.auth.name}
               </p>
@@ -104,13 +104,10 @@ const Profile: FC = (props: any) => {
             </div>
           )}
           {/* make another className */}
-          <div className="col-xs-4 font-weight-bold bg-white">
-            <button className="btn btn-danger" onClick={props.logoutUser}>
-              Log out
-            </button>
+          <div className="col-xs-4">
             <label>Edit</label>
             <input
-              id="driver"
+              id="edit"
               type="checkbox"
               onChange={onChangeHandler}
               checked={isModified}
@@ -128,7 +125,7 @@ const Profile: FC = (props: any) => {
                 <Form
                 onSubmit={(formObj) => {
                     props.driverProfile(formObj);
-                    // props.logoutUser();
+                    props.logoutUser();
                 }}
                 validate={(values) => {
                   const errors: any = {};
@@ -191,6 +188,9 @@ const Profile: FC = (props: any) => {
           </div>
         </div>
       </div>
+      <button className="btn btn-danger logout" onClick={props.logoutUser}>
+      Log out
+      </button>
       <Navbar />
     </div>
   );

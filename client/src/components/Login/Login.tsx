@@ -3,7 +3,7 @@ import { Button } from 'react-bootstrap';
 import { NavLink } from 'react-router-dom';
 import { Form } from 'react-final-form';
 import { REGISTRATION_ROUTE } from '../../constants/routerConstants';
-import { required } from '../../utils/validators';
+import { required, phoneMask } from '../../utils/validators';
 import AlertContainer from '../Alert/AlertContainer';
 import VerificationCodeContainer from '../VerificationInput/VerificationInputContainer';
 import './Login.scss';
@@ -34,7 +34,7 @@ export const Login: FC = (props: any) => (
               <InputGeneral
                 name="phone"
                 placeholder="+380501233314"
-                validate={required}
+                validate={phoneMask}
                 label="Phone number:"
                 id="phone"
               />
