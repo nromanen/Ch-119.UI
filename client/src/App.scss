@@ -129,7 +129,7 @@ body {
 }
 
 .cm-toggle {
-  -webkit-appearance: none;
+-webkit-appearance: none;
 -webkit-tap-highlight-color: transparent;
 position: relative;
 border: 0;
@@ -165,7 +165,7 @@ cursor: pointer;
   }
 
   &:checked:after {
-      background: $yellow;
+      background: var(--accent-color);
   }
 }
 

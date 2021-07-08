@@ -1,5 +1,4 @@
 import React, { FC, useState } from 'react';
-import { Button } from 'react-bootstrap';
 import { Form } from 'react-final-form';
 import {
   phoneMask,
@@ -148,10 +147,13 @@ export const Registration: FC = (props: any) => {
                 </React.Fragment>
               ) : null}
               <div className="col-xs-4 mt-3">
-                <Button type="submit" className="button button--hovered button--outlined button--border"
-                 disabled={submitting || props.auth.verification_code}>
+                <button
+                  type="submit"
+                  className="button button--hovered button--outlined button--border"
+                  disabled={submitting || props.auth.verification_code}
+                >
                   Sign up
-                </Button>
+                </button>
                 <NavLink className="login-link" to="/">
                   Sign in
                 </NavLink>

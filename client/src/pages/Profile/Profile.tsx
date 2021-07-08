@@ -1,7 +1,6 @@
 import React, { FC, useState } from 'react';
 import './Profile.scss';
 import Navbar from '../../components/Navbar/Navbar';
-import { Button } from 'react-bootstrap';
 import { InputGeneral } from '../../components/InputGeneral';
 import { Form } from 'react-final-form';
 import { phoneMask, carMask, maxValue } from '../../utils/validators';
@@ -65,7 +64,7 @@ const Profile: FC = (props: any) => {
               ) : null}
             </div>
           ) : (
-            <div className="container profile-text">
+            <div className="profile-text">
               <Form
                 onSubmit={(formObj) => {
                   props.updateUser(formObj);
@@ -106,9 +105,9 @@ const Profile: FC = (props: any) => {
                     />): null}
                     <div className="form-group">
                       <div className="col-xs-4">
-                        <Button type="submit" className="button button--hovered button--outlined button--border" disabled={submitting}>
+                        <button type="submit" className="button button--hovered button--outlined button--border" disabled={submitting}>
                           Save
-                        </Button>
+                        </button>
                       </div>
                     </div>
                   </form>
@@ -185,10 +184,10 @@ const Profile: FC = (props: any) => {
                     id="car_number"
                   />
                 </React.Fragment>
-                <div className="col-xs-4 mt-3">
-                <Button type="submit" className="button button--hovered button--outlined button--border" disabled={submitting}>
+                <div className="col-xs-4">
+                <button type="submit" className="button button--hovered button--outlined button--border" disabled={submitting}>
                   Become a driver
-                </Button>
+                </button>
               </div>
             </form>
           )}

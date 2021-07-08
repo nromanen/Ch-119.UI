@@ -10,12 +10,15 @@ $section-bg-color: #222424;
     color: $white;
 
     h2 {
-      padding-left: 5vw;
+      color: var(--accent-color);
     }
 
-    .form-horizontal {
-      padding-left: 5vw;
+    @media (max-width:450px){
+      .container-fluid {
+        padding-left: 15vw!important;
+      }
     }
+
 }
 
 .login-link {
@@ -46,11 +49,18 @@ $section-bg-color: #222424;
 .validate_warning>.alert-warning {
   max-width: 182px;
   padding-top: 0.5rem;
-  padding-bottom: 0.5em
+  padding-bottom: 0.5em;
 }
  
-.jumbotron > .verify {
-  max-width: 250px;
+.verify {
+  text-align: center;
+  padding: 10px;
+  background-color: $section-bg-color;
+
+  label {
+    color:$white;
+    font-size: 17px;
+  }
 }
 
 .wrapper >* {

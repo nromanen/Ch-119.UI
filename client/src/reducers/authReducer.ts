@@ -101,7 +101,8 @@ export const authReducer = (state = initialState, action: any): IUser => {
         driver_info: {
           car_color: action.payload.car_color,
           car_model: action.payload.car_model,
-          car_number: action.payload.car_number },
+          car_number: action.payload.car_number,
+        },
       };
     case AuthActionTypes.IS_DRIVER:
       return {
@@ -114,13 +115,14 @@ export const authReducer = (state = initialState, action: any): IUser => {
         isModified: action.payload,
       };
     case AuthActionTypes.EDIT_USER:
-        return {
-          ...state,
-          name: action.payload.name,
-          phone: action.payload.phone,
-          driver_info: {
-            car_number: action.payload.car_number },
-        };
+      return {
+        ...state,
+        name: action.payload.name,
+        phone: action.payload.phone,
+        driver_info: {
+          car_number: action.payload.car_number,
+        },
+      };
     default:
       return state;
   }

@@ -12,7 +12,6 @@ import {
 import {
   PASS_MAX_LENGTH,
   PASS_MIN_LENGTH,
-  NAME_MAX_LENGTH,
 } from '../constants/registrationConstants';
 
 export const required = (value: any) =>
@@ -31,7 +30,7 @@ export const nameMask = (max: any) => (value: any) => {
   if (value?.length >= max) {
     return `${MAX_VALUE_ERROR_MESSAGE} ${max}`;
   }
-  if (!(RegExp('^[A-Za-z \u0400-\u04FF0-9]*$').test(value))) {
+  if (!RegExp('^[A-Za-z \u0400-\u04FF0-9]*$').test(value)) {
     return CORRECT_NAME;
   }
 };
@@ -42,16 +41,14 @@ export const passwordMask = (value: any) => {
 };
 
 export const phoneMask = (value: any) => {
-  if (!(RegExp('^\\+380[0-9]{9}$').test(value))) {
+  if (!RegExp('^\\+380[0-9]{9}$').test(value)) {
     return WRONG_PHONE;
   }
 };
 
 export const carMask = (value: any) => {
   const val = value?.toUpperCase();
-  if (!(RegExp('^[ABCEHIKMOPTX]{2}[0-9]{4}[ABCEHIKMOPTX]{2}$').test(val))) {
+  if (!RegExp('^[ABCEHIKMOPTX]{2}[0-9]{4}[ABCEHIKMOPTX]{2}$').test(val)) {
     return WRONG_CAR_NUMBER;
   }
 };
-
-
