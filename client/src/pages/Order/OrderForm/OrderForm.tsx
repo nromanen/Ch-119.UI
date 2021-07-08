@@ -17,6 +17,8 @@ import { ExtraServicesSelect } from '../../../components/ExtraServices/ExtraServ
 import { Price } from '../../../components/Price/Price';
 import { CarTypesI, ExtraServicesI } from '../../../types/cityInfoTypes';
 
+import './OrderFrom.scss';
+
 interface OrderFormProps {
   onSubmit: (e: SyntheticEvent) => void;
   onCarTypeChange: (e: any) => void;
@@ -67,93 +69,99 @@ export const OrderForm: FC<OrderFormProps> = ({
   price,
 }) => {
   return (
-    <Jumbotron className="order">
-      <Form ref={formRef} className="order__form" onSubmit={onSubmit}>
-        <Alert variant="primary">Your current location : {currentCity}</Alert>
-        <Form.Group className="form-group">
-          <FormLabel classNames={['col-xs-2']} htmlFor="from" title="From:" />
-          <div className="col-xs-4">
-            {isMapLoaded && (
-              <Autocomplete
-                onLoad={onFromAutocompleteLoad}
-                onPlaceChanged={onFromAutocompleteChanged}
-              >
-                <Input
-                  onChange={onFromChangeHandler}
-                  value={fromValue}
-                  className="form-control"
-                  type="text"
-                  name="from"
-                  id="from"
-                  placeholder="Origin"
-                />
-              </Autocomplete>
-            )}
-          </div>
-        </Form.Group>
-        <Form.Group>
-          <FormLabel
-            classNames={['col-xs-2']}
-            htmlFor="to"
-            title="To:"
-          ></FormLabel>
-          <div className="col-xs-4">
-            {isMapLoaded && (
-              <Autocomplete
-                onLoad={onToAutocompleteLoad}
-                onPlaceChanged={onToAutocompleteChanged}
-              >
-                <Input
-                  value={toValue}
-                  onChange={onToChangeHandler}
-                  className="form-control"
-                  type="text"
-                  name="to"
-                  id="to"
-                  placeholder="Destination"
-                />
-              </Autocomplete>
-            )}
-          </div>
-        </Form.Group>
-        <Form.Group>
-          <FormLabel title="Car type:" htmlFor="car-type" />
-          <CarTypesSelect
-            id="car-type"
-            selectedValue={selectedCarTypeValue}
-            onChange={onCarTypeChange}
-            carTypes={avaliableCarTypes}
-          />
-        </Form.Group>
-
-        <Form.Group>
-          <ExtraServicesSelect
-            avaliableInCityExtraServices={avaliableInCityExtraServices}
-            activeExtraServices={activeExtraServices}
-            onExtraServicesChanged={onExtraServicesChanged}
-          />
-        </Form.Group>
-
-        <div className="col-xs-offset-2 col-xs-10">
-          <ButtonToolbar className="order__button-toolbar">
-            <Price price={price} />
-            <Button type="submit" variant="info" disabled={loading} size="lg">
-              Make order
-              {loading && (
-                <Spinner
-                  animation="border"
-                  variant="light"
-                  size="sm"
-                  as="span"
-                  role="making order"
-                  aria-hidden="true"
-                />
+    <>
+      <Jumbotron className="dark order">
+        <Form ref={formRef} className="order__form" onSubmit={onSubmit}>
+          {/* <Alert variant="primary">Your current location : {currentCity}</Alert> */}
+          <Form.Group className="form-group">
+            <FormLabel classNames={['col-xs-2']} htmlFor="from" title="From:" />
+            <div className="col-xs-4">
+              {isMapLoaded && (
+                <Autocomplete
+                  onLoad={onFromAutocompleteLoad}
+                  onPlaceChanged={onFromAutocompleteChanged}
+                >
+                  <Input
+                    onChange={onFromChangeHandler}
+                    value={fromValue}
+                    className="input input--padding input--bd-radius input--block"
+                    type="text"
+                    name="from"
+                    id="from"
+                    placeholder="Origin"
+                  />
+                </Autocomplete>
               )}
-            </Button>
-          </ButtonToolbar>
-        </div>
-      </Form>
-      <Navbar />
-    </Jumbotron>
+            </div>
+          </Form.Group>
+          <Form.Group>
+            <FormLabel
+              classNames={['col-xs-2']}
+              htmlFor="to"
+              title="To:"
+            ></FormLabel>
+            <div className="col-xs-4">
+              {isMapLoaded && (
+                <Autocomplete
+                  onLoad={onToAutocompleteLoad}
+                  onPlaceChanged={onToAutocompleteChanged}
+                >
+                  <Input
+                    value={toValue}
+                    onChange={onToChangeHandler}
+                    className="input input--padding input--bd-radius input--block"
+                    type="text"
+                    name="to"
+                    id="to"
+                    placeholder="Destination"
+                  />
+                </Autocomplete>
+              )}
+            </div>
+          </Form.Group>
+          <Form.Group>
+            <FormLabel title="Car type:" htmlFor="car-type" />
+            <CarTypesSelect
+              id="car-type"
+              selectedValue={selectedCarTypeValue}
+              onChange={onCarTypeChange}
+              carTypes={avaliableCarTypes}
+            />
+          </Form.Group>
+
+          <Form.Group>
+            <ExtraServicesSelect
+              avaliableInCityExtraServices={avaliableInCityExtraServices}
+              activeExtraServices={activeExtraServices}
+              onExtraServicesChanged={onExtraServicesChanged}
+            />
+          </Form.Group>
+
+          <div className="col-xs-offset-2 col-xs-10">
+            <ButtonToolbar className="order__button-toolbar">
+              <Price price={price} />
+              <button
+                className="button button--hovered button--outlined button--border"
+                // variant="info"
+                disabled={loading}
+              >
+                Make order
+                {loading && (
+                  <Spinner
+                    animation="border"
+                    variant="light"
+                    size="sm"
+                    as="span"
+                    role="making order"
+                    aria-hidden="true"
+                  />
+                )}
+              </button>
+            </ButtonToolbar>
+          </div>
+        </Form>
+        <Navbar />
+      </Jumbotron>
+    </>
   );
 };

@@ -13,6 +13,8 @@ import { PRODUCTION } from './constants/env';
 import { JSON_LIMIT, JSON_TYPE } from './constants/json';
 import errorHandler from './middlewares/errorHandlingMiddleware';
 import { corsMiddleware } from './middlewares/cors';
+import { CAR_TYPE, CITY, EXTRA_SERVICE } from './constants/modelsNames';
+import { carTypes, extraServices } from './constants/seeders';
 
 dotenv.config();
 

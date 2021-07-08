@@ -8,7 +8,6 @@ export const getCityNameFromState = (state: any) => state.cityInfo;
 
 function* fetchCityInfoWorker(): Generator<StrictEffect, void, any> {
   const cityInfoState = yield select(getCityNameFromState);
-
   const data = (yield call(
     fetchCityInfo(cityInfoState.name),
   )) as AxiosResponse<CityInfoI>;

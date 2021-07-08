@@ -1,41 +1,30 @@
 import React from 'react';
 import StarRatingComponent from 'react-star-rating-component';
 import { Form, Field } from 'react-final-form';
-import { Button, Modal } from 'react-bootstrap';
+import { Modal } from 'react-bootstrap';
 import { useTypedSelector } from '../../hooks/useTypedSelector';
-import {
-  useFeedbackFormActions,
-  useOrderActions,
-} from '../../hooks/useActions';
+import { useFeedbackActions } from '../../hooks/useActions';
 import './Feedback.scss';
 import { required, maxValue } from '../../utils/validators';
+import { CustomButton } from '../../components/Button/Button';
 
 export const Feedback: React.FC = () => {
-  const isShownForDriver = useTypedSelector(
-    (state) => state.order.showModalForDriver,
-  );
+  const isShown = useTypedSelector((state) => state.feedback.isShown);
 
-  const orderId = useTypedSelector((state) => state.order.id);
-  const authorId = useTypedSelector((state) => state.auth.id);
-
-  const { toggleModalForDriver } = useOrderActions();
-  const { createFeedback } = useFeedbackFormActions();
+  const { createFeedback, toggleModal, closeModal } = useFeedbackActions();
 
   const onSubmit = (values: any) => {
-    const feedback = {
+    const feedbackForm = {
       text: values.feedbackText,
       rating: values.stars,
-      author_id: Number(authorId),
-      subject_id: 31,
-      orderId: Number(orderId),
     };
-    return createFeedback(feedback);
+    return createFeedback(feedbackForm);
   };
 
   return (
     <Modal
-      show={isShownForDriver}
-      onHide={toggleModalForDriver}
+      show={isShown}
+      onHide={toggleModal}
       className="d-flex justify-content-center"
     >
       <Modal.Header closeButton>
@@ -86,18 +75,18 @@ export const Feedback: React.FC = () => {
                   )}
                 </Field>
                 <div className="d-flex justify-content-end buttons">
-                  <Button variant="secondary" onClick={toggleModalForDriver}>
-                    Close
-                  </Button>
-                  <Button
+                  <CustomButton
+                    variant="secondary"
+                    onClick={closeModal}
+                    label="Close"
+                  ></CustomButton>
+                  <CustomButton
                     variant="primary"
                     type="submit"
                     className="submit_btn"
                     disabled={invalid}
-                    onClick={toggleModalForDriver}
-                  >
-                    Send
-                  </Button>
+                    label="Send"
+                  ></CustomButton>
                 </div>
               </form>
             </div>

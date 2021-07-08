@@ -20,7 +20,7 @@ export const OrderFormContainer = () => {
   const { loading, error, from, to, carType, extraServices, price } = order;
   const { name: currentCity, car_types, extra_services } = cityInfo;
 
-  const { changeOrderValue, makeOrderAction } = useOrderActions();
+  const { changeOrderValues, makeOrderAction } = useOrderActions();
   const { changeMapValue, getCurrentLocation } = useMapActions();
 
   const formRef = useRef<any>(null);
@@ -45,10 +45,10 @@ export const OrderFormContainer = () => {
   };
 
   const setFrom = useCallback((value: string) => {
-    changeOrderValue('from', value);
+    changeOrderValues({ from: value });
   }, []);
   const setTo = useCallback((value: string) => {
-    changeOrderValue('to', value);
+    changeOrderValues({ to: value });
   }, []);
 
   const onFromAutocompleteLoad = (autocomplete: any): void => {
@@ -113,7 +113,7 @@ export const OrderFormContainer = () => {
 
       const price = calculatePrice(value);
 
-      price && changeOrderValue('price', price);
+      price && changeOrderValues({ price: price });
     }
   }, [
     cityInfo,
@@ -133,7 +133,7 @@ export const OrderFormContainer = () => {
       id: +e.target.selectedOptions[0].dataset.id,
       name: e.target.value,
     };
-    changeOrderValue('carType', carType);
+    changeOrderValues({ carType: carType });
   };
 
   const onExtraServicesChanged = () => {
@@ -147,7 +147,7 @@ export const OrderFormContainer = () => {
       return Number(el.dataset.dbId);
     });
 
-    changeOrderValue('extraServices', extraServices);
+    changeOrderValues({ extraServices: extraServices });
   };
 
   const orderProps = {

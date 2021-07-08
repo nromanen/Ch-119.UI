@@ -3,35 +3,32 @@ $white: #fff;
 $yellow: #ffff00;
 
 .navigation {
-    
-    max-width: 600px;
-    margin-top: 10px;
-    margin:auto;
-    padding-top: 5px;
-    padding-bottom: 5px;
-    background-color:  $navbarColor;
-    border-radius: .25rem;
+  max-width: 600px;
+  margin-top: 10px;
+  margin: auto;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  background-color: var(--section-bg-color);
+  border-radius: 0.25rem;
 
-    ul {
-        padding: 0;
-        margin: 0;
-        list-style: none;
-        display: flex;
-        justify-content: space-evenly;
-        flex-wrap: wrap;
-    }
+  ul {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+  }
 
-    .nav-link a {
-        color:$white;
-        padding: 5px;
-        text-decoration: none;
-        cursor: pointer;
-    }
+  .nav-link a {
+    color: var(--text-color);
+    padding: 5px;
+    text-decoration: none;
+    cursor: pointer;
+  }
 
-    .nav-link a.active {
-        color:$yellow;
-        font-weight: 700;
-    }
-
+  .nav-link a.active {
+    color: var(--accent-color);
+    font-weight: 700;
+  }
 }
-

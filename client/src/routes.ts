@@ -9,7 +9,7 @@ import {
   ORDER_USER_ROUTE,
 } from './constants/routerConstants';
 
-import Feedback from './pages/feedback/Feedback';
+import Feedback from './pages/Feedback/Feedback';
 import ProfileContainer from './pages/Profile/ProfileContainer';
 import { Order } from './pages/Order/Order';
 
@@ -19,6 +19,7 @@ import RegistrationContainer from './components/Login/RegistrationContainer';
 import OrderDriverActive from './pages/Order/orderDriverActive';
 import OrderDriverAccepted from './pages/Order/orderDriverAccepted';
 import OrderUserActive from './pages/Order/orderUserActive';
+import { OrderList } from './pages/OrderList/OrderList';
 
 export const authRouters = [
   {
@@ -31,7 +32,7 @@ export const authRouters = [
   },
   {
     path: ORDER_ACTIVE_ROUTE,
-    component: OrderDriverActive,
+    component: OrderList,
   },
   {
     path: ORDER_ACCEPTED_ROUTE,

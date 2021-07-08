@@ -1,5 +1,5 @@
-import React, { FC } from 'react';
-import { InputI } from '../../utils/interfaces';
+import React, { FormEvent, FC } from 'react';
+import { InputI } from '../../types/interfaces';
 
 export const Input: FC<InputI> = ({
   onChange,

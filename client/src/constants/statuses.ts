@@ -3,5 +3,6 @@ export enum Statuses {
   ACCEPTED = 'accepted',
   IN_PROGRESS = 'in_progress',
   DONE = 'done',
-  FINISHED = 'finished'
+  FINISHED = 'finished',
+  CANCELED = 'canceled',
 }
