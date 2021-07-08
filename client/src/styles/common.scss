@@ -81,7 +81,7 @@
 
   font-size: 1em;
 
-  background-color: transparent;
+  background-color: var(--black);
   color: var(--text-color);
   caret-color: var(--text-link-color);
   transition: border-color 0.2s, box-shadow 0.2s;

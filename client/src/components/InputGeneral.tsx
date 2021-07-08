@@ -6,6 +6,7 @@ export const InputGeneral: FC<InputGeneralI> = ({
   type,
   name,
   placeholder,
+  className,
   validate,
   required,
   label,
@@ -23,7 +24,7 @@ export const InputGeneral: FC<InputGeneralI> = ({
           <div>
             <label htmlFor={id} className="col-xs-2">{label}</label>
             <div className="col-xs-4">
-              <input id={id} {...input} placeholder={placeholder} />
+              <input id={id} {...input} className={className} placeholder={placeholder} />
               <div className="validate_warning">
                 {meta.error && meta.touched && (
                   <div className="alert alert-warning">

@@ -14,7 +14,7 @@ const Alert: FC = (props: any) => {
 
     return props?.auth?.hasError ? (
       <Toast
-        className="modal"
+        className="modal alert-error"
         onClose={changeError}
         delay={ALERT_DELAY}
         autohide

@@ -24,7 +24,8 @@ const Profile: FC = (props: any) => {
     props.checkModified(e.target.checked);
   };
   return (
-    <div className="jumbotron profile">
+    <div className="dark ">
+    <div className="profile">
       <AlertContainer />
       <div className="container profile-info">
         <div>
@@ -82,11 +83,13 @@ const Profile: FC = (props: any) => {
                     <InputGeneral
                       name="name"
                       type="text"
+                      className="input"
                       label="Username:"
                       id="name"
                     />
                     <InputGeneral
                       name="phone"
+                      className="input"
                       placeholder="+380501233314"
                       validate={phoneMask}
                       label="Phone:"
@@ -95,6 +98,7 @@ const Profile: FC = (props: any) => {
                     {props.auth.role.includes(DRIVER_ROLE) ? (
                     <InputGeneral
                       name="car_number"
+                      className="input"
                       type="text"
                       validate={carMask}
                       label="Car number:"
@@ -102,7 +106,7 @@ const Profile: FC = (props: any) => {
                     />): null}
                     <div className="form-group">
                       <div className="col-xs-4">
-                        <Button type="submit" disabled={submitting}>
+                        <Button type="submit" className="button button--hovered button--outlined button--border" disabled={submitting}>
                           Save
                         </Button>
                       </div>
@@ -153,6 +157,7 @@ const Profile: FC = (props: any) => {
                   <InputGeneral
                     name="car_color"
                     type="text"
+                    className="input"
                     validate={maxValue(15)}
                     placeholder="Blue"
                     required
@@ -162,6 +167,7 @@ const Profile: FC = (props: any) => {
                   <InputGeneral
                     name="car_model"
                     type="text"
+                    className="input"
                     placeholder="Ford"
                     validate={maxValue(30)}
                     required
@@ -171,6 +177,7 @@ const Profile: FC = (props: any) => {
                   <InputGeneral
                     name="car_number"
                     type="text"
+                    className="input"
                     validate={carMask}
                     placeholder="CE7890BT"
                     required
@@ -179,7 +186,7 @@ const Profile: FC = (props: any) => {
                   />
                 </React.Fragment>
                 <div className="col-xs-4 mt-3">
-                <Button type="submit" disabled={submitting}>
+                <Button type="submit" className="button button--hovered button--outlined button--border" disabled={submitting}>
                   Become a driver
                 </Button>
               </div>
@@ -195,6 +202,7 @@ const Profile: FC = (props: any) => {
       Log out
       </button>
       <Navbar />
+    </div>
     </div>
   );
 };

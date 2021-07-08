@@ -1,14 +1,33 @@
 $white: #fff;
+$black: #000;
+$section-bg-color: #222424;
 
 .login, .registration {
-    background-color: $white;
+    background-color:$section-bg-color;
     border-radius: .25rem;
     padding-top: 5px;
-    padding-bottom: 9px;
+    padding: 2rem 2rem;
+    color: $white;
+
+    h2 {
+      padding-left: 5vw;
+    }
+
+    .form-horizontal {
+      padding-left: 5vw;
+    }
 }
 
 .login-link {
   margin-left: 1rem;
+}
+
+.register-link, .login-link {
+  color: var(--accent-color);
+}
+
+.register-link:hover , .login-link:hover {
+  color: white;
 }
 
 .login-btn {

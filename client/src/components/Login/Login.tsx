@@ -13,7 +13,7 @@ export const Login: FC = (props: any) => (
   <div>
     <VerificationCodeContainer />
     <AlertContainer />
-    <div className={`jumbotron login`}>
+    <div className="dark login">
       <div
         className={`container-fluid login`}
       >
@@ -33,6 +33,7 @@ export const Login: FC = (props: any) => (
             <form onSubmit={handleSubmit} className="form-horizontal">
               <InputGeneral
                 name="phone"
+                className="input"
                 placeholder="+380501233314"
                 validate={phoneMask}
                 label="Phone number:"
@@ -40,6 +41,7 @@ export const Login: FC = (props: any) => (
               />
               <InputGeneral
                 name="password"
+                className="input"
                 type="password"
                 validate={required}
                 label="Password:"
@@ -47,12 +49,13 @@ export const Login: FC = (props: any) => (
               />
               <div className="form-group">
                 <div className="col-xs-4 mb-3">
-                  <NavLink className="link-primary" to={REGISTRATION_ROUTE}>
+                  <NavLink className="link-primary register-link" to={REGISTRATION_ROUTE}>
                     Don't have an account? Sign up!
                   </NavLink>
                 </div>
                 <div className="col-xs-4">
-                  <Button type="submit" disabled={submitting || props.auth.verification_code}>
+                  <Button type="submit" className="button button--hovered button--outlined button--border"
+                   disabled={submitting || props.auth.verification_code}>
                     Sign in
                   </Button>
                 </div>

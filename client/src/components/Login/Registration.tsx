@@ -27,7 +27,7 @@ export const Registration: FC = (props: any) => {
   };
 
   return (
-    <div className="jumbotron">
+    <div className="dark registration">
       <div className="container-fluid registration">
         <VerificationCodeContainer />
         <AlertContainer />
@@ -72,6 +72,7 @@ export const Registration: FC = (props: any) => {
               <InputGeneral
                 name="name"
                 type="text"
+                className="input"
                 validate={nameMask(15)}
                 label="Your name:"
                 id="name"
@@ -79,6 +80,7 @@ export const Registration: FC = (props: any) => {
               <InputGeneral
                 name="phone"
                 type="text"
+                className="input"
                 placeholder="+380501233314"
                 validate={phoneMask}
                 label="Phone number:"
@@ -87,6 +89,7 @@ export const Registration: FC = (props: any) => {
               <InputGeneral
                 name="password"
                 type="password"
+                className="input"
                 validate={passwordMask}
                 label="Password:"
                 id="password"
@@ -94,6 +97,7 @@ export const Registration: FC = (props: any) => {
               <InputGeneral
                 name="confirm"
                 type="password"
+                className="input"
                 validate={maxValue(25)}
                 required
                 label="Confirm password:"
@@ -103,6 +107,7 @@ export const Registration: FC = (props: any) => {
                 <label>Registrate as driver</label>
                 <input
                   id="driver"
+                  className="cm-toggle"
                   type="checkbox"
                   onChange={onChangeHandler}
                   checked={isDriver}
@@ -113,6 +118,7 @@ export const Registration: FC = (props: any) => {
                   <InputGeneral
                     name="car_color"
                     type="text"
+                    className="input"
                     validate={maxValue(15)}
                     placeholder="Blue"
                     required
@@ -122,6 +128,7 @@ export const Registration: FC = (props: any) => {
                   <InputGeneral
                     name="car_model"
                     type="text"
+                    className="input"
                     placeholder="Ford"
                     validate={maxValue(30)}
                     required
@@ -131,6 +138,7 @@ export const Registration: FC = (props: any) => {
                   <InputGeneral
                     name="car_number"
                     type="text"
+                    className="input"
                     validate={carMask}
                     placeholder="CE7890BT"
                     required
@@ -140,7 +148,8 @@ export const Registration: FC = (props: any) => {
                 </React.Fragment>
               ) : null}
               <div className="col-xs-4 mt-3">
-                <Button type="submit" disabled={submitting || props.auth.verification_code}>
+                <Button type="submit" className="button button--hovered button--outlined button--border"
+                 disabled={submitting || props.auth.verification_code}>
                   Sign up
                 </Button>
                 <NavLink className="login-link" to="/">

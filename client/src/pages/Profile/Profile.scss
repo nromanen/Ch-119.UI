@@ -1,5 +1,7 @@
 $white: #fff;
 $yellow: #ffff00;
+$black: #000;
+$section-bg-color: #222424;
 
 .profile {
     max-width: 600px;
@@ -23,26 +25,27 @@ $yellow: #ffff00;
     }
 
     .edit-btn-off {
-        background: #000;
-        color: $white;
+        background: $black;
+        color: var(--accent-color);
         
     }
 
     .edit-btn-on {
-        background: $yellow;
-        color: #000;
+        background: var(--accent-color);
+        color: $black;
     }
 
     .profile-info {
         margin-bottom: 10px;
-        background-color:$white;
+        background-color:$section-bg-color;
+        color: $white;
     }
 
     .profile-text {
         padding: 10px;
         padding-bottom: 0;
         border-radius: .25rem;
-        border: 2px solid $yellow;
+        border: 2px solid var(--accent-color);
         border-radius: .25rem;
         margin-bottom: 10px;
 
@@ -54,8 +57,7 @@ $yellow: #ffff00;
     .driver-form {
         border: 2px solid $yellow;
         border-radius: .25rem;
-        padding-left: 10px;
-        padding-bottom: 10px;
+        padding: 10px;
     }
 
     .edit-form {
@@ -69,58 +71,6 @@ $yellow: #ffff00;
         .validate_warning {
             font-weight: normal;
         }
-    }
-
-    .cm-toggle {
-        -webkit-appearance: none;
-	    -webkit-tap-highlight-color: transparent;
-	    position: relative;
-	    border: 0;
-	    outline: 0;
-	    cursor: pointer;
-        
-        &:after {
-            content: '';
-            width: 34px;
-            height: 15px;
-            display: inline-block;
-            background: rgba(196, 195, 195, 0.55);
-            border-radius: 18px;
-            clear: both;
-        }
-
-        &:before {
-            content: '';
-            width: 20px;
-            height: 20px;
-            display: block;
-            position: absolute;
-            left: 0;
-            top: 0;
-            border-radius: 50%;
-            background: rgb(255, 255, 255);
-            box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);
-        }
-
-        &:checked:before {
-            left: 20px;
-            box-shadow: -1px 1px 3px rgba(0, 0, 0, 0.6);
-        }
-
-        &:checked:after {
-            background: $yellow;
-        }
-    }
-
-    .cm-toggle,
-    .cm-toggle:before,
-    .cm-toggle:after,
-    .cm-toggle:checked:before,
-    .cm-toggle:checked:after {
-    	transition: ease .3s;
-    	-webkit-transition: ease .3s;
-    	-moz-transition: ease .3s;
-    	-o-transition: ease .3s;
     }
 
     .logout {
