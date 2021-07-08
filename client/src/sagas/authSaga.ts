@@ -8,14 +8,16 @@ import {
   registrationDriver,
   editProfile,
   driverReg,
-} from '../http/userApi';
+} from '../services/userService';
 import { push } from 'react-router-redux';
 import {
   ORDER_ROUTE,
   LOGIN_ROUTE,
   ORDER_ACTIVE_ROUTE,
+  PROFILE_ROUTE,
 } from '../constants/routerConstants';
 import { resetOrderState } from '../actions/orderActions';
+import { DRIVER_ROLE } from '../constants/registrationConstants';
 
 export const getUserFromState = (state: any) => state.auth;
 
@@ -106,6 +108,14 @@ function* driverRegWorker(): Generator<StrictEffect, void, any> {
       userInfoState.driver_info.car_number,
     ),
   );
+  yield put({
+    type: AuthActionTypes.HANDLE_ERROR,
+    payload: {
+      data: 'U should relogin',
+      hasError: true,
+      verification_code: userInfoState.verification_code,
+    },
+  });
 }
 
 function* setUserWorker(): Generator<StrictEffect, void, any> {
@@ -177,7 +187,7 @@ function* loginUserWorker(): Generator<StrictEffect, void, any> {
 
 function* editUserWorker(): Generator<StrictEffect, void, any> {
   const userInfoState = yield select(getUserFromState);
-  if (userInfoState.isDriver) {
+  if (userInfoState.role.includes(DRIVER_ROLE)) {
     const data = yield call(
       editProfile(
         userInfoState.id,
@@ -188,6 +198,7 @@ function* editUserWorker(): Generator<StrictEffect, void, any> {
     );
     if (data.id) {
       yield put({ type: AuthActionTypes.SET_DRIVER_DATA, payload: data });
+      yield put(push(PROFILE_ROUTE));
       yield put({ type: AuthActionTypes.IS_MODIFIED, payload: false});
     } else {
       yield put({
@@ -205,6 +216,7 @@ function* editUserWorker(): Generator<StrictEffect, void, any> {
     );
     if (data.id) {
       yield put({ type: AuthActionTypes.SET_USER_DATA, payload: data });
+      yield put(push(PROFILE_ROUTE));
       yield put({ type: AuthActionTypes.IS_MODIFIED, payload: false});
     } else {
       yield put({

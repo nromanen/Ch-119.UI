@@ -31,7 +31,7 @@ export const nameMask = (max: any) => (value: any) => {
   if (value?.length >= max) {
     return `${MAX_VALUE_ERROR_MESSAGE} ${max}`;
   }
-  if (!(RegExp('^[A-Za-z\u0400-\u04FF0-9]*$').test(value))) {
+  if (!(RegExp('^[A-Za-z \u0400-\u04FF0-9]*$').test(value))) {
     return CORRECT_NAME;
   }
 };

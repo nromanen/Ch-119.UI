@@ -28,7 +28,16 @@ const Profile: FC = (props: any) => {
       <AlertContainer />
       <div className="container profile-info">
         <div>
+          <div className="profile-header">
           <h2>Your Profile</h2>
+          <label className={`btn edit-btn-${isModified ? 'on' : 'off'}`}>Edit info</label>
+            <input
+              id="edit"
+              type="checkbox"
+              onChange={onChangeHandler}
+              checked={isModified}
+            />
+            </div>
           {!props.auth.isModified ? (
             <div className="profile-text">
               <p>
@@ -69,26 +78,26 @@ const Profile: FC = (props: any) => {
                   car_number: props.auth.driver_info.car_number ? props.auth.driver_info.car_number : '',
                 }}
                 render={({ handleSubmit, submitting }) => (
-                  <form onSubmit={handleSubmit} className="form-horizontal">
+                  <form onSubmit={handleSubmit} className="form-horizontal edit-form">
                     <InputGeneral
                       name="name"
                       type="text"
-                      label="Your name:"
+                      label="Username:"
                       id="name"
                     />
                     <InputGeneral
                       name="phone"
                       placeholder="+380501233314"
                       validate={phoneMask}
-                      label="Your phone number:"
+                      label="Phone:"
                       id="phone"
                     />
-                    {props.auth.isDriver ? (
+                    {props.auth.role.includes(DRIVER_ROLE) ? (
                     <InputGeneral
                       name="car_number"
                       type="text"
                       validate={carMask}
-                      label="Your car number:"
+                      label="Car number:"
                       id="car_number"
                     />): null}
                     <div className="form-group">
@@ -104,26 +113,20 @@ const Profile: FC = (props: any) => {
             </div>
           )}
           {/* make another className */}
-          <div className="col-xs-4">
-            <label>Edit</label>
-            <input
-              id="edit"
-              type="checkbox"
-              onChange={onChangeHandler}
-              checked={isModified}
-            />
+          <div className="col-xs-4 reg-driver">
             {!props.auth.role.includes(DRIVER_ROLE) ? (
               <div>
                 <label>Registrate as driver</label>
                 <input
                   id="driver"
+                  className="cm-toggle"
                   type="checkbox"
                   onChange={onDriverChangeHandler}
                   checked={isDriver}
                 />
               {isDriver ? (
                 <Form
-                onSubmit={(formObj) => {
+                onSubmit={async (formObj) => {
                     props.driverProfile(formObj);
                     props.logoutUser();
                 }}
@@ -145,7 +148,7 @@ const Profile: FC = (props: any) => {
                 }}
               >
                 {({ handleSubmit, submitting }) => (
-                  <form onSubmit={handleSubmit} className="form-horizontal">
+                  <form onSubmit={handleSubmit} className="form-horizontal driver-form">
                 <React.Fragment>
                   <InputGeneral
                     name="car_color"

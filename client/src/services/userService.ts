@@ -1,4 +1,4 @@
-import { $host, $authHost } from './index';
+import { $host, $authHost } from '../http/index';
 import jwtDecode from 'jwt-decode';
 import axios from 'axios';
 import { USER_ROLE, DRIVER_ROLE } from '../constants/registrationConstants';
