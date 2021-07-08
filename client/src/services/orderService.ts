@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { OrderStateI } from './../types/orderTypes';
 import { ERROR_IN_ORDER } from '../constants/errorConstants';
+import { Statuses } from '../constants/statuses';
 
 export class OrderDTO {
   carTypeId: number;
@@ -70,6 +71,72 @@ export const updateOrder = (order: OrderStateI, userId: number) => async () => {
     const response = axios.put(url, {
       body: orderDTO,
     });
+    return response;
+  } catch (error) {
+    throw new Error(ERROR_IN_ORDER);
+  }
+};
+
+export const changeOrderById =
+  (id: number, orderNewValues: any) => async () => {
+    const url = `${process.env.REACT_APP_SERVER_URL}order`;
+    try {
+      const response = axios.put(url, {
+        ...orderNewValues,
+        id,
+      });
+      return response;
+    } catch (error) {
+      throw new Error(ERROR_IN_ORDER);
+    }
+  };
+
+export const fetchDriverOrderNew = async () => {
+  const url = `${process.env.REACT_APP_SERVER_URL}order/list`;
+
+  try {
+    const response = axios.get(url, {
+      params: {
+        status: Statuses.ACTIVE,
+        withUser: '1', // pass any not falsy value, return user info for order in customer_id column
+      },
+    });
+
+    return response;
+  } catch (error) {
+    throw new Error(ERROR_IN_ORDER);
+  }
+};
+export const fetchDriverOrderCurrent = (driverId: number) => async () => {
+  const url = `${process.env.REACT_APP_SERVER_URL}order/list`;
+
+  try {
+    const response = axios.get(url, {
+      params: {
+        driverId,
+        status: Statuses.ACCEPTED,
+        withUser: '1', // pass any not falsy value, return user info for order in customer_id column
+      },
+    });
+
+    return response;
+  } catch (error) {
+    throw new Error(ERROR_IN_ORDER);
+  }
+};
+
+export const fetchDriverOrderHistory = (driverId: number) => async () => {
+  const url = `${process.env.REACT_APP_SERVER_URL}order/list`;
+
+  try {
+    const response = axios.get(url, {
+      params: {
+        status: [Statuses.DONE, Statuses.FINISHED, Statuses.CANCELED], // change if its same
+        withUser: '1', // pass any not falsy value, return user info for order in customer_id column
+        driverId,
+      },
+    });
+
     return response;
   } catch (error) {
     throw new Error(ERROR_IN_ORDER);

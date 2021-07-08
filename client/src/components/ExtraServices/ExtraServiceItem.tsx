@@ -1,16 +1,8 @@
 import React, { FC } from 'react';
 import { OverlayTrigger, Tooltip, Form } from 'react-bootstrap';
-import { ReactComponent as BabyChair } from './icons/babyChair.svg';
-import { ReactComponent as En } from './icons/en.svg';
-import { ReactComponent as Silent } from './icons/silent.svg';
 import { FormLabel } from '../FormLabel/FormLabel';
-import { IconsI, ExtraServiceItemI } from '../../types/cityInfoTypes';
-
-const extraServicesIcons: IconsI = {
-  'English speaking': En,
-  'Silent driver': Silent,
-  'Baby chair': BabyChair,
-};
+import { ExtraServiceItemI } from '../../types/cityInfoTypes';
+import { extraServicesIcons } from './icons';
 
 export const ExtraServiceItem: FC<ExtraServiceItemI> = ({
   id,

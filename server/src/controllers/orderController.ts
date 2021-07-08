@@ -1,8 +1,12 @@
 import { Request, Response } from 'express';
 import sequelize from '../db/sequelize/models/index';
-import { ORDER, DRIVER, USER } from '../constants/modelsNames';
-import { STATUS_BAD_REQUEST, STATUS_OK } from '../constants/api';
-import { ORDER_ON_PAGE, PAGE_COUNT } from '../constants/api';
+import { ORDER, DRIVER, USER, CAR_TYPE } from '../constants/modelsNames';
+import {
+  STATUS_BAD_REQUEST,
+  STATUS_OK,
+  ORDER_ON_PAGE,
+  PAGE_COUNT,
+} from '../constants/api';
 
 export default class OrderController {
   create = async (req: Request, res: Response): Promise<any> => {
@@ -12,6 +16,84 @@ export default class OrderController {
       const data = await sequelize.models[ORDER].create(body);
 
       res.status(STATUS_OK).send(data);
+    } catch (error) {
+      res.status(STATUS_BAD_REQUEST).send(error);
+    }
+  };
+
+  getWithFilter = async (req: Request, res: Response): Promise<any> => {
+    const { status, driverId, withDriver, withUser, limit } = req.query;
+    const seqOptions: any = {
+      where: {
+        status,
+      },
+      attributes: { exclude: ['carTypeId', 'driver_id'] }, // exclude driver_id because return driverId
+      limit: limit || 5,
+      include: [
+        {
+          model: sequelize.models[CAR_TYPE], // return carType from car_types table
+        },
+      ],
+      order: [
+        // return orders recently created
+        ['updatedAt', 'DESC'],
+      ],
+    };
+
+    if (driverId) {
+      seqOptions.where.driver_id = driverId;
+    }
+    if (withDriver) {
+      seqOptions.include.push({
+        model: sequelize.models[DRIVER],
+        attributes: ['car_color', 'car_number', 'car_model', 'driver_rating'], // field that back from sequelize
+      });
+    }
+
+    if (withUser) {
+      seqOptions.include.push({
+        model: sequelize.models[USER],
+        attributes: ['name', 'phone'],
+      });
+    }
+
+    try {
+      const data = await sequelize.models[ORDER].findAndCountAll(seqOptions);
+      res.status(STATUS_OK).send(data);
+    } catch (error) {
+      res.status(STATUS_BAD_REQUEST).send(error);
+    }
+  };
+
+  // TODO change name in future
+  updateO = async (req: Request, res: Response): Promise<any> => {
+    try {
+      const { id } = req.body;
+      const data = await sequelize.models[ORDER].update(
+        {
+          ...req.body,
+        },
+        {
+          where: {
+            id,
+          },
+          returning: true,
+        },
+      );
+
+      // TODO make another fetch for CAR_TYPE model values, do not right
+      const dataNew = await sequelize.models[ORDER].findByPk(id, {
+        include: [
+          {
+            model: sequelize.models[CAR_TYPE], // return carType from car_types table
+          },
+          {
+            model: sequelize.models[USER],
+            attributes: ['name', 'phone'],
+          },
+        ],
+      });
+      res.status(STATUS_OK).send(dataNew);
     } catch (error) {
       res.status(STATUS_BAD_REQUEST).send(error);
     }
@@ -38,8 +120,6 @@ export default class OrderController {
       });
       res.status(STATUS_OK).send({ data, status: STATUS_OK });
     } catch (error) {
-      console.log(error);
-
       res
         .status(STATUS_BAD_REQUEST)
         .send({ message: error.errors[0].message, status: STATUS_BAD_REQUEST });
@@ -56,10 +136,8 @@ export default class OrderController {
         },
         include: sequelize.models[USER],
       });
-
       res.status(STATUS_OK).send({ data, status: STATUS_OK });
     } catch (error) {
-      console.log(error);
       res
         .status(STATUS_BAD_REQUEST)
         .send({ message: error.errors[0].message, status: STATUS_BAD_REQUEST });
@@ -83,7 +161,7 @@ export default class OrderController {
       const data = await sequelize.models[ORDER].update(
         {
           status,
-          driver_id: driverId,
+          driverId,
         },
         {
           where: {
@@ -96,7 +174,7 @@ export default class OrderController {
     } catch (error) {
       res
         .status(STATUS_BAD_REQUEST)
-        .send({ message: error.errors[0].message, status: STATUS_BAD_REQUEST });
+        .send({ message: error.message, status: STATUS_BAD_REQUEST });
     }
   };
 }

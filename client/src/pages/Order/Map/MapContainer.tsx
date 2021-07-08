@@ -2,10 +2,11 @@ import React, { useCallback, useMemo, useState } from 'react';
 import { Map } from './Map';
 import { useTypedSelector } from './../../../hooks/useTypedSelector';
 import { useMapActions, useOrderActions } from './../../../hooks/useActions';
+import { dark } from './MapThemes';
 
 const mapContainerStyle = {
   width: '100%',
-  height: '50vh',
+  height: '90vh',
 };
 
 const center = {
@@ -18,7 +19,7 @@ export const MapContainer = () => {
     (state) => state.map,
   );
   const { changeMapValue } = useMapActions();
-  const { changeOrderValue } = useOrderActions();
+  const { changeOrderValues } = useOrderActions();
 
   const [renderer, setrenderer] = useState<google.maps.DirectionsRenderer>();
 
@@ -26,6 +27,7 @@ export const MapContainer = () => {
     () => ({
       center: currentLocation || center,
       zoom: 12,
+      styles: dark,
     }),
     [],
   );
@@ -71,10 +73,11 @@ export const MapContainer = () => {
         const directionRoutes = directions.routes[0].legs[0];
         const distance: google.maps.Distance =
           directionRoutes.distance as google.maps.Distance;
-
-        changeOrderValue('distance', distance);
-        changeOrderValue('from', origin);
-        changeOrderValue('to', destination);
+        changeOrderValues({
+          distance: distance,
+          from: origin,
+          to: destination,
+        });
       }
     },
     [renderer, directionsResult],

@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { Form } from 'react-bootstrap';
-import { FormLabelI } from '../../utils/interfaces';
+import { FormLabelI } from '../../types/interfaces';
 import './FormLabel.scss';
 
 export const FormLabel: FC<FormLabelI> = ({

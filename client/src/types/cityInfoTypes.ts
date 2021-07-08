@@ -52,10 +52,6 @@ export interface CityInfoI {
   extra_services: ExtraServicesI[];
 }
 
-export interface IconsI {
-  [index: string]: any;
-}
-
 export interface ExtraServiceItemI {
   id: string | number;
   name: string;

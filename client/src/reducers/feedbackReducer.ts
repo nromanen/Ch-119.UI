@@ -2,18 +2,25 @@ import { FeedbackAction, FeedbackActionTypes } from '../types/feedbackTypes';
 import { FeedbackState } from './../types/feedbackTypes';
 
 export const initialState: FeedbackState = {
+  text: undefined,
+  rating: undefined,
+  author_role: undefined,
+  subject_role: undefined,
+  orderId: undefined,
   isShown: false,
 };
 
 export const feedbackReducer = (
   state = initialState,
-  { type }: FeedbackAction,
+  action: FeedbackAction,
 ): FeedbackState => {
-  switch (type) {
-    case FeedbackActionTypes.SHOW_MODAL:
-      return { isShown: true };
-    case FeedbackActionTypes.HIDE_MODAL:
-      return { isShown: false };
+  switch (action.type) {
+    case FeedbackActionTypes.TOGGLE_MODAL:
+      return { ...state, isShown: !state.isShown };
+    case FeedbackActionTypes.RESET_FEEDBACK_STATE:
+      return initialState;
+    case FeedbackActionTypes.CHANGE_FEEDBACK_VALUES:
+      return { ...state, ...action.payload };
     default:
       return state;
   }

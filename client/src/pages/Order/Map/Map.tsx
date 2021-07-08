@@ -7,6 +7,8 @@ import {
 } from '@react-google-maps/api';
 import { Libraries } from '@react-google-maps/api/dist/utils/make-load-script-url';
 
+import './Map.scss';
+
 declare const process: {
   env: {
     REACT_APP_MAP_API_KEY: string;
@@ -27,7 +29,8 @@ interface MapProps {
     status: google.maps.DirectionsStatus,
   ) => void;
   onMapLoaded: (mapInstance: google.maps.Map) => void;
-  mapOptions: google.maps.MapOptions;
+  // mapOptions: google.maps.MapOptions;
+  mapOptions: any;
   directions: google.maps.DirectionsRequest | null;
   mapContainerStyle: any;
   directionsResult?: google.maps.DirectionsResult;
@@ -52,26 +55,28 @@ export const Map: FC<MapProps> = ({
 
   const renderMap = () => {
     return (
-      <GoogleMap
-        options={mapOptions}
-        onLoad={onMapLoaded}
-        mapContainerStyle={mapContainerStyle}
-        onClick={mapClickHandler}
-      >
-        {directions && (
-          <DirectionsService
-            callback={directionsServiceCallback}
-            options={directions}
-          />
-        )}
-        {directionsResult && renderOptions && (
-          <DirectionsRenderer
-            onLoad={onDirectionsRendererLoaded}
-            options={renderOptions}
-            onDirectionsChanged={onDirectionsChanged}
-          />
-        )}
-      </GoogleMap>
+      <div className="map">
+        <GoogleMap
+          options={mapOptions}
+          onLoad={onMapLoaded}
+          mapContainerStyle={mapContainerStyle}
+          onClick={mapClickHandler}
+        >
+          {directions && (
+            <DirectionsService
+              callback={directionsServiceCallback}
+              options={directions}
+            />
+          )}
+          {directionsResult && renderOptions && (
+            <DirectionsRenderer
+              onLoad={onDirectionsRendererLoaded}
+              options={renderOptions}
+              onDirectionsChanged={onDirectionsChanged}
+            />
+          )}
+        </GoogleMap>
+      </div>
     );
   };
 

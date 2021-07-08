@@ -1,6 +1,14 @@
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import { UncontrolledCollapse, Button, CardBody, Card } from 'reactstrap';
+import {
+  UncontrolledCollapse,
+  Button,
+  CardBody,
+  Card,
+  Container,
+  Row,
+  Col,
+} from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faMapMarkerAlt,
@@ -10,7 +18,6 @@ import {
   faTaxi,
   faStar,
 } from '@fortawesome/free-solid-svg-icons';
-import { Container, Row, Col } from 'reactstrap';
 import { ColInfo } from './colInfo';
 import { useTypedSelector } from '../hooks/useTypedSelector';
 import jwt_decode from 'jwt-decode';
