@@ -1,15 +1,6 @@
-$white: #fff;
-$yellow: #ffff00;
-$black: #000;
-$section-bg-color: #222424;
-
 .profile {
     max-width: 600px;
     margin: auto;
-
-    h2 {
-        color: var(--accent-color);
-    }
 
     .profile-header {
         padding-top: 10px;
@@ -29,28 +20,27 @@ $section-bg-color: #222424;
     }
 
     .edit-btn-off {
-        background: $black;
+        background: var(--black);
         color: var(--accent-color);
         
     }
 
     .edit-btn-on {
         background: var(--accent-color);
-        color: $black;
+        color: var(--black);
     }
 
     .profile-info {
         margin-bottom: 10px;
-        background-color:$section-bg-color;
-        color: $white;
+        background-color:var(--section-bg-color);
+        color: var(--text-color);
     }
 
     .profile-text {
         padding: 10px;
         padding-bottom: 0;
-        border-radius: .25rem;
+        border-radius: var(--input-border-radius, 3px);
         border: 2px solid var(--overlay-bg-color);
-        border-radius: .25rem;
         margin-bottom: 10px;
 
         &>p {
@@ -60,7 +50,7 @@ $section-bg-color: #222424;
 
     .driver-form {
         border: 2px solid var(--overlay-bg-color);
-        border-radius: .25rem;
+        border-radius: var(--input-border-radius, 3px);
         padding: 10px;
     }
 

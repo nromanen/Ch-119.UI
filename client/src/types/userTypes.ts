@@ -61,3 +61,17 @@ export interface IDriver {
   car_number: string;
   driver_id?: number | null;
 }
+
+export interface IEditForm {
+    phone: string,
+    name: string,
+    role: string[],
+    car_number: string,
+    updateUser(obj:{}): void;
+}
+
+export interface IProfileForm {
+  driverProfile(obj:{}): void,
+  logoutUser(): void;
+}
+

@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { NavLink } from 'react-router-dom';
 import { Form } from 'react-final-form';
 import { REGISTRATION_ROUTE } from '../../constants/routerConstants';
-import { required, phoneMask } from '../../utils/validators';
+import { maxValue, phoneMask } from '../../utils/validators';
 import AlertContainer from '../Alert/AlertContainer';
 import VerificationCodeContainer from '../VerificationInput/VerificationInputContainer';
 import './Login.scss';
@@ -22,15 +22,10 @@ export const Login: FC = (props: any) => (
           subscription={{
             submitting: true,
           }}
-          initialValues={{
-            phone: props.auth.phone ? props.auth.phone : '',
-            password: props.auth.password ? props.auth.password : '',
-          }}
           render={({ handleSubmit, submitting }) => (
             <form onSubmit={handleSubmit} className="form-horizontal">
               <InputGeneral
                 name="phone"
-                className="input"
                 placeholder="+380501233314"
                 validate={phoneMask}
                 label="Phone number:"
@@ -38,9 +33,8 @@ export const Login: FC = (props: any) => (
               />
               <InputGeneral
                 name="password"
-                className="input"
                 type="password"
-                validate={required}
+                validate={maxValue(25)}
                 label="Password:"
                 id="password"
               />

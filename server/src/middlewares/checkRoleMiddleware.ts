@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import * as jwt from 'jsonwebtoken';
 import sequelize from '../db/sequelize/models/index';
 import ApiError from '../errors/ApiErrors';
+import { getToken } from '../utils/jwtHelpers';
 
 const User = sequelize.models['users'];
 
@@ -12,7 +13,7 @@ export const checkRoleMiddleware = (role: string) => {
     }
 
     try {
-      const token: string = req.headers.authorization!.split(' ')[1];
+      const token: string = getToken(req);
 
       if (!token) {
         return next(ApiError.internal());

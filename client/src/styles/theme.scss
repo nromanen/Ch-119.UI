@@ -17,6 +17,7 @@
   --item-bg-color: rgba(28, 30, 30, 1);
   --navbar-bg-color: #212121;
   --danger-color: red;
+  --toggle-background: #c4c3c3;
 
   --hover-bg-color: #383838;
   --border-color: #181818;
@@ -36,6 +37,9 @@
 
   background-color: var(--wrap-bg-color);
   color: var(--text-color);
+
+  --alert-color:#fff3cd;
+  
 }
 
 .light {

@@ -1,11 +1,12 @@
 import { NextFunction, Request, Response } from 'express';
 import * as jwt from 'jsonwebtoken';
-import { MAX_AGE } from '../constants/api';
+import { MAX_AGE, STATUS_NO_CONTENT } from '../constants/api';
 import ApiError from '../errors/ApiErrors';
 import {
   deleteToken,
   generateAccessToken,
   generateRefreshToken,
+  getToken,
 } from '../utils/jwtHelpers';
 
 export default class TokenController {
@@ -44,7 +45,7 @@ export default class TokenController {
   }
 
   async check(req: Request, res: Response, next: NextFunction): Promise<any> {
-    const token: string = req.headers.authorization!.split(' ')[1];
+    const token: string = getToken(req);
 
     const userInfo: any = jwt.verify(
       token,
@@ -74,6 +75,6 @@ export default class TokenController {
     const { refreshToken } = req.cookies;
     deleteToken(req.body, refreshToken);
     res.clearCookie('refreshToken');
-    res.sendStatus(204);
+    res.sendStatus(STATUS_NO_CONTENT);
   }
 }

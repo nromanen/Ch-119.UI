@@ -17,12 +17,19 @@ import {
 export const required = (value: any) =>
   value ? undefined : REQUIERED_ERROR_MESSAGE;
 
-export const maxValue = (max: any) => (value: any) =>
-  !value || value?.length <= max
-    ? undefined
-    : `${MAX_VALUE_ERROR_MESSAGE} ${max}`;
+export const maxValue = (max: any) => (value: any) => {
+  if (!value) {
+    return `${REQUIERED_ERROR_MESSAGE}`;
+  }
+  if (!value || value?.length >= max) {
+    return `${MAX_VALUE_ERROR_MESSAGE} ${max}`;
+  }
+};
 
 export const confirmPassword = (value: any) => {
+  if (!value) {
+    return `${REQUIERED_ERROR_MESSAGE}`;
+  }
   if (value.confirm !== value.password) return MATCH_PASSWORDS;
 };
 
@@ -41,12 +48,18 @@ export const passwordMask = (value: any) => {
 };
 
 export const phoneMask = (value: any) => {
+  if (!value) {
+    return `${REQUIERED_ERROR_MESSAGE}`;
+  }
   if (!RegExp('^\\+380[0-9]{9}$').test(value)) {
     return WRONG_PHONE;
   }
 };
 
 export const carMask = (value: any) => {
+  if (!value) {
+    return `${REQUIERED_ERROR_MESSAGE}`;
+  }
   const val = value?.toUpperCase();
   if (!RegExp('^[ABCEHIKMOPTX]{2}[0-9]{4}[ABCEHIKMOPTX]{2}$').test(val)) {
     return WRONG_CAR_NUMBER;

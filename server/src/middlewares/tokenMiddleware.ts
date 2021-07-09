@@ -1,12 +1,12 @@
 import { Response, NextFunction } from 'express';
 import * as jwt from 'jsonwebtoken';
-import { refreshTokens } from '../utils/jwtHelpers';
+import { getToken, refreshTokens } from '../utils/jwtHelpers';
 import ApiError from '../errors/ApiErrors';
 import { UNATHORIZED } from '../constants/errors';
 
 export const authMiddleware = (req: any, res: Response, next: NextFunction) => {
 
-    const token: string = req.headers.authorization!.split(' ')[1];   
+  const token: string = getToken(req);
 
     if (!token) {
       return next(ApiError.conflict(UNATHORIZED));

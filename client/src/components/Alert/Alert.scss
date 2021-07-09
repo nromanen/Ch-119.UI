@@ -1,10 +1,7 @@
-$generalAlert: #fff3cd;
-$black: #000;
-
 .toast,
 .toast-header {
-  background-color: $generalAlert !important;
-  color: $black !important;
+  background-color: var(--alert-color) !important;
+  color: var(--black) !important;
 }
 
 .alert-error {

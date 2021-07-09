@@ -199,7 +199,7 @@ function* editUserWorker(): Generator<StrictEffect, void, any> {
     if (data.id) {
       yield put({ type: AuthActionTypes.SET_DRIVER_DATA, payload: data });
       yield put(push(PROFILE_ROUTE));
-      yield put({ type: AuthActionTypes.IS_MODIFIED, payload: false});
+      yield put({ type: AuthActionTypes.IS_MODIFIED, payload: !data});
     } else {
       yield put({
         type: AuthActionTypes.HANDLE_ERROR,
@@ -217,7 +217,7 @@ function* editUserWorker(): Generator<StrictEffect, void, any> {
     if (data.id) {
       yield put({ type: AuthActionTypes.SET_USER_DATA, payload: data });
       yield put(push(PROFILE_ROUTE));
-      yield put({ type: AuthActionTypes.IS_MODIFIED, payload: false});
+      yield put({ type: AuthActionTypes.IS_MODIFIED, payload: !data});
     } else {
       yield put({
         type: AuthActionTypes.HANDLE_ERROR,
