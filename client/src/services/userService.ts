@@ -1,4 +1,4 @@
-import { $host, $authHost } from './index';
+import { $host, $authHost } from '../http/index';
 import jwtDecode from 'jwt-decode';
 import axios from 'axios';
 import { USER_ROLE, DRIVER_ROLE } from '../constants/registrationConstants';
@@ -22,9 +22,9 @@ export const registration = (
       return new Promise((resolve, reject) =>
         resolve(jwtDecode(data.accessToken, data.refreshToken)),
       );
-    } else return data.response.message;
+    } else return data.response;
   } catch (e: any) {
-    return e.response?.data?.message;
+    return e.response?.data;
   }
 };
 
@@ -54,16 +54,24 @@ export const registrationDriver = (
         resolve(jwtDecode(data.accessToken, data.refreshToken)),
       );
     } else {
-      return data.response.message;
+      return data.response;
     }
   } catch (e: any) {
-    return e.response?.data?.message;
+    return e.response?.data;
   }
 };
 
-export const login = (phone: string, password: string) => async () => {
+export const login = (
+  phone: string,
+  password: string,
+  verification_code?: number,
+) => async () => {
   try {
-    const { data } = await $host.post('user/login', { phone, password });
+    const { data } = await $host.post('user/login', {
+      phone,
+      password,
+      verification_code,
+    });
     if (data) {
       localStorage.setItem('token', data.accessToken);
       localStorage.setItem('refreshToken', data.refreshToken);
@@ -71,10 +79,53 @@ export const login = (phone: string, password: string) => async () => {
         resolve(jwtDecode(data.accessToken, data.refreshToken)),
       );
     } else {
-      return data.response.message;
+      return data.response;
     }
   } catch (e: any) {
-    return e.response?.data?.message;
+    return e.response?.data;
+  }
+};
+
+export const editProfile = (
+  id: number,
+  name?: string,
+  phone?: string,
+  car_number?: string,
+) => async () => {
+  try {
+    const { data } = await $host.put('user/edit', {
+      id,
+      name,
+      phone,
+      car_number,
+    });
+    if (data) {
+      localStorage.setItem('token', data.accessToken);
+      localStorage.setItem('refreshToken', data.refreshToken);
+      return new Promise((resolve, reject) =>
+        resolve(jwtDecode(data.accessToken, data.refreshToken)),
+      );
+    } else return data.response;
+  } catch (e: any) {
+    return e.response?.data;
+  }
+};
+
+export const driverReg = (
+  id: number,
+  car_color: string,
+  car_model: string,
+  car_number: string,
+) => async () => {
+  try {
+    await $host.post('user/driver', {
+      id,
+      car_color,
+      car_model,
+      car_number,
+    });
+  } catch (e: any) {
+    return e.response?.data;
   }
 };
 

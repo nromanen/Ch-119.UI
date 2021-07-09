@@ -1,3 +1,5 @@
+import { BAD_REQUEST_STATUS, CONFLICT_STATUS, FORBIDDEN_STATUS, INTERNAL_STATUS, UNATHORIZED_STATuS } from '../constants/errors';
+
 export default class ApiError extends Error {
     constructor(status: string, message: string) {
         super();
@@ -6,22 +8,22 @@ export default class ApiError extends Error {
     }
 
     static badRequest() {
-        return new ApiError('400', 'Invalid Data!');
+        return new ApiError(BAD_REQUEST_STATUS, 'Invalid Data!');
     }
 
     static internal() {
-        return new ApiError('500', 'Not authorized');
+        return new ApiError(INTERNAL_STATUS, 'Not authorized');
     }
 
     static forbidden() {
-        return new ApiError('403', 'Forbidden error');
+        return new ApiError(FORBIDDEN_STATUS, 'Forbidden error');
     }
 
     static conflict(message: string) {
-        return new ApiError('409', message);
+        return new ApiError(CONFLICT_STATUS, message);
     }
 
     static unathorized() {
-        return new ApiError('401', 'Invalid Data!');
+        return new ApiError(UNATHORIZED_STATuS, 'Invalid Data!');
     }
 }

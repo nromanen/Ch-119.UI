@@ -27,7 +27,6 @@ const AppRouter: FC = (props: any) => {
       {publicRouters.map(({ path, component }) => (
         <Route key={path?.toString()} path={path} component={component} exact />
       ))}
-      {console.log(isAuth)}
       {isAuth &&
         authRouters.map(({ path, component }) => (
           <Route

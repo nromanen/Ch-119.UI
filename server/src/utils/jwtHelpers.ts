@@ -1,3 +1,4 @@
+import { Request } from 'express';
 import * as jwt from 'jsonwebtoken';
 import sequelize from '../db/sequelize/models/index';
 
@@ -15,7 +16,6 @@ export const generateAccessToken = (
     process.env.ACCESS_TOKEN_SECRET_KEY,
     { expiresIn: process.env.ACCESS_TOKEN_TIME },
   );
-
   return accessToken;
 };
 
@@ -51,3 +51,7 @@ export const saveToken = (userId: number, refreshToken: string) => {
   const token = Token.create({ user_id: userId, refreshToken });
   return token;
 };
+
+export const getToken = (req: Request) => {
+  return req.headers.authorization!.split(' ')[1];
+}

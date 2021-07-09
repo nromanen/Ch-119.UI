@@ -1,15 +1,11 @@
-import * as jwt from 'jsonwebtoken';
 import * as bcrypt from 'bcrypt';
 import { NextFunction, Request, Response } from 'express';
 import { Op } from 'sequelize';
 import sequelize from '../db/sequelize/models/index';
 import ApiError from '../errors/ApiErrors';
-import {
-  generateAccessToken,
-  generateRefreshToken,
-  deleteToken,
-} from '../utils/jwtHelpers';
+import { generateAccessToken, generateRefreshToken } from '../utils/jwtHelpers';
 import { generateVerifyCode } from '../services/verification';
+import { sendSMS } from '../services/notification';
 import {
   USER,
   ROLE,
@@ -18,7 +14,12 @@ import {
   DRIVER_ROLE,
 } from '../constants/modelsNames';
 import { MAX_AGE } from '../constants/api';
-import { CAR_NUMBER_EXIST } from '../constants/errors';
+import {
+  VERIFICATION_MESSAGE,
+  VERIFICATED_IN_DB,
+} from '../constants/verification';
+import { createDriver, createUser } from '../services/dbRequestsIForAuth';
+import { CAR_NUMBER_EXIST, VERIFY_ERROR } from '../constants/errors';
 
 const User = sequelize.models[USER];
 const Role = sequelize.models[ROLE];
@@ -26,28 +27,27 @@ const Driver = sequelize.models[DRIVER];
 
 export default class AuthController {
   async registration(req: Request, res: Response, next: NextFunction) {
-    const { password, phone, verification_code,
-      car_model, car_color, car_number } = req.body;
+    const { password, phone, car_model, car_color, car_number } = req.body;
 
+    const verifyCode = generateVerifyCode();
     if (!phone || !password) {
       return next(ApiError.badRequest());
     }
     try {
-    if (car_number) {
-      const driver = await Driver.findOne({
-        where: { car_number },
-      });
-      if (driver) {
-        return next(ApiError.conflict(CAR_NUMBER_EXIST));
-      }
-      try {
-      User.create({
-        phone: req.body.phone,
-        name: req.body.name,
-        password: bcrypt.hashSync(req.body.password, 5),
-        verification_code: generateVerifyCode(),
-      })
-        .then((user: any) => {
+      if (car_number) {
+        const driver = await Driver.findOne({
+          where: { car_number },
+        });
+        if (driver) {
+          return next(ApiError.conflict(CAR_NUMBER_EXIST));
+        }
+        try {
+          const user: any = await createUser(
+            req.body.phone,
+            req.body.name,
+            req.body.password,
+            verifyCode,
+          );
           const roles = req.body.roles
             ? req.body.roles
             : [USER_ROLE, DRIVER_ROLE];
@@ -63,52 +63,30 @@ export default class AuthController {
               for (let i = 0; i < roles.length; i++) {
                 authorities.push(roles[i].name);
               }
-              
-              Driver.create({
-                user_id: user.id,
-                car_color: req.body.car_color,
-                car_model: req.body.car_model,
-                car_number: req.body.car_number,
-              });
-              const driver_info = {
+              createDriver(
+                user.id,
                 car_color,
                 car_model,
-                car_number,
-              };
-
-              const accessToken = generateAccessToken(
-                user.id,
-                user.name,
-                user.phone,
-                authorities,
-                driver_info,
+                car_number.toUpperCase(),
               );
-              const refreshToken = generateRefreshToken(
-                user.id,
-                user.name,
-                user.phone,
-                authorities,
-                driver_info,
-              );
-              res.cookie('refreshToken', refreshToken, {
-                maxAge: MAX_AGE,
-                httpOnly: true,
-              });
-              return res.json({ accessToken, refreshToken });
+              // sendSMS(
+              //   req.body.phone,
+              //   VERIFICATION_MESSAGE(user.verification_code),
+              // );
+              next();
             });
           });
-        })} catch {
+        } catch {
           return next(ApiError.forbidden());
-        };
-    } else {
-      try {
-      User.create({
-        phone: req.body.phone,
-        name: req.body.name,
-        password: bcrypt.hashSync(req.body.password, 5),
-        verification_code: generateVerifyCode(),
-      })
-        .then((user: any) => {
+        }
+      } else {
+        try {
+          const user: any = await createUser(
+            req.body.phone,
+            req.body.name,
+            req.body.password,
+            verifyCode,
+          );
           const roles = req.body.roles ? req.body.roles : [USER_ROLE];
           Role.findAll({
             where: {
@@ -122,157 +100,188 @@ export default class AuthController {
               for (let i = 0; i < roles.length; i++) {
                 authorities.push(roles[i].name);
               }
-              const accessToken = generateAccessToken(
-                user.id,
-                user.name,
-                user.phone,
-                authorities,
-              );
-              const refreshToken = generateRefreshToken(
-                user.id,
-                user.name,
-                user.phone,
-                authorities,
-              );
-              res.cookie('refreshToken', refreshToken, {
-                maxAge: MAX_AGE,
-                httpOnly: true,
-              });
-              return res.json({ accessToken, refreshToken });
+              // sendSMS(
+              //   req.body.phone,
+              //   VERIFICATION_MESSAGE(user.verification_code),
+              // );
+              next();
             });
           });
-        })} catch {
+        } catch {
           return next(ApiError.forbidden());
-        };
-    }} catch {
+        }
+      }
+    } catch {
       return next(ApiError.forbidden());
     }
   }
 
-  async login (req: Request, res: Response, next: NextFunction) {
+  async registerInProfile(req: Request, res: Response, next: NextFunction) {
+    const { car_model, car_color, car_number, id } = req.body;
     try {
-      let driverInfo: any = null;
-    await User.findOne({
-      where: {
-        phone: req.body.phone,
-      },
-    })
-      .then((user: any) => {
-        if (!user) {
-          return next(ApiError.badRequest());
-        }
-        
-        const passwordIsValid = bcrypt.compareSync(
-          req.body.password,
-          user.password,
-        );
-
-        if (!passwordIsValid) {
-          return next(ApiError.unathorized());
-        }
-
-        Driver.findOne({
+      const driver: any = await Driver.findOne({
+        where: { car_number },
+      });
+      if (driver) {
+        return next(ApiError.conflict(CAR_NUMBER_EXIST));
+      } else {
+        const user: any = await User.findOne({
           where: {
-            user_id: user.id,
+            id: id,
           },
-        }) 
-        .then((driver: any) => {
-          if (!driver) {
-            driverInfo = null
-          } else {
-          driverInfo = driver.dataValues;
-          }
-        })
-        const authorities: Array<string> = [];
-        user.getRoles().then((roles: any) => {
-          for (let i = 0; i < roles.length; i++) {
-            authorities.push(roles[i].name);
-          }
-          const refreshToken = generateRefreshToken(
-            user.id,
-            user.name,
-            user.phone,
-            authorities,
-            driverInfo
-          );
-          res.cookie('refreshToken', refreshToken, {
-            maxAge: MAX_AGE,
-            httpOnly: true,
-          });
-          res.status(200).send({
-            id: user.id,
-            name: user.name,
-            phone: user.phone,
-            roles: authorities,
-            driverInfo,
-            accessToken: generateAccessToken(user.id, user.name, user.phone, authorities,  driverInfo),
-            refreshToken,
+        });
+        const roles = req.body.roles
+          ? req.body.roles
+          : [USER_ROLE, DRIVER_ROLE];
+        Role.findAll({
+          where: {
+            name: {
+              [Op.or]: roles,
+            },
+          },
+        }).then((roles: any) => {
+          user.setRoles(roles).then(() => {
+            const authorities: Array<string> = [];
+            for (let i = 0; i < roles.length; i++) {
+              authorities.push(roles[i].name);
+            }
+            createDriver(
+              user.id,
+              car_color,
+              car_model,
+              car_number.toUpperCase(),
+            );
           });
         });
-      })} catch {
-        return next(ApiError.forbidden());
-      };
-  }
-
-  async refresh(req: Request, res: Response, next: NextFunction): Promise<any> {
-    const { refreshToken } = req.cookies;
-
-    const userInfo = jwt.verify(
-      refreshToken,
-      process.env.REFRESH_TOKEN_SECRET_KEY!,
-    );
-    if (!refreshToken) {
+        res.status(200);
+      }
+    } catch {
       return next(ApiError.forbidden());
     }
-
-    res.cookie('refreshToken', refreshToken, {
-      maxAge: MAX_AGE,
-      httpOnly: true,
-    });
-    return res.json({
-      accessToken: generateAccessToken(
-        (userInfo as any).id,
-        (userInfo as any).name,
-        (userInfo as any).phone,
-        (userInfo as any).roles,
-      ),
-      refreshToken: generateRefreshToken(
-        (userInfo as any).id,
-        (userInfo as any).name,
-        (userInfo as any).phone,
-        (userInfo as any).roles,
-      ),
-    });
   }
 
-  async check(req: Request, res: Response, next: NextFunction): Promise<any> {
-    const token: string = req.headers.authorization!.split(' ')[1];
+  async login(req: Request, res: Response, next: NextFunction) {
+    try {
+      const user: any = await User.findOne({
+        where: {
+          phone: req.body.phone,
+        },
+      });
+      if (!user) {
+        return next(ApiError.badRequest());
+      }
 
-    const userInfo = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET_KEY!);
+      const passwordIsValid = bcrypt.compareSync(
+        req.body.password,
+        user.password,
+      );
 
-    const accessToken = generateAccessToken(
-      (userInfo as any).id,
-      (userInfo as any).name,
-      (userInfo as any).phone,
-      (userInfo as any).roles,
-    );
-    const refreshToken = generateRefreshToken(
-      (userInfo as any).id,
-      (userInfo as any).name,
-      (userInfo as any).phone,
-      (userInfo as any).roles,
-    );
-    res.cookie('refreshToken', refreshToken, {
-      maxAge: MAX_AGE,
-      httpOnly: true,
-    });
-    return res.json({ accessToken, refreshToken });
+      if (!passwordIsValid) {
+        return next(ApiError.unathorized());
+      }
+
+      if (user.verification_code !== VERIFICATED_IN_DB) {
+        next(
+          res
+            .status(401)
+            .send({ message: VERIFY_ERROR, code: user.verification_code }),
+        );
+      }
+      next();
+    } catch {
+      return next(ApiError.forbidden());
+    }
   }
 
-  async delToken(req: Request, res: Response): Promise<any> {
-    const { refreshToken } = req.cookies;
-    deleteToken(req.body, refreshToken);
-    res.clearCookie('refreshToken');
-    res.sendStatus(204);
+  async authorization(req: Request, res: Response, next: NextFunction) {
+    try {
+      let driverInfo: any = null;
+      const user: any = await User.findOne({
+        where: {
+          phone: req.body.phone,
+        },
+      });
+      const driver: any = await Driver.findOne({
+        where: {
+          user_id: user.id,
+        },
+      });
+      if (!driver) {
+        driverInfo = null;
+      } else {
+        driverInfo = driver.dataValues;
+      }
+      const authorities: Array<string> = [];
+      user.getRoles().then((roles: any) => {
+        for (let i = 0; i < roles.length; i++) {
+          authorities.push(roles[i].name);
+        }
+        const refreshToken = generateRefreshToken(
+          user.id,
+          user.name,
+          user.phone,
+          authorities,
+          driverInfo,
+        );
+        const accessToken = generateAccessToken(
+          user.id,
+          user.name,
+          user.phone,
+          authorities,
+          driverInfo,
+        );
+        res.cookie('refreshToken', refreshToken, {
+          maxAge: MAX_AGE,
+          httpOnly: true,
+        });
+        return res.json({ accessToken, refreshToken });
+      });
+    } catch {
+      return next(ApiError.unathorized());
+    }
+  }
+
+  async changeInfo(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { name, phone, car_number, id } = req.body;
+
+      const user: any = await User.findOne({
+        where: {
+          id: id,
+        },
+      });
+      if (phone) {
+        user.phone = phone;
+        await user.save();
+      }
+      if (name) {
+        user.name = name;
+        await user.save();
+      }
+      if (car_number) {
+        const driverNumber = await Driver.findOne({
+          where: {
+            car_number: car_number,
+            user_id: {
+              [Op.not]: user.id,
+            },
+          },
+        });
+        if (!driverNumber) {
+          const driver: any = await Driver.findOne({
+            where: {
+              user_id: user.id,
+            },
+          });
+          driver.car_number = car_number;
+          await driver.save();
+        } else {
+          return next(ApiError.conflict(CAR_NUMBER_EXIST));
+        }
+      }
+      next();
+    } catch {
+      return next(ApiError.unathorized());
+    }
   }
 }

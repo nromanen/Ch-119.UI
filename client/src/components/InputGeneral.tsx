@@ -9,20 +9,21 @@ export const InputGeneral: FC<InputGeneralI> = ({
   validate,
   required,
   label,
+  id,
 }) =>
     <div className="form-group">
       <Field
         name={name}
-        type={type}
+        type={type || 'text'}
         placeholder={placeholder}
         validate={validate}
         required={required}
       >
         {({ input, meta, placeholder }) => (
           <div>
-            <label className="col-xs-2">{label}</label>
+            <label htmlFor={id} className="col-xs-2">{label}</label>
             <div className="col-xs-4">
-              <input {...input} placeholder={placeholder} />
+              <input id={id} {...input} className="input" placeholder={placeholder} />
               <div className="validate_warning">
                 {meta.error && meta.touched && (
                   <div className="alert alert-warning">

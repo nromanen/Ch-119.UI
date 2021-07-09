@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import OrderItem from '../../components/orderItem';
-import axios from 'axios';
+import { $authHost } from '../../http/index';
 import Navbar from '../../components/Navbar/Navbar';
 
 
@@ -11,11 +11,7 @@ const OrderDriverActive = () => {
   }, []);
 
   const fetchOrders = async () => {
-    const data = await axios.get(`${process.env.REACT_APP_SERVER_URL}order`, {
-      params: {
-        'status': 'active',
-      },
-    });
+    const data = await $authHost.get(`${process.env.REACT_APP_SERVER_URL}order?status=active`);
 
     setOrders(data.data.data.rows);
   };
