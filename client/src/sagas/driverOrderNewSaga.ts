@@ -22,6 +22,7 @@ import {
   fetchDriverOrderCurrent,
 } from '../services/orderService';
 import { toggleModal } from '../actions/feedbackActions';
+import { push } from 'react-router-redux';
 
 export const getDriverId = (state: any) => state.auth.driver_info.driver_id;
 
@@ -80,12 +81,12 @@ function* fetchDriverOrderHistoryWorker(): Generator<StrictEffect, void, any> {
 }
 
 // BUG action called after second click on any button ??
-function* changeStatusWorker(): Generator<StrictEffect, void, any> {
-  const { payload } = yield take(DriverOrderNewActionTypes.CHANGE_STATUS);
+function* changeStatusWorker(action: any): Generator<StrictEffect, void, any> {
   const driverId = yield select(getDriverId);
-  const { status, id } = payload;
+  const { status, id } = action.payload;
 
   const response = yield call(changeOrderById(id, { status, driverId }));
+  console.log(`response`, response);
   if (status === Statuses.ACCEPTED) {
     yield put(moveOrderToCurrentAction(response.data));
     yield put(

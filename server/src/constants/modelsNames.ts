@@ -12,4 +12,4 @@ export const ROLE = 'roles';
 export const TOKEN = 'tokens';
 export const USER_ROLE = 'USER';
 export const DRIVER_ROLE = 'DRIVER';
-export const ROLES = ['USER', 'DRIVER', 'ADMIN'];
+export const ROLES = [USER_ROLE, DRIVER_ROLE, 'ADMIN'];

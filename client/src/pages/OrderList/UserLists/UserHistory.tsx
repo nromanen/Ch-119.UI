@@ -1,27 +1,30 @@
 import React, { useEffect } from 'react';
 
+import { useUserOrderActions } from '../../../hooks/useActions';
+import { useTypedSelector } from './../../../hooks/useTypedSelector';
+
 import { OrderItem } from '../OrderItem/OrderItem';
 import { Pages } from '../OrderList';
-import { useTypedSelector } from '../../../hooks/useTypedSelector';
-import { useDriverOrderNewActions } from '../../../hooks/useActions';
 import { UserRoles } from '../../../constants/userRoles';
 
-export const DriverHistory = () => {
-  const { fetchDriverOrderHistoryAction } = useDriverOrderNewActions();
+export const UserHistory = () => {
+  const { fetchUserOrderHistoryAction } = useUserOrderActions();
+
   useEffect(() => {
-    fetchDriverOrderHistoryAction();
+    fetchUserOrderHistoryAction();
   }, []);
-  const { history: list } = useTypedSelector((state) => state.driverOrders);
+
+  const { history: list } = useTypedSelector((state) => state.userOrders);
 
   if (!list.length) {
-    return <div>You have't done any order</div>;
+    return <div>You haven't make any order</div>;
   }
 
   return (
     <ul className="order__list">
       {list.map((order: any) => {
         const feedback = order.feedbacks.filter(
-          (feedback: any) => feedback.authorRole === UserRoles.DRIVER,
+          (feedback: any) => feedback.authorRole === UserRoles.USER,
         )[0];
         return (
           <OrderItem
@@ -34,8 +37,9 @@ export const DriverHistory = () => {
             carType={order.car_type.name}
             extraServices={order.extra_services}
             lastUpdate={order.updatedAt}
-            isDriver={true} // TODO change dynamic
+            isDriver={false} // TODO change dynamic
             page={Pages.HISTORY}
+            driverInfo={order.driver}
             feedback={feedback}
           />
         );

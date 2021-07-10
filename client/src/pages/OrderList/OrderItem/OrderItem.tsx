@@ -1,7 +1,10 @@
 import { FC } from 'react';
 
 import { useTypedSelector } from '../../../hooks/useTypedSelector';
-import { useDriverOrderNewActions } from '../../../hooks/useActions';
+import {
+  useDriverOrderNewActions,
+  useUserOrderActions,
+} from '../../../hooks/useActions';
 import { Statuses } from '../../../constants/statuses';
 
 import { extraServicesIcons } from '../../../components/ExtraServices/icons';
@@ -19,7 +22,20 @@ interface DriverInfoI {
   carColor: string;
   carNumber: string;
   carModel: string;
+  rating: number | null;
 }
+
+interface FeedBackI {
+  id: number;
+  text: string;
+  rating: number;
+  createdAt: string;
+  updatedAt: string;
+  orderId: number;
+  authorRole: number;
+  subjectRole: number;
+}
+
 interface OrderItemPropsI {
   orderId: number;
   from: string;
@@ -34,6 +50,7 @@ interface OrderItemPropsI {
   customerInfo?: CustomerInfoI;
   driverInfo?: DriverInfoI;
   mayTakeOrder?: boolean;
+  feedback?: FeedBackI;
 }
 
 export const OrderItem: FC<OrderItemPropsI> = ({
@@ -50,6 +67,7 @@ export const OrderItem: FC<OrderItemPropsI> = ({
   customerInfo,
   driverInfo,
   mayTakeOrder,
+  feedback,
 }) => {
   const { extra_services } = useTypedSelector((state) => state.cityInfo);
   const newFrom = from.split(', ').slice(0, 2).join(', ');
@@ -58,13 +76,45 @@ export const OrderItem: FC<OrderItemPropsI> = ({
   const time = new Date(lastUpdate).toLocaleTimeString();
 
   const { changeOrderStatusAction } = useDriverOrderNewActions();
-
+  const { changeOrderStatusAction: changeUserOrderStatusAction } =
+    useUserOrderActions();
   // TODO do not have cityInfo without open order page
   const extraServicesNames =
     extraServices.map((id: number) => {
       const extServItem = extra_services.find((extServ) => extServ.id === id);
       return extServItem?.name;
     }) || [];
+
+  const onCancelHandler = () => {
+    if (isDriver) {
+      changeOrderStatusAction({
+        status: Statuses.CANCELED,
+        id: orderId,
+      });
+    } else {
+      changeUserOrderStatusAction({
+        status: Statuses.CANCELED,
+        id: orderId,
+      });
+    }
+  };
+
+  const getFeedback = (feedback: string, maxLength = 35) => {
+    const isOver = feedback.length > maxLength;
+    let text;
+    if (isOver) {
+      text = feedback.substring(0, maxLength) + '...';
+    } else {
+      text = feedback;
+    }
+
+    return (
+      <div className="info" title={isOver ? feedback : ''}>
+        <p className="info__label">Feedback:</p>
+        <p className="info__value">{text}</p>
+      </div>
+    );
+  };
 
   return (
     <li className="request__item">
@@ -97,16 +147,17 @@ export const OrderItem: FC<OrderItemPropsI> = ({
               <span className="info__label">price: </span>
               <span className="info__value">{price}</span>
             </li>
+            {driverInfo?.rating && (
+              <li>
+                <span className="info__label">rating: </span>
+                <span className="info__value">{driverInfo.rating}</span>
+              </li>
+            )}
           </ul>
           <div className="group">
             {page === Pages.CURRENT && (
               <button
-                onClick={() =>
-                  changeOrderStatusAction({
-                    status: Statuses.CANCELED,
-                    id: orderId,
-                  })
-                }
+                onClick={onCancelHandler}
                 className="request__button cancel button button--hovered button--outlined button--border"
               >
                 Cancel order
@@ -129,12 +180,12 @@ export const OrderItem: FC<OrderItemPropsI> = ({
 
             {isDriver && page === Pages.ALL && (
               <button
-                onClick={() =>
+                onClick={() => {
                   changeOrderStatusAction({
                     status: Statuses.ACCEPTED,
                     id: orderId,
-                  })
-                }
+                  });
+                }}
                 className="request__button take button button--hovered button--outlined button--border"
                 disabled={mayTakeOrder}
                 title={
@@ -146,17 +197,17 @@ export const OrderItem: FC<OrderItemPropsI> = ({
                 Take order
               </button>
             )}
-            {page === Pages.HISTORY && (
+            {page === Pages.HISTORY && !feedback && (
               <button
                 onClick={() => 'leaveFeedback'}
                 className="request__button take button button--hovered button--outlined button--border"
-                disabled={true}
-                title="Leave feedback"
+                title={'Leave feedback'}
               >
                 Feedback
               </button>
             )}
           </div>
+          {page === Pages.HISTORY && feedback && getFeedback(feedback.text)}
         </div>
       </div>
       <div className="request__status">

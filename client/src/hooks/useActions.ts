@@ -5,6 +5,7 @@ import * as InfoActionCreators from '../actions/cityInfoActions';
 import * as MapActionCreators from '../actions/mapActions';
 import * as FeedbackActionCreators from '../actions/feedbackActions';
 import * as DriverOrderNewActionCreators from '../actions/driverOrderNewActions';
+import * as UserOrderActionCreators from '../actions/userOrdersActions';
 
 export const useOrderActions = () => {
   const dispatch = useDispatch();
@@ -30,4 +31,8 @@ export const useFeedbackActions = () => {
 export const useDriverOrderNewActions = () => {
   const dispatch = useDispatch();
   return bindActionCreators(DriverOrderNewActionCreators, dispatch);
+};
+export const useUserOrderActions = () => {
+  const dispatch = useDispatch();
+  return bindActionCreators(UserOrderActionCreators, dispatch);
 };
