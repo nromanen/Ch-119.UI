@@ -1,7 +1,10 @@
 import { FC } from 'react';
 
 import { useTypedSelector } from '../../../hooks/useTypedSelector';
-import { useDriverOrderNewActions } from '../../../hooks/useActions';
+import {
+  useDriverOrderNewActions,
+  useFeedbackActions,
+} from '../../../hooks/useActions';
 import { Statuses } from '../../../constants/statuses';
 
 import { extraServicesIcons } from '../../../components/ExtraServices/icons';
@@ -34,6 +37,8 @@ interface OrderItemPropsI {
   customerInfo?: CustomerInfoI;
   driverInfo?: DriverInfoI;
   mayTakeOrder?: boolean;
+  showFeedbackButton?: boolean;
+  customerId?: number;
 }
 
 export const OrderItem: FC<OrderItemPropsI> = ({
@@ -50,6 +55,8 @@ export const OrderItem: FC<OrderItemPropsI> = ({
   customerInfo,
   driverInfo,
   mayTakeOrder,
+  showFeedbackButton,
+  customerId,
 }) => {
   const { extra_services } = useTypedSelector((state) => state.cityInfo);
   const newFrom = from.split(', ').slice(0, 2).join(', ');
@@ -58,6 +65,16 @@ export const OrderItem: FC<OrderItemPropsI> = ({
   const time = new Date(lastUpdate).toLocaleTimeString();
 
   const { changeOrderStatusAction } = useDriverOrderNewActions();
+  const { toggleModal, changeFeedbackValues } = useFeedbackActions();
+
+  const onClickFeedback = () => {
+    const orderProps = {
+      orderId,
+      customerId,
+    };
+    changeFeedbackValues(orderProps);
+    return toggleModal();
+  };
 
   // TODO do not have cityInfo without open order page
   const extraServicesNames =
@@ -119,6 +136,7 @@ export const OrderItem: FC<OrderItemPropsI> = ({
                   changeOrderStatusAction({
                     status: Statuses.FINISHED,
                     id: orderId,
+                    customerId,
                   })
                 }
                 className="request__button finish button button--hovered button--outlined button--border"
@@ -146,11 +164,10 @@ export const OrderItem: FC<OrderItemPropsI> = ({
                 Take order
               </button>
             )}
-            {page === Pages.HISTORY && (
+            {showFeedbackButton && page === Pages.HISTORY && (
               <button
-                onClick={() => 'leaveFeedback'}
+                onClick={onClickFeedback}
                 className="request__button take button button--hovered button--outlined button--border"
-                disabled={true}
                 title="Leave feedback"
               >
                 Feedback

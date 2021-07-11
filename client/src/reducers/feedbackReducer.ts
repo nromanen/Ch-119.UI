@@ -4,8 +4,8 @@ import { FeedbackState } from './../types/feedbackTypes';
 export const initialState: FeedbackState = {
   text: undefined,
   rating: undefined,
-  author_role: undefined,
-  subject_role: undefined,
+  authorRole: undefined,
+  subjectRole: undefined,
   orderId: undefined,
   isShown: false,
 };

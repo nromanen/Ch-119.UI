@@ -142,3 +142,21 @@ export const fetchDriverOrderHistory = (driverId: number) => async () => {
     throw new Error(ERROR_IN_ORDER);
   }
 };
+
+export const fetchOrderHistory = (id: number, role: string) => async () => {
+  const url = `${process.env.REACT_APP_SERVER_URL}order/list`;
+
+  try {
+    const response = axios.get(url, {
+      params: {
+        status: [Statuses.DONE, Statuses.FINISHED, Statuses.CANCELED], // change if its same
+        id,
+        role,
+      },
+    });
+
+    return response;
+  } catch (error) {
+    throw new Error(ERROR_IN_ORDER);
+  }
+};

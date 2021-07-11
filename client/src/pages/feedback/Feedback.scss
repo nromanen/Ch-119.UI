@@ -17,3 +17,17 @@
 .maxlength_warning {
   margin-top: 8px;
 }
+
+.modal {
+  &__header {
+    background-color: var(--section-bg-color);
+    color: var(--text-color);
+    &.modal-header {
+      border-color: var(--accent-color);
+    }
+  }
+  &__body {
+    background-color: var(--section-bg-color);
+    color: var(--text-color);
+  }
+}

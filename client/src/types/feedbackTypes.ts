@@ -1,8 +1,8 @@
 export interface FeedbackState {
   text: string | undefined;
   rating: number | undefined;
-  author_role: number | undefined;
-  subject_role: number | undefined;
+  authorRole: number | undefined;
+  subjectRole: number | undefined;
   orderId: number | undefined;
   isShown: boolean;
 }

@@ -4,9 +4,13 @@ import { OrderItem } from '../OrderItem/OrderItem';
 import { Pages } from '../OrderList';
 import { useTypedSelector } from '../../../hooks/useTypedSelector';
 import { useDriverOrderNewActions } from '../../../hooks/useActions';
+import { UserRoles } from '../../../constants/userRoles';
 
 export const DriverHistory = () => {
   const { fetchDriverOrderHistoryAction } = useDriverOrderNewActions();
+  const userRole = useTypedSelector((state) =>
+    state.auth.role.includes('DRIVER') ? UserRoles.DRIVER : UserRoles.USER,
+  );
   useEffect(() => {
     fetchDriverOrderHistoryAction();
   }, []);
@@ -19,10 +23,15 @@ export const DriverHistory = () => {
   return (
     <ul className="order__list">
       {list.map((order: any) => {
+        const feedback = order.feedbacks.find(
+          (feedback: any) => feedback.author_role === userRole,
+        );
+        const showFeedbackButton = !feedback?.author_role;
         return (
           <OrderItem
             key={order.id}
             orderId={order.id}
+            customerId={order.customer_id}
             from={order.from}
             to={order.to}
             status={order.status}
@@ -32,6 +41,7 @@ export const DriverHistory = () => {
             lastUpdate={order.updatedAt}
             isDriver={true} // TODO change dynamic
             page={Pages.HISTORY}
+            showFeedbackButton={showFeedbackButton}
           />
         );
       })}

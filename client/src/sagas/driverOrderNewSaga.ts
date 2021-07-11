@@ -1,12 +1,8 @@
+import { call, takeEvery, StrictEffect, put, select } from 'redux-saga/effects';
 import {
-  call,
-  takeEvery,
-  StrictEffect,
-  put,
-  select,
-  take,
-} from 'redux-saga/effects';
-import { DriverOrderNewActionTypes } from '../types/driverOrderNew';
+  ChangeStatus,
+  DriverOrderNewActionTypes,
+} from '../types/driverOrderNew';
 import {
   fetchDriverOrderNewErrorAction,
   fetchDriverOrderNewSuccessAction,
@@ -17,13 +13,17 @@ import {
 import { Statuses } from '../constants/statuses';
 import {
   fetchDriverOrderNew,
-  fetchDriverOrderHistory,
   changeOrderById,
   fetchDriverOrderCurrent,
+  fetchOrderHistory,
 } from '../services/orderService';
-import { toggleModal } from '../actions/feedbackActions';
+import { changeFeedbackValues, toggleModal } from '../actions/feedbackActions';
 
 export const getDriverId = (state: any) => state.auth.driver_info.driver_id;
+export const getUserId = (state: any) =>
+  state.auth.driver_info.driver_id || state.auth.id;
+export const getUserRole = (state: any) =>
+  state.auth.role.includes('DRIVER') ? 'DRIVER' : 'USER';
 
 function* fetchDriverOrderCurrentWorker(): Generator<StrictEffect, void, any> {
   const driverId = yield select(getDriverId);
@@ -60,10 +60,11 @@ function* fetchDriverOrderNewWorker(): Generator<StrictEffect, void, any> {
   }
 }
 
-function* fetchDriverOrderHistoryWorker(): Generator<StrictEffect, void, any> {
-  const driverId = yield select(getDriverId);
+function* fetchOrderHistoryWorker(): Generator<StrictEffect, void, any> {
+  const userId = yield select(getUserId);
+  const userRole = yield select(getUserRole);
 
-  const response = yield call(fetchDriverOrderHistory(driverId));
+  const response = yield call(fetchOrderHistory(userId, userRole));
   const orders = response.data.rows;
 
   if (response.status === 200) {
@@ -79,11 +80,11 @@ function* fetchDriverOrderHistoryWorker(): Generator<StrictEffect, void, any> {
   }
 }
 
-// BUG action called after second click on any button ??
-function* changeStatusWorker(): Generator<StrictEffect, void, any> {
-  const { payload } = yield take(DriverOrderNewActionTypes.CHANGE_STATUS);
+function* changeStatusWorker(
+  action: ChangeStatus,
+): Generator<StrictEffect, void, any> {
   const driverId = yield select(getDriverId);
-  const { status, id } = payload;
+  const { status, id, customerId } = action.payload;
 
   const response = yield call(changeOrderById(id, { status, driverId }));
   if (status === Statuses.ACCEPTED) {
@@ -108,6 +109,11 @@ function* changeStatusWorker(): Generator<StrictEffect, void, any> {
   }
 
   if (status === Statuses.FINISHED) {
+    const orderProps = {
+      orderId: id,
+      customerId,
+    };
+    yield put(changeFeedbackValues(orderProps));
     yield put(toggleModal());
   }
 }
@@ -138,7 +144,7 @@ export function* driverOrderNewWatcher() {
   );
   yield takeEvery(
     DriverOrderNewActionTypes.FETCH_HISTORY_ORDERS,
-    fetchDriverOrderHistoryWorker,
+    fetchOrderHistoryWorker,
   );
   yield takeEvery(DriverOrderNewActionTypes.CHANGE_STATUS, changeStatusWorker);
   yield takeEvery(

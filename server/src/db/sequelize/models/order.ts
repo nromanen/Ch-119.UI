@@ -1,6 +1,12 @@
 import { Model } from 'sequelize';
 
-import { CAR_TYPE, DRIVER, ORDER, USER } from '../../../constants/modelsNames';
+import {
+  CAR_TYPE,
+  DRIVER,
+  FEEDBACK,
+  ORDER,
+  USER,
+} from '../../../constants/modelsNames';
 import { USER_IN_ORDER } from '../../../constants/foreignKeys';
 
 export default (sequelize: any, DataTypes: any) => {
@@ -11,6 +17,7 @@ export default (sequelize: any, DataTypes: any) => {
           name: USER_IN_ORDER,
         },
       });
+      Order.hasMany(models[FEEDBACK]);
       Order.belongsTo(models[DRIVER]);
       Order.belongsTo(models[CAR_TYPE]);
     }

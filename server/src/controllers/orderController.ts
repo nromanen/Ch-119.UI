@@ -1,6 +1,12 @@
 import { Request, Response } from 'express';
 import sequelize from '../db/sequelize/models/index';
-import { ORDER, DRIVER, USER, CAR_TYPE } from '../constants/modelsNames';
+import {
+  ORDER,
+  DRIVER,
+  USER,
+  CAR_TYPE,
+  FEEDBACK,
+} from '../constants/modelsNames';
 import {
   STATUS_BAD_REQUEST,
   STATUS_OK,
@@ -22,14 +28,17 @@ export default class OrderController {
   };
 
   getWithFilter = async (req: Request, res: Response): Promise<any> => {
-    const { status, driverId, withDriver, withUser, limit } = req.query;
+    const { status, id, role, limit, withUser } = req.query;
     const seqOptions: any = {
       where: {
         status,
       },
-      attributes: { exclude: ['carTypeId', 'driver_id'] }, // exclude driver_id because return driverId
       limit: limit || 5,
       include: [
+        {
+          model: sequelize.models[FEEDBACK],
+          attributes: ['author_role'],
+        },
         {
           model: sequelize.models[CAR_TYPE], // return carType from car_types table
         },
@@ -40,13 +49,19 @@ export default class OrderController {
       ],
     };
 
-    if (driverId) {
-      seqOptions.where.driver_id = driverId;
-    }
-    if (withDriver) {
+    if (role === 'USER') {
+      seqOptions.where.customer_id = id;
       seqOptions.include.push({
         model: sequelize.models[DRIVER],
         attributes: ['car_color', 'car_number', 'car_model', 'driver_rating'], // field that back from sequelize
+      });
+    }
+
+    if (role === 'DRIVER') {
+      seqOptions.where.driver_id = id;
+      seqOptions.include.push({
+        model: sequelize.models[USER],
+        attributes: ['name', 'phone'],
       });
     }
 
