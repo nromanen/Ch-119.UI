@@ -3,7 +3,12 @@ import './Profile.scss';
 import Navbar from '../../components/Navbar/Navbar';
 import { InputGeneral } from '../../components/InputGeneral';
 import { Form } from 'react-final-form';
-import { phoneMask, carMask, maxValue, nameMask } from '../../utils/validators';
+import {
+  phoneMask,
+  carMask,
+  maxValueWithRequired,
+  nameMask,
+} from '../../utils/validators';
 import AlertContainer from '../../components/Alert/AlertContainer';
 import { REQUIERED_ERROR_MESSAGE } from '../../constants/errorConstants';
 import { DRIVER_ROLE } from '../../constants/registrationConstants';
@@ -68,11 +73,11 @@ const Profile: FC = (props: any) => {
               </div>
             ) : (
               <EditForm
-              name = {props.auth.name}
-              phone = {props.auth.phone}
-              car_number = {props.auth.driver_info.car_number}
-              role = {props.auth.role}
-              updateUser= {props.updateUser}
+                name={props.auth.name}
+                phone={props.auth.phone}
+                car_number={props.auth.driver_info.car_number}
+                role={props.auth.role}
+                updateUser={props.updateUser}
               />
             )}
             <div className="col-xs-4 reg-driver">
@@ -88,8 +93,8 @@ const Profile: FC = (props: any) => {
                   />
                   {isDriver ? (
                     <DriverForm
-                    driverProfile={props.driverProfile}
-                    logoutUser={props.logoutUser}
+                      driverProfile={props.driverProfile}
+                      logoutUser={props.logoutUser}
                     />
                   ) : null}
                 </div>

@@ -2,7 +2,7 @@ import React, { FC, useState } from 'react';
 import { Form } from 'react-final-form';
 import {
   phoneMask,
-  maxValue,
+  maxValueWithRequired,
   carMask,
   passwordMask,
   nameMask,
@@ -64,7 +64,7 @@ export const Registration: FC = (props: any) => {
               <InputGeneral
                 name="confirm"
                 type="password"
-                validate={maxValue(25)}
+                validate={maxValueWithRequired(25)}
                 required
                 label="Confirm password:"
                 id="confirm"
@@ -83,7 +83,7 @@ export const Registration: FC = (props: any) => {
                 <React.Fragment>
                   <InputGeneral
                     name="car_color"
-                    validate={maxValue(15)}
+                    validate={maxValueWithRequired(15)}
                     placeholder="Blue"
                     label="Car color:"
                     id="car_color"
@@ -91,7 +91,7 @@ export const Registration: FC = (props: any) => {
                   <InputGeneral
                     name="car_model"
                     placeholder="Ford"
-                    validate={maxValue(30)}
+                    validate={maxValueWithRequired(30)}
                     label="Car model:"
                     id="car_model"
                   />
@@ -109,7 +109,7 @@ export const Registration: FC = (props: any) => {
                   type="submit"
                   className="button button--hovered button--outlined button--border"
                   disabled={submitting || props.auth.verification_code}
-                  >
+                >
                   Sign up
                 </button>
                 <NavLink className="login-link" to="/">

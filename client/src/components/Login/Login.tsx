@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { NavLink } from 'react-router-dom';
 import { Form } from 'react-final-form';
 import { REGISTRATION_ROUTE } from '../../constants/routerConstants';
-import { maxValue, phoneMask } from '../../utils/validators';
+import { maxValueWithRequired, phoneMask } from '../../utils/validators';
 import AlertContainer from '../Alert/AlertContainer';
 import VerificationCodeContainer from '../VerificationInput/VerificationInputContainer';
 import './Login.scss';
@@ -34,7 +34,7 @@ export const Login: FC = (props: any) => (
               <InputGeneral
                 name="password"
                 type="password"
-                validate={maxValue(25)}
+                validate={maxValueWithRequired(25)}
                 label="Password:"
                 id="password"
               />

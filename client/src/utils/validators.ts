@@ -17,7 +17,7 @@ import {
 export const required = (value: any) =>
   value ? undefined : REQUIERED_ERROR_MESSAGE;
 
-export const maxValue = (max: any) => (value: any) => {
+export const maxValueWithRequired = (max: any) => (value: any) => {
   if (!value) {
     return `${REQUIERED_ERROR_MESSAGE}`;
   }
@@ -25,6 +25,11 @@ export const maxValue = (max: any) => (value: any) => {
     return `${MAX_VALUE_ERROR_MESSAGE} ${max}`;
   }
 };
+
+export const maxValue = (max: any) => (value: any) =>
+  !value || value?.length <= max
+    ? undefined
+    : `${MAX_VALUE_ERROR_MESSAGE} ${max}`;
 
 export const confirmPassword = (value: any) => {
   if (!value) {
