@@ -1,18 +1,101 @@
-$white: #fff;
-
 .profile {
     max-width: 600px;
     margin: auto;
 
+    .profile-header {
+        padding-top: 10px;
+        display: flex;
+        flex-direction: row;
+        position: relative;
+        justify-content: space-between;
+    }
+
+    #edit {
+        opacity: 0;
+        min-width:85px;
+        height:20px;
+        right:0;
+        top:18px;
+        position: absolute;
+    }
+
+    .edit-btn-off {
+        background: var(--black);
+        color: var(--accent-color);
+        
+    }
+
+    .edit-btn-on {
+        background: var(--accent-color);
+        color: var(--black);
+    }
+
     .profile-info {
-        margin-bottom: 15px;
+        margin-bottom: 10px;
+        background-color:var(--section-bg-color);
+        color: var(--text-color);
     }
 
     .profile-text {
-        margin-top: 15px;
-        padding-top: 10px;
+        padding: 10px;
+        padding-bottom: 0;
+        border-radius: var(--input-border-radius, 3px);
+        border: 2px solid var(--overlay-bg-color);
+        margin-bottom: 10px;
+
+        &>p {
+            margin-bottom: 1rem;
+        }
+    }
+
+    .driver-form {
+        border: 2px solid var(--overlay-bg-color);
+        border-radius: var(--input-border-radius, 3px);
+        padding: 10px;
+    }
+
+    .edit-form {
+        font-weight: bold;
+    }
+
+    .reg-driver {
+        font-weight: bold;
         padding-bottom: 10px;
-        background-color:$white;
-        border-radius: .25rem;
+
+        .validate_warning {
+            font-weight: normal;
+        }
+    }
+
+    .logout {
+        width:100%;
     }
 }
+
+@media (min-width:450px) {
+
+    .profile-text {
+        flex-direction: row;
+        justify-content: space-between;
+
+        .edit-form  {
+            display:flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+    }
+
+    .driver-form  {
+        display:flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-around;
+    }
+
+        .button {
+            margin-top: 0;
+        }
+}
+
+   

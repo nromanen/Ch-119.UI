@@ -3,7 +3,7 @@ import { Request, Response } from 'express';
 import { STATUS_OK } from '../constants/api';
 import orderRouter from './orderRouter';
 import infoRouter from './infoRouter';
-import userRouter from './user';
+import userRouter from './userRouter';
 import feedbackRouter from './feedbackRouter';
 import {
   ORDER_ROUTE,

@@ -10,6 +10,11 @@ export const registrateDriver = (payload: IUser): IAuthAction => ({
     payload,
 });
 
+export const driverInProfile = (payload: IUser): IAuthAction => ({
+    type: AuthActionTypes.DRIVER_IN_PROFILE,
+    payload,
+});
+
 export const setUserData = (payload: IUser): IAuthAction => ({
     type: AuthActionTypes.SET_USER_DATA,
     payload,
@@ -22,6 +27,16 @@ export const setDriverData = (payload: IUser): IAuthAction => ({
 
 export const checkDriver = (payload: IUser) => ({
     type: AuthActionTypes.IS_DRIVER,
+    payload,
+});
+
+export const checkModify = (payload: IUser): IAuthAction => ({
+    type: AuthActionTypes.IS_MODIFIED,
+    payload,
+});
+
+export const editUser = (payload: IUser): IAuthAction => ({
+    type: AuthActionTypes.EDIT_USER,
     payload,
 });
 
@@ -42,3 +57,10 @@ export const errorHandle = (payload: IUser): IAuthAction => ({
     type: AuthActionTypes.HANDLE_ERROR,
     payload,
 });
+
+export const verifyUser = (payload: IUser): IAuthAction => ({
+    type: AuthActionTypes.VERIFY_USER,
+    payload,
+});
+
+

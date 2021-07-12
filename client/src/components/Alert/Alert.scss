@@ -1,8 +1,14 @@
-$generalAlert: #ff7474;
-$black: #000;
-
 .toast,
 .toast-header {
-  background-color: $generalAlert !important;
-  color: $black !important;
+  background-color: var(--alert-color) !important;
+  color: var(--black) !important;
+}
+
+.alert-error {
+  height: inherit!important;
+  margin: auto!important;
+  position: absolute!important;
+  top: 20%!important;
+  left: 50%!important;
+  transform: translate(-50%, -50%)!important;
 }

@@ -9,6 +9,10 @@ export enum AuthActionTypes {
   REGISTRATE_DRIVER = 'REGISTRATE_DRIVER',
   SET_DRIVER_DATA = 'SET_DRIVER_DATA',
   IS_DRIVER = 'IS_DRIVER',
+  VERIFY_USER = 'VERIFY_USER',
+  IS_MODIFIED = 'IS_MODIFIED',
+  EDIT_USER = 'EDIT_USER',
+  DRIVER_IN_PROFILE = 'DRIVER_IN_PROFILE',
 }
 
 export interface InputGeneralI {
@@ -16,9 +20,10 @@ export interface InputGeneralI {
   type?: string;
   name: string;
   placeholder?: string;
-  validate: any;
+  validate?: any;
   required?: any;
   label: string;
+  id?: string;
 }
 
 export interface IAuthState {
@@ -43,14 +48,30 @@ export interface IUser {
   isAuth: boolean;
   hasError: boolean;
   id: number | null;
-  driver_info?: IDriver;
-  isDriver: boolean;
-  authError: string;
+  driver_info?: IDriver,
+  isDriver: boolean,
+  isModified: boolean,
+  authError: string,
+  verification_code?: number;
 }
 
 export interface IDriver {
-  car_color: string;
-  car_model: string;
+  car_color?: string;
+  car_model?: string;
   car_number: string;
   driver_id?: number | null;
 }
+
+export interface IEditForm {
+    phone: string,
+    name: string,
+    role: string[],
+    car_number: string,
+    updateUser(obj:{}): void;
+}
+
+export interface IProfileForm {
+  driverProfile(obj:{}): void,
+  logoutUser(): void;
+}
+

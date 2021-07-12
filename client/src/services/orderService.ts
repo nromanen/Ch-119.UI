@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { OrderStateI } from './../types/orderTypes';
 import { ERROR_IN_ORDER } from '../constants/errorConstants';
+import { $authHost } from '../http/index';
 import { Statuses } from '../constants/statuses';
 
 export class OrderDTO {
@@ -51,7 +52,7 @@ export const makeOrder = (order: OrderStateI, userId: number) => async () => {
   const orderDTO = new OrderDTO(order, userId);
   const url = `${process.env.REACT_APP_SERVER_URL}order`;
   try {
-    const response = axios.post(url, {
+    const response = $authHost.post(url, {
       body: orderDTO,
     });
     response.catch((error) => {
@@ -68,7 +69,7 @@ export const updateOrder = (order: OrderStateI, userId: number) => async () => {
   orderDTO.id = order.id;
   const url = `${process.env.REACT_APP_SERVER_URL}order/${orderDTO.id}`;
   try {
-    const response = axios.put(url, {
+    const response = $authHost.put(url, {
       body: orderDTO,
     });
     return response;
@@ -81,7 +82,7 @@ export const changeOrderById =
   (id: number, orderNewValues: any) => async () => {
     const url = `${process.env.REACT_APP_SERVER_URL}order`;
     try {
-      const response = axios.put(url, {
+      const response = $authHost.put(url, {
         ...orderNewValues,
         id,
       });
@@ -95,7 +96,7 @@ export const fetchDriverOrderNew = async () => {
   const url = `${process.env.REACT_APP_SERVER_URL}order/list`;
 
   try {
-    const response = axios.get(url, {
+    const response = $authHost.get(url, {
       params: {
         status: Statuses.ACTIVE,
         withUser: '1', // pass any not falsy value, return user info for order in customer_id column
@@ -111,7 +112,7 @@ export const fetchDriverOrderCurrent = (driverId: number) => async () => {
   const url = `${process.env.REACT_APP_SERVER_URL}order/list`;
 
   try {
-    const response = axios.get(url, {
+    const response = $authHost.get(url, {
       params: {
         driverId,
         status: Statuses.ACCEPTED,
@@ -129,7 +130,7 @@ export const fetchDriverOrderHistory = (driverId: number) => async () => {
   const url = `${process.env.REACT_APP_SERVER_URL}order/list`;
 
   try {
-    const response = axios.get(url, {
+    const response = $authHost.get(url, {
       params: {
         status: [Statuses.DONE, Statuses.FINISHED, Statuses.CANCELED], // change if its same
         withUser: '1', // pass any not falsy value, return user info for order in customer_id column

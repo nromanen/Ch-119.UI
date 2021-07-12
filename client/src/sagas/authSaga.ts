@@ -6,14 +6,18 @@ import {
   logout,
   checkAuth,
   registrationDriver,
-} from '../http/userApi';
+  editProfile,
+  driverReg,
+} from '../services/userService';
 import { push } from 'react-router-redux';
 import {
   ORDER_ROUTE,
   LOGIN_ROUTE,
   ORDER_ACTIVE_ROUTE,
+  PROFILE_ROUTE,
 } from '../constants/routerConstants';
 import { resetOrderState } from '../actions/orderActions';
+import { DRIVER_ROLE } from '../constants/registrationConstants';
 
 export const getUserFromState = (state: any) => state.auth;
 
@@ -30,12 +34,26 @@ function* registrateUserWorker(): Generator<StrictEffect, void, any> {
     );
     if (data.id) {
       yield put({ type: AuthActionTypes.SET_USER_DATA, payload: data });
-      yield put(push(ORDER_ROUTE));
     } else {
-      yield put({
-        type: AuthActionTypes.HANDLE_ERROR,
-        payload: { data: data, hasError: true },
-      });
+      {
+        data.code ?
+            yield put({
+              type: AuthActionTypes.HANDLE_ERROR,
+              payload: {
+                data: data.message,
+                hasError: false,
+                verification_code: data.code,
+              },
+            }) :
+            yield put({
+              type: AuthActionTypes.HANDLE_ERROR,
+              payload: {
+                data: data.message,
+                hasError: true,
+                verification_code: userInfoState.verification_code,
+              },
+            });
+      }
     }
   }
 }
@@ -51,19 +69,53 @@ function* registrateDriverWorker(): Generator<StrictEffect, void, any> {
         userInfoState.password,
         userInfoState.driver_info.car_color,
         userInfoState.driver_info.car_model,
-        userInfoState.driver_info.car_number,
+        userInfoState.driver_info.car_number.toUpperCase(),
       ),
     );
     if (data.id) {
-      yield put({ type: AuthActionTypes.SET_DRIVER_DATA, payload: data });
-      yield put(push(ORDER_ACTIVE_ROUTE));
+      yield put({ type: AuthActionTypes.SET_USER_DATA, payload: data });
     } else {
-      yield put({
-        type: AuthActionTypes.HANDLE_ERROR,
-        payload: { data: data, hasError: true },
-      });
+      {
+        data.code ?
+            yield put({
+              type: AuthActionTypes.HANDLE_ERROR,
+              payload: {
+                data: data.message,
+                hasError: false,
+                verification_code: data.code,
+              },
+            }) :
+            yield put({
+              type: AuthActionTypes.HANDLE_ERROR,
+              payload: {
+                data: data.message,
+                hasError: true,
+                verification_code: userInfoState.verification_code,
+              },
+            });
+      }
     }
   }
+}
+
+function* driverRegWorker(): Generator<StrictEffect, void, any> {
+  const userInfoState = yield select(getUserFromState);
+  yield call(
+    driverReg(
+      userInfoState.id,
+      userInfoState.driver_info.car_color,
+      userInfoState.driver_info.car_model,
+      userInfoState.driver_info.car_number,
+    ),
+  );
+  yield put({
+    type: AuthActionTypes.HANDLE_ERROR,
+    payload: {
+      data: 'U should relogin',
+      hasError: true,
+      verification_code: userInfoState.verification_code,
+    },
+  });
 }
 
 function* setUserWorker(): Generator<StrictEffect, void, any> {
@@ -77,19 +129,105 @@ function* setDriverWorker(): Generator<StrictEffect, void, any> {
 function* loginUserWorker(): Generator<StrictEffect, void, any> {
   const userInfoState = yield select(getUserFromState);
 
-  const data = yield call(login(userInfoState.phone, userInfoState.password));
-
-  if (data.id) {
-    if (!data.driver_info) {
-      yield put({ type: AuthActionTypes.SET_USER_DATA, payload: data });
+  if (userInfoState.verification_code !== 0) {
+    const data = yield call(
+      login(
+        userInfoState.phone,
+        userInfoState.password,
+        userInfoState.verification_code,
+      ),
+    );
+    if (data.id) {
+      if (!data.driver_info) {
+        yield put({ type: AuthActionTypes.SET_USER_DATA, payload: data });
+      } else {
+        yield put({ type: AuthActionTypes.SET_DRIVER_DATA, payload: data });
+      }
     } else {
-      yield put({ type: AuthActionTypes.SET_DRIVER_DATA, payload: data });
+      yield put({
+        type: AuthActionTypes.HANDLE_ERROR,
+        payload: {
+          data: data,
+          hasError: true,
+          verification_code: userInfoState.verification_code,
+        },
+      });
     }
   } else {
-    yield put({
-      type: AuthActionTypes.HANDLE_ERROR,
-      payload: { data: data, hasError: true },
-    });
+    const data = yield call(login(userInfoState.phone, userInfoState.password));
+    if (data.id) {
+      if (!data.driver_info) {
+        yield put({ type: AuthActionTypes.SET_USER_DATA, payload: data });
+      } else {
+        yield put({ type: AuthActionTypes.SET_DRIVER_DATA, payload: data });
+      }
+    } else {
+      {
+        data.code ?
+            yield put({
+              type: AuthActionTypes.HANDLE_ERROR,
+              payload: {
+                data: data.message,
+                hasError: false,
+                verification_code: data.code,
+              },
+            }) :
+            yield put({
+              type: AuthActionTypes.HANDLE_ERROR,
+              payload: {
+                data: data.message,
+                hasError: true,
+                verification_code: userInfoState.verification_code,
+              },
+            });
+      }
+    }
+  }
+}
+
+function* editUserWorker(): Generator<StrictEffect, void, any> {
+  const userInfoState = yield select(getUserFromState);
+  if (userInfoState.role.includes(DRIVER_ROLE)) {
+    const data = yield call(
+      editProfile(
+        userInfoState.id,
+        userInfoState.name,
+        userInfoState.phone,
+        userInfoState.driver_info.car_number,
+      ),
+    );
+    if (data.id) {
+      yield put({ type: AuthActionTypes.SET_DRIVER_DATA, payload: data });
+      yield put(push(PROFILE_ROUTE));
+      yield put({ type: AuthActionTypes.IS_MODIFIED, payload: !data});
+    } else {
+      yield put({
+        type: AuthActionTypes.HANDLE_ERROR,
+        payload: {
+          data: data.message,
+          hasError: true,
+          verification_code: userInfoState.verification_code,
+        },
+      });
+    }
+  } else {
+    const data = yield call(
+      editProfile(userInfoState.id, userInfoState.name, userInfoState.phone),
+    );
+    if (data.id) {
+      yield put({ type: AuthActionTypes.SET_USER_DATA, payload: data });
+      yield put(push(PROFILE_ROUTE));
+      yield put({ type: AuthActionTypes.IS_MODIFIED, payload: !data});
+    } else {
+      yield put({
+        type: AuthActionTypes.HANDLE_ERROR,
+        payload: {
+          data: data.message,
+          hasError: true,
+          verification_code: userInfoState.verification_code,
+        },
+      });
+    }
   }
 }
 
@@ -116,4 +254,6 @@ export function* userInfoWatcher() {
   yield takeEvery(AuthActionTypes.LOGIN_USER, loginUserWorker);
   yield takeEvery(AuthActionTypes.LOGOUT_USER, logoutUserWorker);
   yield takeEvery(AuthActionTypes.CHECK_USER_DATA, checkAuthUser);
+  yield takeEvery(AuthActionTypes.EDIT_USER, editUserWorker);
+  yield takeEvery(AuthActionTypes.DRIVER_IN_PROFILE, driverRegWorker);
 }

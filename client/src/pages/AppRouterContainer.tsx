@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import AppRouter from './AppRouter';
-import { setUserData, setDriverData } from '../actions/authActions';
+import { setUserData, setDriverData, check } from '../actions/authActions';
 
 const mapStateToProps = (state: any) => {
   return {
