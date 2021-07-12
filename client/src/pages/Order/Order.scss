@@ -1,0 +1,51 @@
+.order {
+  &.jumbotron {
+    margin-bottom: 0;
+  }
+
+  .price {
+    display: grid !important;
+    place-content: center;
+
+    color: var(--accent-color);
+
+    font-size: 2.3em !important;
+  }
+  &__form {
+    max-width: var(--container-width);
+    margin: auto;
+    margin-bottom: 20px;
+  }
+
+  &__service-icon {
+    width: 100%;
+    height: auto;
+
+    filter: grayscale(1);
+
+    &.active {
+      filter: none;
+    }
+  }
+  .extra-services {
+    background: var(--wrap-bg-color);
+
+    display: flex;
+    justify-content: space-around;
+    &__label {
+      width: 45px;
+    }
+  }
+
+  .spinner-border {
+    margin-inline-start: 0.5rem;
+  }
+
+  .accordion .card {
+    border: none;
+  }
+
+  .order__button-toolbar {
+    justify-content: space-around;
+  }
+}

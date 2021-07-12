@@ -1,0 +1,64 @@
+.login, .registration {
+    background-color:var(--section-bg-color);
+    border-radius: var(--input-border-radius, 3px);
+    padding-top: 5px;
+    padding: 2rem 2rem;
+    color: var(--text-color);
+
+    h2 {
+      color: var(--accent-color);
+    }
+
+    @media (max-width:450px){
+      .container-fluid {
+        padding-left: 15vw!important;
+      }
+    }
+
+}
+
+.login-link {
+  margin-left: 1rem;
+}
+
+.register-link, .login-link {
+  color: var(--accent-color);
+}
+
+.register-link:hover , .login-link:hover {
+  color: var(--text-color);
+}
+
+.login-btn {
+  margin-left: 1rem;
+}
+
+.login-btn > a:hover {
+  color: inherit;
+  text-decoration: none;
+}
+
+.validate_warning {
+    margin-top: 8px;
+}
+
+.validate_warning>.alert-warning {
+  max-width: 182px;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5em;
+}
+ 
+.verify {
+  text-align: center;
+  padding: 10px;
+  background-color: var(--section-bg-color);
+
+  label {
+    color:var(--text-color);
+    font-size: 17px;
+  }
+}
+
+.wrapper >* {
+   visibility: hidden;
+}
