@@ -17,7 +17,11 @@ export const DriverHistory = () => {
   if (!list.length) {
     return (
       <>
-        <div>You have not done any orders</div>
+        <div className="overflow">
+          <div className="taxi-img animation">
+            <p>no order history</p>
+          </div>
+        </div>
         <Navbar />
       </>
     );

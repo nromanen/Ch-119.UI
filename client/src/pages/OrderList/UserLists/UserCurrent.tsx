@@ -19,7 +19,6 @@ export const UserCurrent = () => {
   if (!list.length) {
     return (
       <>
-        <div>Please book a taxi</div>
         <Navbar />
       </>
     );

@@ -1,5 +1,7 @@
 import { FC } from 'react';
 
+import { useHistory } from 'react-router-dom';
+
 import { useTypedSelector } from '../../../hooks/useTypedSelector';
 import {
   useDriverOrderNewActions,
@@ -89,12 +91,17 @@ export const OrderItem: FC<OrderItemPropsI> = ({
   const { changeOrderStatusAction } = useDriverOrderNewActions();
   const { changeOrderStatusAction: changeUserOrderStatusAction } =
     useUserOrderActions();
-  // TODO do not have cityInfo without open order page
+
   const extraServicesNames =
     extraServices.map((id: number) => {
       const extServItem = extra_services.find((extServ) => extServ.id === id);
       return extServItem?.name;
     }) || [];
+
+  const history = useHistory();
+  const redirect = () => {
+    history.push('/order');
+  };
 
   const onCancelHandler = () => {
     if (isDriver) {
@@ -107,6 +114,7 @@ export const OrderItem: FC<OrderItemPropsI> = ({
         status: Statuses.CANCELED,
         id: orderId,
       });
+      redirect();
     }
   };
 

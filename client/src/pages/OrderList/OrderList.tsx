@@ -21,7 +21,6 @@ export enum Pages {
 }
 
 export const OrderList = () => {
-  // TODO fix it. Remove. Do not have cityInfo because its call in order page.
   const { getCurrentLocation } = useMapActions();
   const {
     fetchDriverOrderCurrentAction,

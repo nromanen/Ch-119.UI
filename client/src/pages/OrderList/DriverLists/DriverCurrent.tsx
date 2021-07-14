@@ -17,7 +17,11 @@ export const DriverCurrent = () => {
   if (!list.length) {
     return (
       <>
-        <div>You have not accepted any orders</div>
+        <div className="overflow">
+          <div className="taxi-img animation">
+            <p>no current orders</p>
+          </div>
+        </div>
         <Navbar />
       </>
     );

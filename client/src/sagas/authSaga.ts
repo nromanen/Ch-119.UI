@@ -11,9 +11,9 @@ import {
 } from '../services/userService';
 import { push } from 'react-router-redux';
 import {
-  ORDER_ROUTE,
+  MAKE_ORDER_ROUTE,
   LOGIN_ROUTE,
-  ORDER_ACTIVE_ROUTE,
+  ACTIVE_ORDERS_ROUTE,
   PROFILE_ROUTE,
 } from '../constants/routerConstants';
 import { resetOrderState } from '../actions/orderActions';
@@ -119,11 +119,11 @@ function* driverRegWorker(): Generator<StrictEffect, void, any> {
 }
 
 function* setUserWorker(): Generator<StrictEffect, void, any> {
-  yield put(push(ORDER_ROUTE));
+  yield put(push(MAKE_ORDER_ROUTE));
 }
 
 function* setDriverWorker(): Generator<StrictEffect, void, any> {
-  yield put(push(ORDER_ACTIVE_ROUTE));
+  yield put(push(ACTIVE_ORDERS_ROUTE));
 }
 
 function* loginUserWorker(): Generator<StrictEffect, void, any> {

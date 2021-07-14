@@ -22,7 +22,11 @@ export const DriverActive = () => {
   if (!list.length) {
     return (
       <>
-        <div>Nobody wants to ride</div>
+        <div className="overflow">
+          <div className="taxi-img animation">
+            <p>no active orders</p>
+          </div>
+        </div>
         <Navbar />
       </>
     );
