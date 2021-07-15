@@ -51,7 +51,6 @@ export const UserHistory = () => {
               isDriver={false} // TODO change dynamic
               page={Pages.HISTORY}
               driverInfo={order.driver}
-              feedback={feedback}
             />
           );
         })}

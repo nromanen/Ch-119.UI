@@ -10,7 +10,7 @@ import {
   CURRENT_DRIVER_ROUTE,
 } from './constants/routerConstants';
 
-import Feedback from './pages/feedback/Feedback';
+import Feedback from './pages/Feedback/Feedback';
 import ProfileContainer from './pages/Profile/ProfileContainer';
 import { MakeOrder } from './pages/Order/Order';
 
@@ -18,7 +18,6 @@ import LoginContainer from './components/Login/LoginContainer';
 import RegistrationContainer from './components/Login/RegistrationContainer';
 
 import { DriverActive } from './pages/OrderList/DriverLists/DriverActive';
-import { OrderList } from './pages/OrderList/OrderList';
 import { DriverCurrent } from './pages/OrderList/DriverLists/DriverCurrent';
 import { DriverHistory } from './pages/OrderList/DriverLists/DriverHistory';
 import { UserCurrent } from './pages/OrderList/UserLists/UserCurrent';
