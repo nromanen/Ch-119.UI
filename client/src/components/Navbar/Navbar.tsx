@@ -16,7 +16,7 @@ const Navbar = () => {
     <nav className="navigation">
       <ul>
         {NavbarTabs.map(({ route, content }: any) => (
-          <NavTab route={route} content={content} />
+          <NavTab key={route} route={route} content={content} />
         ))}
       </ul>
     </nav>
