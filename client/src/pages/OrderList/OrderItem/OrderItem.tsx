@@ -102,12 +102,6 @@ export const OrderItem: FC<OrderItemPropsI> = ({
   const { changeOrderStatusAction: changeUserOrderStatusAction } =
     useUserOrderActions();
 
-  const extraServicesNames =
-    extraServices.map((id: number) => {
-      const extServItem = extra_services.find((extServ) => extServ.id === id);
-      return extServItem?.name;
-    }) || [];
-
   const history = useHistory();
   const redirect = () => {
     history.push('/order');
@@ -244,12 +238,12 @@ export const OrderItem: FC<OrderItemPropsI> = ({
           </p>
         </div>
 
-        {extraServicesNames.length > 0 && (
+        {extraServices.length > 0 && (
           <div className="info" title="request.description">
             <div className="info__extra-services">
-              {extraServicesNames
-                .filter((name) => {
-                  return !!name;
+              {extraServices
+                .filter((id) => {
+                  return !!id;
                 })
                 .map((serviceName: any) => {
                   const Icon = extraServicesIcons[serviceName];

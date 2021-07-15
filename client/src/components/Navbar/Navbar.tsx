@@ -6,9 +6,11 @@ import { DriverNavTabs, userNavTabs } from './NavTabsMaper';
 
 const Navbar = () => {
   const { role } = useTypedSelector((state) => state.auth);
-  const orderId = useTypedSelector((state) => state.userOrders.current[0]?.id);
+  const orderId = useTypedSelector(
+    (state) => state.userOrders.current[0]?.id || ' ',
+  );
   const isDriver = role.includes(DRIVER_ROLE);
-  const NavbarTabs = isDriver ? DriverNavTabs : userNavTabs(orderId).filter((tab) => tab);
+  const NavbarTabs = isDriver ? DriverNavTabs : userNavTabs(orderId);
 
   return (
     <nav className="navigation">
