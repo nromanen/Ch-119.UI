@@ -18,7 +18,7 @@ import {
   fetchOrderHistory,
 } from '../services/orderService';
 import { changeFeedbackValues, toggleModal } from '../actions/feedbackActions';
-import { getDriverId, getUserId, getUserRole } from '../utils/getters';
+import { getDriverId, getUserId, getUserRoleAsString } from '../utils/getters';
 
 function* fetchDriverOrderCurrentWorker(): Generator<StrictEffect, void, any> {
   const driverId = yield select(getDriverId);
@@ -57,7 +57,7 @@ function* fetchDriverOrderNewWorker(): Generator<StrictEffect, void, any> {
 
 function* fetchOrderHistoryWorker(): Generator<StrictEffect, void, any> {
   const userId = yield select(getUserId);
-  const userRole = yield select(getUserRole);
+  const userRole = yield select(getUserRoleAsString);
 
   const response = yield call(fetchOrderHistory(userId, userRole));
   const orders = response.data.rows;

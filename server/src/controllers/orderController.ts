@@ -53,7 +53,6 @@ export default class OrderController {
         ['updatedAt', 'DESC'],
       ],
     };
-
     if (role === USER_ROLE) {
       seqOptions.where.customer_id = id;
       seqOptions.include.push({

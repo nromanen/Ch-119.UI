@@ -21,7 +21,6 @@ import { DriverActive } from './pages/OrderList/DriverLists/DriverActive';
 import { DriverCurrent } from './pages/OrderList/DriverLists/DriverCurrent';
 import { DriverHistory } from './pages/OrderList/DriverLists/DriverHistory';
 import { UserCurrent } from './pages/OrderList/UserLists/UserCurrent';
-import { UserHistory } from './pages/OrderList/UserLists/UserHistory';
 
 export const authRouters = [
   {
@@ -31,10 +30,6 @@ export const authRouters = [
   {
     path: CURRENT_USER_ROUTE + ':id',
     component: UserCurrent,
-  },
-  {
-    path: HISTORY_ROUTE,
-    component: UserHistory,
   },
   {
     path: ACTIVE_ORDERS_ROUTE,

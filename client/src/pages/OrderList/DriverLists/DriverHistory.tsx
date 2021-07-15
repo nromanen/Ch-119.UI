@@ -5,7 +5,7 @@ import { Pages } from '../OrderList';
 import { useTypedSelector } from '../../../hooks/useTypedSelector';
 import { useDriverOrderNewActions } from '../../../hooks/useActions';
 import { showFeedbackButton } from '../../../services/orderService';
-import { getUserRole } from '../../../utils/getters';
+import { getUserRoleAsNumber } from '../../../utils/getters';
 import Navbar from '../../../components/Navbar/Navbar';
 
 export const DriverHistory = () => {
@@ -14,7 +14,7 @@ export const DriverHistory = () => {
     fetchDriverOrderHistoryAction();
   }, []);
   const { history: list } = useTypedSelector((state) => state.driverOrders);
-  const userRole = useTypedSelector(getUserRole);
+  const userRole = useTypedSelector(getUserRoleAsNumber);
 
   if (!list.length) {
     return (
