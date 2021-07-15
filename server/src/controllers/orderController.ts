@@ -6,6 +6,8 @@ import {
   USER,
   CAR_TYPE,
   FEEDBACK,
+  USER_ROLE,
+  DRIVER_ROLE,
 } from '../constants/modelsNames';
 import {
   STATUS_BAD_REQUEST,
@@ -49,7 +51,7 @@ export default class OrderController {
       ],
     };
 
-    if (role === 'USER') {
+    if (role === USER_ROLE) {
       seqOptions.where.customer_id = id;
       seqOptions.include.push({
         model: sequelize.models[DRIVER],
@@ -57,7 +59,7 @@ export default class OrderController {
       });
     }
 
-    if (role === 'DRIVER') {
+    if (role === DRIVER_ROLE) {
       seqOptions.where.driver_id = id;
       seqOptions.include.push({
         model: sequelize.models[USER],

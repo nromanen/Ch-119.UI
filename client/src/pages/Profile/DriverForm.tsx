@@ -1,12 +1,18 @@
 import React, { FC } from 'react';
 import { Form } from 'react-final-form';
 import {
-  maxValueWithRequired,
+  composeValidators,
   carMask,
   nameMask,
+  required,
+  maxValue,
 } from '../../utils/validators';
 import { IProfileForm } from '../../types/userTypes';
 import { InputGeneral } from '../../components/InputGeneral';
+import {
+  MAX_VALUE_FOR_CAR_COLOR,
+  MAX_VALUE_FOR_CAR_MODEL,
+} from '../../constants/profileConstants';
 
 const ProfileForm: FC<IProfileForm> = ({ driverProfile, logoutUser }) => (
   <Form
@@ -23,7 +29,10 @@ const ProfileForm: FC<IProfileForm> = ({ driverProfile, logoutUser }) => (
         <React.Fragment>
           <InputGeneral
             name="car_color"
-            validate={maxValueWithRequired(15)}
+            validate={composeValidators(
+              required,
+              maxValue(MAX_VALUE_FOR_CAR_COLOR),
+            )}
             placeholder="Blue"
             label="Car color:"
             id="car_color"
@@ -31,7 +40,10 @@ const ProfileForm: FC<IProfileForm> = ({ driverProfile, logoutUser }) => (
           <InputGeneral
             name="car_model"
             placeholder="Ford"
-            validate={maxValueWithRequired(30)}
+            validate={composeValidators(
+              required,
+              maxValue(MAX_VALUE_FOR_CAR_MODEL),
+            )}
             label="Car model:"
             id="car_model"
           />

@@ -1,4 +1,6 @@
+@import '../../../styles/theme.scss';
+
 .map {
   height: 90vh;
-  background: var(--section-bg-color);
+  background: $section-bg-color;
 }

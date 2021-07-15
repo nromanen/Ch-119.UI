@@ -1,13 +1,14 @@
+@import '../../styles/theme.scss';
+
 .swipe {
   height: 10vh;
 
-  background-color: var(--section-bg-color);
+  background-color: $section-bg-color;
 
   color: white;
 
   display: flex;
   align-items: stretch;
-  // justify-content: center;
 
   button {
     border-radius: 0;
@@ -18,7 +19,7 @@
 .arrow-icon {
   width: 5vh;
   height: 100%;
-  fill: var(--text-color);
+  fill: $text-color;
 
   transform: translateY(-25%);
 

@@ -161,3 +161,11 @@ export const fetchOrderHistory = (id: number, role: string) => async () => {
     throw new Error(ERROR_IN_ORDER);
   }
 };
+
+export const showFeedbackButton = (feedbacks: any[], userRole: number) => {
+  const feedback = feedbacks.find(
+    (feedback: any) => feedback.author_role === userRole,
+  );
+  const showFeedbackButton = !feedback?.author_role;
+  return showFeedbackButton;
+};

@@ -1,3 +1,5 @@
+@import './styles/theme.scss';
+
 $bodyColor: #e9ecef;
 $white: #fff;
 $yellow: #ffff00;
@@ -18,7 +20,7 @@ $yellow: #ffff00;
 }
 
 .box {
-  background-color: var(--text-color);
+  background-color: $text-color;
   margin: 20px 0;
   padding: 10px 0;
   border-radius: 0.25rem;
@@ -37,7 +39,7 @@ $yellow: #ffff00;
   flex-direction: column;
   min-width: 0;
   word-wrap: break-word;
-  background-color: var(--text-color);
+  background-color: $text-color;
   background-clip: border-box;
   border: none;
   border-radius: 0.25rem;
@@ -125,43 +127,43 @@ $yellow: #ffff00;
 }
 
 .cm-toggle {
--webkit-appearance: none;
--webkit-tap-highlight-color: transparent;
-position: relative;
-border: 0;
-outline: 0;
-cursor: pointer;
-  
+  -webkit-appearance: none;
+  -webkit-tap-highlight-color: transparent;
+  position: relative;
+  border: 0;
+  outline: 0;
+  cursor: pointer;
+
   &:after {
-      content: '';
-      width: 34px;
-      height: 15px;
-      display: inline-block;
-      background: var(--toggle-background);
-      border-radius: 18px;
-      clear: both;
+    content: '';
+    width: 34px;
+    height: 15px;
+    display: inline-block;
+    background: $toggle-background;
+    border-radius: 18px;
+    clear: both;
   }
 
   &:before {
-      content: '';
-      width: 20px;
-      height: 20px;
-      display: block;
-      position: absolute;
-      left: 0;
-      top: 0;
-      border-radius: 50%;
-      background: var(--text-color);
-      box-shadow: 1px 1px 3px var(--black);
+    content: '';
+    width: 20px;
+    height: 20px;
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 0;
+    border-radius: 50%;
+    background: $text-color;
+    box-shadow: 1px 1px 3px $black;
   }
 
   &:checked:before {
-      left: 20px;
-      box-shadow: -1px 1px 3px var(--black);
+    left: 20px;
+    box-shadow: -1px 1px 3px $black;
   }
 
   &:checked:after {
-      background: var(--accent-color);
+    background: $accent-color;
   }
 }
 
@@ -170,8 +172,8 @@ cursor: pointer;
 .cm-toggle:after,
 .cm-toggle:checked:before,
 .cm-toggle:checked:after {
-transition: ease .3s;
--webkit-transition: ease .3s;
--moz-transition: ease .3s;
--o-transition: ease .3s;
+  transition: ease 0.3s;
+  -webkit-transition: ease 0.3s;
+  -moz-transition: ease 0.3s;
+  -o-transition: ease 0.3s;
 }

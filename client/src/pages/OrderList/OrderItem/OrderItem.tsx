@@ -73,7 +73,7 @@ export const OrderItem: FC<OrderItemPropsI> = ({
       customerId,
     };
     changeFeedbackValues(orderProps);
-    return toggleModal();
+    toggleModal();
   };
 
   // TODO do not have cityInfo without open order page

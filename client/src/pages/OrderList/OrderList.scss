@@ -1,10 +1,12 @@
+@import '../../styles/theme.scss';
+
 .order__list {
-  max-width: var(--container-width);
+  max-width: $container-width;
 
   padding: 1em;
   margin: 0 auto 10px;
 
-  background-color: var(--section-bg-color);
+  background-color: $section-bg-color;
 }
 
 .nav.nav-tabs {
@@ -12,13 +14,13 @@
 }
 
 .nav-item {
-  color: var(--accent-color) !important;
+  color: $accent-color !important;
   &:hover {
-    border-color: var(--accent-color) !important;
+    border-color: $accent-color !important;
   }
   &.active {
-    background-color: var(--accent-color) !important;
-    color: var(--section-bg-color) !important;
-    border-color: var(--section-bg-color) !important;
+    background-color: $accent-color !important;
+    color: $section-bg-color !important;
+    border-color: $section-bg-color !important;
   }
 }

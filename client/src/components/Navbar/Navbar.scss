@@ -1,10 +1,12 @@
+@import '../../styles/theme.scss';
+
 .navigation {
   max-width: 600px;
   margin-top: 10px;
   margin: auto;
   padding-top: 5px;
   padding-bottom: 5px;
-  background-color: var(--section-bg-color);
+  background-color: $section-bg-color;
   border-radius: 0.25rem;
 
   ul {
@@ -17,14 +19,14 @@
   }
 
   .nav-link a {
-    color: var(--text-color);
+    color: $text-color;
     padding: 5px;
     text-decoration: none;
     cursor: pointer;
   }
 
   .nav-link a.active {
-    color: var(--accent-color);
+    color: $accent-color;
     font-weight: 700;
   }
 }
