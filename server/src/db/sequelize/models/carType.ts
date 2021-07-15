@@ -12,7 +12,11 @@ export default (sequelize: any, DataTypes: any) => {
       CarType.belongsToMany(models[CITY], {
         through: models[CITY_CAR_TYPES],
       });
-      CarType.hasMany(models[ORDER]);
+      CarType.hasMany(models[ORDER], {
+        foreignKey: {
+          name: 'car_type_id',
+        },
+      });
     }
   }
   CarType.init(

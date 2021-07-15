@@ -44,6 +44,9 @@ export default class OrderController {
         {
           model: sequelize.models[CAR_TYPE], // return carType from car_types table
         },
+        {
+          model: sequelize.models[FEEDBACK],
+        },
       ],
       order: [
         // return orders recently created
@@ -55,7 +58,12 @@ export default class OrderController {
       seqOptions.where.customer_id = id;
       seqOptions.include.push({
         model: sequelize.models[DRIVER],
-        attributes: ['car_color', 'car_number', 'car_model', 'driver_rating'], // field that back from sequelize
+        attributes: [
+          ['car_color', 'carColor'],
+          ['car_number', 'carNumber'],
+          ['car_model', 'carModel'],
+          ['driver_rating', 'rating'],
+        ], // field that back from sequelize
       });
     }
 

@@ -29,6 +29,7 @@ export const initialState: CityInfoI = {
   ],
   name: '',
   id: 1,
+  roles: [],
 };
 
 export const cityInfoReducer = (

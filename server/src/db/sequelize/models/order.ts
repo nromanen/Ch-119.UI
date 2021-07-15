@@ -19,7 +19,12 @@ export default (sequelize: any, DataTypes: any) => {
       });
       Order.hasMany(models[FEEDBACK]);
       Order.belongsTo(models[DRIVER]);
-      Order.belongsTo(models[CAR_TYPE]);
+      Order.belongsTo(models[CAR_TYPE], {
+        foreignKey: {
+          name: 'car_type_id',
+        },
+      });
+      Order.hasMany(models[FEEDBACK]);
     }
   }
   Order.init(

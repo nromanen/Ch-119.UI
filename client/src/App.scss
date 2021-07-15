@@ -63,24 +63,30 @@ $yellow: #ffff00;
   position: relative;
   animation-name: example;
   animation-duration: 4s;
-  animation-timing-function: cubic-bezier(0.11, 0.71, 0.96, 0.22);
+  animation-timing-function: cubic-bezier(0.1, 0.46, 0.96, 0.22);
   animation-delay: 0s;
   animation-iteration-count: infinite;
   animation-direction: running;
 
   & p {
     position: absolute;
-    top: 18px;
-    left: -150px;
+    top: 22px;
+    left: -259px;
+    width: 250px;
+    text-align: right;
+    text-transform: uppercase;
   }
 }
 
 .taxi-img {
-  position: relative;
+  position: fixed;
+  top: 40%;
+  left: 50%;
   background-image: url(./components/icons/taxi.png);
   background-repeat: no-repeat;
   width: 65px;
   height: 50px;
+  background-color: transparent;
 }
 
 .overflow {
@@ -176,4 +182,9 @@ $yellow: #ffff00;
   -webkit-transition: ease 0.3s;
   -moz-transition: ease 0.3s;
   -o-transition: ease 0.3s;
+}
+
+#root {
+  background-color: #000000;
+  color: #fff;
 }

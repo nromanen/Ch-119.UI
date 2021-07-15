@@ -5,6 +5,7 @@ import { feedbackWatcher } from './feedbackSaga';
 import { userInfoWatcher } from './authSaga';
 import { orderWatcher } from './orderSaga';
 import { driverOrderNewWatcher } from './driverOrderNewSaga';
+import { userOrderWatcher } from './userOrderSaga';
 
 export function* rootWatcher() {
   yield all([
@@ -14,5 +15,6 @@ export function* rootWatcher() {
     orderWatcher(),
     feedbackWatcher(),
     driverOrderNewWatcher(),
+    userOrderWatcher(),
   ]);
 }

@@ -1,51 +1,62 @@
 import {
   LOGIN_ROUTE,
   REGISTRATION_ROUTE,
-  ORDER_ROUTE,
+  MAKE_ORDER_ROUTE,
   PROFILE_ROUTE,
   FEEDBACK_ROUTE,
-  ORDER_ACTIVE_ROUTE,
-  ORDER_ACCEPTED_ROUTE,
-  ORDER_USER_ROUTE,
+  ACTIVE_ORDERS_ROUTE,
+  CURRENT_USER_ROUTE,
+  HISTORY_ROUTE,
+  CURRENT_DRIVER_ROUTE,
 } from './constants/routerConstants';
 
-import Feedback from './pages/Feedback/Feedback';
+import Feedback from './pages/feedback/Feedback';
 import ProfileContainer from './pages/Profile/ProfileContainer';
-import { Order } from './pages/Order/Order';
+import { MakeOrder } from './pages/Order/Order';
 
 import LoginContainer from './components/Login/LoginContainer';
 import RegistrationContainer from './components/Login/RegistrationContainer';
 
-import OrderDriverActive from './pages/Order/orderDriverActive';
-import OrderDriverAccepted from './pages/Order/orderDriverAccepted';
-import OrderUserActive from './pages/Order/orderUserActive';
+import { DriverActive } from './pages/OrderList/DriverLists/DriverActive';
 import { OrderList } from './pages/OrderList/OrderList';
+import { DriverCurrent } from './pages/OrderList/DriverLists/DriverCurrent';
+import { DriverHistory } from './pages/OrderList/DriverLists/DriverHistory';
+import { UserCurrent } from './pages/OrderList/UserLists/UserCurrent';
+import { UserHistory } from './pages/OrderList/UserLists/UserHistory';
 
 export const authRouters = [
   {
-    path: ORDER_ROUTE,
-    component: Order,
+    path: MAKE_ORDER_ROUTE,
+    component: MakeOrder,
   },
   {
-    path: PROFILE_ROUTE,
-    component: ProfileContainer,
+    path: CURRENT_USER_ROUTE + ':id',
+    component: UserCurrent,
   },
   {
-    path: ORDER_ACTIVE_ROUTE,
-    component: OrderList,
+    path: HISTORY_ROUTE,
+    component: UserHistory,
   },
   {
-    path: ORDER_ACCEPTED_ROUTE,
-    component: OrderDriverAccepted,
+    path: ACTIVE_ORDERS_ROUTE,
+    component: DriverActive,
   },
   {
-    path: ORDER_USER_ROUTE + ':id',
-    component: OrderUserActive,
+    path: CURRENT_DRIVER_ROUTE,
+    component: DriverCurrent,
+  },
+  {
+    path: HISTORY_ROUTE,
+    component: DriverHistory,
   },
   {
     path: FEEDBACK_ROUTE,
     component: Feedback,
     exact: true,
+  },
+  {
+    path: PROFILE_ROUTE,
+    component: ProfileContainer,
   },
 ];
 

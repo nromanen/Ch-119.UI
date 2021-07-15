@@ -26,6 +26,11 @@ import {
   initialState as DriverOrderNewState,
 } from './reducers/driverOrderNew';
 
+import {
+  userOrdersReducer,
+  initialState as UserOrdersState,
+} from './reducers/userOrders';
+
 import { rootWatcher } from './sagas/index';
 
 const sagaMiddleware = createSagaMiddleware();
@@ -37,6 +42,7 @@ const initialState = {
   map: MapState,
   feedback: FeedbackState,
   driverOrders: DriverOrderNewState,
+  userOrders: UserOrdersState,
 };
 
 export const history = createBrowserHistory();
@@ -51,6 +57,7 @@ const reducers = (history: any) =>
     cityInfo: cityInfoReducer,
     map: mapReducer,
     driverOrders: driverOrderNewReducer,
+    userOrders: userOrdersReducer,
   });
 
 const rootReducers = reducers(history);

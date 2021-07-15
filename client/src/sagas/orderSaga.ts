@@ -2,7 +2,7 @@ import { call, put, select, StrictEffect, takeEvery } from 'redux-saga/effects';
 import { push } from 'react-router-redux';
 import { OrderActionTypes } from '../types/orderTypes';
 import { makeOrder } from '../services/orderService';
-import { ORDER_ACTIVE_ROUTE } from './../constants/routerConstants';
+import { CURRENT_USER_ROUTE } from './../constants/routerConstants';
 import {
   changeOrderValues,
   makeOrderErrorAction,
@@ -29,7 +29,7 @@ function* makeOrderWorker(): Generator<StrictEffect, void, any> {
       );
       yield put(makeOrderSuccessAction());
       yield put(resetOrderState());
-      yield put(push(ORDER_ACTIVE_ROUTE));
+      yield put(push(CURRENT_USER_ROUTE + data.data.id));
     } else {
       yield put(makeOrderErrorAction());
     }

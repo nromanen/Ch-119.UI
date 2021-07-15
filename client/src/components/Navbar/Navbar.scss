@@ -1,13 +1,16 @@
 @import '../../styles/theme.scss';
 
 .navigation {
-  max-width: 600px;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  border-top: 1px solid var(--yellow);
+  width: 100%;
   margin-top: 10px;
   margin: auto;
   padding-top: 5px;
   padding-bottom: 5px;
   background-color: $section-bg-color;
-  border-radius: 0.25rem;
 
   ul {
     padding: 0;
