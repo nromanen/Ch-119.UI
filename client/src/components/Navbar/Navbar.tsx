@@ -8,13 +8,15 @@ const Navbar = () => {
   const { role } = useTypedSelector((state) => state.auth);
   const orderId = useTypedSelector((state) => state.userOrders.current[0]?.id);
   const isDriver = role.includes(DRIVER_ROLE);
-  const NavbarTabs = isDriver ? DriverNavTabs : userNavTabs(orderId).filter((tab) => tab);
+  const NavbarTabs = isDriver
+    ? DriverNavTabs
+    : userNavTabs(orderId).filter((tab) => tab);
 
   return (
     <nav className="navigation">
       <ul>
         {NavbarTabs.map(({ route, content }: any) => (
-          <NavTab route={route} content={content} />
+          <NavTab key={route} route={route} content={content} />
         ))}
       </ul>
     </nav>
