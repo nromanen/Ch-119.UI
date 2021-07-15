@@ -5,7 +5,7 @@ import { $authHost } from '../http/index';
 import { Statuses } from '../constants/statuses';
 
 export class OrderDTO {
-  carTypeId: number;
+  car_type_id: number;
   customer_id: number;
   extra_services: number[];
   from: string;
@@ -15,7 +15,7 @@ export class OrderDTO {
   to: string;
   id?: number;
   constructor(order: any, id: number) {
-    this.carTypeId = order.carType.id;
+    this.car_type_id = order.carType.id;
     this.customer_id = id || 1;
     this.extra_services = order.extraServices;
     this.from = order.from;
@@ -125,6 +125,23 @@ export const fetchDriverOrderCurrent = (driverId: number) => async () => {
     throw new Error(ERROR_IN_ORDER);
   }
 };
+export const fetchUserOrderCurrent = (userId: number) => async () => {
+  const url = `${process.env.REACT_APP_SERVER_URL}order/list`;
+
+  try {
+    const response = $authHost.get(url, {
+      params: {
+        userId,
+        status: [Statuses.ACCEPTED, Statuses.ACTIVE], // add statuses that do not done or cancel
+        withDriver: '1', // pass any not falsy value, return driver info for order
+      },
+    });
+
+    return response;
+  } catch (error) {
+    throw new Error(ERROR_IN_ORDER);
+  }
+};
 
 export const fetchDriverOrderHistory = (driverId: number) => async () => {
   const url = `${process.env.REACT_APP_SERVER_URL}order/list`;
@@ -142,4 +159,30 @@ export const fetchDriverOrderHistory = (driverId: number) => async () => {
   } catch (error) {
     throw new Error(ERROR_IN_ORDER);
   }
+};
+
+export const fetchOrderHistory = (id: number, role: string) => async () => {
+  const url = `${process.env.REACT_APP_SERVER_URL}order/list`;
+
+  try {
+    const response = $authHost.get(url, {
+      params: {
+        status: [Statuses.DONE, Statuses.FINISHED, Statuses.CANCELED], // change if its same
+        id,
+        role,
+      },
+    });
+
+    return response;
+  } catch (error) {
+    throw new Error(ERROR_IN_ORDER);
+  }
+};
+
+export const showFeedbackButton = (feedbacks: any[], userRole: number) => {
+  const feedback = feedbacks.find(
+    (feedback: any) => feedback.author_role === userRole,
+  );
+  const showFeedbackButton = !feedback?.author_role;
+  return showFeedbackButton;
 };

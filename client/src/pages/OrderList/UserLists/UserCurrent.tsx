@@ -1,27 +1,24 @@
 import React, { useEffect } from 'react';
 
-import { OrderItem } from '../OrderItem/OrderItem';
+import { useUserOrderActions } from '../../../hooks/useActions';
+import { useTypedSelector } from './../../../hooks/useTypedSelector';
+
 import { Pages } from '../OrderList';
-import { useTypedSelector } from '../../../hooks/useTypedSelector';
-import { useDriverOrderNewActions } from '../../../hooks/useActions';
+import { OrderItem } from './../OrderItem/OrderItem';
 import Navbar from '../../../components/Navbar/Navbar';
 
-export const DriverCurrent = () => {
-  const { fetchDriverOrderCurrentAction } = useDriverOrderNewActions();
+export const UserCurrent = () => {
+  const { fetchUserOrderCurrentAction } = useUserOrderActions();
+
   useEffect(() => {
-    fetchDriverOrderCurrentAction();
+    fetchUserOrderCurrentAction();
   }, []);
 
-  const { current: list } = useTypedSelector((state) => state.driverOrders);
+  const { current: list } = useTypedSelector((state) => state.userOrders);
 
   if (!list.length) {
     return (
       <>
-        <div className="overflow">
-          <div className="taxi-img animation">
-            <p>no current orders</p>
-          </div>
-        </div>
         <Navbar />
       </>
     );
@@ -43,9 +40,9 @@ export const DriverCurrent = () => {
               carType={order.car_type.name}
               extraServices={order.extra_services}
               lastUpdate={order.updatedAt}
-              isDriver={true} // TODO change dynamic
+              isDriver={false} // TODO change dynamic
               page={Pages.CURRENT}
-              customerInfo={order.user}
+              driverInfo={order.driver}
             />
           );
         })}

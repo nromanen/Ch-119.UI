@@ -1,11 +1,16 @@
+@import '../../styles/theme.scss';
+
 .navigation {
-  max-width: 600px;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  border-top: 1px solid var(--yellow);
+  width: 100%;
   margin-top: 10px;
   margin: auto;
   padding-top: 5px;
   padding-bottom: 5px;
-  background-color: var(--section-bg-color);
-  border-radius: 0.25rem;
+  background-color: $section-bg-color;
 
   ul {
     padding: 0;
@@ -17,14 +22,14 @@
   }
 
   .nav-link a {
-    color: var(--text-color);
+    color: $text-color;
     padding: 5px;
     text-decoration: none;
     cursor: pointer;
   }
 
   .nav-link a.active {
-    color: var(--accent-color);
+    color: $accent-color;
     font-weight: 700;
   }
 }

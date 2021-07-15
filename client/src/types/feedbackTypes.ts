@@ -1,15 +1,15 @@
 export interface FeedbackState {
-  text: string | undefined;
-  rating: number | undefined;
-  author_role: number | undefined;
-  subject_role: number | undefined;
-  orderId: number | undefined;
+  text: string | null;
+  rating: number | null;
+  authorRole: number | null;
+  subjectRole: number | null;
+  orderId: number | null;
   isShown: boolean;
 }
 
 export interface FeedbackFormI {
-  text: string | undefined;
-  rating: number | undefined;
+  text: string | null;
+  rating: number | null;
 }
 
 export interface CreateFeedbackAction {

@@ -8,4 +8,4 @@ export const BAD_REQUEST_STATUS = '400';
 export const INTERNAL_STATUS = '500';
 export const FORBIDDEN_STATUS = '403';
 export const CONFLICT_STATUS = '401';
-export const UNATHORIZED_STATuS = '401';
+export const UNATHORIZED_STATUS = '401';

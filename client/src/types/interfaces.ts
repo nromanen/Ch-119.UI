@@ -31,3 +31,10 @@ export interface FormLabelI {
   htmlFor?: string;
   classNames?: string[];
 }
+
+export interface NavTabI {
+  route: string;
+  className?: string;
+  activeClassName?: string;
+  content: string;
+}

@@ -1,12 +1,11 @@
 import React from 'react';
 import StarRatingComponent from 'react-star-rating-component';
 import { Form, Field } from 'react-final-form';
-import { Modal } from 'react-bootstrap';
+import { Button, Modal } from 'react-bootstrap';
 import { useTypedSelector } from '../../hooks/useTypedSelector';
 import { useFeedbackActions } from '../../hooks/useActions';
 import './Feedback.scss';
 import { required, maxValue } from '../../utils/validators';
-import { CustomButton } from '../../components/Button/Button';
 
 export const Feedback: React.FC = () => {
   const isShown = useTypedSelector((state) => state.feedback.isShown);
@@ -27,10 +26,10 @@ export const Feedback: React.FC = () => {
       onHide={toggleModal}
       className="d-flex justify-content-center"
     >
-      <Modal.Header closeButton>
+      <Modal.Header closeButton className="modal__header">
         <Modal.Title>Feedback</Modal.Title>
       </Modal.Header>
-      <Modal.Body>
+      <Modal.Body className="modal__body">
         <Form
           onSubmit={onSubmit}
           render={({ handleSubmit, invalid }) => (
@@ -62,7 +61,7 @@ export const Feedback: React.FC = () => {
                         {...input}
                         rows={5}
                         placeholder="Please, enter your comment here"
-                        className="form-control"
+                        className="form-control input"
                       />
                       <div className="maxlength_warning">
                         {meta.error && (
@@ -75,18 +74,19 @@ export const Feedback: React.FC = () => {
                   )}
                 </Field>
                 <div className="d-flex justify-content-end buttons">
-                  <CustomButton
-                    variant="secondary"
+                  <Button
                     onClick={closeModal}
-                    label="Close"
-                  ></CustomButton>
-                  <CustomButton
-                    variant="primary"
+                    className="button button--hovered button--outlined button--border"
+                  >
+                    Close
+                  </Button>
+                  <Button
                     type="submit"
-                    className="submit_btn"
+                    className="button button--hovered button--outlined button--border submit_btn"
                     disabled={invalid}
-                    label="Send"
-                  ></CustomButton>
+                  >
+                    Send
+                  </Button>
                 </div>
               </form>
             </div>

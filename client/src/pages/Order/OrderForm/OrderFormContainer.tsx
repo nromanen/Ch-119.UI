@@ -16,6 +16,7 @@ export const OrderFormContainer = () => {
   const cityInfo = useTypedSelector((state) => state.cityInfo);
   const order = useTypedSelector((state) => state.order);
   const { directions, isMapLoaded } = useTypedSelector((state) => state.map);
+  const { current } = useTypedSelector((state) => state.userOrders);
 
   const { loading, error, from, to, carType, extraServices, price } = order;
   const { name: currentCity, car_types, extra_services } = cityInfo;
@@ -32,6 +33,8 @@ export const OrderFormContainer = () => {
 
   const [fromTouched, setFromTouched] = useState(false);
   const [toTouched, setToTouched] = useState(false);
+
+  const isUserCanMakeOrder = !current.length;
 
   useEffect(() => {
     getCurrentLocation();
@@ -172,6 +175,7 @@ export const OrderFormContainer = () => {
     onToAutocompleteLoad,
     onFromAutocompleteChanged,
     onToAutocompleteChanged,
+    isUserCanMakeOrder,
   };
 
   return <OrderForm {...orderProps} />;

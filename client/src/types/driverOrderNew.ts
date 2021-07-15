@@ -33,7 +33,8 @@ export interface ChangeStatus {
 }
 export interface ChangeStatusPayload {
   status: string;
-  orderId: number;
+  id: number;
+  customerId: number;
 }
 
 export interface MoveToCurrentOrder {

@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import sequelize from '../db/sequelize/models/index';
 import { STATUS_BAD_REQUEST, STATUS_OK } from '../constants/api';
-import { CAR_TYPE, CITY, EXTRA_SERVICE } from '../constants/modelsNames';
+import { CAR_TYPE, CITY, EXTRA_SERVICE, ROLE } from '../constants/modelsNames';
 
 export default class InfoController {
   get = async (req: Request, res: Response): Promise<any> => {
@@ -13,19 +13,23 @@ export default class InfoController {
         include: [
           {
             model: sequelize.models[CAR_TYPE],
-            as: 'car_types',
+            as: 'car_types', // TODO CHANGE without _
           },
           {
             model: sequelize.models[EXTRA_SERVICE],
-            as: 'extra_services',
+            as: 'extra_services', // TODO CHANGE without _
           },
         ],
       });
-      res.status(STATUS_OK).send(data);
+
+      const roles = await sequelize.models[ROLE].findAll({
+        attributes: ['id', 'name'],
+      });
+      const dataJson: any = data.toJSON();
+      dataJson.roles = roles;
+      res.status(STATUS_OK).send(dataJson);
     } catch (error) {
-      res
-        .status(STATUS_BAD_REQUEST)
-        .send({ message: error.errors[0].message, status: STATUS_BAD_REQUEST });
+      res.status(STATUS_BAD_REQUEST).send(error.errors[0].message);
     }
   };
 }

@@ -4,31 +4,37 @@ import {
   FeedbackActionTypes,
 } from '../types/feedbackTypes';
 import { createFeedback } from '../services/apiFeedbackService';
-import { toggleModal } from '../actions/feedbackActions';
+import { toggleModal, changeFeedbackValues } from '../actions/feedbackActions';
 import { UserRoles } from '../constants/userRoles';
 import { removeOrderFromDriverListAction } from '../actions/driverOrderNewActions';
+import { go } from 'react-router-redux';
 
+const getFeedback = (state: any) => state.feedback;
 const userAuthId = (state: any) => state.auth.id;
-const userOrderId = (state: any) => state.driverOrders.current[0].customer_id;
-const orderId = (state: any) => state.driverOrders.current[0].id;
+const orderId = (state: any) => state.driverOrders.current[0]?.id;
 
 function* createFeedbackWorker(
   action: CreateFeedbackAction,
 ): Generator<StrictEffect, void, any> {
   try {
     const currentUserId = yield select(userAuthId);
-    const customerId = yield select(userOrderId);
     const currentOrderId = yield select(orderId);
+    const feedbackState = yield select(getFeedback);
     const feedback = {
       text: action.payload.text,
       rating: action.payload.rating,
-      orderId: currentOrderId,
       authorRole:
-        currentUserId === customerId ? UserRoles.USER : UserRoles.DRIVER,
+        currentUserId === feedbackState.customerId
+          ? UserRoles.USER
+          : UserRoles.DRIVER,
       subjectRole:
-        currentUserId === customerId ? UserRoles.DRIVER : UserRoles.USER,
+        currentUserId === feedbackState.customerId
+          ? UserRoles.DRIVER
+          : UserRoles.USER,
     };
-    yield call(createFeedback, feedback);
+    yield put(changeFeedbackValues(feedback));
+    const feedbackStateFinal = yield select(getFeedback);
+    yield call(createFeedback, feedbackStateFinal);
     yield put(
       removeOrderFromDriverListAction({
         filterKey: 'id',
@@ -37,6 +43,7 @@ function* createFeedbackWorker(
       }),
     );
     yield put(toggleModal());
+    yield put(go(0));
   } catch (error: any) {
     return error;
   }
