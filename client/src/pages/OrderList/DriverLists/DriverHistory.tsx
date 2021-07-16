@@ -40,6 +40,7 @@ export const DriverHistory = () => {
               key={order.id}
               orderId={order.id}
               customerId={order.customer_id}
+              driverId={order.driverId}
               from={order.from}
               to={order.to}
               status={order.status}

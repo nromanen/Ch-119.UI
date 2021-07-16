@@ -2,7 +2,6 @@ import { FC } from 'react';
 
 import { useHistory } from 'react-router-dom';
 
-import { useTypedSelector } from '../../../hooks/useTypedSelector';
 import {
   useDriverOrderNewActions,
   useFeedbackActions,
@@ -37,17 +36,6 @@ interface DriverInfoI {
   rating: number | null;
 }
 
-interface FeedBackI {
-  id: number;
-  text: string;
-  rating: number;
-  createdAt: string;
-  updatedAt: string;
-  orderId: number;
-  authorRole: number;
-  subjectRole: number;
-}
-
 interface OrderItemPropsI {
   orderId: number;
   from: string;
@@ -64,6 +52,7 @@ interface OrderItemPropsI {
   mayTakeOrder?: boolean;
   showFeedbackButton?: boolean;
   customerId?: number;
+  driverId?: number;
 }
 
 export const OrderItem: FC<OrderItemPropsI> = ({
@@ -81,8 +70,8 @@ export const OrderItem: FC<OrderItemPropsI> = ({
   mayTakeOrder,
   showFeedbackButton,
   customerId,
+  driverId,
 }) => {
-  const { extra_services } = useTypedSelector((state) => state.cityInfo);
   const newFrom = from.split(', ').slice(0, 2).join(', ');
   const newTo = to.split(', ').slice(0, 2).join(', ');
   const date = new Date(lastUpdate).toLocaleDateString();
@@ -187,7 +176,7 @@ export const OrderItem: FC<OrderItemPropsI> = ({
                     Take
                   </button>
                 )}
-                {showFeedbackButton && page === Pages.HISTORY && (
+                {showFeedbackButton && page === Pages.HISTORY && driverId && (
                   <button
                     onClick={onClickFeedback}
                     className="request__button take button button--hovered button--outlined button--border"

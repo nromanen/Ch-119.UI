@@ -18,5 +18,6 @@ export const Input: FC<InputI> = ({
     name={name}
     id={id}
     placeholder={placeholder}
+    required
   />
 );
