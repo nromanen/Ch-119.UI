@@ -19,6 +19,11 @@ export const UserCurrent = () => {
   if (!list.length) {
     return (
       <>
+        <div className="overflow">
+          <div className="taxi-img animation">
+            <p>no current orders</p>
+          </div>
+        </div>
         <Navbar />
       </>
     );
