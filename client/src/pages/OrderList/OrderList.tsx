@@ -36,7 +36,7 @@ export const OrderList = () => {
   return (
     <>
       <div className="dark">
-        <div className="wrap">
+        {/* <div className="wrap">
           <Tabs defaultActiveKey={Pages.ALL} id="order__tabs">
             <Tab
               onEnter={fetchDriverOrderHistoryAction}
@@ -77,7 +77,7 @@ export const OrderList = () => {
           </Tabs>
 
           <Navbar />
-        </div>
+        </div> */}
       </div>
     </>
   );

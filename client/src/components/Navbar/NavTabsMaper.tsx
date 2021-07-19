@@ -34,10 +34,10 @@ export const DriverNavTabs = [
 
 export const userNavTabs = (orderId: number) => ([
     HISTORY_TAB,
-    (orderId && {
+    {
         route: CURRENT_USER_ROUTE + orderId,
         content: <FontAwesomeIcon icon={faCheck} size="lg" />,
-    }),
+    },
     {
         route: MAKE_ORDER_ROUTE,
         content: <FontAwesomeIcon icon={faPlus} size="lg" />,
