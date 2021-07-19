@@ -2,9 +2,9 @@ import { FC } from 'react';
 
 import { useHistory } from 'react-router-dom';
 
-import { useTypedSelector } from '../../../hooks/useTypedSelector';
 import {
   useDriverOrderNewActions,
+  useFeedbackActions,
   useUserOrderActions,
 } from '../../../hooks/useActions';
 import { Statuses } from '../../../constants/statuses';
@@ -19,9 +19,7 @@ import {
   faHryvnia,
   faInfoCircle,
   faTaxi,
-  faStar,
   faClock,
-  faPhone,
 } from '@fortawesome/free-solid-svg-icons';
 import './OrderItem.scss';
 
@@ -38,17 +36,6 @@ interface DriverInfoI {
   rating: number | null;
 }
 
-interface FeedBackI {
-  id: number;
-  text: string;
-  rating: number;
-  createdAt: string;
-  updatedAt: string;
-  orderId: number;
-  authorRole: number;
-  subjectRole: number;
-}
-
 interface OrderItemPropsI {
   orderId: number;
   from: string;
@@ -63,7 +50,9 @@ interface OrderItemPropsI {
   customerInfo?: CustomerInfoI;
   driverInfo?: DriverInfoI;
   mayTakeOrder?: boolean;
-  feedback?: FeedBackI;
+  showFeedbackButton?: boolean;
+  customerId?: number;
+  driverId?: number;
 }
 
 export const OrderItem: FC<OrderItemPropsI> = ({
@@ -77,26 +66,30 @@ export const OrderItem: FC<OrderItemPropsI> = ({
   lastUpdate,
   isDriver,
   page,
-  customerInfo,
   driverInfo,
   mayTakeOrder,
-  feedback,
+  showFeedbackButton,
+  customerId,
+  driverId,
 }) => {
-  const { extra_services } = useTypedSelector((state) => state.cityInfo);
   const newFrom = from.split(', ').slice(0, 2).join(', ');
   const newTo = to.split(', ').slice(0, 2).join(', ');
   const date = new Date(lastUpdate).toLocaleDateString();
   const time = new Date(lastUpdate).toLocaleTimeString();
 
   const { changeOrderStatusAction } = useDriverOrderNewActions();
+  const { toggleModal, changeFeedbackValues } = useFeedbackActions();
+
+  const onClickFeedback = () => {
+    const orderProps = {
+      orderId,
+      customerId,
+    };
+    changeFeedbackValues(orderProps);
+    toggleModal();
+  };
   const { changeOrderStatusAction: changeUserOrderStatusAction } =
     useUserOrderActions();
-
-  const extraServicesNames =
-    extraServices.map((id: number) => {
-      const extServItem = extra_services.find((extServ) => extServ.id === id);
-      return extServItem?.name;
-    }) || [];
 
   const history = useHistory();
   const redirect = () => {
@@ -116,23 +109,6 @@ export const OrderItem: FC<OrderItemPropsI> = ({
       });
       redirect();
     }
-  };
-
-  const getFeedback = (feedback: string, maxLength = 35) => {
-    const isOver = feedback.length > maxLength;
-    let text;
-    if (isOver) {
-      text = feedback.substring(0, maxLength) + '...';
-    } else {
-      text = feedback;
-    }
-
-    return (
-      <div className="info" title={isOver ? feedback : ''}>
-        <p className="info__label">Feedback:</p>
-        <p className="info__value">{text}</p>
-      </div>
-    );
   };
 
   return (
@@ -172,6 +148,7 @@ export const OrderItem: FC<OrderItemPropsI> = ({
                       changeOrderStatusAction({
                         status: Statuses.FINISHED,
                         id: orderId,
+                        customerId,
                       })
                     }
                     className="request__button finish button button--hovered button--outlined button--border"
@@ -199,17 +176,16 @@ export const OrderItem: FC<OrderItemPropsI> = ({
                     Take
                   </button>
                 )}
-                {page === Pages.HISTORY && !feedback && (
+                {showFeedbackButton && page === Pages.HISTORY && driverId && (
                   <button
-                    onClick={() => 'leaveFeedback'}
+                    onClick={onClickFeedback}
                     className="request__button take button button--hovered button--outlined button--border"
-                    title={'Leave feedback'}
+                    title="Leave feedback"
                   >
                     Feedback
                   </button>
                 )}
               </div>
-              {page === Pages.HISTORY && feedback && getFeedback(feedback.text)}
             </div>
 
             {driverInfo?.rating && (
@@ -227,7 +203,6 @@ export const OrderItem: FC<OrderItemPropsI> = ({
       </div>
 
       <div className="grid__footer">
-
         <div className="info">
           <FontAwesomeIcon icon={faInfoCircle} />
           <p className="info__value">{status}</p>
@@ -235,7 +210,11 @@ export const OrderItem: FC<OrderItemPropsI> = ({
 
         <div className="info">
           <p className="info__label">
-            {page === Pages.HISTORY ? <FontAwesomeIcon icon={faClock} /> : <FontAwesomeIcon icon={faClock} />}
+            {page === Pages.HISTORY ? (
+              <FontAwesomeIcon icon={faClock} />
+            ) : (
+              <FontAwesomeIcon icon={faClock} />
+            )}
           </p>
           <p className="info__value date">
             {page === Pages.HISTORY && (
@@ -248,12 +227,12 @@ export const OrderItem: FC<OrderItemPropsI> = ({
           </p>
         </div>
 
-        {extraServicesNames.length > 0 && (
+        {extraServices.length > 0 && (
           <div className="info" title="request.description">
             <div className="info__extra-services">
-              {extraServicesNames
-                .filter((name) => {
-                  return !!name;
+              {extraServices
+                .filter((id) => {
+                  return !!id;
                 })
                 .map((serviceName: any) => {
                   const Icon = extraServicesIcons[serviceName];

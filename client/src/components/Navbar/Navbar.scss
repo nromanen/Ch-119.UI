@@ -1,3 +1,5 @@
+@import '../../styles/theme.scss';
+
 .navigation {
   position: fixed;
   bottom: 0;
@@ -8,7 +10,7 @@
   margin: auto;
   padding-top: 5px;
   padding-bottom: 5px;
-  background-color: var(--section-bg-color);
+  background-color: $section-bg-color;
 
   ul {
     padding: 0;
@@ -20,14 +22,14 @@
   }
 
   .nav-link a {
-    color: var(--text-color);
+    color: $text-color;
     padding: 5px;
     text-decoration: none;
     cursor: pointer;
   }
 
   .nav-link a.active {
-    color: var(--accent-color);
+    color: $accent-color;
     font-weight: 700;
   }
 }

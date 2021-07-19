@@ -1,3 +1,5 @@
+@import '../../../styles/theme.scss';
+
 .jumbotron {
   border-radius: 0 !important;
 }
@@ -5,7 +7,7 @@
 .order__form {
   padding: 10px;
 
-  border-radius: var(--input-border-radius);
+  border-radius: $input-border-radius;
 
-  background-color: var(--section-bg-color);
+  background-color: $section-bg-color;
 }

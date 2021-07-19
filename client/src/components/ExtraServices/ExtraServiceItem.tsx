@@ -18,7 +18,7 @@ export const ExtraServiceItem: FC<ExtraServiceItemI> = ({
     iconClass.push(iconActiveClass);
   }
 
-  const Icon: any = extraServicesIcons[name];
+  const Icon: any = extraServicesIcons[id];
   return (
     <OverlayTrigger
       placement="top"

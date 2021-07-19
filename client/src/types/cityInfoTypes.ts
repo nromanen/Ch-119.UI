@@ -59,7 +59,7 @@ export interface CityInfoI {
 }
 
 export interface ExtraServiceItemI {
-  id: string | number;
+  id: number;
   name: string;
   onExtraServicesChanged: (e: any) => any;
   isActive: boolean;

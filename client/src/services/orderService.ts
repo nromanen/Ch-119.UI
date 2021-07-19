@@ -161,15 +161,15 @@ export const fetchDriverOrderHistory = (driverId: number) => async () => {
   }
 };
 
-export const fetchUserOrderHistory = (userId: number) => async () => {
+export const fetchOrderHistory = (id: number, role: string) => async () => {
   const url = `${process.env.REACT_APP_SERVER_URL}order/list`;
 
   try {
     const response = $authHost.get(url, {
       params: {
         status: [Statuses.DONE, Statuses.FINISHED, Statuses.CANCELED], // change if its same
-        withDriver: '1', // pass any not falsy value, return driver info for order
-        userId,
+        id,
+        role,
       },
     });
 
@@ -177,4 +177,12 @@ export const fetchUserOrderHistory = (userId: number) => async () => {
   } catch (error) {
     throw new Error(ERROR_IN_ORDER);
   }
+};
+
+export const showFeedbackButton = (feedbacks: any[], userRole: number) => {
+  const feedback = feedbacks.find(
+    (feedback: any) => feedback.author_role === userRole,
+  );
+  const showFeedbackButton = !feedback?.author_role;
+  return showFeedbackButton;
 };

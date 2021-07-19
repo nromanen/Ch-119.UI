@@ -2,11 +2,11 @@ import { FeedbackAction, FeedbackActionTypes } from '../types/feedbackTypes';
 import { FeedbackState } from './../types/feedbackTypes';
 
 export const initialState: FeedbackState = {
-  text: undefined,
-  rating: undefined,
-  author_role: undefined,
-  subject_role: undefined,
-  orderId: undefined,
+  text: null,
+  rating: null,
+  authorRole: null,
+  subjectRole: null,
+  orderId: null,
   isShown: false,
 };
 

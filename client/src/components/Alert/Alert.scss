@@ -1,14 +1,16 @@
+@import '../../styles/theme.scss';
+
 .toast,
 .toast-header {
-  background-color: var(--alert-color) !important;
-  color: var(--black) !important;
+  background-color: $alert-color !important;
+  color: $black !important;
 }
 
 .alert-error {
-  height: inherit!important;
-  margin: auto!important;
-  position: absolute!important;
-  top: 20%!important;
-  left: 50%!important;
-  transform: translate(-50%, -50%)!important;
+  height: inherit !important;
+  margin: auto !important;
+  position: absolute !important;
+  top: 20% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
 }

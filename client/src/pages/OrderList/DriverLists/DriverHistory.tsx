@@ -1,10 +1,11 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 
 import { OrderItem } from '../OrderItem/OrderItem';
 import { Pages } from '../OrderList';
 import { useTypedSelector } from '../../../hooks/useTypedSelector';
 import { useDriverOrderNewActions } from '../../../hooks/useActions';
-import { UserRoles } from '../../../constants/userRoles';
+import { showFeedbackButton } from '../../../services/orderService';
+import { getUserRoleAsNumber } from '../../../utils/getters';
 import Navbar from '../../../components/Navbar/Navbar';
 
 export const DriverHistory = () => {
@@ -13,6 +14,7 @@ export const DriverHistory = () => {
     fetchDriverOrderHistoryAction();
   }, []);
   const { history: list } = useTypedSelector((state) => state.driverOrders);
+  const userRole = useTypedSelector(getUserRoleAsNumber);
 
   if (!list.length) {
     return (
@@ -32,13 +34,13 @@ export const DriverHistory = () => {
       <ul className="order__list">
         <p>History:</p>
         {list.map((order: any) => {
-          const feedback = order.feedbacks.filter(
-            (feedback: any) => feedback.authorRole === UserRoles.DRIVER,
-          )[0];
+          const isShown = showFeedbackButton(order.feedbacks, userRole);
           return (
             <OrderItem
               key={order.id}
               orderId={order.id}
+              customerId={order.customer_id}
+              driverId={order.driverId}
               from={order.from}
               to={order.to}
               status={order.status}
@@ -46,9 +48,9 @@ export const DriverHistory = () => {
               carType={order.car_type.name}
               extraServices={order.extra_services}
               lastUpdate={order.updatedAt}
-              isDriver={true} // TODO change dynamic
+              isDriver={true}
               page={Pages.HISTORY}
-              feedback={feedback}
+              showFeedbackButton={isShown}
             />
           );
         })}

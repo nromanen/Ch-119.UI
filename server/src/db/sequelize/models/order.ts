@@ -17,6 +17,7 @@ export default (sequelize: any, DataTypes: any) => {
           name: USER_IN_ORDER,
         },
       });
+      Order.hasMany(models[FEEDBACK]);
       Order.belongsTo(models[DRIVER]);
       Order.belongsTo(models[CAR_TYPE], {
         foreignKey: {

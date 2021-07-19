@@ -1,27 +1,21 @@
 import { UserOrderActionTypes } from '../types/userOrders';
-import {
-  takeEvery,
-  put,
-  call,
-  select,
-  StrictEffect,
-  take,
-} from 'redux-saga/effects';
+import { takeEvery, put, call, select, StrictEffect } from 'redux-saga/effects';
 import { Statuses } from '../constants/statuses';
 import {
-  fetchUserOrderCurrentAction,
   fetchUserOrderErrorAction,
   fetchUserOrderSuccessAction,
   setUserOrderAction,
 } from './../actions/userOrdersActions';
 
 import { removeOrderFromUserListAction } from './../actions/userOrdersActions';
-import { changeOrderById } from '../services/orderService';
-import { toggleModal } from './../actions/feedbackActions';
+import { changeOrderById, fetchOrderHistory } from '../services/orderService';
+import { fetchUserOrderCurrent } from './../services/orderService';
+import { getUserRoleAsString } from '../utils/getters';
 import {
-  fetchUserOrderCurrent,
-  fetchUserOrderHistory,
-} from './../services/orderService';
+  fetchDriverOrderNewErrorAction,
+  fetchDriverOrderNewSuccessAction,
+  setDriverOrderNewAction,
+} from '../actions/driverOrderNewActions';
 
 export const getUserId = (state: any) => state.auth.id;
 
@@ -44,22 +38,23 @@ function* fetchUserOrderCurrentWorker(): Generator<StrictEffect, void, any> {
   }
 }
 
-function* fetchUserOrderHistoryWorker(): Generator<StrictEffect, void, any> {
+function* fetchOrderHistoryWorker(): Generator<StrictEffect, void, any> {
   const userId = yield select(getUserId);
+  const userRole = yield select(getUserRoleAsString);
 
-  const response = yield call(fetchUserOrderHistory(userId));
+  const response = yield call(fetchOrderHistory(userId, userRole));
   const orders = response.data.rows;
 
   if (response.status === 200) {
-    yield put(fetchUserOrderSuccessAction());
+    yield put(fetchDriverOrderNewSuccessAction());
     yield put(
-      setUserOrderAction({
+      setDriverOrderNewAction({
         list: 'history',
         values: orders,
       }),
     );
   } else {
-    yield put(fetchUserOrderErrorAction());
+    yield put(fetchDriverOrderNewErrorAction());
   }
 }
 
@@ -82,7 +77,7 @@ function* changeStatusWorker(action: any): Generator<StrictEffect, void, any> {
 export function* userOrderWatcher() {
   yield takeEvery(
     UserOrderActionTypes.FETCH_HISTORY_ORDERS,
-    fetchUserOrderHistoryWorker,
+    fetchOrderHistoryWorker,
   );
   yield takeEvery(UserOrderActionTypes.CHANGE_STATUS, changeStatusWorker);
   yield takeEvery(
