@@ -1,30 +1,28 @@
 import React, { useEffect } from 'react';
 
+import { useUserOrderActions } from '../../../hooks/useActions';
+import { useTypedSelector } from './../../../hooks/useTypedSelector';
+
 import { OrderItem } from '../OrderItem/OrderItem';
 import { Pages } from '../OrderList';
-import { useTypedSelector } from '../../../hooks/useTypedSelector';
-import { useDriverOrderNewActions } from '../../../hooks/useActions';
+import { UserRoles } from '../../../constants/userRoles';
 import Navbar from '../../../components/Navbar/Navbar';
 
-export const DriverActive = () => {
-  const { fetchDriverOrderNewAction } = useDriverOrderNewActions();
-  const { current } = useTypedSelector((state) => state.driverOrders);
+export const UserHistory = () => {
+  const { fetchUserOrderHistoryAction } = useUserOrderActions();
 
-  const mayTakeOrder = !!current.length;
-
-  // TODO do not refetch because tabs do not render again but make display: none
   useEffect(() => {
-    fetchDriverOrderNewAction();
+    fetchUserOrderHistoryAction();
   }, []);
 
-  const { active: list } = useTypedSelector((state) => state.driverOrders);
+  const { history: list } = useTypedSelector((state) => state.userOrders);
 
   if (!list.length) {
     return (
       <>
         <div className="overflow">
           <div className="taxi-img animation">
-            <p>no active orders</p>
+            <p>no history orders</p>
           </div>
         </div>
         <Navbar />
@@ -35,8 +33,10 @@ export const DriverActive = () => {
   return (
     <div className="dark">
       <ul className="order__list">
-        <p>Active orders:</p>
         {list.map((order: any) => {
+          const feedback = order.feedbacks.filter(
+            (feedback: any) => feedback.authorRole === UserRoles.USER,
+          )[0];
           return (
             <OrderItem
               key={order.id}
@@ -48,9 +48,9 @@ export const DriverActive = () => {
               carType={order.car_type.name}
               extraServices={order.extra_services}
               lastUpdate={order.updatedAt}
-              isDriver={true} // TODO change dynamic
-              page={Pages.ALL}
-              mayTakeOrder={mayTakeOrder}
+              isDriver={false} // TODO change dynamic
+              page={Pages.HISTORY}
+              driverInfo={order.driver}
             />
           );
         })}

@@ -1,32 +1,31 @@
 import React, { FC, useState } from 'react';
 import './Profile.scss';
 import Navbar from '../../components/Navbar/Navbar';
-import { InputGeneral } from '../../components/InputGeneral';
-import { Form } from 'react-final-form';
-import {
-  phoneMask,
-  carMask,
-  maxValueWithRequired,
-  nameMask,
-} from '../../utils/validators';
 import AlertContainer from '../../components/Alert/AlertContainer';
-import { REQUIERED_ERROR_MESSAGE } from '../../constants/errorConstants';
 import { DRIVER_ROLE } from '../../constants/registrationConstants';
 import EditForm from './EditForm';
 import DriverForm from './DriverForm';
 
 const Profile: FC = (props: any) => {
+  const {
+    checkDriverState,
+    checkModified,
+    auth,
+    updateUser,
+    driverProfile,
+    logoutUser,
+  } = props;
   const [isModified, setIsModified] = useState(false);
   const [isDriver, setIsDriver] = useState(false);
 
   const onDriverChangeHandler = (e: any) => {
     setIsDriver(e.target.checked);
-    props.checkDriverState(e.target.checked);
+    checkDriverState(e.target.checked);
   };
 
   const onChangeHandler = (e: any) => {
     setIsModified(e.target.checked);
-    props.checkModified(e.target.checked);
+    checkModified(e.target.checked);
   };
   return (
     <div className="dark ">
@@ -46,42 +45,39 @@ const Profile: FC = (props: any) => {
                 checked={isModified}
               />
             </div>
-            {!props.auth.isModified ? (
+            {!auth.isModified ? (
               <div className="profile-text">
                 <p>
-                  <strong>Username:</strong> {props.auth.name}
+                  <strong>Username:</strong> {auth.name}
                 </p>
                 <p>
-                  <strong>Phone:</strong> {props.auth.phone}
+                  <strong>Phone:</strong> {auth.phone}
                 </p>
-                {props.auth.role.includes(DRIVER_ROLE) ? (
+                {auth.role.includes(DRIVER_ROLE) ? (
                   <React.Fragment>
                     <p>
-                      <strong>Car color:</strong>{' '}
-                      {props.auth.driver_info.car_color}
+                      <strong>Car color:</strong> {auth.driver_info.car_color}
                     </p>
                     <p>
-                      <strong>Car model:</strong>{' '}
-                      {props.auth.driver_info.car_model}
+                      <strong>Car model:</strong> {auth.driver_info.car_model}
                     </p>
                     <p>
-                      <strong>Car number:</strong>{' '}
-                      {props.auth.driver_info.car_number}
+                      <strong>Car number:</strong> {auth.driver_info.car_number}
                     </p>
                   </React.Fragment>
                 ) : null}
               </div>
             ) : (
               <EditForm
-                name={props.auth.name}
-                phone={props.auth.phone}
-                car_number={props.auth.driver_info.car_number}
-                role={props.auth.role}
-                updateUser={props.updateUser}
+                name={auth.name}
+                phone={auth.phone}
+                car_number={auth.driver_info.car_number}
+                role={auth.role}
+                updateUser={updateUser}
               />
             )}
             <div className="col-xs-4 reg-driver">
-              {!props.auth.role.includes(DRIVER_ROLE) ? (
+              {!auth.role.includes(DRIVER_ROLE) ? (
                 <div>
                   <label>Registrate as driver</label>
                   <input
@@ -93,8 +89,8 @@ const Profile: FC = (props: any) => {
                   />
                   {isDriver ? (
                     <DriverForm
-                      driverProfile={props.driverProfile}
-                      logoutUser={props.logoutUser}
+                      driverProfile={driverProfile}
+                      logoutUser={logoutUser}
                     />
                   ) : null}
                 </div>
@@ -102,7 +98,7 @@ const Profile: FC = (props: any) => {
             </div>
           </div>
         </div>
-        <button className="btn btn-danger logout" onClick={props.logoutUser}>
+        <button className="btn btn-danger logout" onClick={logoutUser}>
           Log out
         </button>
         <Navbar />

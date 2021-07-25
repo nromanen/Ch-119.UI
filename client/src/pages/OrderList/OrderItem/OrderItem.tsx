@@ -1,15 +1,27 @@
 import { FC } from 'react';
 
+import { useHistory } from 'react-router-dom';
+
 import { useTypedSelector } from '../../../hooks/useTypedSelector';
 import {
   useDriverOrderNewActions,
   useFeedbackActions,
+  useUserOrderActions,
 } from '../../../hooks/useActions';
 import { Statuses } from '../../../constants/statuses';
 
 import { extraServicesIcons } from '../../../components/ExtraServices/icons';
 import { Pages } from '../OrderList';
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+  faMapMarkerAlt,
+  faArrowAltCircleRight,
+  faHryvnia,
+  faInfoCircle,
+  faTaxi,
+  faClock,
+} from '@fortawesome/free-solid-svg-icons';
 import './OrderItem.scss';
 
 interface CustomerInfoI {
@@ -22,7 +34,20 @@ interface DriverInfoI {
   carColor: string;
   carNumber: string;
   carModel: string;
+  rating: number | null;
 }
+
+interface FeedBackI {
+  id: number;
+  text: string;
+  rating: number;
+  createdAt: string;
+  updatedAt: string;
+  orderId: number;
+  authorRole: number;
+  subjectRole: number;
+}
+
 interface OrderItemPropsI {
   orderId: number;
   from: string;
@@ -52,7 +77,6 @@ export const OrderItem: FC<OrderItemPropsI> = ({
   lastUpdate,
   isDriver,
   page,
-  customerInfo,
   driverInfo,
   mayTakeOrder,
   showFeedbackButton,
@@ -73,117 +97,141 @@ export const OrderItem: FC<OrderItemPropsI> = ({
       customerId,
     };
     changeFeedbackValues(orderProps);
-    return toggleModal();
+    toggleModal();
   };
+  const { changeOrderStatusAction: changeUserOrderStatusAction } =
+    useUserOrderActions();
 
-  // TODO do not have cityInfo without open order page
   const extraServicesNames =
     extraServices.map((id: number) => {
       const extServItem = extra_services.find((extServ) => extServ.id === id);
       return extServItem?.name;
     }) || [];
 
+  const history = useHistory();
+  const redirect = () => {
+    history.push('/order');
+  };
+
+  const onCancelHandler = () => {
+    if (isDriver) {
+      changeOrderStatusAction({
+        status: Statuses.CANCELED,
+        id: orderId,
+      });
+    } else {
+      changeUserOrderStatusAction({
+        status: Statuses.CANCELED,
+        id: orderId,
+      });
+      redirect();
+    }
+  };
+
   return (
     <li className="request__item">
-      <div className="group request__up">
-        <div className="request__adress">
-          <div className="request__street">
-            <span className="info__label">From:</span>
-            <span>{newFrom}</span>
-          </div>
+      <div className="grid__container">
+        <div className="padding">
+          <FontAwesomeIcon icon={faMapMarkerAlt} /> {newFrom}
+        </div>
 
-          <div className="request__street">
-            <span className="info__label">To:</span>
-            <span>{newTo}</span>
+        <div>
+          <div>
+            <div>
+              <div>
+                <div className="info__center">
+                  <div>
+                    <FontAwesomeIcon icon={faTaxi} />
+                    <span className="info__value"> {carType}</span>
+                  </div>
+                  <div>
+                    <FontAwesomeIcon icon={faHryvnia} />
+                    <span className="info__value"> {price}</span>
+                  </div>
+                </div>
+
+                {page === Pages.CURRENT && (
+                  <button
+                    onClick={onCancelHandler}
+                    className="request__button cancel button button--hovered button--outlined button--border"
+                  >
+                    Cancel
+                  </button>
+                )}
+
+                {isDriver && page === Pages.CURRENT && (
+                  <button
+                    onClick={() =>
+                      changeOrderStatusAction({
+                        status: Statuses.FINISHED,
+                        id: orderId,
+                        customerId,
+                      })
+                    }
+                    className="request__button finish button button--hovered button--outlined button--border"
+                  >
+                    Finish
+                  </button>
+                )}
+
+                {isDriver && page === Pages.ALL && (
+                  <button
+                    onClick={() => {
+                      changeOrderStatusAction({
+                        status: Statuses.ACCEPTED,
+                        id: orderId,
+                      });
+                    }}
+                    className="request__button take button button--hovered button--outlined button--border"
+                    disabled={mayTakeOrder}
+                    title={
+                      mayTakeOrder
+                        ? 'You should finish current order!'
+                        : 'Take order.'
+                    }
+                  >
+                    Take
+                  </button>
+                )}
+                {showFeedbackButton && page === Pages.HISTORY && (
+                  <button
+                    onClick={onClickFeedback}
+                    className="request__button take button button--hovered button--outlined button--border"
+                    title="Leave feedback"
+                  >
+                    Feedback
+                  </button>
+                )}
+              </div>
+            </div>
+
+            {driverInfo?.rating && (
+              <div>
+                <span className="info__label">rating: </span>
+                <span className="info__value">{driverInfo.rating}</span>
+              </div>
+            )}
           </div>
         </div>
 
-        <div className="request__data">
-          <ul className="request__info list group">
-            <li>
-              {/* icon carType
-              <i
-                title="{ true }"
-                id="request.carType"
-                className="request__car"
-              ></i> */}
-              <span> {carType} </span>
-            </li>
-
-            <li>
-              <span className="info__label">price: </span>
-              <span className="info__value">{price}</span>
-            </li>
-          </ul>
-          <div className="group">
-            {page === Pages.CURRENT && (
-              <button
-                onClick={() =>
-                  changeOrderStatusAction({
-                    status: Statuses.CANCELED,
-                    id: orderId,
-                  })
-                }
-                className="request__button cancel button button--hovered button--outlined button--border"
-              >
-                Cancel order
-              </button>
-            )}
-
-            {isDriver && page === Pages.CURRENT && (
-              <button
-                onClick={() =>
-                  changeOrderStatusAction({
-                    status: Statuses.FINISHED,
-                    id: orderId,
-                    customerId,
-                  })
-                }
-                className="request__button finish button button--hovered button--outlined button--border"
-              >
-                Finish order
-              </button>
-            )}
-
-            {isDriver && page === Pages.ALL && (
-              <button
-                onClick={() =>
-                  changeOrderStatusAction({
-                    status: Statuses.ACCEPTED,
-                    id: orderId,
-                  })
-                }
-                className="request__button take button button--hovered button--outlined button--border"
-                disabled={mayTakeOrder}
-                title={
-                  mayTakeOrder
-                    ? 'You should finish current order!'
-                    : 'Take order.'
-                }
-              >
-                Take order
-              </button>
-            )}
-            {showFeedbackButton && page === Pages.HISTORY && (
-              <button
-                onClick={onClickFeedback}
-                className="request__button take button button--hovered button--outlined button--border"
-                title="Leave feedback"
-              >
-                Feedback
-              </button>
-            )}
-          </div>
+        <div className="padding">
+          <FontAwesomeIcon icon={faArrowAltCircleRight} /> {newTo}
         </div>
       </div>
-      <div className="request__status">
+
+      <div className="grid__footer">
         <div className="info">
-          <p className="info__label">Status:</p>
+          <FontAwesomeIcon icon={faInfoCircle} />
           <p className="info__value">{status}</p>
         </div>
+
         <div className="info">
           <p className="info__label">
-            {page === Pages.HISTORY ? 'Date:' : 'Time:'}
+            {page === Pages.HISTORY ? (
+              <FontAwesomeIcon icon={faClock} />
+            ) : (
+              <FontAwesomeIcon icon={faClock} />
+            )}
           </p>
           <p className="info__value date">
             {page === Pages.HISTORY && (
@@ -195,11 +243,9 @@ export const OrderItem: FC<OrderItemPropsI> = ({
             {time}
           </p>
         </div>
+
         {extraServicesNames.length > 0 && (
           <div className="info" title="request.description">
-            <p className="info__label">Services:</p>
-            {/* <p className="info__value">{ description }</p> */}
-
             <div className="info__extra-services">
               {extraServicesNames
                 .filter((name) => {
@@ -216,15 +262,6 @@ export const OrderItem: FC<OrderItemPropsI> = ({
                   );
                 })}
             </div>
-          </div>
-        )}
-
-        {isDriver && page === Pages.CURRENT && (
-          <div className="info" title="User phone number">
-            <p className="info__label">Phone:</p>
-            <a className="info__value" href={'tel:' + customerInfo!.phone}>
-              {customerInfo && customerInfo.phone}
-            </a>
           </div>
         )}
 

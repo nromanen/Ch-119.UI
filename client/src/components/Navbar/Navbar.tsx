@@ -1,37 +1,23 @@
 import './Navbar.scss';
 import { useTypedSelector } from '../../hooks/useTypedSelector';
-import { NavLink } from 'react-router-dom';
-import {
-  ORDER_ROUTE,
-  PROFILE_ROUTE,
-  ORDER_ACTIVE_ROUTE,
-} from '../../constants/routerConstants';
 import { DRIVER_ROLE } from '../../constants/registrationConstants';
+import { NavTab } from './NavTab';
+import { DriverNavTabs, userNavTabs } from './NavTabsMaper';
 
 const Navbar = () => {
   const { role } = useTypedSelector((state) => state.auth);
+  const orderId = useTypedSelector((state) => state.userOrders.current[0]?.id);
   const isDriver = role.includes(DRIVER_ROLE);
+  const NavbarTabs = isDriver
+    ? DriverNavTabs
+    : userNavTabs(orderId).filter((tab) => tab);
 
   return (
     <nav className="navigation">
       <ul>
-        {isDriver && (
-          <li className="nav-link">
-            <NavLink to={ORDER_ACTIVE_ROUTE} activeClassName="active">
-              Order-list
-            </NavLink>
-          </li>
-        )}
-        <li className="nav-link">
-          <NavLink to={ORDER_ROUTE} activeClassName="active">
-            Make order
-          </NavLink>
-        </li>
-        <li className="nav-link">
-          <NavLink to={PROFILE_ROUTE} activeClassName="active">
-            Profile
-          </NavLink>
-        </li>
+        {NavbarTabs.map(({ route, content }: any) => (
+          <NavTab key={route} route={route} content={content} />
+        ))}
       </ul>
     </nav>
   );

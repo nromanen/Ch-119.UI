@@ -41,6 +41,11 @@ export interface ExtraServicesI {
   city_service: CityExtraServiceI;
 }
 
+export interface RolesI {
+  id: number;
+  name: string;
+}
+
 export interface CityInfoI {
   id: number;
   name: string;
@@ -50,6 +55,7 @@ export interface CityInfoI {
   updatedAt?: Date;
   car_types: CarTypesI[];
   extra_services: ExtraServicesI[];
+  roles: RolesI[];
 }
 
 export interface ExtraServiceItemI {

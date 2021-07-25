@@ -6,6 +6,8 @@ import {
   USER,
   CAR_TYPE,
   FEEDBACK,
+  USER_ROLE,
+  DRIVER_ROLE,
 } from '../constants/modelsNames';
 import {
   STATUS_BAD_REQUEST,
@@ -42,22 +44,29 @@ export default class OrderController {
         {
           model: sequelize.models[CAR_TYPE], // return carType from car_types table
         },
+        {
+          model: sequelize.models[FEEDBACK],
+        },
       ],
       order: [
         // return orders recently created
         ['updatedAt', 'DESC'],
       ],
     };
-
-    if (role === 'USER') {
+    if (role === USER_ROLE) {
       seqOptions.where.customer_id = id;
       seqOptions.include.push({
         model: sequelize.models[DRIVER],
-        attributes: ['car_color', 'car_number', 'car_model', 'driver_rating'], // field that back from sequelize
+        attributes: [
+          ['car_color', 'carColor'],
+          ['car_number', 'carNumber'],
+          ['car_model', 'carModel'],
+          ['driver_rating', 'rating'],
+        ], // field that back from sequelize
       });
     }
 
-    if (role === 'DRIVER') {
+    if (role === DRIVER_ROLE) {
       seqOptions.where.driver_id = id;
       seqOptions.include.push({
         model: sequelize.models[USER],

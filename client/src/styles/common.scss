@@ -1,10 +1,12 @@
+@import '../styles/theme.scss';
+
 .wrap {
-  max-width: var(--container-width);
+  max-width: $container-width;
   margin: 0 auto;
 }
 
 h2 {
-  color: var(--accent-color);
+  color: $accent-color;
 }
 
 .button {
@@ -14,7 +16,7 @@ h2 {
   background-color: transparent;
 
   cursor: pointer;
-  color: var(--text-color);
+  color: $text-color;
   font-size: 1rem;
 
   font-family: inherit;
@@ -24,27 +26,27 @@ h2 {
   transition: background 0.2s ease-out;
 
   &[disabled] {
-    color: var(--text-color-disabled);
+    color: $text-color-disabled;
     background-color: transparent;
-    border: 1px solid var(--overlay-bg-color);
+    border: 1px solid $overlay-bg-color;
 
     &:hover {
       background-color: inherit;
       cursor: not-allowed;
-      color: var(--text-color-disabled);
+      color: $text-color-disabled;
     }
   }
 
   &.active {
-    background-color: var(--hover-bg-color);
-    color: var(--accent-color);
+    background-color: $hover-bg-color;
+    color: $accent-color;
   }
 
   &--hovered {
     &:hover,
     &:focus {
-      background-color: var(--hover-bg-color);
-      border-color: var(--overlay-bg-color);
+      background-color: $hover-bg-color;
+      border-color: $overlay-bg-color;
     }
   }
 
@@ -52,24 +54,24 @@ h2 {
     &:enabled:focus {
       // outline: 0 none;
       // outline-offset: 0;
-      // box-shadow: 0 0 0 0.2em var(--hover-bg-color);
-      // border-color: var(--hover-bg-color);
+      // box-shadow: 0 0 0 0.2em var($hover-bg-color);
+      // border-color: var($hover-bg-color);
 
       outline: none;
-      box-shadow: inset 0 0 0 1px var(--svg-color);
+      box-shadow: inset 0 0 0 1px $svg-color;
     }
   }
 
   &--border {
-    border: 1px solid var(--overlay-bg-color);
-    border-radius: var(--input-border-radius, 3px);
+    border: 1px solid $overlay-bg-color;
+    border-radius: $input-border-radius, 3px;
   }
 
-  // &--small {
+  // &$small {
   //   padding: 5px 10px;
   // }
 
-  // &--big {
+  // &$big {
   //   padding: 15px;
 
   //   display: flex;
@@ -84,13 +86,13 @@ h2 {
 }
 
 .input {
-  border: 1px solid var(--overlay-bg-color);
+  border: 1px solid $overlay-bg-color;
 
   font-size: 1em;
 
-  background-color: var(--black);
-  color: var(--text-color);
-  caret-color: var(--text-link-color);
+  background-color: $black;
+  color: $text-color;
+  caret-color: $text-link-color;
   transition: border-color 0.2s, box-shadow 0.2s;
 
   &--padding {
@@ -102,35 +104,32 @@ h2 {
     width: 100%;
   }
   &--bd-radius {
-    border-radius: var(--input-border-radius);
-    &--small {
-      border-radius: var(--input-border-radius-small);
-    }
+    border-radius: $input-border-radius;
   }
 
   &:enabled:focus {
     outline: 0 none;
     outline-offset: 0;
-    box-shadow: 0 0 0 0.2em var(--hover-bg-color);
-    border-color: var(--hover-bg-color);
+    box-shadow: 0 0 0 0.2em $hover-bg-color;
+    border-color: $hover-bg-color;
     background-color: transparent;
-    color: var(--text-color);
+    color: $text-color;
   }
 }
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
 input:-webkit-autofill:active {
-  box-shadow: 0 0 0 20px var(--section-bg-color) inset !important;
-  -webkit-text-fill-color: var(--text-color) !important;
+  box-shadow: 0 0 0 20px $section-bg-color inset !important;
+  -webkit-text-fill-color: $text-color !important;
 }
 
 .btn-primary:not(:disabled):not(.disabled).active,
 .btn-primary:not(:disabled):not(.disabled):active,
 .show > .btn-primary.dropdown-toggle {
-  background-color: var(--hover-bg-color);
-  color: var(--accent-color);
-  border: 1px solid var(--overlay-bg-color);
+  background-color: $hover-bg-color;
+  color: $accent-color;
+  border: 1px solid $overlay-bg-color;
 }
 
 .btn-primary:not(:disabled):not(.disabled).active:focus,

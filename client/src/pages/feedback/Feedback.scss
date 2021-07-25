@@ -1,3 +1,5 @@
+@import '../../styles/theme.scss';
+
 .stars {
   font-size: 60px;
 }
@@ -20,14 +22,14 @@
 
 .modal {
   &__header {
-    background-color: var(--section-bg-color);
-    color: var(--text-color);
+    background-color: $section-bg-color;
+    color: $text-color;
     &.modal-header {
-      border-color: var(--accent-color);
+      border-color: $accent-color;
     }
   }
   &__body {
-    background-color: var(--section-bg-color);
-    color: var(--text-color);
+    background-color: $section-bg-color;
+    color: $text-color;
   }
 }

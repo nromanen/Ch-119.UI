@@ -14,17 +14,16 @@ import {
   PASS_MIN_LENGTH,
 } from '../constants/registrationConstants';
 
+export const composeValidators =
+  (...validators: any[]) =>
+  (value: any) =>
+    validators.reduce(
+      (error, validator) => error || validator(value),
+      undefined,
+    );
+
 export const required = (value: any) =>
   value ? undefined : REQUIERED_ERROR_MESSAGE;
-
-export const maxValueWithRequired = (max: any) => (value: any) => {
-  if (!value) {
-    return `${REQUIERED_ERROR_MESSAGE}`;
-  }
-  if (!value || value?.length >= max) {
-    return `${MAX_VALUE_ERROR_MESSAGE} ${max}`;
-  }
-};
 
 export const maxValue = (max: any) => (value: any) =>
   !value || value?.length <= max

@@ -18,12 +18,7 @@ import {
   fetchOrderHistory,
 } from '../services/orderService';
 import { changeFeedbackValues, toggleModal } from '../actions/feedbackActions';
-
-export const getDriverId = (state: any) => state.auth.driver_info.driver_id;
-export const getUserId = (state: any) =>
-  state.auth.driver_info.driver_id || state.auth.id;
-export const getUserRole = (state: any) =>
-  state.auth.role.includes('DRIVER') ? 'DRIVER' : 'USER';
+import { getDriverId, getUserId, getUserRoleAsString } from '../utils/getters';
 
 function* fetchDriverOrderCurrentWorker(): Generator<StrictEffect, void, any> {
   const driverId = yield select(getDriverId);
@@ -62,7 +57,7 @@ function* fetchDriverOrderNewWorker(): Generator<StrictEffect, void, any> {
 
 function* fetchOrderHistoryWorker(): Generator<StrictEffect, void, any> {
   const userId = yield select(getUserId);
-  const userRole = yield select(getUserRole);
+  const userRole = yield select(getUserRoleAsString);
 
   const response = yield call(fetchOrderHistory(userId, userRole));
   const orders = response.data.rows;
@@ -117,25 +112,6 @@ function* changeStatusWorker(
     yield put(toggleModal());
   }
 }
-
-// function* changeStatusWorker(): Generator<StrictEffect, void, any> {
-
-//   const response = yield call(fetchDriverOrderHistory(driverId));
-//   const orders = response.data.rows;
-
-//   if (response.status === 200) {
-//     console.log(`change status`, orders);
-//     yield put(fetchDriverOrderNewSuccessAction());
-//     yield put(
-//       setDriverOrderNewAction({
-//         list: 'history',
-//         values: orders,
-//       }),
-//     );
-//   } else {
-//     yield put(fetchDriverOrderNewErrorAction());
-//   }
-// }
 
 export function* driverOrderNewWatcher() {
   yield takeEvery(
