@@ -2,7 +2,7 @@
 
 1. clone the repo using "git clone https://github.com/nromanen/Ch-119.UI.git"
 2. copy .env files to client\server folders
-3. create the database in PostgresQL
+3. create the database in PostgreSQL
 4. change the database name in .env file
 5. make "npm install" in client\server folders
 6. uncomment the code for creating tables in postgreSQL in files: server\src\db\sequelize\models\role.ts and server\src\app.ts
