@@ -9,7 +9,6 @@ import {
   Spinner,
 } from 'react-bootstrap';
 
-import Navbar from '../../../components/Navbar/Navbar';
 import { Input } from '../../../components/Input/Input';
 import { FormLabel } from '../../../components/FormLabel/FormLabel';
 import { CarTypesSelect } from '../../../components/CarTypeSelect/CarTypesSelect';
@@ -43,11 +42,9 @@ interface OrderFormProps {
   activeExtraServices: number[];
   currentCity: string;
   price: number;
-  isUserCanMakeOrder: boolean;
 }
 
 export const OrderForm: FC<OrderFormProps> = ({
-  isUserCanMakeOrder,
   onSubmit,
   onCarTypeChange,
   onExtraServicesChanged,
@@ -145,10 +142,8 @@ export const OrderForm: FC<OrderFormProps> = ({
               <button
                 className="button button--hovered button--outlined button--border"
                 // variant="info"
-                disabled={loading || !isUserCanMakeOrder}
-                title={
-                  !isUserCanMakeOrder ? 'You have active order' : 'Make order'
-                }
+                disabled={loading}
+                title={'Make order'}
               >
                 Make order
                 {loading && (
@@ -165,7 +160,6 @@ export const OrderForm: FC<OrderFormProps> = ({
             </ButtonToolbar>
           </div>
         </Form>
-        <Navbar />
       </Jumbotron>
     </>
   );

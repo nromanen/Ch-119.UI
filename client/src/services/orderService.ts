@@ -42,9 +42,9 @@ export const calculatePrice = (prices: any) => {
   );
   return Math.ceil(
     prices.initial +
-      prices.distance * prices.distanceCoef * prices.carTypeCoef! +
-      servicesPrice -
-      prices.discount,
+    prices.distance * prices.distanceCoef * prices.carTypeCoef! +
+    servicesPrice -
+    prices.discount,
   );
 };
 
@@ -64,21 +64,7 @@ export const makeOrder = (order: OrderStateI, userId: number) => async () => {
   }
 };
 
-export const updateOrder = (order: OrderStateI, userId: number) => async () => {
-  const orderDTO = new OrderDTO(order, userId);
-  orderDTO.id = order.id;
-  const url = `${process.env.REACT_APP_SERVER_URL}order/${orderDTO.id}`;
-  try {
-    const response = $authHost.put(url, {
-      body: orderDTO,
-    });
-    return response;
-  } catch (error) {
-    throw new Error(ERROR_IN_ORDER);
-  }
-};
-
-export const changeOrderById =
+export const changeOrderStatusById =
   (id: number, orderNewValues: any) => async () => {
     const url = `${process.env.REACT_APP_SERVER_URL}order`;
     try {
@@ -108,14 +94,15 @@ export const fetchDriverOrderNew = async () => {
     throw new Error(ERROR_IN_ORDER);
   }
 };
-export const fetchDriverOrderCurrent = (driverId: number) => async () => {
+export const fetchOrderCurrent = (id: number, role: string) => async () => {
   const url = `${process.env.REACT_APP_SERVER_URL}order/list`;
 
   try {
     const response = $authHost.get(url, {
       params: {
-        driverId,
-        status: Statuses.ACCEPTED,
+        status: [Statuses.ACCEPTED, Statuses.ACTIVE],
+        id,
+        role,
         withUser: '1', // pass any not falsy value, return user info for order in customer_id column
       },
     });
@@ -143,24 +130,6 @@ export const fetchUserOrderCurrent = (userId: number) => async () => {
   }
 };
 
-export const fetchDriverOrderHistory = (driverId: number) => async () => {
-  const url = `${process.env.REACT_APP_SERVER_URL}order/list`;
-
-  try {
-    const response = $authHost.get(url, {
-      params: {
-        status: [Statuses.DONE, Statuses.FINISHED, Statuses.CANCELED], // change if its same
-        withUser: '1', // pass any not falsy value, return user info for order in customer_id column
-        driverId,
-      },
-    });
-
-    return response;
-  } catch (error) {
-    throw new Error(ERROR_IN_ORDER);
-  }
-};
-
 export const fetchOrderHistory = (id: number, role: string) => async () => {
   const url = `${process.env.REACT_APP_SERVER_URL}order/list`;
 
@@ -179,7 +148,7 @@ export const fetchOrderHistory = (id: number, role: string) => async () => {
   }
 };
 
-export const showFeedbackButton = (feedbacks: any[], userRole: number) => {
+export const showFeedbackButton = (feedbacks: any[] = [], userRole: number) => {
   const feedback = feedbacks.find(
     (feedback: any) => feedback.author_role === userRole,
   );

@@ -1,7 +1,7 @@
 import { DriverOrderNewStateI } from './../types/driverOrderNew';
 import {
-  DriverOrderNewAction,
-  DriverOrderNewActionTypes,
+  OrderNewAction,
+  OrderNewActionTypes,
 } from '../types/driverOrderNew';
 
 export const initialState: DriverOrderNewStateI = {
@@ -12,28 +12,28 @@ export const initialState: DriverOrderNewStateI = {
   error: null,
 };
 
-export const driverOrderNewReducer = (
+export const orderNewReducer = (
   state = initialState,
-  action: DriverOrderNewAction,
+  action: OrderNewAction,
 ) => {
   switch (action.type) {
-    case DriverOrderNewActionTypes.SET_ORDERS:
+    case OrderNewActionTypes.SET_ORDERS:
       return {
         ...state,
         [action.payload.list]: action.payload.values,
       };
 
-    case DriverOrderNewActionTypes.MOVE_TO_CURRENT_ORDER:
+    case OrderNewActionTypes.MOVE_TO_CURRENT_ORDER:
       return {
         ...state,
         current: [...state.current, action.payload],
       };
-    case DriverOrderNewActionTypes.REMOVE_FROM_CURRENT_ORDER:
+    case OrderNewActionTypes.REMOVE_FROM_CURRENT_ORDER:
       return {
         ...state,
         current: [],
       };
-    case DriverOrderNewActionTypes.REMOVE_FROM_ORDER_LIST:
+    case OrderNewActionTypes.REMOVE_FROM_ORDER_LIST:
       return {
         ...state,
         [action.payload.filterList]: state[action.payload.filterList].filter(

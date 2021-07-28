@@ -1,43 +1,144 @@
-import { call, put, select, StrictEffect, takeEvery } from 'redux-saga/effects';
+import { CURRENT_ORDER_ROUTE, MAKE_ORDER_ROUTE } from '../constants/routerConstants';
 import { push } from 'react-router-redux';
-import { OrderActionTypes } from '../types/orderTypes';
-import { makeOrder } from '../services/orderService';
-import { CURRENT_USER_ROUTE } from './../constants/routerConstants';
+import { call, takeEvery, StrictEffect, put, select } from 'redux-saga/effects';
 import {
-  changeOrderValues,
-  makeOrderErrorAction,
-  makeOrderSuccessAction,
-  resetOrderState,
-} from './../actions/orderActions';
+  ChangeStatus,
+  OrderNewActionTypes,
+} from '../types/driverOrderNew';
+import {
+  fetchOrderNewErrorAction,
+  fetchOrderNewSuccessAction,
+  removeOrderFromDriverListAction,
+  moveOrderToCurrentAction,
+  setOrderNewAction,
+} from '../actions/driverOrderNewActions';
 
-export const getUserID = (state: any) => state.auth.id;
-export const getOrder = (state: any) => state.order;
-export const getCurrentOrder = (state: any) => state.driverOrders;
+import { Statuses } from '../constants/statuses';
+import {
+  fetchDriverOrderNew,
+  changeOrderStatusById,
+  fetchOrderCurrent,
+  fetchOrderHistory,
+} from '../services/orderService';
+import { changeFeedbackValues, toggleModal } from '../actions/feedbackActions';
+import { getDriverId, getUserId, getUserRoleAsString } from '../utils/getters';
 
-function* makeOrderWorker(): Generator<StrictEffect, void, any> {
-  const userID = yield select(getUserID);
-  const order = yield select(getOrder);
+function* fetchOrderCurrentWorker(): Generator<StrictEffect, void, any> {
+  const userId = yield select(getUserId);
+  const userRole = yield select(getUserRoleAsString);
 
-  try {
-    const data = yield call(makeOrder(order, userID));
-    if (data.status === 200) {
-      yield put(
-        changeOrderValues({
-          id: data.data.id,
-          customer_id: data.data.customer_id,
-        }),
-      );
-      yield put(makeOrderSuccessAction());
-      yield put(resetOrderState());
-      yield put(push(CURRENT_USER_ROUTE + data.data.id));
-    } else {
-      yield put(makeOrderErrorAction());
+  const response = yield call(fetchOrderCurrent(userId, userRole));
+  const orders = response.data.rows;
+
+  if (response.status === 200) {
+    yield put(fetchOrderNewSuccessAction());
+    yield put(
+      setOrderNewAction({
+        list: 'current',
+        values: orders,
+      }),
+    );
+  } else {
+    yield put(fetchOrderNewErrorAction());
+  }
+}
+
+function* fetchActiveOrdersWorker(): Generator<StrictEffect, void, any> {
+  const response = yield call(fetchDriverOrderNew);
+  const orders = response.data.rows;
+
+  if (response.status === 200) {
+    yield put(fetchOrderNewSuccessAction());
+    yield put(
+      setOrderNewAction({
+        list: 'active',
+        values: orders,
+      }),
+    );
+  } else {
+    yield put(fetchOrderNewErrorAction());
+  }
+}
+
+function* fetchOrderHistoryWorker(): Generator<StrictEffect, void, any> {
+  const userId = yield select(getUserId);
+  const userRole = yield select(getUserRoleAsString);
+
+  const response = yield call(fetchOrderHistory(userId, userRole));
+  const orders = response.data.rows;
+
+  if (response.status === 200) {
+    yield put(fetchOrderNewSuccessAction());
+    yield put(
+      setOrderNewAction({
+        list: 'history',
+        values: orders,
+      }),
+    );
+  } else {
+    yield put(fetchOrderNewErrorAction());
+  }
+}
+
+function* changeStatusWorker(
+  action: ChangeStatus,
+): Generator<StrictEffect, void, any> {
+  const driverId = yield select(getDriverId);
+  const { status, id, customerId } = action.payload;
+
+  const response = yield call(changeOrderStatusById(id, { status, driverId }));
+  if (status === Statuses.ACCEPTED) {
+    yield put(moveOrderToCurrentAction(response.data));
+    yield put(
+      removeOrderFromDriverListAction({
+        filterKey: 'id',
+        value: id,
+        filterList: 'active',
+      }),
+    );
+    if (driverId) {
+      yield put(push(CURRENT_ORDER_ROUTE));
     }
-  } catch (error) {
-    yield put(makeOrderErrorAction());
+  }
+
+  if (status === Statuses.CANCELED || status === Statuses.DONE) {
+    yield put(
+      removeOrderFromDriverListAction({
+        filterKey: 'id',
+        value: id,
+        filterList: 'current',
+      }),
+    );
+    if (!driverId) {
+      yield put(push(MAKE_ORDER_ROUTE));
+    }
+  }
+
+  if (status === Statuses.FINISHED) {
+    const orderProps = {
+      orderId: id,
+      customerId,
+    };
+    yield put(changeFeedbackValues(orderProps));
+    yield put(toggleModal());
   }
 }
 
 export function* orderWatcher() {
-  yield takeEvery(OrderActionTypes.MAKE_ORDER, makeOrderWorker);
+  yield takeEvery(
+    OrderNewActionTypes.FETCH_ACTIVE_ORDERS,
+    fetchActiveOrdersWorker,
+  );
+  yield takeEvery(
+    OrderNewActionTypes.FETCH_CURRENT_ORDERS,
+    fetchOrderCurrentWorker,
+  );
+  yield takeEvery(
+    OrderNewActionTypes.FETCH_HISTORY_ORDERS,
+    fetchOrderHistoryWorker,
+  );
+  yield takeEvery(
+    OrderNewActionTypes.CHANGE_STATUS,
+    changeStatusWorker,
+  );
 }

@@ -11,7 +11,7 @@ import { go } from 'react-router-redux';
 
 const getFeedback = (state: any) => state.feedback;
 const userAuthId = (state: any) => state.auth.id;
-const orderId = (state: any) => state.driverOrders.current[0]?.id;
+const orderId = (state: any) => state.orders.current[0]?.id;
 
 function* createFeedbackWorker(
   action: CreateFeedbackAction,

@@ -28,11 +28,11 @@ const AppRouter: FC = (props: any) => {
         <Route key={path?.toString()} path={path} component={component} exact />
       ))}
       {isAuth &&
-        authRouters.map(({ path, component }) => (
+        authRouters.map(({ path, component }: any) => (
           <Route
             key={path?.toString()}
             path={path}
-            component={component}
+            component={() => component}
             exact
           />
         ))}

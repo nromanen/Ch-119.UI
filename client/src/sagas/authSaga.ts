@@ -16,7 +16,7 @@ import {
   ACTIVE_ORDERS_ROUTE,
   PROFILE_ROUTE,
 } from '../constants/routerConstants';
-import { resetOrderState } from '../actions/orderActions';
+import { resetOrderState } from '../actions/makeOrderActions';
 import { DRIVER_ROLE } from '../constants/registrationConstants';
 
 export const getUserFromState = (state: any) => state.auth;
