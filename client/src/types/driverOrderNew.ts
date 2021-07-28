@@ -1,16 +1,17 @@
 import { Statuses } from '../constants/statuses';
+import { DriverInfoI, CustomerInfoI } from '../pages/OrderList/OrderItem/OrderItem';
 
 export interface DriverOrderNewStateI {
-  history: Array<CurrentOrder>;
-  active: Array<CurrentOrder>;
-  current: Array<CurrentOrder>;
+  history: Array<OrderI>;
+  active: Array<OrderI>;
+  current: Array<OrderI>;
   loading: false;
   error: null;
 }
 
 type Lists = 'history' | 'active' | 'current';
 
-export interface CurrentOrder {
+export interface OrderI {
   id: number;
   customer_id: number;
   driver_id: number | null;
@@ -19,16 +20,20 @@ export interface CurrentOrder {
   to: string;
   status: Statuses;
   carTypeId: number;
+  car_type: { id: number; name: string };
   extra_services: [number];
   createdAt: Date;
   updatedAt: Date;
   isCard: boolean | null;
   price: string;
   user?: { name: string; phone: string };
+  driver?: { carColor: string, carNumber: string, carModel: string, rating: number };
+  customerInfo?: CustomerInfoI;
+  feedbacks: [string];
 }
 
 export interface ChangeStatus {
-  type: DriverOrderNewActionTypes.CHANGE_STATUS;
+  type: OrderNewActionTypes.CHANGE_STATUS;
   payload: ChangeStatusPayload;
 }
 export interface ChangeStatusPayload {
@@ -38,26 +43,26 @@ export interface ChangeStatusPayload {
 }
 
 export interface MoveToCurrentOrder {
-  type: DriverOrderNewActionTypes.MOVE_TO_CURRENT_ORDER;
+  type: OrderNewActionTypes.MOVE_TO_CURRENT_ORDER;
   payload: any;
 }
 
 export interface RemoveFromCurrentOrder {
-  type: DriverOrderNewActionTypes.REMOVE_FROM_CURRENT_ORDER;
+  type: OrderNewActionTypes.REMOVE_FROM_CURRENT_ORDER;
 }
 
 export interface RemoveOrderFromDriverListPayload {
-  filterKey: keyof CurrentOrder;
+  filterKey: keyof OrderI;
   value: any;
   filterList: Lists;
 }
 export interface RemoveOrderFromDriverList {
-  type: DriverOrderNewActionTypes.REMOVE_FROM_ORDER_LIST;
+  type: OrderNewActionTypes.REMOVE_FROM_ORDER_LIST;
   payload: RemoveOrderFromDriverListPayload;
 }
 
 export interface SetOrders {
-  type: DriverOrderNewActionTypes.SET_ORDERS;
+  type: OrderNewActionTypes.SET_ORDERS;
   payload: SetOrdersPayload;
 }
 export interface SetOrdersPayload {
@@ -66,18 +71,18 @@ export interface SetOrdersPayload {
 }
 
 export interface FetchOrders {
-  type: DriverOrderNewActionTypes.FETCH_ACTIVE_ORDERS;
+  type: OrderNewActionTypes.FETCH_ACTIVE_ORDERS;
 }
 
 export interface FetchOrdersSuccess {
-  type: DriverOrderNewActionTypes.FETCH_ORDERS_SUCCESS;
+  type: OrderNewActionTypes.FETCH_ORDERS_SUCCESS;
 }
 
 export interface FetchOrdersError {
-  type: DriverOrderNewActionTypes.FETCH_ORDERS_ERROR;
+  type: OrderNewActionTypes.FETCH_ORDERS_ERROR;
 }
 
-export enum DriverOrderNewActionTypes {
+export enum OrderNewActionTypes {
   REMOVE_FROM_CURRENT_ORDER = 'REMOVE_FROM_CURRENT_ORDER',
   REMOVE_FROM_ORDER_LIST = 'REMOVE_FROM_ORDER_LIST',
   MOVE_TO_CURRENT_ORDER = 'MOVE_TO_CURRENT_ORDER',
@@ -93,7 +98,7 @@ export enum DriverOrderNewActionTypes {
   FETCH_ORDERS_ERROR = 'FETCH_ORDERS_FOR_DRIVER_ERROR',
 }
 
-export type DriverOrderNewAction =
+export type OrderNewAction =
   | RemoveOrderFromDriverList
   | RemoveFromCurrentOrder
   | MoveToCurrentOrder
@@ -101,3 +106,5 @@ export type DriverOrderNewAction =
   | FetchOrders
   | FetchOrdersSuccess
   | FetchOrdersError;
+
+

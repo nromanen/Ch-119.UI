@@ -1,11 +1,10 @@
 import { useDispatch } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import * as OrderActionCreators from '../actions/orderActions';
+import * as OrderActionCreators from '../actions/makeOrderActions';
 import * as InfoActionCreators from '../actions/cityInfoActions';
 import * as MapActionCreators from '../actions/mapActions';
 import * as FeedbackActionCreators from '../actions/feedbackActions';
 import * as DriverOrderNewActionCreators from '../actions/driverOrderNewActions';
-import * as UserOrderActionCreators from '../actions/userOrdersActions';
 
 export const useOrderActions = () => {
   const dispatch = useDispatch();
@@ -28,11 +27,7 @@ export const useFeedbackActions = () => {
   return bindActionCreators(FeedbackActionCreators, dispatch);
 };
 
-export const useDriverOrderNewActions = () => {
+export const useOrderNewActions = () => {
   const dispatch = useDispatch();
   return bindActionCreators(DriverOrderNewActionCreators, dispatch);
-};
-export const useUserOrderActions = () => {
-  const dispatch = useDispatch();
-  return bindActionCreators(UserOrderActionCreators, dispatch);
 };

@@ -5,52 +5,45 @@ import {
   PROFILE_ROUTE,
   FEEDBACK_ROUTE,
   ACTIVE_ORDERS_ROUTE,
-  CURRENT_USER_ROUTE,
-  HISTORY_ROUTE,
-  CURRENT_DRIVER_ROUTE,
+  HISTORY_ORDER_ROUTE,
+  CURRENT_ORDER_ROUTE,
+  Pages,
 } from './constants/routerConstants';
 
-import Feedback from './pages/Feedback/Feedback';
+import Feedback from './pages/feedback/Feedback';
 import ProfileContainer from './pages/Profile/ProfileContainer';
 import { MakeOrder } from './pages/Order/Order';
 
 import LoginContainer from './components/Login/LoginContainer';
 import RegistrationContainer from './components/Login/RegistrationContainer';
 
-import { DriverActive } from './pages/OrderList/DriverLists/DriverActive';
-import { DriverCurrent } from './pages/OrderList/DriverLists/DriverCurrent';
-import { DriverHistory } from './pages/OrderList/DriverLists/DriverHistory';
-import { UserCurrent } from './pages/OrderList/UserLists/UserCurrent';
+import { OrderList } from './pages/OrderList/OrderList';
 
 export const authRouters = [
   {
     path: MAKE_ORDER_ROUTE,
-    component: MakeOrder,
-  },
-  {
-    path: CURRENT_USER_ROUTE + ':id',
-    component: UserCurrent,
+    component: <MakeOrder />,
   },
   {
     path: ACTIVE_ORDERS_ROUTE,
-    component: DriverActive,
+    component: <OrderList page={Pages.ACTIVE} />,
   },
   {
-    path: CURRENT_DRIVER_ROUTE,
-    component: DriverCurrent,
+    path: CURRENT_ORDER_ROUTE,
+    component: <OrderList page={Pages.CURRENT} />,
   },
   {
-    path: HISTORY_ROUTE,
-    component: DriverHistory,
+    path: HISTORY_ORDER_ROUTE,
+    component: <OrderList page={Pages.HISTORY} />,
   },
   {
     path: FEEDBACK_ROUTE,
-    component: Feedback,
+    component: <Feedback />,
     exact: true,
   },
   {
     path: PROFILE_ROUTE,
-    component: ProfileContainer,
+    component: <ProfileContainer />,
   },
 ];
 

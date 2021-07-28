@@ -1,49 +1,56 @@
 import { RemoveOrderFromDriverListPayload } from './../types/driverOrderNew';
 import {
-  DriverOrderNewActionTypes,
+  OrderNewActionTypes,
   SetOrdersPayload,
 } from '../types/driverOrderNew';
+import { Statuses } from '../constants/statuses';
 
-export const changeOrderStatusAction = (payload: any) => {
+interface OrderStatusI {
+status: Statuses;
+id: number;
+customerId?: number;
+}
+
+export const changeOrderStatusAction = (payload: OrderStatusI) => {
   return {
-    type: DriverOrderNewActionTypes.CHANGE_STATUS,
+    type: OrderNewActionTypes.CHANGE_STATUS,
     payload,
   };
 };
 
-export const fetchDriverOrderCurrentAction = () => ({
-  type: DriverOrderNewActionTypes.FETCH_CURRENT_ORDERS,
+export const fetchOrderCurrentAction = () => ({
+  type: OrderNewActionTypes.FETCH_CURRENT_ORDERS,
 });
-export const fetchDriverOrderNewAction = () => ({
-  type: DriverOrderNewActionTypes.FETCH_ACTIVE_ORDERS,
-});
-
-export const fetchDriverOrderHistoryAction = () => ({
-  type: DriverOrderNewActionTypes.FETCH_HISTORY_ORDERS,
+export const fetchOrderNewAction = () => ({
+  type: OrderNewActionTypes.FETCH_ACTIVE_ORDERS,
 });
 
-export const setDriverOrderNewAction = (payload: SetOrdersPayload) => ({
-  type: DriverOrderNewActionTypes.SET_ORDERS,
+export const fetchOrderHistoryAction = () => ({
+  type: OrderNewActionTypes.FETCH_HISTORY_ORDERS,
+});
+
+export const setOrderNewAction = (payload: SetOrdersPayload) => ({
+  type: OrderNewActionTypes.SET_ORDERS,
   payload,
 });
 export const moveOrderToCurrentAction = (payload: any) => ({
-  type: DriverOrderNewActionTypes.MOVE_TO_CURRENT_ORDER,
+  type: OrderNewActionTypes.MOVE_TO_CURRENT_ORDER,
   payload,
 });
 export const removeOrderFromCurrentAction = () => ({
-  type: DriverOrderNewActionTypes.REMOVE_FROM_CURRENT_ORDER,
+  type: OrderNewActionTypes.REMOVE_FROM_CURRENT_ORDER,
 });
 export const removeOrderFromDriverListAction = (
   payload: RemoveOrderFromDriverListPayload,
 ) => ({
-  type: DriverOrderNewActionTypes.REMOVE_FROM_ORDER_LIST,
+  type: OrderNewActionTypes.REMOVE_FROM_ORDER_LIST,
   payload,
 });
 
-export const fetchDriverOrderNewSuccessAction = () => ({
-  type: DriverOrderNewActionTypes.FETCH_ORDERS_SUCCESS,
+export const fetchOrderNewSuccessAction = () => ({
+  type: OrderNewActionTypes.FETCH_ORDERS_SUCCESS,
 });
 
-export const fetchDriverOrderNewErrorAction = () => ({
-  type: DriverOrderNewActionTypes.FETCH_ORDERS_ERROR,
+export const fetchOrderNewErrorAction = () => ({
+  type: OrderNewActionTypes.FETCH_ORDERS_ERROR,
 });

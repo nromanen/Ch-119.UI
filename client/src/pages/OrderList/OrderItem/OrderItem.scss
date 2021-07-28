@@ -1,5 +1,14 @@
 @import '../../../styles/theme.scss';
 
+.order__list {
+  max-width: $container-width;
+
+  padding: 1em;
+  margin: 0 auto 10px;
+
+  background-color: $section-bg-color;
+}
+
 .request__item {
   border: 1px solid $overlay-bg-color;
   border-radius: $input-border-radius, 3px;

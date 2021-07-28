@@ -1,84 +1,106 @@
-import Navbar from './../../components/Navbar/Navbar';
-import { Tab, Tabs } from 'react-bootstrap';
-import { DriverActive } from './DriverLists/DriverActive';
-import { DriverHistory } from './DriverLists/DriverHistory';
-import { DriverCurrent } from './DriverLists/DriverCurrent';
+import React, { useEffect } from 'react';
 
-import './OrderList.scss';
-import { useEffect } from 'react';
-import {
-  useMapActions,
-  useDriverOrderNewActions,
-  useUserOrderActions,
-} from './../../hooks/useActions';
-import { UserCurrent } from './UserLists/UserCurrent';
-import { UserHistory } from './UserLists/UserHistory';
+import { OrderItem } from './OrderItem/OrderItem';
+import { useTypedSelector } from '../../hooks/useTypedSelector';
+import { useOrderNewActions } from '../../hooks/useActions';
+import { OrderI } from '../../types/driverOrderNew';
+import { showFeedbackButton } from '../../services/orderService';
+import { getUserRoleAsNumber } from '../../utils/getters';
 
-export enum Pages {
-  ALL = 'ALL',
-  CURRENT = 'CURRENT',
-  HISTORY = 'HISTORY',
+interface messageI {
+  message: string;
+}
+interface listNameI {
+  listName: string;
 }
 
-export const OrderList = () => {
-  const { getCurrentLocation } = useMapActions();
-  const {
-    fetchDriverOrderCurrentAction,
-    fetchDriverOrderHistoryAction,
-    fetchDriverOrderNewAction,
-  } = useDriverOrderNewActions();
-  const { fetchUserOrderCurrentAction, fetchUserOrderHistoryAction } =
-    useUserOrderActions();
+const EmptyOrdersMessage = (props: messageI) => (
+  <div className="overflow">
+    <div className="taxi-img animation">
+      <p>{props.message}</p>
+    </div>
+  </div>
+);
+
+const ListName = (props: listNameI) => (
+  <p>{props.listName}</p>
+);
+
+const ORDERS_DATA: any = {
+  ACTIVE: {
+    emptyLabel: 'no active orders',
+    listHeader: 'Active Orders',
+    ordersListName: 'active',
+  },
+  CURRENT: {
+    emptyLabel: 'no current orders',
+    listHeader: 'Current Orders',
+    ordersListName: 'current',
+  },
+  HISTORY: {
+    emptyLabel: 'no history orders',
+    listHeader: 'History orders',
+    ordersListName: 'history',
+  },
+};
+
+export const OrderList = ({ page }: any) => {
+  const { fetchOrderNewAction, fetchOrderCurrentAction, fetchOrderHistoryAction } = useOrderNewActions();
+
   useEffect(() => {
-    getCurrentLocation();
+    switch (page) {
+      case 'ACTIVE': {
+        fetchOrderNewAction();
+        break;
+      }
+      case 'CURRENT': {
+        fetchOrderCurrentAction();
+        break;
+      }
+      case 'HISTORY': {
+        fetchOrderHistoryAction();
+        break;
+      }
+      default:
+        break;
+    }
   }, []);
 
-  return (
-    <>
-      <div className="dark">
-        <div className="wrap">
-          <Tabs defaultActiveKey={Pages.ALL} id="order__tabs">
-            <Tab
-              onEnter={fetchDriverOrderHistoryAction}
-              eventKey={Pages.HISTORY}
-              title={Pages.HISTORY}
-              mountOnEnter={true}
-            >
-              <DriverHistory />
-            </Tab>
-            <Tab
-              eventKey={Pages.ALL}
-              title={Pages.ALL}
-              onEnter={fetchDriverOrderNewAction}
-            >
-              <DriverActive />
-            </Tab>
-            <Tab
-              eventKey={Pages.CURRENT}
-              title={Pages.CURRENT}
-              onEnter={fetchDriverOrderCurrentAction}
-            >
-              <DriverCurrent />
-            </Tab>
-            <Tab
-              eventKey={'USER_HISTORY'}
-              title={'USER HISTORY'}
-              onEnter={fetchUserOrderHistoryAction}
-            >
-              <UserHistory />
-            </Tab>
-            <Tab
-              eventKey={'USER_CURRENT'}
-              title={'USER CURRENT'}
-              onEnter={fetchUserOrderCurrentAction}
-            >
-              <UserCurrent />
-            </Tab>
-          </Tabs>
+  const listOfOrders = useTypedSelector((state: any): any => state.orders[ORDERS_DATA[page].ordersListName]);
+  const isDriver = useTypedSelector((state) => state.auth.isDriver);
+  const userRole = useTypedSelector(getUserRoleAsNumber);
+  // const mayTakeOrder = !!listOfOrders.length;
 
-          <Navbar />
-        </div>
+  return !listOfOrders.length ?
+    <EmptyOrdersMessage message={ORDERS_DATA[page].emptyLabel} /> : (
+      <div className="dark">
+        <ul className="order__list">
+          <ListName listName={ORDERS_DATA[page].listHeader} />
+          {listOfOrders.map((order: OrderI) => {
+            const isShown = showFeedbackButton(order.feedbacks, userRole);
+            return (
+              <OrderItem
+                key={order.id}
+                orderId={order.id}
+                customerId={order.customer_id}
+                driverId={order.driverId}
+                from={order.from}
+                to={order.to}
+                status={order.status}
+                price={order.price}
+                carType={order.car_type.name}
+                extraServices={order.extra_services}
+                lastUpdate={order.updatedAt}
+                isDriver={isDriver}
+                page={page}
+                // mayTakeOrder={mayTakeOrder}
+                showFeedbackButton={isShown}
+                // customerInfo={order.user}
+                // driverInfo={order.driver}
+              />
+            );
+          })}
+        </ul>
       </div>
-    </>
-  );
+    );
 };

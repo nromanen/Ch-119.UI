@@ -1,6 +1,5 @@
 import React, { FC, useState } from 'react';
 import './Profile.scss';
-import Navbar from '../../components/Navbar/Navbar';
 import AlertContainer from '../../components/Alert/AlertContainer';
 import { DRIVER_ROLE } from '../../constants/registrationConstants';
 import EditForm from './EditForm';
@@ -101,7 +100,6 @@ const Profile: FC = (props: any) => {
         <button className="btn btn-danger logout" onClick={logoutUser}>
           Log out
         </button>
-        <Navbar />
       </div>
     </div>
   );

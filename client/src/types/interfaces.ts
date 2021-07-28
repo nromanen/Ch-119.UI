@@ -36,5 +36,5 @@ export interface NavTabI {
   route: string;
   className?: string;
   activeClassName?: string;
-  content: string;
+  content: JSX.Element;
 }

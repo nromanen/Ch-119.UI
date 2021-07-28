@@ -1,17 +1,12 @@
 import { FC } from 'react';
-
-import { useHistory } from 'react-router-dom';
-
-import { useTypedSelector } from '../../../hooks/useTypedSelector';
 import {
-  useDriverOrderNewActions,
+  useOrderNewActions,
   useFeedbackActions,
-  useUserOrderActions,
 } from '../../../hooks/useActions';
 import { Statuses } from '../../../constants/statuses';
 
 import { extraServicesIcons } from '../../../components/ExtraServices/icons';
-import { Pages } from '../OrderList';
+import { Pages } from '../../../constants/routerConstants';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -24,28 +19,23 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import './OrderItem.scss';
 
-interface CustomerInfoI {
-  name: string;
-  phone: string;
+const CarInfoLabel: FC<any> = (label: string, value: string) => (
+  <div className="info" title="!isDriver && info">
+    <p className="info__label">{label}:</p>
+    <p className="info__value">{value}</p>
+  </div>
+);
+
+export interface CustomerInfoI {
+  name: string | null;
+  phone: string | null;
 }
 
-interface DriverInfoI {
-  carType: string;
+export interface DriverInfoI {
   carColor: string;
   carNumber: string;
   carModel: string;
-  rating: number | null;
-}
-
-interface FeedBackI {
-  id: number;
-  text: string;
   rating: number;
-  createdAt: string;
-  updatedAt: string;
-  orderId: number;
-  authorRole: number;
-  subjectRole: number;
 }
 
 interface OrderItemPropsI {
@@ -56,14 +46,15 @@ interface OrderItemPropsI {
   price: string;
   carType: string;
   extraServices: [number];
-  lastUpdate: string;
+  lastUpdate: Date;
   isDriver: boolean;
   page: Pages;
   customerInfo?: CustomerInfoI;
-  driverInfo?: DriverInfoI;
+  driverInfo?: { carColor: string, carNumber: string, carModel: string, rating: number };
   mayTakeOrder?: boolean;
   showFeedbackButton?: boolean;
   customerId?: number;
+  driverId?: number | null;
 }
 
 export const OrderItem: FC<OrderItemPropsI> = ({
@@ -81,14 +72,14 @@ export const OrderItem: FC<OrderItemPropsI> = ({
   mayTakeOrder,
   showFeedbackButton,
   customerId,
+  driverId,
 }) => {
-  const { extra_services } = useTypedSelector((state) => state.cityInfo);
   const newFrom = from.split(', ').slice(0, 2).join(', ');
   const newTo = to.split(', ').slice(0, 2).join(', ');
   const date = new Date(lastUpdate).toLocaleDateString();
   const time = new Date(lastUpdate).toLocaleTimeString();
 
-  const { changeOrderStatusAction } = useDriverOrderNewActions();
+  const { changeOrderStatusAction } = useOrderNewActions();
   const { toggleModal, changeFeedbackValues } = useFeedbackActions();
 
   const onClickFeedback = () => {
@@ -99,34 +90,67 @@ export const OrderItem: FC<OrderItemPropsI> = ({
     changeFeedbackValues(orderProps);
     toggleModal();
   };
-  const { changeOrderStatusAction: changeUserOrderStatusAction } =
-    useUserOrderActions();
-
-  const extraServicesNames =
-    extraServices.map((id: number) => {
-      const extServItem = extra_services.find((extServ) => extServ.id === id);
-      return extServItem?.name;
-    }) || [];
-
-  const history = useHistory();
-  const redirect = () => {
-    history.push('/order');
-  };
 
   const onCancelHandler = () => {
-    if (isDriver) {
-      changeOrderStatusAction({
-        status: Statuses.CANCELED,
-        id: orderId,
-      });
-    } else {
-      changeUserOrderStatusAction({
-        status: Statuses.CANCELED,
-        id: orderId,
-      });
-      redirect();
-    }
+    changeOrderStatusAction({
+      status: Statuses.CANCELED,
+      id: orderId,
+    });
   };
+
+  const ButtonCancel = () => (
+    <button
+      onClick={onCancelHandler}
+      className="request__button cancel button button--hovered button--outlined button--border"
+    >
+      Cancel
+    </button>
+  );
+
+  const ButtonFinish = () => (
+    <button
+      onClick={() =>
+        changeOrderStatusAction({
+          status: Statuses.FINISHED,
+          id: orderId,
+          customerId,
+        })
+      }
+      className="request__button finish button button--hovered button--outlined button--border"
+    >
+      Finish
+    </button>
+  );
+
+  const ButtonTake = () => (
+    <button
+      onClick={() => {
+        changeOrderStatusAction({
+          status: Statuses.ACCEPTED,
+          id: orderId,
+        });
+      }}
+      className="request__button take button button--hovered button--outlined button--border"
+      disabled={mayTakeOrder}
+      title={
+        mayTakeOrder
+          ? 'You should finish current order!'
+          : 'Take order.'
+      }
+    >
+      Take
+    </button>
+  );
+
+  const ButtonFeedback = () => (
+    <button
+      onClick={onClickFeedback}
+      className="request__button take button button--hovered button--outlined button--border"
+      title="Leave feedback"
+    >
+      Feedback
+    </button>
+  );
 
   return (
     <li className="request__item">
@@ -138,71 +162,32 @@ export const OrderItem: FC<OrderItemPropsI> = ({
         <div>
           <div>
             <div>
-              <div>
-                <div className="info__center">
-                  <div>
-                    <FontAwesomeIcon icon={faTaxi} />
-                    <span className="info__value"> {carType}</span>
-                  </div>
-                  <div>
-                    <FontAwesomeIcon icon={faHryvnia} />
-                    <span className="info__value"> {price}</span>
-                  </div>
+              <div className="info__center">
+                <div>
+                  <FontAwesomeIcon icon={faTaxi} />
+                  <span className="info__value"> {carType}</span>
                 </div>
-
-                {page === Pages.CURRENT && (
-                  <button
-                    onClick={onCancelHandler}
-                    className="request__button cancel button button--hovered button--outlined button--border"
-                  >
-                    Cancel
-                  </button>
-                )}
-
-                {isDriver && page === Pages.CURRENT && (
-                  <button
-                    onClick={() =>
-                      changeOrderStatusAction({
-                        status: Statuses.FINISHED,
-                        id: orderId,
-                        customerId,
-                      })
-                    }
-                    className="request__button finish button button--hovered button--outlined button--border"
-                  >
-                    Finish
-                  </button>
-                )}
-
-                {isDriver && page === Pages.ALL && (
-                  <button
-                    onClick={() => {
-                      changeOrderStatusAction({
-                        status: Statuses.ACCEPTED,
-                        id: orderId,
-                      });
-                    }}
-                    className="request__button take button button--hovered button--outlined button--border"
-                    disabled={mayTakeOrder}
-                    title={
-                      mayTakeOrder
-                        ? 'You should finish current order!'
-                        : 'Take order.'
-                    }
-                  >
-                    Take
-                  </button>
-                )}
-                {showFeedbackButton && page === Pages.HISTORY && (
-                  <button
-                    onClick={onClickFeedback}
-                    className="request__button take button button--hovered button--outlined button--border"
-                    title="Leave feedback"
-                  >
-                    Feedback
-                  </button>
-                )}
+                <div>
+                  <FontAwesomeIcon icon={faHryvnia} />
+                  <span className="info__value"> {price}</span>
+                </div>
               </div>
+
+              {page === Pages.CURRENT && (
+                <ButtonCancel />
+              )}
+
+              {page === Pages.CURRENT && isDriver && (
+                <ButtonFinish />
+              )}
+
+              {page === Pages.ACTIVE && isDriver && (
+                <ButtonTake />
+              )}
+
+              {page === Pages.HISTORY && showFeedbackButton && driverId && (
+                <ButtonFeedback />
+              )}
             </div>
 
             {driverInfo?.rating && (
@@ -227,11 +212,7 @@ export const OrderItem: FC<OrderItemPropsI> = ({
 
         <div className="info">
           <p className="info__label">
-            {page === Pages.HISTORY ? (
-              <FontAwesomeIcon icon={faClock} />
-            ) : (
-              <FontAwesomeIcon icon={faClock} />
-            )}
+            <FontAwesomeIcon icon={faClock} />
           </p>
           <p className="info__value date">
             {page === Pages.HISTORY && (
@@ -244,14 +225,11 @@ export const OrderItem: FC<OrderItemPropsI> = ({
           </p>
         </div>
 
-        {extraServicesNames.length > 0 && (
+        {extraServices.length > 0 && (
           <div className="info" title="request.description">
             <div className="info__extra-services">
-              {extraServicesNames
-                .filter((name) => {
-                  return !!name;
-                })
-                .map((serviceName: any) => {
+              {extraServices
+                .map((serviceName: number) => {
                   const Icon = extraServicesIcons[serviceName];
                   return (
                     <Icon
@@ -267,18 +245,9 @@ export const OrderItem: FC<OrderItemPropsI> = ({
 
         {!isDriver && driverInfo && (
           <>
-            <div className="info" title="!isDriver && info">
-              <p className="info__label">Car model:</p>
-              <p className="info__value">{driverInfo.carModel}</p>
-            </div>
-            <div className="info" title="!isDriver && info">
-              <p className="info__label">Car color:</p>
-              <p className="info__value">{driverInfo.carColor}</p>
-            </div>
-            <div className="info" title="!isDriver && info">
-              <p className="info__label">Car number:</p>
-              <p className="info__value">{driverInfo.carNumber}</p>
-            </div>
+            <CarInfoLabel label="Car model" value={driverInfo.carModel} />
+            <CarInfoLabel label="Car color" value={driverInfo.carColor} />
+            <CarInfoLabel label="Car number" value={driverInfo.carNumber} />
           </>
         )}
       </div>

@@ -22,14 +22,9 @@ import {
 } from './reducers/orderReducer';
 
 import {
-  driverOrderNewReducer,
+  orderNewReducer,
   initialState as DriverOrderNewState,
 } from './reducers/driverOrderNew';
-
-import {
-  userOrdersReducer,
-  initialState as UserOrdersState,
-} from './reducers/userOrders';
 
 import { rootWatcher } from './sagas/index';
 
@@ -41,8 +36,7 @@ const initialState = {
   cityInfo: InfoState,
   map: MapState,
   feedback: FeedbackState,
-  driverOrders: DriverOrderNewState,
-  userOrders: UserOrdersState,
+  orders: DriverOrderNewState,
 };
 
 export const history = createBrowserHistory();
@@ -56,8 +50,7 @@ const reducers = (history: any) =>
     auth: authReducer,
     cityInfo: cityInfoReducer,
     map: mapReducer,
-    driverOrders: driverOrderNewReducer,
-    userOrders: userOrdersReducer,
+    orders: orderNewReducer,
   });
 
 const rootReducers = reducers(history);

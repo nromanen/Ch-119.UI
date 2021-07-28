@@ -29,7 +29,6 @@ interface MapProps {
     status: google.maps.DirectionsStatus,
   ) => void;
   onMapLoaded: (mapInstance: google.maps.Map) => void;
-  // mapOptions: google.maps.MapOptions;
   mapOptions: any;
   directions: google.maps.DirectionsRequest | null;
   mapContainerStyle: any;

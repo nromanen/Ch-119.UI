@@ -1,6 +1,9 @@
 @import '../../../styles/theme.scss';
 
 .map {
-  height: 80vh;
+  height: 84vh;
   background: $section-bg-color;
+  & > div {
+    height: inherit !important;
+  }
 }

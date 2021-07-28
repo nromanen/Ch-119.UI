@@ -1,13 +1,14 @@
 import { ReactComponent as BabyChair } from './babyChair.svg';
 import { ReactComponent as En } from './en.svg';
 import { ReactComponent as Silent } from './silent.svg';
+import { ExtraServices } from '../../../constants/orderConstants';
 
 export interface IconsI {
-  [index: string]: any;
+  [index: number]: any;
 }
 
 export const extraServicesIcons: IconsI = {
-  'English speaking': En,
-  'Silent driver': Silent,
-  'Baby chair': BabyChair,
+  [ExtraServices.ENGLISH_SPEAKING]: En,
+  [ExtraServices.SILENT_DRIVER]: Silent,
+  [ExtraServices.BABY_CHAIR]: BabyChair,
 };

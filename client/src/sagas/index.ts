@@ -3,18 +3,16 @@ import { cityInfoWatcher } from './infoSaga';
 import { mapWatcher } from './mapSaga';
 import { feedbackWatcher } from './feedbackSaga';
 import { userInfoWatcher } from './authSaga';
+import { makeOrderWatcher } from './makeOrderSaga';
 import { orderWatcher } from './orderSaga';
-import { driverOrderNewWatcher } from './driverOrderNewSaga';
-import { userOrderWatcher } from './userOrderSaga';
 
 export function* rootWatcher() {
   yield all([
     cityInfoWatcher(),
     mapWatcher(),
     userInfoWatcher(),
-    orderWatcher(),
+    makeOrderWatcher(),
     feedbackWatcher(),
-    driverOrderNewWatcher(),
-    userOrderWatcher(),
+    orderWatcher(),
   ]);
 }
